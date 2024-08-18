@@ -20,3 +20,5 @@ Esta rama se enfoca exclusivamente en el frontend del proyecto. Contiene todas l
 
 ### Develop
 Esta rama es una combinación de las ramas `Release/Backend` y `Release/Frontend`. Es donde se integran y prueban todas las nuevas características del backend y frontend antes de ser promovidas a la rama `main`. Aquí es donde se lleva a cabo la mayor parte del desarrollo y las pruebas iniciales.
+
+![Branches](./branches.png)
