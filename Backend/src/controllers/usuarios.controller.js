@@ -1,98 +1,96 @@
-const FormaPago = require('../models/formaPago');
-const TipoUsuario = require('../models/tipoUsuario');
+const Persona = require("../models/persona");
+const bcrypt = require("bcrypt");
+const Usuario = require("../models/usuario");
+const { sequelize } = require("../configs/database.configs");
 
-const getTipoUsuarios = async (req, res) => {
-    try {
-        const users = await TipoUsuario.findAll({
-            attributes: ['id', 'tipo'],
-            order: [
-                ['id', 'ASC']
-            ]
+
+
+const crearUsuario = async (req, res) => {
+  const t = await sequelize.transaction(); 
+
+  try {
+    const { nombreUsuario, contrasenia, idTipoUsuario, persona } = req.body;
+
+    const email = await Persona.findOne({
+      where: { correoElectronico: persona.correoElectronico },
+      transaction: t,
+    });
+
+    if (email) {
+      await t.rollback();
+      return res
+        .status(409)
+        .json({ estado: "error", mensaje: "Correo electronico ya registrado" });
+    }
+
+    if (!contrasenia) {
+      await t.rollback();
+      return res
+        .status(400)
+        .json({ estado: "error", mensaje: "La contraseña es requerida" });
+    }
+
+    if (contrasenia.length < 8) {
+      await t.rollback();
+      return res
+        .status(400)
+        .json({
+          estado: "error",
+          mensaje: "La contraseña debe tener al menos 8 caracteres",
         });
-        res.status(400).json({estado:'ok', tipoUsuarios: users});
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ estado:'error',mensaje:'Error al obtener tipo de usuario' });
     }
-}
 
-const crearTipoUsuario = async (req, res) => {
-    try {
-        const { tipo } = req.body;
+    // Se crea la persona
+    const newPersona = await Persona.create(persona, { transaction: t });
 
-        const newUser = await TipoUsuario.create({ tipo });
-        res.status(200).json({estado:'ok', mensaje:'Tipo de usuario creado correctamente'});
+    // Se crea el usuario
+    const hashedPassword = await bcrypt.hash(contrasenia, 10);
+    await Usuario.create({
+      nombreUsuario,
+      contrasenia: hashedPassword,
+      idPersona: newPersona.id,
+      idTipoUsuario,
+    }, { transaction: t });
 
+    await t.commit(); 
+    res.status(200).json({ estado: "ok", mensaje: "Registrado correctamente" });
 
-    } catch (error) {
-        
-        const respuesta = await manejoErrores(error, res ,'Tipo de usuario');
+  } catch (error) {  
+    await t.rollback(); 
+    await manejoErrores(error, res, "Usuario");
+  }
+};
 
-    }
-}
-
-const crearFormaPago = async (req, res) => {
-    try {
-        const { tipo } = req.body;
-
-        const newType = await FormaPago.create({ tipo });
-        res.status(200).json({estado:'ok', mensaje:'Forma de pago creado correctamente'});
-    }
-    catch (error) {
-        const respuesta = await manejoErrores(error, res ,'Forma de pago');
-        
-    }
-}
-
-const getFormasPago = async (req, res) => {
-    try {
-        const users = await FormaPago.findAll({
-            attributes: ['id', 'tipo'],
-            order: [
-                ['id', 'ASC']
-            ]
-        });
-        res.status(200).json({estado:'ok', formaPagos: users});
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ estado:'error',mensaje:'Error al obtener formas de pago' });
-    }
-}
 
 async function manejoErrores(error, res, tabla) {
-
-    if (error.name === 'SequelizeValidationError') {
-        // Extraer mensajes de validación
-        const messages = error.errors.map(err => err.message);
+  
+  if (error.name === "SequelizeValidationError") {
     
-        res.status(400).json({
-          estado: 'error',
-          mensaje: messages.join(', ')
-        });
-      } else if (error.name === 'SequelizeUniqueConstraintError') {
-        res.status(400).json({
-          estado: 'error',
-          mensaje: 'El valor para uno de los campos debe ser único.'
-        });
-      } else if (error.name === 'SequelizeDatabaseError') {
-        res.status(500).json({
-          estado: 'error',
-          mensaje: 'Error en la base de datos: ' + error.message
-        });
-      } else {
-        res.status(500).json({
-          estado: 'error',
-          mensaje: 'Error interno del servidor: ' + error.message
-        });
-      }
-    
+    // Se extraen mensajes de validación del orm
+    const messages = error.errors.map((err) => err.message);
 
+    res.status(400).json({
+      estado: "error",
+      mensaje: messages.join(", "),
+    });
+  } else if (error.name === "SequelizeUniqueConstraintError") {
+    res.status(400).json({
+      estado: "error",
+      mensaje: "El valor para uno de los campos debe ser único.",
+    });
+  } else if (error.name === "SequelizeDatabaseError") {
+    res.status(500).json({
+      estado: "error",
+      mensaje: "Error en la base de datos: " + error.message,
+    });
+  } else {
+    res.status(500).json({
+      estado: "error",
+      mensaje: "Error interno del servidor: " + error.message,
+    });
+  }
 }
-
 
 module.exports = {
-    getTipoUsuarios,
-    crearTipoUsuario,
-    crearFormaPago,
-    getFormasPago
-}
+  crearUsuario
+};

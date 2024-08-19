@@ -4,7 +4,7 @@ const cors = require('cors');
 
 //Routes
 const usuariosRoutes = require('./routes/usuarios.routes');
-const clientesRoutes = require('./routes/clientes.routes');
+const adminstracionRoutes = require('./routes/administracion.routes');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -15,6 +15,6 @@ app.get('/',(req,res)=>{
 });
 
 app.use(usuariosRoutes);
-app.use(clientesRoutes);
+app.use(adminstracionRoutes);
 
 module.exports = app;
