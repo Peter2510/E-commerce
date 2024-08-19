@@ -1,11 +1,10 @@
+import { Person } from "./person.interface";
 export interface User{
-    id: string,
+    id: number,
     nombre: string,
     username: string,
     password:string,
-    id_tipo_user:string,
-    nit: string,
-    correo:string,
-    ultimo_ingreso:string,
-
+    person:Person,
+    activo:boolean,
+    idtipoUsuario:number
 }

@@ -1,3 +1,4 @@
+import { NgForm } from '@angular/forms';
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
+  mostrar:boolean = false;
 
+  cambiar(){
+    console.log('cambiando');
+    this.mostrar = !this.mostrar;
+  }
 }

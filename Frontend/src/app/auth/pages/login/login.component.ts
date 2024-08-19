@@ -19,11 +19,11 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router){}
 
   login(){
+    console.log('login '+this.username)
     if(!this.username|| !this.password ){
       console.log('Campos vacios')
       return
     }
-    
     //se debe solicitar el servicio para autenticar xd
     this.authService.login(this.username, this.password).subscribe({
       next:(response:Object)=>{
@@ -35,9 +35,9 @@ export class LoginComponent {
           title: 'Inicio de sesión exitoso ',
           text: message,
         });
-        if (this.user.id_tipo_user == '1') {
+        if (this.user.idtipoUsuario == 1) {
           this.router.navigate(['/admin']);
-        } else if (this.user.id_tipo_user == '2'){
+        } else if (this.user.idtipoUsuario == 2){
           this.router.navigate(['/cliente']);
 
         }else {
