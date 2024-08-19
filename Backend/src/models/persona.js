@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../configs/database.configs');
 const FormaPago = require('./formaPago');
-const Usuario = require('./usuario');
+
 
 const Persona = sequelize.define(
   'Persona',
@@ -26,7 +26,7 @@ const Persona = sequelize.define(
     nit: {
       type: DataTypes.STRING(15),
       allowNull: true,
-      unique: true
+      unique: false,
     },
     correoElectronico: {
       type: DataTypes.STRING,
@@ -57,7 +57,14 @@ const Persona = sequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW
-    }
+    },
+    idTipoFormaPago: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: FormaPago,
+        key: 'id'
+      }
+    },
   },
   {
     schema: 'usuarios',

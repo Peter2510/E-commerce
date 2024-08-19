@@ -61,15 +61,31 @@ const getFormasPago = async (req, res) => {
 
 async function manejoErrores(error, res, tabla) {
 
-    if (error.name === 'SequelizeUniqueConstraintError') {
-        res.status(409).json({ estado:'error',mensaje:`${tabla} ya existe` });
-    }else if (error.name === 'SequelizeValidationError') {
-        res.status(400).json({ estado:'error',mensaje:`${tabla} no puede ser vacio` });
-    }else if (error.name === 'SequelizeDatabaseError') {
-        res.status(500).json({ estado:'error',mensaje:`Error al crear ${tabla}` });
-    } else {
-        res.status(500).json({ estado:'error',mensaje:`Error al crear ${tabla}` });
-    }
+    if (error.name === 'SequelizeValidationError') {
+        // Extraer mensajes de validación
+        const messages = error.errors.map(err => err.message);
+    
+        res.status(400).json({
+          estado: 'error',
+          mensaje: messages.join(', ')
+        });
+      } else if (error.name === 'SequelizeUniqueConstraintError') {
+        res.status(400).json({
+          estado: 'error',
+          mensaje: 'El valor para uno de los campos debe ser único.'
+        });
+      } else if (error.name === 'SequelizeDatabaseError') {
+        res.status(500).json({
+          estado: 'error',
+          mensaje: 'Error en la base de datos: ' + error.message
+        });
+      } else {
+        res.status(500).json({
+          estado: 'error',
+          mensaje: 'Error interno del servidor: ' + error.message
+        });
+      }
+    
 
 }
 
