@@ -14,11 +14,27 @@ const Usuario = sequelize.define(
     },
     nombreUsuario: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'El nombre de usuario no puede ser nulo',
+        },
+        notEmpty: {
+          msg: 'El nombre de usuario no puede ser vacio',
+        },
+      },
     },
     contrasenia: {
       type: DataTypes.STRING(60),
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'La contraseña no puede ser nula',
+        },
+        notEmpty: {
+          msg: 'La contraseña no puede ser vacia',
+        },
+      },
     },
     activo: {
       type: DataTypes.BOOLEAN,

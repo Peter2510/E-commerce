@@ -13,8 +13,16 @@ const FormaPago = sequelize.define(
     tipo: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
-    }
+      unique: true, 
+      validate: {
+        notNull: {
+          msg: 'El tipo de forma de pago no puede ser nulo'
+        },
+        notEmpty: {
+          msg: 'El tipo de forma de pago no puede ser vacio'
+        }
+      }
+    },
   },
   {
     schema: 'usuarios',

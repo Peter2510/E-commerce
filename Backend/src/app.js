@@ -3,7 +3,8 @@ const app = express();
 const cors = require('cors');
 
 //Routes
-const usersRoutes = require('./routes/usuarios.routes');
+const usuariosRoutes = require('./routes/usuarios.routes');
+const clientesRoutes = require('./routes/clientes.routes');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -13,6 +14,7 @@ app.get('/',(req,res)=>{
     res.send('Hello from Backend API')
 });
 
-app.use(usersRoutes);
+app.use(usuariosRoutes);
+app.use(clientesRoutes);
 
 module.exports = app;

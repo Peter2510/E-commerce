@@ -13,7 +13,15 @@ const Persona = sequelize.define(
     },
     nombre: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'El nombre no puede ser nulo',
+        },
+        notEmpty: {
+          msg: 'El nombre no puede ser vacio',
+        },
+      },
     },
     nit: {
       type: DataTypes.STRING(15),
@@ -23,7 +31,18 @@ const Persona = sequelize.define(
     correoElectronico: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        isEmail: {
+          msg: 'Correo electronico invalido'
+        },
+        notNull: {
+          msg: 'El correo electronico no puede ser nulo',
+        },
+        notEmpty: {
+          msg: 'El correo electronico no puede ser vacio',
+        },
+      }
     },
     direccion: {
       type: DataTypes.TEXT,

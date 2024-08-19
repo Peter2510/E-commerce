@@ -14,6 +14,14 @@ const TipoUsuario = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        notNull: {
+          msg: 'El tipo de usuario no puede ser nulo',
+        },
+        notEmpty: {
+          msg: 'El tipo de usuario no puede ser vacio',
+        }
+      },
     },
   },
   {

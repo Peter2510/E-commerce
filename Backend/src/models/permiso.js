@@ -13,6 +13,14 @@ const Permiso = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        notNull: {
+          msg: 'El permiso no puede ser nulo',
+        },
+        notEmpty: {
+          msg: 'El permiso no puede ser vacio',
+        },
+      },
     },
   },
   {
