@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
+  mostrar:boolean = false;
 
+  cambiar(){
+    console.log('cambiando');
+    this.mostrar = true;
+  }
 }
