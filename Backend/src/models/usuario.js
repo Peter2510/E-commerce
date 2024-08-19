@@ -42,6 +42,15 @@ const Usuario = sequelize.define(
     },
     idPersona: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "La persona no puede ser nula",
+        },
+        notEmpty: {
+          msg: "La persona no puede ser vacia",
+        },
+      },
       references: {
         model: Persona,
         key: "id",
@@ -49,6 +58,15 @@ const Usuario = sequelize.define(
     },
     idTipoUsuario: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "El tipo de usuario no puede ser nulo",
+        },
+        notEmpty: {
+          msg: "El tipo de usuario no puede ser vacio",
+        },
+      },
       references: {
         model: TipoUsuario,
         key: "id",
