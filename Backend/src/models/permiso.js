@@ -1,16 +1,15 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../configs/database.configs');
-const Usuario = require('./usuario');
 
-const TipoUsuario = sequelize.define(
-  'TipoUsuario',
+const Permiso = sequelize.define(
+  'Permiso',
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    tipo: {
+    permiso: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
@@ -18,8 +17,8 @@ const TipoUsuario = sequelize.define(
   },
   {
     schema: 'usuarios',
-    tableName: 'tipoUsuario',
+    tableName: 'permiso',
   }
 );
 
-module.exports = TipoUsuario;
+module.exports = Permiso;

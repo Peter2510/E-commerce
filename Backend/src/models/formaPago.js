@@ -1,25 +1,25 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../configs/database.configs');
-const Usuario = require('./usuario');
+const Persona = require('./persona');
 
-const TipoUsuario = sequelize.define(
-  'TipoUsuario',
+const FormaPago = sequelize.define(
+  'FormaPago',
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
+      autoIncrement: true
     },
     tipo: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
-    },
+      unique: true
+    }
   },
   {
     schema: 'usuarios',
-    tableName: 'tipoUsuario',
+    tableName: 'formaPago'
   }
 );
 
-module.exports = TipoUsuario;
+module.exports = FormaPago;

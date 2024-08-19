@@ -11,6 +11,7 @@ const sequelize = new Sequelize(database, user, password, {
   host: host,
   port: port,
   dialect: 'postgres',
+  logging: false,
 });
 
 async function connect() {

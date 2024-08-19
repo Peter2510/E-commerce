@@ -3,7 +3,7 @@ const app = express();
 const cors = require('cors');
 
 //Routes
-const usersRoutes = require('./routes/users.routes');
+const usersRoutes = require('./routes/usuarios.routes');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
