@@ -2,8 +2,8 @@ const Persona = require("../models/persona");
 const bcrypt = require("bcrypt");
 const Usuario = require("../models/usuario");
 const { sequelize } = require("../configs/database.configs");
-
-
+var jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const crearUsuario = async (req, res) => {
   const t = await sequelize.transaction(); 
@@ -91,6 +91,60 @@ async function manejoErrores(error, res, tabla) {
   }
 }
 
+const login = async (req, res) => {
+  try {
+    const { correoElectronico, contrasenia } = req.body;
+
+    const user = await Persona.findOne({
+      where: { correoElectronico },
+    });
+    
+    if (!user) {
+      return res.status(401).json({ estado: "error", mensaje: "Credenciales incorrectas" });
+    }
+
+    const usuario = await Usuario.findOne({
+      where: { idPersona: user.id },
+    });
+
+    const contraseniaValida = await bcrypt.compareSync(contrasenia, usuario.contrasenia);
+
+    if (!contraseniaValida) {
+      return res.status(401).json({ estado: "error", mensaje: "Credenciales incorrectas" });
+    }
+   
+    const token = jwt.sign(
+      {
+        idUsuario: usuario.id,
+        idTipoUsuario: usuario.idTipoUsuario,
+        nombreUsuario: usuario.nombreUsuario
+      },
+      process.env.JWT_KEY,
+      { expiresIn: "1h" } 
+    );
+    
+
+      res.status(200)
+      .cookie('access_token', token, {
+        httpOnly: true, //solo se puede acceder desde el servidor
+        maxAge: 1000 * 60 * 60 //1 hora de duración
+      }).json({
+        estado: "ok",
+        mensaje: "Inicio de sesión correcto",
+        token
+      })
+    
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      estado: "error",
+      mensaje: "Error interno del servidor: " + error.message,
+    });
+  }
+};
+
 module.exports = {
-  crearUsuario
+  crearUsuario,
+  login
 };
