@@ -14,17 +14,17 @@ const routes: Routes = [{
     {
       path: 'listado',
       component: LitadoProductosComponent,
-      //canActivate:[clienteGuardGuard]
+      canActivate:[clienteGuardGuard]
     },
     {
       path: 'perfil',
       component: PerfilComponent,
-      //canActivate:[clienteGuardGuard]
+      canActivate:[clienteGuardGuard]
     },
     {
       path: '**',
       component: WelcomeComponent,
-      //canActivate:[clienteGuardGuard]
+      canActivate:[clienteGuardGuard]
     }
   ]
 }];
