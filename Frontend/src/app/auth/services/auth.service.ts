@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment.development';
 import { User } from 'src/app/interfaces/user.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:3200/api/v1';
+  private baseUrl = environment.baseUrlEnv;
 
-  constructor(private http: HttpClient) { }
-
+  constructor(private http: HttpClient) {}
 
   login(correoElectronico: string, contrasenia: string) {
     const body = { correoElectronico, contrasenia };

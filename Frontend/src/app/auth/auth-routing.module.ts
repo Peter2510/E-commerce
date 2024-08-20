@@ -6,28 +6,28 @@ import { loginGuard } from './guard/login.guard';
 
 const routes: Routes = [
   {
-    path:'',
+    path: '',
     children: [
       {
         path: 'login',
-        component: LoginComponent,
+        component: LoginComponent,,
         canActivate: [loginGuard]
       },
       {
-        path: 'register', 
-        component: RegisterComponent
+        path: 'register',
+        component: RegisterComponent,
       },
       {
-        path: '**', 
+        path: '**',
         component: LoginComponent,
         canActivate: [loginGuard]
-      }
-    ]
-  }
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AuthRoutingModule { }
+export class AuthRoutingModule {}
