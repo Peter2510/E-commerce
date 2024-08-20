@@ -48,7 +48,10 @@ const iniciar = async (req, res) => {
     console.log("Email enviado ", token);
     res
       .status(200)
-      .json({ ok: true, mensaje: "Código enviado al correo electrónico" });
+      .json({
+        ok: true, 
+        a2f: true,
+        mensaje: "Código enviado al correo electrónico" });
   } catch (err) {
     console.error("Error al enviar el código de verificación", err);
     res

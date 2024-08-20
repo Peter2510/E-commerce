@@ -141,6 +141,7 @@ const login = async (req, res) => {
         maxAge: 1000 * 60 * 60 //1 hora de duración
       }).json({
         ok: true,
+        a2f: false,
         mensaje: "Inicio de sesión correcto",
         token
       })
