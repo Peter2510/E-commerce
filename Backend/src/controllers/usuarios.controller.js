@@ -155,7 +155,15 @@ const login = async (req, res) => {
   }
 };
 
+const logOut = (req,res) =>{
+
+  res.clearCookie('access_token').status(200).
+  json({ok:true, mensaje: 'Sesión cerrada correctamente'})
+
+}
+
 module.exports = {
   crearUsuario,
-  login
+  login,
+  logOut
 };

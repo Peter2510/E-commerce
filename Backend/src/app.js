@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 cookieParser = require('cookie-parser');
+const jwtValidacion = require('./middlewares/jwtValidacion');
 
 //Routes
 const usuariosRoutes = require('./routes/usuarios.routes');
@@ -20,6 +21,6 @@ app.get('/',(req,res)=>{
 app.use(utilsroutes);
 
 app.use(usuariosRoutes);
-app.use(adminstracionRoutes);
+app.use(jwtValidacion,adminstracionRoutes);
 
 module.exports = app;
