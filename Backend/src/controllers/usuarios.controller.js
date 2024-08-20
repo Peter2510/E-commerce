@@ -70,22 +70,22 @@ async function manejoErrores(error, res, tabla) {
     // Se extraen mensajes de validación del orm
     const messages = error.errors.map((err) => err.message);
 
-    res.status(400).json({
+    return res.status(400).json({
       ok: false,
       mensaje: messages.join(", "),
     });
   } else if (error.name === "SequelizeUniqueConstraintError") {
-    res.status(400).json({
+    return res.status(400).json({
       ok: false,
       mensaje: "El valor para uno de los campos debe ser único.",
     });
   } else if (error.name === "SequelizeDatabaseError") {
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       mensaje: "Error en la base de datos: " + error.message,
     });
   } else {
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       mensaje: "Error interno del servidor: " + error.message,
     });
@@ -101,7 +101,7 @@ const login = async (req, res) => {
     });
     
     if (!user) {
-      res.status(401).json({ ok: false, mensaje: "Credenciales incorrectas" });
+      return res.status(401).json({ ok: false, mensaje: "Credenciales incorrectas" });
     }
 
     const usuario = await Usuario.findOne({
@@ -110,13 +110,13 @@ const login = async (req, res) => {
 
         //validar si el usuario esta activo
     if (!usuario.activo) {
-      res.status(401).json({ ok: false, mensaje: "Usuario deshabilitado" });
+      return res.status(401).json({ ok: false, mensaje: "Usuario deshabilitado" });
     }
 
     const contraseniaValida = await bcrypt.compareSync(contrasenia, usuario.contrasenia);
 
     if (!contraseniaValida) {
-      res.status(401).json({ ok: false, mensaje: "Credenciales incorrectas" });
+      return res.status(401).json({ ok: false, mensaje: "Credenciales incorrectas" });
     }
    
 
