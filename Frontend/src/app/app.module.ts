@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { AuthModule } from './auth/auth.module';
 import { CookieService } from 'ngx-cookie-service';
+import { ClienteModule } from './cliente/cliente.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { CookieService } from 'ngx-cookie-service';
     MaterialModule,
     HttpClientModule,
     AuthModule,
+    ClienteModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]
