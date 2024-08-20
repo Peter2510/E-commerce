@@ -12,24 +12,25 @@ import Swal from 'sweetalert2';
 })
 export class LoginComponent {
 
-  username!:string;
-  password!:string;
+  correoElectronico!:string;
+  contrasenia!:string;
   user!: User;
 
   constructor(private authService: AuthService, private router: Router){}
 
   login(){
-    console.log('login '+this.username)
-    if(!this.username|| !this.password ){
+    console.log('login '+this.correoElectronico)
+    if(!this.correoElectronico|| !this.correoElectronico ){
       console.log('Campos vacios')
       return
     }
     //se debe solicitar el servicio para autenticar xd
-    this.authService.login(this.username, this.password).subscribe({
+    this.authService.login(this.correoElectronico, this.contrasenia).subscribe({
       next:(response:Object)=>{
+        console.log(response);
         this.user = response as User;
         //guardar user en cookies o localstorage xd
-        const message = `Bienvenido, ${this.user.nombre} (${this.user.person?.nombre})`;
+        const message = `Bienvenido, ${this.user.nombreUsuario} (${this.user.persona?.nombre})`;
         alert('inicio existoso');
         
         Swal.fire({
@@ -37,9 +38,9 @@ export class LoginComponent {
           title: 'Inicio de sesión exitoso ',
           text: message,
         });
-        if (this.user.idtipoUsuario == 1) {
+        if (this.user.idTipoUsuario == 1) {
           this.router.navigate(['/admin']);
-        } else if (this.user.idtipoUsuario == 2){
+        } else if (this.user.idTipoUsuario == 2){
           this.router.navigate(['/cliente']);
 
         }else {

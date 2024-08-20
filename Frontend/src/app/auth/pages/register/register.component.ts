@@ -12,21 +12,19 @@ export class RegisterComponent {
   mostrar:boolean = false;
   usuario: User = {
     id: 0,
-    nombre: '',
-    password: '',
-    person:undefined,
+    nombreUsuario: '',
+    contrasenia: '',
+    persona:undefined,
     activo: true,
-    idtipoUsuario: 0
+    idTipoUsuario: 1
   };
   persona: Person = {
     id: 0,
     nombre: '',
     correoElectronico: '',
     direccion: '',
-    idtipoFormaPago: '',
-    nit: '',
-    fechaCreacion: new Date(),
-    ultimoIngreso: new Date()
+    idTipoFormaPago: '',
+    nit: ''
   };
   
   constructor(private authservice:AuthService){
@@ -38,14 +36,14 @@ export class RegisterComponent {
     this.mostrar = !this.mostrar;
   }
   crearUsuario(){
-    this.usuario.person = this.persona;
+    this.usuario.persona = this.persona;
     console.log(this.usuario);
     this.authservice.registro(this.usuario).subscribe({
       next:(response:object)=>{
         console.log('TODO OK');
       },
       error:(err=>{
-        console.log('NO OK');
+        console.log(err.mensaje);
       })
     })
   }

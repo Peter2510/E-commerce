@@ -6,17 +6,19 @@ import { User } from 'src/app/interfaces/user.interface';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = 'http://localhost:3200/api/v1';
 
   constructor(private http: HttpClient) { }
 
 
-  login(username: string, password: string) {
-    const body = { username, password };
-    return this.http.post(`${this.baseUrl}/usuario/validate`, body);
+  login(correoElectronico: string, contrasenia: string) {
+    const body = { correoElectronico, contrasenia };
+    console.log(body);
+    
+    return this.http.post(`${this.baseUrl}/usuarios/login`, body);
   }
 
   registro(usuario:User){
-    return this.http.post(this.baseUrl,usuario)
+    return this.http.post(`${this.baseUrl}/usuarios/crearCliente`,usuario)
   }
 }
