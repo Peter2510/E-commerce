@@ -10,7 +10,7 @@ const password = process.env.DATABASE_PASSWORD;
 const sequelize = new Sequelize(database, user, password, {
   host: host,
   port: port,
-  dialect: 'postgres',
+  dialect: 'postgres'
 });
 
 async function connect() {
