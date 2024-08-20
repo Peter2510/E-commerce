@@ -12,11 +12,18 @@ import { AuthModule } from './auth/auth.module';
 import { HeaderComponent } from './utils/header/header.component';
 import { AdminModuleModule } from './admin/admin-module/admin-module.module';
 import { AdminheaderComponent } from './utils/adminheader/adminheader.component';
-import { GestionRolesEspecificoComponent } from './admin/gestion-roles-especifico/gestion-roles-especifico.component';
 import { RouterLink } from '@angular/router';
+import { GestionCriticaComponent } from './admin/gestion-critica/gestion-critica.component';
+import { GestionProductosComponent } from './admin/gestion-productos/gestion-productos.component';
+import { GestionProductosEspecificaComponent } from './admin/gestion-productos-especifica/gestion-productos-especifica.component';
 
 @NgModule({
-  declarations: [AppComponent, GestionRolesEspecificoComponent],
+  declarations: [
+    AppComponent,
+    GestionCriticaComponent,
+    GestionProductosComponent,
+    GestionProductosEspecificaComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -27,6 +34,7 @@ import { RouterLink } from '@angular/router';
     AdminModuleModule,
     HeaderComponent,
     RouterLink,
+    AdminheaderComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],
