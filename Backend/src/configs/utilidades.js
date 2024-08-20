@@ -45,11 +45,11 @@ const iniciar = async (req, res) => {
         });
 
         console.log('Email enviado ', token);
-        res.status(200).json({ estado: 'ok', mensaje: 'Código enviado al correo electrónico' });
+        res.status(200).json({ ok: true, mensaje: 'Código enviado al correo electrónico' });
 
     } catch (err) {
         console.error('Error al enviar el código de verificación', err);
-        res.status(500).json({ estado: 'error', mensaje: 'Error al enviar el código de verificación' });
+        res.status(500).json({ ok: false, mensaje: 'Error al enviar el código de verificación' });
     }
 };
 
@@ -73,9 +73,9 @@ const verificar = async (req, res) => {
 
     if (verified) {
         const jwtToken = jwt.sign({ user: correoElectronico }, process.env.JWT_KEY, { expiresIn: '1h' });
-        res.json({ estado: 'ok' , token: jwtToken });
+        res.json({ ok: true , token: jwtToken });
     } else {
-        res.status(401).json({ estado: 'error', mensaje: 'Código no válido' });
+        res.status(401).json({ ok: false, mensaje: 'Código no válido' });
     }
 };
 

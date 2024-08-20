@@ -21,14 +21,14 @@ const crearUsuario = async (req, res) => {
       await t.rollback();
       return res
         .status(409)
-        .json({ estado: "error", mensaje: "Correo electronico ya registrado" });
+        .json({ ok: false, mensaje: "Correo electronico ya registrado" });
     }
 
     if (!contrasenia) {
       await t.rollback();
       return res
         .status(400)
-        .json({ estado: "error", mensaje: "La contraseña es requerida" });
+        .json({ ok: false, mensaje: "La contraseña es requerida" });
     }
 
     if (contrasenia.length < 8) {
@@ -36,7 +36,7 @@ const crearUsuario = async (req, res) => {
       return res
         .status(400)
         .json({
-          estado: "error",
+          ok: false,
           mensaje: "La contraseña debe tener al menos 8 caracteres",
         });
     }
@@ -54,7 +54,7 @@ const crearUsuario = async (req, res) => {
     }, { transaction: t });
 
     await t.commit(); 
-    res.status(200).json({ estado: "ok", mensaje: "Registrado correctamente" });
+    res.status(200).json({ ok: true, mensaje: "Registrado correctamente" });
 
   } catch (error) {  
     await t.rollback(); 
@@ -71,22 +71,22 @@ async function manejoErrores(error, res, tabla) {
     const messages = error.errors.map((err) => err.message);
 
     res.status(400).json({
-      estado: "error",
+      ok: false,
       mensaje: messages.join(", "),
     });
   } else if (error.name === "SequelizeUniqueConstraintError") {
     res.status(400).json({
-      estado: "error",
+      ok: false,
       mensaje: "El valor para uno de los campos debe ser único.",
     });
   } else if (error.name === "SequelizeDatabaseError") {
     res.status(500).json({
-      estado: "error",
+      ok: false,
       mensaje: "Error en la base de datos: " + error.message,
     });
   } else {
     res.status(500).json({
-      estado: "error",
+      ok: false,
       mensaje: "Error interno del servidor: " + error.message,
     });
   }
@@ -101,7 +101,7 @@ const login = async (req, res) => {
     });
     
     if (!user) {
-      res.status(401).json({ estado: "error", mensaje: "Credenciales incorrectas" });
+      res.status(401).json({ ok: false, mensaje: "Credenciales incorrectas" });
     }
 
     const usuario = await Usuario.findOne({
@@ -110,13 +110,13 @@ const login = async (req, res) => {
 
         //validar si el usuario esta activo
     if (!usuario.activo) {
-      res.status(401).json({ estado: "error", mensaje: "Usuario deshabilitado" });
+      res.status(401).json({ ok: false, mensaje: "Usuario deshabilitado" });
     }
 
     const contraseniaValida = await bcrypt.compareSync(contrasenia, usuario.contrasenia);
 
     if (!contraseniaValida) {
-      res.status(401).json({ estado: "error", mensaje: "Credenciales incorrectas" });
+      res.status(401).json({ ok: false, mensaje: "Credenciales incorrectas" });
     }
    
 
@@ -140,7 +140,7 @@ const login = async (req, res) => {
         httpOnly: true, //solo se puede acceder desde el servidor
         maxAge: 1000 * 60 * 60 //1 hora de duración
       }).json({
-        estado: "ok",
+        ok: true,
         mensaje: "Inicio de sesión correcto",
         token
       })
@@ -149,7 +149,7 @@ const login = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      estado: "error",
+      ok: false,
       mensaje: "Error interno del servidor: " + error.message,
     });
   }
