@@ -1,86 +1,122 @@
 const OTPAuth = require("otpauth");
 const encode = require("hi-base32");
-const QRCode = require('qrcode');
+const QRCode = require("qrcode");
 
-const speakeasy = require('speakeasy');
-const nodemailer = require('nodemailer');
-const NodeCache = require('node-cache');
-const jwt = require('jsonwebtoken'); // Importing jsonwebtoken
-require('dotenv').config();
+const speakeasy = require("speakeasy");
+const nodemailer = require("nodemailer");
+const NodeCache = require("node-cache");
+const jwt = require("jsonwebtoken"); // Importing jsonwebtoken
+const Usuario = require("../models/usuario");
+const Persona = require("../models/persona");
+require("dotenv").config();
 
 // Configuración de caché con un TTL (time-to-live) de 5 minutos
 const cache = new NodeCache({ stdTTL: 300, checkperiod: 60 });
 
-
 // Endpoint to enable two-way authentication
 const iniciar = async (req, res) => {
-    const { correoElectronico } = req.body;
-    
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true, // use SSL
-        auth: {
-            user: process.env.CORREO,
-            pass: process.env.PASSWORD
-        }
+  const { correoElectronico } = req.body;
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // use SSL
+    auth: {
+      user: process.env.CORREO,
+      pass: process.env.PASSWORD,
+    },
+  });
+
+  try {
+    const secret = speakeasy.generateSecret();
+    const token = speakeasy.totp({
+      secret: secret.base32,
+      encoding: "base32",
     });
 
-    try {
-        const secret = speakeasy.generateSecret();
-        const token = speakeasy.totp({
-            secret: secret.base32,
-            encoding: 'base32'
-        });
+    // Almacenar el código y el secreto en caché
+    cache.set(correoElectronico, { secret: secret.base32, token });
 
-        // Almacenar el código y el secreto en caché
-        cache.set(correoElectronico, { secret: secret.base32, token });
+    const mensaje = `<h1>Tu código es: ${token}</h1>`;
 
-        const mensaje = `<h1>Tu código es: ${token}</h1>`;
+    await transporter.sendMail({
+      to: correoElectronico,
+      subject: "Código de verificación",
+      html: mensaje,
+    });
 
-        await transporter.sendMail({
-            to: correoElectronico,
-            subject: 'Código de verificación',
-            html: mensaje
-        });
-
-        console.log('Email enviado ', token);
-        res.status(200).json({ ok: true, mensaje: 'Código enviado al correo electrónico' });
-
-    } catch (err) {
-        console.error('Error al enviar el código de verificación', err);
-        res.status(500).json({ ok: false, mensaje: 'Error al enviar el código de verificación' });
-    }
+    console.log("Email enviado ", token);
+    res
+      .status(200)
+      .json({ ok: true, mensaje: "Código enviado al correo electrónico" });
+  } catch (err) {
+    console.error("Error al enviar el código de verificación", err);
+    res
+      .status(500)
+      .json({
+        ok: false,
+        mensaje: "Error al enviar el código de verificación",
+      });
+  }
 };
-
-
 
 const verificar = async (req, res) => {
-    const { correoElectronico, token } = req.body;
+  const { correoElectronico, token } = req.body;
 
-    const cachedData = cache.get(correoElectronico);
-    if (!cachedData) {
-        res.status(401).json({ estado:'error', mensaje: 'Código expirado o no encontrado' });
-    }
+  const cachedData = cache.get(correoElectronico);
+  if (!cachedData) {
+    return res
+      .status(401)
+      .json({ estado: "error", mensaje: "Código expirado o no encontrado" });
+  }
 
-    const { secret } = cachedData;
-    const verified = speakeasy.totp.verify({
-        secret: secret,
-        encoding: 'base32',
-        token: token,
-        window: 1
+  const { secret } = cachedData;
+
+  const verified = speakeasy.totp.verify({
+    secret: secret,
+    encoding: "base32",
+    token: token,
+    window: 1,
+  });
+
+  if (verified) {
+    cache.del(correoElectronico);
+
+    const user = await Persona.findOne({
+      where: { correoElectronico },
     });
 
-    if (verified) {
-        const jwtToken = jwt.sign({ user: correoElectronico }, process.env.JWT_KEY, { expiresIn: '1h' });
-        res.json({ ok: true , token: jwtToken });
-    } else {
-        res.status(401).json({ ok: false, mensaje: 'Código no válido' });
-    }
+    const usuario = await Usuario.findOne({
+      where: { idPersona: user.id },
+    });
+
+    const token = jwt.sign(
+      {
+        idUsuario: usuario.id,
+        idTipoUsuario: usuario.idTipoUsuario,
+        nombreUsuario: usuario.nombreUsuario,
+      },
+      process.env.JWT_KEY,
+      { expiresIn: "1h" }
+    );
+
+    res
+      .status(200)
+      .cookie("access_token", token, {
+        httpOnly: true, //solo se puede acceder desde el servidor
+        maxAge: 1000 * 60 * 60, //1 hora de duración
+      })
+      .json({
+        ok: true,
+        mensaje: "Inicio de sesión correcto",
+        token,
+      });
+  } else {
+    res.status(401).json({ ok: false, mensaje: "Código no válido" });
+  }
 };
 
-
 module.exports = {
-    iniciar: iniciar,
-    verificar: verificar
-}
+  iniciar: iniciar,
+  verificar: verificar,
+};
