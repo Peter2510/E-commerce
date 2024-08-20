@@ -6,7 +6,8 @@ connect();
 
 const PORT = process.env.APP_PORT || 3200;
 
-sequelize.sync()
+sequelize.sync( 
+ )
   .then(() => {
     console.log('Tablas sincronizadas con la base de datos.');
   })

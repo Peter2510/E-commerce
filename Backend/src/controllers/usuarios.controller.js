@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const Usuario = require("../models/usuario");
 const { sequelize } = require("../configs/database.configs");
 var jwt = require('jsonwebtoken');
+const utilidades = require("../configs/utilidades");
 require('dotenv').config();
 
 const crearUsuario = async (req, res) => {
@@ -100,19 +101,30 @@ const login = async (req, res) => {
     });
     
     if (!user) {
-      return res.status(401).json({ estado: "error", mensaje: "Credenciales incorrectas" });
+      res.status(401).json({ estado: "error", mensaje: "Credenciales incorrectas" });
     }
 
     const usuario = await Usuario.findOne({
       where: { idPersona: user.id },
     });
 
+        //validar si el usuario esta activo
+    if (!usuario.activo) {
+      res.status(401).json({ estado: "error", mensaje: "Usuario deshabilitado" });
+    }
+
     const contraseniaValida = await bcrypt.compareSync(contrasenia, usuario.contrasenia);
 
     if (!contraseniaValida) {
-      return res.status(401).json({ estado: "error", mensaje: "Credenciales incorrectas" });
+      res.status(401).json({ estado: "error", mensaje: "Credenciales incorrectas" });
     }
    
+
+    //validar el a2f si esta activado
+    if(usuario.a2fActivo){
+      return await utilidades.iniciar(req,res);
+    }
+
     const token = jwt.sign(
       {
         idUsuario: usuario.id,
@@ -123,7 +135,6 @@ const login = async (req, res) => {
       { expiresIn: "1h" } 
     );
     
-
       res.status(200)
       .cookie('access_token', token, {
         httpOnly: true, //solo se puede acceder desde el servidor

@@ -40,6 +40,11 @@ const Usuario = sequelize.define(
       allowNull: false,
       defaultValue: true,
     },
+    a2fActivo:{
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
     idPersona: {
       type: DataTypes.INTEGER,
       allowNull: false,
