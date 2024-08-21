@@ -13,7 +13,7 @@ const getTipoUsuarios = async (req, res) => {
       attributes: ["id", "tipo"],
       order: [["id", "ASC"]],
     });
-    res.status(400).json({ ok: true, tipoUsuarios: users });
+    res.status(200).json({ ok: true, tipoUsuarios: users });
   } catch (error) {
     console.log(error);
     res

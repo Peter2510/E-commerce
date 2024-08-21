@@ -85,7 +85,7 @@ const login = async (req, res) => {
       return res.status(401).json({ ok: false, mensaje: "Usuario deshabilitado" });
     }
 
-    const contraseniaValida = await bcrypt.compareSync(contrasenia, usuario.contrasenia);
+    const contraseniaValida = await bcrypt.compare(contrasenia, usuario.contrasenia);
 
     if (!contraseniaValida) {
       return res.status(401).json({ ok: false, mensaje: "Credenciales incorrectas" });
@@ -108,7 +108,7 @@ const login = async (req, res) => {
     );
     
       res.status(200)
-      .cookie('access_token', token, {
+      .cookie('token', token, {
         httpOnly: true, //solo se puede acceder desde el servidor
         maxAge: 1000 * 60 * 60 //1 hora de duración
       }).json({
@@ -127,7 +127,7 @@ const login = async (req, res) => {
 
 const logOut = (req,res) =>{
 
-  res.clearCookie('access_token').status(200).
+  res.clearCookie('token').status(200).
   json({ok:true, mensaje: 'Sesión cerrada correctamente'})
 
 }
