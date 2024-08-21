@@ -12,7 +12,7 @@ router.post(`${api}/editarTipoUsuario`, AdministracionController.editarTipoUsuar
 router.post(`${api}/editarFormaPago`, AdministracionController.editarFormaPago);
 router.get(`${api}/obtenerAdminPorId/:id`, AdministracionController.obtenerAdminPorId);
 router.get(`${api}/obtenerEmpleados`, AdministracionController.obtenerEmpleados);
-
+router.post(`${api}/crearAdmin`, AdministracionController.crearAdmin);
 
 
 module.exports = router;

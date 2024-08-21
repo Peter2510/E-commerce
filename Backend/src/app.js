@@ -10,6 +10,7 @@ const { swaggerUi, swaggerDocs } = require('./swagger.js');
 //Routes
 const authRoutes = require('./routes/auth.routes');
 const adminstracionRoutes = require('./routes/administracion.routes');
+const clientesRoutes = require('./routes/clientes.routes');
 
 app.use(express.json());
 app.use(cookieParser());
@@ -25,5 +26,6 @@ app.get('/',(req,res)=>{
 
 app.use(authRoutes);
 app.use(jwtValidacion,adminstracionRoutes);
+app.use(jwtValidacion,clientesRoutes);
 
 module.exports = app;
