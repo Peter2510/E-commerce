@@ -60,7 +60,7 @@ const Persona = sequelize.define(
     },
     idTipoFormaPago: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       validate: {
         notNull: {
           msg: 'El tipo de forma de pago no puede ser nulo',
