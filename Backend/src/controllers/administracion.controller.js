@@ -58,37 +58,83 @@ const getFormasPago = async (req, res) => {
 };
 
 async function manejoErrores(error, res, tabla) {
+  let statusCode = 500;
+  let mensaje = "Error interno del servidor: " + error.message;
+
   if (error.name === "SequelizeValidationError") {
-    
-    // Se extraen mensajes de validación del orm
+    // Se extraen mensajes de validación del ORM
     const messages = error.errors.map((err) => err.message);
-
-    res.status(400).json({
-      ok: false,
-      mensaje: messages.join(", "),
-    });
-
+    statusCode = 400;
+    mensaje = messages.join(", ");
   } else if (error.name === "SequelizeUniqueConstraintError") {
-    res.status(400).json({
-      ok: false,
-      mensaje: "Campo ya registrado",
-    });
+    statusCode = 400;
+    mensaje = "Campo ya registrado";
   } else if (error.name === "SequelizeDatabaseError") {
-    res.status(500).json({
-      ok: false,
-      mensaje: "Error en la base de datos: " + error.message,
-    });
+    mensaje = "Error en la base de datos: " + error.message;
   } else {
-    res.status(500).json({
-      ok: false,
-      mensaje: "Error interno del servidor: " + error.message,
-    });
+    statusCode = 500;
+    mensaje = error.message;
+    console.error(error);
   }
+
+  return res.status(statusCode).json({
+    ok: false,
+    mensaje: mensaje,
+  });
 }
+
+
+const editarTipoUsuario = async (req, res) => {
+  try {
+    const { id, nuevoNombre } = req.body;
+
+    const busqueda = await TipoUsuario.findOne({ where: { tipo: nuevoNombre } });
+
+    if (busqueda) {
+      return res.status(409).json({
+        ok: false,
+        mensaje: 'El tipo de usuario ya existe'
+      });
+    }
+
+    await TipoUsuario.update({ tipo: nuevoNombre}, { where: {id: id}})
+
+    res.status(200).json({ok: true, mensaje: "Tipo de usuario actualizado correctamente"})
+
+  } catch (error) {
+    manejoErrores(error,res,'Tipo Usuario')
+  }
+};
+
+const editarFormaPago = async (req, res) =>{
+
+  try {
+    
+    const {id, nuevoNombre } = req.body;
+
+    const busqueda = await FormaPago.findOne({where: {tipo: nuevoNombre}});
+
+    if(busqueda){
+      return res.status(409).json({ok: false, mensaje: 'Forma de pago ya registrada' });
+    }
+
+    await FormaPago.update({tipo: nuevoNombre}, {where: {id: id}});
+
+    res.status(200).json({ok: true, mensaje: 'Forma de pago actualizada correctamente'})
+
+
+  } catch (error) {
+    manejoErrores(error, res, tabla)
+  }
+
+}
+
 
 module.exports = {
     getTipoUsuarios,
     crearTipoUsuario,
     crearFormaPago,
-    getFormasPago
+    getFormasPago,
+    editarTipoUsuario, 
+    editarFormaPago
 };

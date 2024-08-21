@@ -64,33 +64,32 @@ const crearUsuario = async (req, res) => {
 
 
 async function manejoErrores(error, res, tabla) {
-  
-  if (error.name === "SequelizeValidationError") {
-    
-    // Se extraen mensajes de validación del orm
-    const messages = error.errors.map((err) => err.message);
+  let statusCode = 500;
+  let mensaje = "Error interno del servidor: " + error.message;
 
-    return res.status(400).json({
-      ok: false,
-      mensaje: messages.join(", "),
-    });
+  if (error.name === "SequelizeValidationError") {
+    // Se extraen mensajes de validación del ORM
+    const messages = error.errors.map((err) => err.message);
+    statusCode = 400;
+    mensaje = messages.join(", ");
   } else if (error.name === "SequelizeUniqueConstraintError") {
-    return res.status(400).json({
-      ok: false,
-      mensaje: "El valor para uno de los campos debe ser único.",
-    });
+    statusCode = 400;
+    mensaje = "Campo ya registrado";
   } else if (error.name === "SequelizeDatabaseError") {
-    return res.status(500).json({
-      ok: false,
-      mensaje: "Error en la base de datos: " + error.message,
-    });
+    mensaje = "Error en la base de datos: " + error.message;
   } else {
-    return res.status(500).json({
-      ok: false,
-      mensaje: "Error interno del servidor: " + error.message,
-    });
+    statusCode = 500;
+    mensaje = error.message;
+    console.error(error);
   }
+
+  return res.status(statusCode).json({
+    ok: false,
+    mensaje: mensaje,
+  });
 }
+
+
 
 const login = async (req, res) => {
   try {
