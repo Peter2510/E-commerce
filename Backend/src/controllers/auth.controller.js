@@ -1,16 +1,18 @@
 const Persona = require("../models/persona");
-const bcrypt = require("bcrypt");
 const Usuario = require("../models/usuario");
-const { sequelize } = require("../configs/database.configs");
-var jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
 const utilidades = require("../configs/utilidades");
+const { manejoErrores } = require('../utils/manejoErrores.utils');
+const { sequelize } = require("../configs/database.configs");
 require('dotenv').config();
 
-const crearUsuario = async (req, res) => {
+
+const crearCliente = async (req, res) => {
   const t = await sequelize.transaction(); 
 
   try {
-    const { nombreUsuario, contrasenia, idTipoUsuario, persona } = req.body;
+    const { nombreUsuario, contrasenia, persona } = req.body;
 
     const email = await Persona.findOne({
       where: { correoElectronico: persona.correoElectronico },
@@ -50,7 +52,7 @@ const crearUsuario = async (req, res) => {
       nombreUsuario,
       contrasenia: hashedPassword,
       idPersona: newPersona.id,
-      idTipoUsuario,
+      idTipoUsuario: 2,
     }, { transaction: t });
 
     await t.commit(); 
@@ -61,35 +63,6 @@ const crearUsuario = async (req, res) => {
     await manejoErrores(error, res, "Usuario");
   }
 };
-
-
-async function manejoErrores(error, res, tabla) {
-  let statusCode = 500;
-  let mensaje = "Error interno del servidor: " + error.message;
-
-  if (error.name === "SequelizeValidationError") {
-    // Se extraen mensajes de validación del ORM
-    const messages = error.errors.map((err) => err.message);
-    statusCode = 400;
-    mensaje = messages.join(", ");
-  } else if (error.name === "SequelizeUniqueConstraintError") {
-    statusCode = 400;
-    mensaje = "Campo ya registrado";
-  } else if (error.name === "SequelizeDatabaseError") {
-    mensaje = "Error en la base de datos: " + error.message;
-  } else {
-    statusCode = 500;
-    mensaje = error.message;
-    console.error(error);
-  }
-
-  return res.status(statusCode).json({
-    ok: false,
-    mensaje: mensaje,
-  });
-}
-
-
 
 const login = async (req, res) => {
   try {
@@ -148,10 +121,7 @@ const login = async (req, res) => {
 
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      ok: false,
-      mensaje: "Error interno del servidor: " + error.message,
-    });
+    await manejoErrores(error, res, "Usuario");
   }
 };
 
@@ -163,7 +133,7 @@ const logOut = (req,res) =>{
 }
 
 module.exports = {
-  crearUsuario,
-  login,
+  crearCliente, 
+  login, 
   logOut
 };

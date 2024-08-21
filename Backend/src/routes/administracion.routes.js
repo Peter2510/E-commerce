@@ -10,6 +10,8 @@ router.post(`${api}/crearFormaPago`, AdministracionController.crearFormaPago);
 router.get(`${api}/getFormasPago`, AdministracionController.getFormasPago);
 router.post(`${api}/editarTipoUsuario`, AdministracionController.editarTipoUsuario);
 router.post(`${api}/editarFormaPago`, AdministracionController.editarFormaPago);
+router.get(`${api}/obtenerAdminPorId/:id`, AdministracionController.obtenerAdminPorId);
+router.get(`${api}/obtenerEmpleados`, AdministracionController.obtenerEmpleados);
 
 
 
