@@ -612,8 +612,1182 @@ const swaggerOptions = {
             }
           }
         }
+      },
+      "/api/v1/administracion/getTipoUsuarios": {
+        "get": {
+          "summary": "Obtener todos los tipos de usuarios",
+          "operationId": "getTipoUsuarios",
+          "tags": ["Administracion"],
+          "responses": {
+            "200": {
+              "description": "Lista de tipos de usuarios",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "tipoUsuarios": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/TipoUsuario"
+                        },
+                        "example": [
+                          {
+                            "id": 1,
+                            "tipo": "Administrador"
+                          },
+                          {
+                            "id": 2,
+                            "tipo": "Cliente"
+                          },
+                          {
+                            "id": 3,
+                            "tipo": "Asistente"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error al obtener tipos de usuarios",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error al obtener tipo de usuario"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/administracion/crearTipoUsuario": {
+        "post": {
+          "summary": "Crear un nuevo tipo de usuario",
+          "operationId": "crearTipoUsuario",
+          "tags": ["Administracion"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tipoUsuario"
+                },
+                example: {
+                  tipo: "Administrador"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Tipo de usuario creado correctamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Tipo de usuario creado correctamente"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Error en la creación del tipo de usuario",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error en la creación del tipo de usuario"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/administracion/crearFormaPago": {
+        "post": {
+          "summary": "Crear una nueva forma de pago",
+          "operationId": "crearFormaPago",
+          "tags": ["Administracion"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/formaPago"
+                },
+                example: {
+                  tipo: "A domicilio"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Forma de pago creada correctamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Forma de pago creada correctamente"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Error en la creación de la forma de pago",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error en la creación de la forma de pago"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/administracion/getFormasPago": {
+        "get": {
+          "summary": "Obtener todas las formas de pago",
+          "operationId": "getFormasPago",
+          "tags": ["Administracion"],
+          "responses": {
+            "200": {
+              "description": "Lista de formas de pago",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "formaPagos": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/FormaPago"
+                        },
+                        example: [
+                          {
+                            id: 1,
+                            tipo: "A domicilio"
+                          },
+                          {
+                            id: 2,
+                            tipo: "Recoger en tienda"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error al obtener formas de pago",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error al obtener formas de pago"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/administracion/editarTipoUsuario": {
+        "post": {
+          "summary": "Editar un tipo de usuario existente",
+          "operationId": "editarTipoUsuario",
+          "tags": ["Administracion"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "nuevoNombre": {
+                      "type": "string",
+                      "example": "Administrador"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Tipo de usuario actualizado correctamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Tipo de usuario actualizado correctamente"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Tipo de usuario ya existe",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "El tipo de usuario ya existe"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Error en la actualización del tipo de usuario",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error en la actualización del tipo de usuario"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/administracion/editarFormaPago": {
+        "post": {
+          "summary": "Editar una forma de pago existente",
+          "operationId": "editarFormaPago",
+          "tags": ["Administracion"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "nuevoNombre": {
+                      "type": "string",
+                      "example": "Tarjeta de Crédito"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Forma de pago actualizada correctamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Forma de pago actualizada correctamente"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Forma de pago ya registrada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Forma de pago ya registrada"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Error en la actualización de la forma de pago",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error en la actualización de la forma de pago"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/administracion/obtenerAdminPorId/{id}": {
+        "get": {
+          "summary": "Obtener un administrador por ID",
+          "operationId": "obtenerAdminPorId",
+          "tags": ["Administracion"],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID del administrador a obtener",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 12
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Detalles del administrador y persona",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      usuario:{
+                        type: "object",
+                          example: {
+                            "usuario": {
+                              "id": 1,
+                              "nombreUsuario": "Jhony19",
+                              "a2fActivo": true,
+                              "idPersona": 1,
+                              "idTipoUsuario": 1,
+                              "activo": true
+                            },
+                            "persona": {
+                              "id": 1,
+                              "nombre": "Jhony Fuentes",
+                              "correoElectronico": "reyesif268@albarulo.com",
+                              "fechaCreacion": "2024-08-20T05:21:02.204Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Administrador no encontrado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Usuario no encontrado"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error al obtener el administrador",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error al obtener el administrador"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/administracion/obtenerEmpleados": {
+        "get": {
+          "summary": "Obtener todos los empleados, tanto adminstradores como asistentes",
+          "operationId": "obtenerEmpleados",
+          "tags": ["Administracion"],
+          "responses": {
+            "200": {
+              "description": "Lista de empleados",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "empleados": {
+                        "type": "array",
+                        example: [
+                          {
+                              "usuario": {
+                                  "id": 2,
+                                  "nombreUsuario": "Jhony19",
+                                  "a2fActivo": true,
+                                  "idPersona": 2,
+                                  "idTipoUsuario": 1,
+                                  "activo": true
+                              },
+                              "persona": {
+                                  "id": 2,
+                                  "nombre": "Jhony Fuentes",
+                                  "correoElectronico": "a1@a.com",
+                                  "fechaCreacion": "2024-08-20T06:15:43.557Z"
+                              }
+                          },
+                          {
+                              "usuario": {
+                                  "id": 1,
+                                  "nombreUsuario": "Jhony19",
+                                  "a2fActivo": true,
+                                  "idPersona": 1,
+                                  "idTipoUsuario": 1,
+                                  "activo": true
+                              },
+                              "persona": {
+                                  "id": 1,
+                                  "nombre": "Jhony Fuentes",
+                                  "correoElectronico": "reyesif268@albarulo.com",
+                                  "fechaCreacion": "2024-08-20T05:21:02.204Z"
+                              }
+                          },
+                          {
+                              "usuario": {
+                                  "id": 13,
+                                  "nombreUsuario": "admin2",
+                                  "a2fActivo": false,
+                                  "idPersona": 11,
+                                  "idTipoUsuario": 1,
+                                  "activo": true
+                              },
+                              "persona": {
+                                  "id": 11,
+                                  "nombre": "Nombre12",
+                                  "correoElectronico": "admin@a.com",
+                                  "fechaCreacion": "2024-08-21T19:08:08.378Z"
+                              }
+                          }
+                      ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "No se encontraron usuarios",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "No se encontraron usuarios"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error al obtener empleados",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error al obtener empleados"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/administracion/crearAdmin": {
+        "post": {
+          "summary": "Crear un nuevo administrador",
+          "operationId": "crearAdmin",
+          "tags": ["Administracion"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  type: "object",
+                  properties: {
+                    nombreUsuario: {
+                      type: "string",
+                      example: "adminUser"
+                    },
+                    contrasenia: {
+                      type: "string",
+                      example: "Password123"
+                    },
+                    persona: {
+                      type: "object",
+                      example: {
+                        "nombre": "Nombre prueba",
+                        "correoElectronico": "admin123@a.com",
+                        "direccion": "Mi direccion",
+                        "nit": "2368547"
+                      }
+                    }
+                  },
+                  required: ["nombreUsuario", "contrasenia", "persona"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Administrador creado correctamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Registrado correctamente"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Error en la creación del administrador",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error en la creación del administrador"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Conflicto, correo electrónico ya registrado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Correo electrónico ya registrado"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/administracion/obtenerClientes": {
+        "get": {
+          "summary": "Obtener todos los clientes",
+          "operationId": "obtenerClientes",
+          "tags": ["Cliente"],
+          "responses": {
+            "200": {
+              "description": "Clientes obtenidos exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "clientes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "usuario": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "nombreUsuario": {
+                                  "type": "string",
+                                  "example": "Jhony19"
+                                },
+                                "a2fActivo": {
+                                  "type": "boolean",
+                                  "example": true
+                                },
+                                "idPersona": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "idTipoUsuario": {
+                                  "type": "integer",
+                                  "example": 2
+                                },
+                                "activo": {
+                                  "type": "boolean",
+                                  "example": true
+                                }
+                              }
+                            },
+                            "persona": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "nombre": {
+                                  "type": "string",
+                                  "example": "Jhony Fuentes"
+                                },
+                                "correoElectronico": {
+                                  "type": "string",
+                                  "example": "reyesif268@albarulo.com"
+                                },
+                                "fechaCreacion": {
+                                  "type": "string",
+                                  "format": "date-time",
+                                  "example": "2024-08-20T05:21:02.204Z"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "No se encontraron usuarios",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "No se encontraron usuarios"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/administracion/obtenerClientePorId/{id}": {
+        "get": {
+          "summary": "Obtener un cliente por ID",
+          "operationId": "obtenerClientePorId",
+          "tags": ["Cliente"],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 1
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Cliente obtenido exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "usuario": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "nombreUsuario": {
+                            "type": "string",
+                            "example": "Jhony19"
+                          },
+                          "a2fActivo": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "idPersona": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "idTipoUsuario": {
+                            "type": "integer",
+                            "example": 2
+                          },
+                          "activo": {
+                            "type": "boolean",
+                            "example": true
+                          }
+                        }
+                      },
+                      "persona": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "nombre": {
+                            "type": "string",
+                            "example": "Jhony Fuentes"
+                          },
+                          "correoElectronico": {
+                            "type": "string",
+                            "example": "reyesif268@albarulo.com"
+                          },
+                          "fechaCreacion": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-08-20T05:21:02.204Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Usuario no encontrado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Usuario no encontrado"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/administracion/editarCliente": {
+        "post": {
+          "summary": "Editar datos de un cliente",
+          "operationId": "editarCliente",
+          "tags": ["Cliente"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "nombreUsuario": {
+                      "type": "string",
+                      "example": "Jhony19"
+                    },
+                    "a2fActivo": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "persona": {
+                      "type": "object",
+                      "properties": {
+                        "nombre": {
+                          "type": "string",
+                          "example": "Jhony Fuentes"
+                        },
+                        "direccion": {
+                          "type": "text",
+                          "example": "Guatemala, Guatemala"
+                        },
+                        "nit": {
+                          "type": "string",
+                          "example": "536987001"
+                        },
+                        "idTipoFormaPago": {
+                          "type": "integer",
+                          "example": "2"
+                        },
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Cliente actualizado correctamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Actualización realizada correctamente"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Usuario no encontrado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Usuario no encontrado"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error al actualizar cliente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error al actualizar cliente"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/administracion/actualizarContrasenia": {
+        "post": {
+          "summary": "Actualizar la contraseña de un cliente",
+          "operationId": "actualizarContrasenia",
+          "tags": ["Cliente"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "contrasenia": {
+                      "type": "string",
+                      "example": "nuevaContraseña123"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Contraseña actualizada correctamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Contraseña actualizada correctamente"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Error de validación de la contraseña",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "La contraseña es requerida"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Usuario no encontrado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Usuario no encontrado"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error al actualizar la contraseña",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error al actualizar la contraseña"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
-    
     }
     
   },
