@@ -9,22 +9,22 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
 const routes: Routes = [{
   path:'',
   component:HomeComponent,
-  //canActivate:[clienteGuardGuard],
+  canActivate:[clienteGuardGuard],
   children: [
     {
       path: 'listado',
       component: LitadoProductosComponent,
-      //canActivate:[clienteGuardGuard]
+      canActivate:[clienteGuardGuard]
     },
     {
       path: 'perfil',
       component: PerfilComponent,
-      //canActivate:[clienteGuardGuard]
+      canActivate:[clienteGuardGuard]
     },
     {
       path: '**',
       component: WelcomeComponent,
-      //canActivate:[clienteGuardGuard]
+      canActivate:[clienteGuardGuard]
     }
   ]
 }];
