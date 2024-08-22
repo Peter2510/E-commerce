@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
 })
 export class LoginComponent {
 
+  token!:string;
+  verificacion:boolean=false;
   correoElectronico!:string;
   contrasenia!:string;
   user: User = {
@@ -36,8 +38,50 @@ export class LoginComponent {
     //se debe solicitar el servicio para autenticar xd
     this.authService.login(this.correoElectronico, this.contrasenia).subscribe({
       next:(response:any)=>{
-        this.cookie.set('token',response.token);
-        this.parseJwt(response.token)
+
+        console.log(response.token);
+        if(response.token==undefined){
+          console.log('holas que hace');
+          this.verificacion=true;
+          return;
+        }
+        
+        this.inicioSesion(response.token);
+      },
+      error: (error) => {
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al iniciar sesión',
+          text: error.error.error || 'Ha ocurrido un error inesperado 2.',
+        });
+      }
+
+    })
+
+  }
+
+  verificar(){
+    this.authService.verificar(this.correoElectronico, this.token).subscribe({
+      next: (response: any) => {
+        this.inicioSesion(response.token);
+        
+
+      },
+      error: (error) => {
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'Error token incorecto',
+          text: error.error.error || 'Ha ocurrido un error inesperado.',
+        });
+      }
+    })      
+  }
+
+  inicioSesion(token:string){
+    this.cookie.set('token',token);
+        this.parseJwt(token)
         //guardar user en cookies o localstorage xd
         const message = `Bienvenido, ${this.user.nombreUsuario}`;
         alert('inicio existoso');
@@ -54,20 +98,8 @@ export class LoginComponent {
         }else {
           this.router.navigate(['/ayudante']);
         }
-      },
-      error: (error) => {
-        
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al iniciar sesión',
-          text: error.error.error || 'Ha ocurrido un error inesperado.',
-        });
-      }
-
-    })
 
   }
-
   parseJwt(token:String) {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
