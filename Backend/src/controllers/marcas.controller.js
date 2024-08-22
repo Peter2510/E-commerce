@@ -46,7 +46,7 @@ const obtenerMarcas = async (req, res) => {
       const marcas = await Marca.findAll();
       res.status(200).json({ ok: true, marcas });
     } catch (error) {
-      await manejoErrores(error, res, "Marca jajajajaj");
+      await manejoErrores(error, res, "Marca");
     }
   };
 
