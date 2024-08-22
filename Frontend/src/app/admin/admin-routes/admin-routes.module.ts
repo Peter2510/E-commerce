@@ -7,6 +7,7 @@ import { GestionInventarioComponent } from '../gestion-inventario/gestion-invent
 import { GestionRolesEspecificoComponent } from '../gestion-roles-especifico/gestion-roles-especifico.component';
 import { GestionProductosComponent } from '../gestion-productos/gestion-productos.component';
 import { GestionProductosEspecificaComponent } from '../gestion-productos-especifica/gestion-productos-especifica.component';
+import { GestionMarcasCategoriasComponent } from '../gestion-marcas-categorias/gestion-marcas-categorias.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
       {
         path: 'gestionProductos',
         component: GestionProductosComponent,
+      },
+      {
+        path: 'gestionMarcasCategorias',
+        component: GestionMarcasCategoriasComponent,
       },
       {
         path: 'gestionProductosEspecifico/:id',

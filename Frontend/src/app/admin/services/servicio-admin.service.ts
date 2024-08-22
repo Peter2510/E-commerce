@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { formaPago, Person } from 'src/app/interfaces/person.interface';
+import { categoria, Marca } from 'src/app/interfaces/producto.interface';
 import { tipoUsuario } from 'src/app/interfaces/user.interface';
 import { environment } from 'src/environments/environment.development';
 
@@ -10,8 +11,19 @@ import { environment } from 'src/environments/environment.development';
   providedIn: 'root',
 })
 export class ServicioAdminService {
+  //directivas
   readonly directiva = 'administracion';
-  constructor(private http: HttpClient, private cookieService: CookieService) {}
+  readonly directivaCategoria = 'categorias';
+  readonly directivaMarcas = 'marcas';
+
+  //elementos basico - signals
+  public categorias = signal<any[]>([]);
+  public marcas = signal<Marca[]>([]);
+
+  constructor(private http: HttpClient, private cookieService: CookieService) {
+    this.obtenerCategorias();
+    this.obtenerMarcas();
+  }
 
   //funcion para obtner los tipos de roles
   obtenerRoles(): Observable<tipoUsuario[]> {
@@ -78,5 +90,36 @@ export class ServicioAdminService {
       },
       { withCredentials: true }
     );
+  }
+
+  //funcion para obetener las marcas
+
+  obtenerMarcas() {
+    this.http
+      .get<Marca[]>(
+        `${environment.baseUrlEnv}/${this.directivaMarcas}/obtenerMarcas`,
+        { withCredentials: true }
+      )
+      .pipe(
+        tap((elementos: any) => {
+          console.log('a', elementos.marcas), this.marcas.set(elementos.marcas);
+        })
+      )
+      .subscribe();
+  }
+  //funcion para obtener las categiruas obtenerCategorias
+  obtenerCategorias() {
+    this.http
+      .get<any[]>(
+        `${environment.baseUrlEnv}/${this.directivaCategoria}/obtenerCategorias`,
+        { withCredentials: true }
+      )
+      .pipe(
+        tap((response: any) => {
+          console.log('Categorías recibidas:', response.categorias); // Verifica los datos
+          this.categorias.set(response.categorias); // Asegúrate de que estás accediendo al arreglo directamente
+        })
+      )
+      .subscribe();
   }
 }

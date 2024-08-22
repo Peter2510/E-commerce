@@ -8,6 +8,7 @@ import { AdminheaderComponent } from 'src/app/utils/adminheader/adminheader.comp
 import { GestionInventarioComponent } from '../gestion-inventario/gestion-inventario.component';
 import { GestionRolesEspecificoComponent } from '../gestion-roles-especifico/gestion-roles-especifico.component';
 import { FormsModule } from '@angular/forms';
+import { GestionMarcasCategoriasComponent } from '../gestion-marcas-categorias/gestion-marcas-categorias.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { FormsModule } from '@angular/forms';
     VistaGeneralComponent,
     GestionInventarioComponent,
     GestionRolesEspecificoComponent,
+    GestionMarcasCategoriasComponent,
   ],
   imports: [CommonModule, AdminRoutesModule, AdminheaderComponent, FormsModule],
 })
