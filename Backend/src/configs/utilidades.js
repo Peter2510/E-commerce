@@ -111,6 +111,7 @@ const verificar = async (req, res) => {
       })
       .json({
         ok: true,
+        a2f: false,
         mensaje: "Inicio de sesión correcto",
         token,
       });

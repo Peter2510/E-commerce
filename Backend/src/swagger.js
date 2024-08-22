@@ -186,22 +186,303 @@ const swaggerOptions = {
             idPersona: 2,
             idTipoUsuario: 0,
           },
+        },
+        "Producto": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "nombre": {
+              "type": "string",
+              "example": "Laptop Dell"
+            },
+            "idCategoria": {
+              "type": "integer",
+              "example": 2
+            },
+            "descripcion": {
+              "type": "string",
+              "example": "Una laptop de alta gama con procesador Intel i7"
+            },
+            "precio": {
+              "type": "number",
+              "format": "decimal",
+              "example": 1200.99
+            },
+            "minimoInventario": {
+              "type": "integer",
+              "description": "Cantidad mínima de inventario que debe haber",
+              "example": 10
+            },
+            "idMarca": {
+              "type": "integer",
+              "example": 3
+            }
+          }, 
+          "required": ["nombre", "idCategoria", "precio", "minimoInventario", "idMarca"],
+          "example": {
+            "id": 1,
+            "nombre": "Laptop Dell",
+            "idCategoria": 2,
+            "descripcion": "Una laptop de alta gama con procesador Intel i7",
+            "precio": 1200.99,
+            "minimoInventario": 10,
+            "idMarca": 3
+          }
+        },
+          "UrlImagen": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 1
+              },
+              "ulrImagen": {
+                "type": "string",
+                "description": "URL de la imagen del producto, la imagen sera almacenana en el servicio S3 de AWS",
+                "example": "https://example.com/images/producto1.jpg"
+              },
+              "idProducto": {
+                "type": "integer",
+                "example": 1
+              }
+            },
+            "required": ["urlImagen", "idProducto"],
+            "example": {
+              "id": 1,
+              "urlImagen": "https://aws.com/images/producto1.jpg",
+              "idProducto": 1
+            }
         }
-      },
+      }
     },
     "paths": {
-      "/personas": {
-        "get": {
-          "summary": "Obtener la lista de personas",
-          "responses": {
-            "200": {
-              "description": "Lista de personas",
+      "/api/v1/crearCliente": {
+          "post": {
+            "summary": "Crear un nuevo cliente",
+            "operationId": "crearCliente",
+            "tags": ["Auth"],
+            "requestBody": {
               "content": {
                 "application/json": {
                   "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Persona"
+                    "allOf": [
+                      { "$ref": "#/components/schemas/Usuario" },
+                      { "$ref": "#/components/schemas/Persona" }
+                    ]
+                  },
+                  "example": {
+                    "nombreUsuario": "admin",
+                    "contrasenia": "12345678",
+                    "persona": {
+                      "nombre": "Nombre prueba",
+                      "correoElectronico": "admin@a.com",
+                      "direccion": "Mi direccion",
+                      "idTipoFormaPago": 1,
+                      "nit": "2368547"
+                    },
+                  }
+                }
+              },
+              "required": true
+            },
+            "responses": {
+              "200": {
+                "description": "Cliente registrado correctamente",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "mensaje": {
+                          "type": "string",
+                          "example": "Registrado correctamente"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Error en la creación del cliente",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "mensaje": {
+                          "type": "string",
+                          "example": "La contraseña debe tener al menos 8 caracteres"
+                        },
+                      },
+                      "examples": {
+                        "shortPassword": {
+                          "summary": "Contraseña demasiado corta",
+                          "value": {
+                            "ok": false,
+                            "mensaje": "La contraseña debe tener al menos 8 caracteres"
+                          }
+                        },
+                        "passwordRequired": {
+                          "summary": "Contraseña no proporcionada",
+                          "value": {
+                            "ok": false,
+                            "mensaje": "La contraseña debe tener al menos 8 caracteres"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "409": {
+                "description": "Correo electrónico ya registrado",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "mensaje": {
+                          "type": "string",
+                          "example": "Correo electrónico ya registrado"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Error interno del servidor",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "mensaje": {
+                          "type": "string",
+                          "example": "Error interno del servidor: [detalle del error]"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+                      
+          }
+      },
+      "/api/v1/login": {
+        "post": {
+          "summary": "Inicia sesión y retorna un token JWT",
+          "operationId": "login",
+          "tags": ["Auth"],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "correoElectronico": {
+                      "type": "string",
+                      "example": "usuario@ejemplo.com"
+                    },
+                    "contrasenia": {
+                      "type": "string",
+                      "example": "contraseña123"
+                    }
+                  },
+                  "required": ["correoElectronico", "contrasenia"]
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Inicio de sesión exitoso, retorna un token JWT y estado 2FA",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "a2f": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Inicio de sesión correcto"
+                      },
+                      "token": {
+                        "type": "string",
+                        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIzLCJpZFR5cG9Vc2Vhc... (token)"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Credenciales incorrectas o usuario deshabilitado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Credenciales incorrectas"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Se requiere completar la autenticación de dos factores",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "a2f": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Codigo enviado al correo electronico"
+                      }
                     }
                   }
                 }
@@ -209,25 +490,49 @@ const swaggerOptions = {
             }
           }
         },
+      },
+      "/api/v1/logOut": {
         "post": {
-          "summary": "Crear una nueva persona",
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Persona"
-                }
-              }
-            }
-          },
+          "summary": "Cerrar sesión del usuario actual",
+          "operationId": "logOut",
+          "tags": ["Auth"],
           "responses": {
-            "201": {
-              "description": "Persona creada",
+            "200": {
+              "description": "Sesión cerrada correctamente",
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/Persona"
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Sesión cerrada correctamente"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error al cerrar sesión",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error al cerrar sesión"
+                      }
+                    }
                   }
                 }
               }
@@ -235,96 +540,82 @@ const swaggerOptions = {
           }
         }
       },
-      "/personas/{id}": {
-        "get": {
-          "summary": "Obtener una persona por ID",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Persona encontrada",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Persona"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "Persona no encontrada"
-            }
-          }
-        },
-        "put": {
-          "summary": "Actualizar una persona existente",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              }
-            }
-          ],
+      "/api/v1/verify-2fa": {
+        "post": {
+          "summary": "Verificar el código de autenticación de dos factores",
+          "operationId": "verificar2FA",
+          "tags": ["Auth"],
           "requestBody": {
             "required": true,
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Persona"
+                  "type": "object",
+                  "properties": {
+                    "correoElectronico": {
+                      "type": "string",
+                      "example": "usuario@ejemplo.com"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "123456"
+                    }
+                  }
                 }
               }
             }
           },
           "responses": {
             "200": {
-              "description": "Persona actualizada",
+              "description": "Inicio de sesión correcto",
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/Persona"
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Inicio de sesión correcto"
+                      },
+                      "token": {
+                        "type": "string",
+                        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MX0.7JirEYJir8Ys6zzGMLq_MJ2WVeZUMeL90BhvD7aRmk8"
+                      }
+                    }
                   }
                 }
               }
             },
-            "404": {
-              "description": "Persona no encontrada"
-            }
-          }
-        },
-        "delete": {
-          "summary": "Eliminar una persona",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer"
+            "401": {
+              "description": "Código expirado, no encontrado, o no válido",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "estado": {
+                        "type": "string",
+                        "example": "error"
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Código no válido"
+                      }
+                    }
+                  }
+                }
               }
-            }
-          ],
-          "responses": {
-            "204": {
-              "description": "Persona eliminada"
-            },
-            "404": {
-              "description": "Persona no encontrada"
             }
           }
         }
       }
+    
     }
+    
   },
   apis: ["./routes/*.js"],
 };
