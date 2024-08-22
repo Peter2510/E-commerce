@@ -13,8 +13,10 @@ import Swal from 'sweetalert2';
 })
 export class LoginComponent {
 
-  correoElectronico!: string;
-  contrasenia!: string;
+  token!:string;
+  verificacion:boolean=false;
+  correoElectronico!:string;
+  contrasenia!:string;
   user: User = {
     id: 0,
     nombreUsuario: '',
@@ -35,12 +37,54 @@ export class LoginComponent {
     }
     //se debe solicitar el servicio para autenticar xd
     this.authService.login(this.correoElectronico, this.contrasenia).subscribe({
+      next:(response:any)=>{
+
+        console.log(response.token);
+        if(response.token==undefined){
+          console.log('holas que hace');
+          this.verificacion=true;
+          return;
+        }
+        
+        this.inicioSesion(response.token);
+      },
+      error: (error) => {
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al iniciar sesión',
+          text: error.error.error || 'Ha ocurrido un error inesperado 2.',
+        });
+      }
+
+    })
+
+  }
+
+  verificar(){
+    this.authService.verificar(this.correoElectronico, this.token).subscribe({
       next: (response: any) => {
-        console.log(response);
-        this.cookie.set('token', response.token);
+        this.inicioSesion(response.token);
+        
+
+      },
+      error: (error) => {
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'Error token incorecto',
+          text: error.error.error || 'Ha ocurrido un error inesperado.',
+        });
+      }
+    })      
+  }
+
+  inicioSesion(token:string){
+    this.cookie.set('token',token);
+        this.parseJwt(token)
         //guardar user en cookies o localstorage xd
         const message = `Bienvenido, ${this.user.nombreUsuario}`;
-        alert('inicio existoso');
+        
         Swal.fire({
           icon: 'success',
           title: 'Inicio de sesión exitoso ',
@@ -53,20 +97,9 @@ export class LoginComponent {
         } else {
           this.router.navigate(['/ayudante']);
         }
-      },
-      error: (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al iniciar sesión',
-          text: error.error.error || 'Ha ocurrido un error inesperado.',
-        });
-      }
-
-    })
 
   }
-
-  parseJwt(token: String) {
+  parseJwt(token:String) {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
