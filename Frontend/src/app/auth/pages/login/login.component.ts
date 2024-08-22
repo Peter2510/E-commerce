@@ -80,8 +80,8 @@ export class LoginComponent {
   }
 
   inicioSesion(token:string){
-    this.cookie.set('token',token);
         this.parseJwt(token)
+    this.cookie.set('token',JSON.stringify(this.user));
         //guardar user en cookies o localstorage xd
         const message = `Bienvenido, ${this.user.nombreUsuario}`;
         
