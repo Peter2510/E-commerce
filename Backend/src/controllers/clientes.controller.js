@@ -107,63 +107,55 @@ const editarCliente = async (req, res) => {
     }
   };
 
-  const actualizarContrasenia = async (req, res) => {
-    const t = await sequelize.transaction();
-  
-    try {
-      const { id, contrasenia } = req.body;
-  
-      if (!id) {
-        await t.rollback();
-        return res
-          .status(400)
-          .json({ ok: false, mensaje: "El id del usuario es requerido" });
-      }
-  
-      if (!contrasenia) {
-        await t.rollback();
-        return res
-          .status(400)
-          .json({ ok: false, mensaje: "La contraseña es requerida" });
-      }
-  
-      if (contrasenia.length < 8) {
-        await t.rollback();
-        return res
-          .status(400)
-          .json({
-            ok: false,
-            mensaje: "La contraseña debe tener al menos 8 caracteres",
-          });
-      }
-  
-      const usuario = await Usuario.findOne({
-        where: { id: id }
-      });
-  
-      if (!usuario) {
-        await t.rollback();
-        return res.status(404).json({ ok: false, mensaje: 'Usuario no encontrado' });
-      }
+const actualizarContrasenia = async (req, res) => {
+  const t = await sequelize.transaction();
 
- 
-      const hashContrasenia = await bcrypt.hash(contrasenia, 10);
+  try {
+    const { id, contrasenia } = req.body;
 
-  
-      await Usuario.update(
-        { contrasenia: hashContrasenia }, 
-        { where: { id: id }, transaction: t }
-      );
-  
-      await t.commit();
-  
-      res.status(200).json({ ok: true, mensaje: 'Contraseña actualizada correctamente' });
-  
-    } catch (error) {
+    if (!id) {
       await t.rollback();
-      await manejoErrores(error, res, 'Usuario');
+      return res.status(400).json({ ok: false, mensaje: "El id del usuario es requerido" });
     }
-  };
+
+    if (!contrasenia) {
+      await t.rollback();
+      return res.status(400).json({ ok: false, mensaje: "La contraseña es requerida" });
+    }
+
+    if (contrasenia.length < 8) {
+      await t.rollback();
+      return res.status(400).json({
+        ok: false,
+        mensaje: "La contraseña debe tener al menos 8 caracteres",
+      });
+    }
+
+    const usuario = await Usuario.findOne({ where: { id: id } });
+    console.log("Usuario encontrado:", usuario);
+
+    if (!usuario) {
+      await t.rollback();
+      return res.status(404).json({ ok: false, mensaje: 'Usuario no encontrado' });
+    }
+
+    const hashContrasenia = await bcrypt.hash(contrasenia, 10);
+    
+    const a = await Usuario.update(
+      { contrasenia: hashContrasenia }, 
+      { where: { id: id }, transaction: t }
+    );
+
+    await t.commit();
+
+    return res.status(200).json({ ok: true, mensaje: 'Contraseña actualizada correctamente' });
+
+  } catch (error) {
+    await t.rollback();
+    await manejoErrores(error, res, 'Usuario');
+  }
+};
+
 
 
 module.exports = {

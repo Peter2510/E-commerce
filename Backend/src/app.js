@@ -12,6 +12,9 @@ const authRoutes = require('./routes/auth.routes');
 const adminstracionRoutes = require('./routes/administracion.routes');
 const clientesRoutes = require('./routes/clientes.routes');
 
+const marcasRoutes = require('./routes/marcas.routes');
+const categoriasRoutes = require('./routes/categorias.routes');
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
@@ -25,7 +28,10 @@ app.get('/',(req,res)=>{
 });
 
 app.use(authRoutes);
+app.use(jwtValidacion,categoriasRoutes);
+app.use(jwtValidacion,marcasRoutes);
 app.use(jwtValidacion,adminstracionRoutes);
 app.use(jwtValidacion,clientesRoutes);
+
 
 module.exports = app;
