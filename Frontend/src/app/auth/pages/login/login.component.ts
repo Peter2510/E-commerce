@@ -84,7 +84,6 @@ export class LoginComponent {
         this.parseJwt(token)
         //guardar user en cookies o localstorage xd
         const message = `Bienvenido, ${this.user.nombreUsuario}`;
-        alert('inicio existoso');
         
         Swal.fire({
           icon: 'success',
