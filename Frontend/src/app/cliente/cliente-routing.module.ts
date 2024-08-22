@@ -9,7 +9,7 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
 const routes: Routes = [{
   path:'',
   component:HomeComponent,
-  //canActivate:[clienteGuardGuard],
+  canActivate:[clienteGuardGuard],
   children: [
     {
       path: 'listado',
