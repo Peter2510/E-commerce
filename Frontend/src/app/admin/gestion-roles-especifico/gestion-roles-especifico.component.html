@@ -5,12 +5,12 @@
       <h2
         class="text-xs text-blue-500 tracking-widest font-medium title-font mb-1"
       >
-        Usuario tal
+        {{ this.persona.nombre }}
       </h2>
       <h1
         class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900"
       >
-        {{ this.id }}
+        {{ this.usuario.nombreUsuario }} - {{ this.persona.correoElectronico }}
       </h1>
       <p class="lg:w-2/3 mx-auto leading-relaxed text-center">
         En esta sección usted podrá seleccionar qué permisos desea que tenga el
