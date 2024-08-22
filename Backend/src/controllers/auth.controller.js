@@ -125,12 +125,25 @@ const login = async (req, res) => {
   }
 };
 
-const logOut = (req,res) =>{
+const logOut = (req, res) => {
+  try {
+    res.status(200)
+      .cookie('token', '', {
+        httpOnly: true,
+        expires: new Date(0)
+      })
+      .json({
+        ok: true,
+        mensaje: 'Sesión cerrada correctamente'
+      });
+  } catch (error) {
+    return res.status(500).json({
+      ok: false,
+      mensaje: 'Error al cerrar sesión'
+    });
+  }
+};
 
-  res.clearCookie('token').status(200).
-  json({ok:true, mensaje: 'Sesión cerrada correctamente'})
-
-}
 
 module.exports = {
   crearCliente, 
