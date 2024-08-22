@@ -26,6 +26,5 @@ export class AuthService {
 
   registro(usuario:User){
     return this.http.post(`${this.baseUrl}/auth/crearCliente`,usuario)
-    return this.http.post(`${this.baseUrl}/auth/crearCliente`,usuario)
   }
 }
