@@ -42,7 +42,7 @@ const crearCategoria = async (req, res) => {
 
 const obtenerCategorias = async (req, res) => {
     try {
-      const categorias = await Marca.findAll();
+      const categorias = await Categoria.findAll();
       res.status(200).json({ ok: true, categorias });
     } catch (error) {
       await manejoErrores(error, res, "Categoria");
@@ -54,7 +54,7 @@ const obtenerCategoriaPorId = async (req, res) => {
     const { id } = req.params;
   
     try {
-      const categoria = await Marca.findByPk(id);
+      const categoria = await Categoria.findByPk(id);
   
       if (!categoria) {
         return res.status(404).json({ ok: false, mensaje: "Categoria No Encontrada" });
@@ -84,12 +84,12 @@ const obtenerCategoriaPorId = async (req, res) => {
       // Verificar si la categoria existe
       const categoria = await Categoria.findByPk(id);
   
-      if (!marca) {
+      if (!categoria) {
         await t.rollback();
         return res.status(404).json({ ok: false, mensaje: "Categoria no encontrada" });
       }
   
-      // Actualizar la marca
+      // Actualizar la categoria
       categoria.nombreCategoria = nombreCategoria;
       await categoria.save({ transaction: t });
   
@@ -153,3 +153,7 @@ module.exports = {
     actualizarCategoria,
     eliminarCategoria
 }
+
+
+
+

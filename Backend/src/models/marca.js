@@ -12,6 +12,7 @@ const Marca = sequelize.define(
         nombreMarca:{
             type:DataTypes.STRING,
             allowNull: false,
+            unique: true,
             validate:{
                 notNull:{
                     msg: "El nombre de la marca no puede ser nulo",
