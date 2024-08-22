@@ -21,17 +21,17 @@ export class LoginComponent {
     id: 0,
     nombreUsuario: '',
     contrasenia: '',
-    persona:undefined,
+    persona: undefined,
     activo: true,
     idTipoUsuario: 0
   };
-  constructor(private authService: AuthService, private router: Router,private cookie:CookieService){
+  constructor(private authService: AuthService, private router: Router, private cookie: CookieService) {
 
   }
 
-  login(){
-    console.log('login '+this.correoElectronico)
-    if(!this.correoElectronico|| !this.correoElectronico ){
+  login() {
+    console.log('login ' + this.correoElectronico)
+    if (!this.correoElectronico || !this.correoElectronico) {
       console.log('Campos vacios')
       return
     }
@@ -80,8 +80,8 @@ export class LoginComponent {
   }
 
   inicioSesion(token:string){
-    this.cookie.set('token',token);
         this.parseJwt(token)
+    this.cookie.set('token',JSON.stringify(this.user));
         //guardar user en cookies o localstorage xd
         const message = `Bienvenido, ${this.user.nombreUsuario}`;
         
@@ -92,9 +92,9 @@ export class LoginComponent {
         });
         if (this.user.idTipoUsuario == 1) {
           this.router.navigate(['/admin']);
-        } else if (this.user.idTipoUsuario == 2){
+        } else if (this.user.idTipoUsuario == 2) {
           this.router.navigate(['/cliente']);
-        }else {
+        } else {
           this.router.navigate(['/ayudante']);
         }
 
@@ -102,13 +102,13 @@ export class LoginComponent {
   parseJwt(token:String) {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
 
     const usuario = JSON.parse(jsonPayload);
     this.user.nombreUsuario = usuario.nombreUsuario;
     this.user.idTipoUsuario = usuario.idTipoUsuario;
-}
+  }
 
 }
