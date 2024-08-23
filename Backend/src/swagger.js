@@ -1828,7 +1828,7 @@ const swaggerOptions = {
                     },
                     "imagenes": {
                       "type": "array",
-                      "description": "Arreglo de imagen o imágenes del producto",
+                      "description": "Arreglo de archivos de imagen o imágenes del producto",
                       "items": {
                         "type": "img"
                       }
@@ -2131,7 +2131,7 @@ const swaggerOptions = {
                     },
                     "imagenes": {
                       "type": "array",
-                      "description": "Arreglo de imagen o imágenes que se agregaran al producto",
+                      "description": "Arreglo de archivos de la imagen o imágenes que se agregaran al producto",
                       "items": {
                         "type": "string",
                         "format": "binary"
