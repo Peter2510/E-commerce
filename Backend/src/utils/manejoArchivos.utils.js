@@ -1,6 +1,6 @@
 require('dotenv').config();
 const fs = require('fs')
-const { PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3')
+const { PutObjectCommand, GetObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const cliente = require('../configs/clienteS3.configs');
 
@@ -14,13 +14,13 @@ const subirArchivo = async (archivo) => {
         Body: stream,
         ContentType: archivo.mimetype
     }
+
     const command = new PutObjectCommand(uploadParams);
     return await cliente.send(command);
     
 }
 
 const obtenerUrlFirmada = async (nombreArchivo) => {
-
     const command = new GetObjectCommand({
         Bucket: process.env.AWS_BUCKET_NAME,
         Key: nombreArchivo
@@ -28,7 +28,17 @@ const obtenerUrlFirmada = async (nombreArchivo) => {
     return await getSignedUrl(cliente, command, { expiresIn: 1800 })
 }
 
+
+const eliminarArchivo = async (nombreArchivo) => {
+    const command = new DeleteObjectCommand({
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: nombreArchivo
+    })
+    return await cliente.send(command)
+}
+
 module.exports = {
     subirArchivo,
-    obtenerUrlFirmada
+    obtenerUrlFirmada,
+    eliminarArchivo
 }

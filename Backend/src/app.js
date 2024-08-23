@@ -3,7 +3,6 @@ const app = express();
 const cors = require('cors');
 cookieParser = require('cookie-parser');
 const jwtValidacion = require('./middlewares/jwtValidacion');
-const validarProducto = require('./middlewares/validarProducto');
 const fileUpload = require('express-fileupload');
 
 const { swaggerUi, swaggerDocs } = require('./swagger.js');
@@ -35,7 +34,7 @@ app.get('/',(req,res)=>{
 });
 
 app.use(authRoutes);
-app.use(jwtValidacion, validarProducto,productosRoutes);
+app.use(jwtValidacion,productosRoutes);
 app.use(jwtValidacion,categoriasRoutes);
 app.use(jwtValidacion,marcasRoutes);
 app.use(jwtValidacion,adminstracionRoutes);
