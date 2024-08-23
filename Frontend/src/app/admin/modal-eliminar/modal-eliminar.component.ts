@@ -58,7 +58,9 @@ export class ModalEliminarComponent implements OnInit {
   obtenerNombre() {
     if (this.tipo === 'Marca' && this.esMarca(this.idEliminar)) {
       this.nombre = this.idEliminar.nombreMarca;
+      console.log(this.idEliminar.nombreMarca);
     } else if (this.tipo === 'Categoria' && this.esCategoria(this.idEliminar)) {
+      console.log(this.idEliminar.nombreCategoria);
       this.nombre = this.idEliminar.nombreCategoria;
     }
   }

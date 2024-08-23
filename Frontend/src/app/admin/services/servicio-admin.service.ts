@@ -123,6 +123,22 @@ export class ServicioAdminService {
   }
 
   // CRUD DE ELEMENTOS DE CATEGORIAS Y MARCAS
+
+  creacionCategoria(nombreCategoria: string) {
+    return this.http.post<categoria>(
+      `${environment.baseUrlEnv}/${this.directivaCategoria}/crearCategoria/`,
+      { nombreCategoria: nombreCategoria },
+      { withCredentials: true }
+    );
+  }
+
+  creacionMarca(nombreMarca: string) {
+    return this.http.post<categoria>(
+      `${environment.baseUrlEnv}/${this.directivaMarcas}/crearMarca/`,
+      { nombreMarca: nombreMarca },
+      { withCredentials: true }
+    );
+  }
   //funcion para actualizar las categorias actualizarCategoria
   actualizarCategoria(id: number | undefined, nombre: string) {
     this.http

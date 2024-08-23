@@ -78,12 +78,12 @@ export class GestionRolesComponent implements OnInit {
         break;
       }
       case 2: {
-        tipo = 'Ayudante';
+        tipo = 'Cliente';
 
         break;
       }
       case 3: {
-        tipo = 'Cliente';
+        tipo = 'Ayudante';
 
         break;
       }

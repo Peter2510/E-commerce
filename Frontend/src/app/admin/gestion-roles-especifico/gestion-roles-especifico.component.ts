@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ServicioAdminService } from '../services/servicio-admin.service';
 import { Person } from 'src/app/interfaces/person.interface';
 import { User } from 'src/app/interfaces/user.interface';
+import { PermisosServiciosService } from '../services/permisos-servicios.service';
 
 @Component({
   selector: 'app-gestion-roles-especifico',
@@ -21,6 +22,8 @@ export class GestionRolesEspecificoComponent implements OnInit {
 
   //servicio
   servicio = inject(ServicioAdminService);
+  servicioPermisos = inject(PermisosServiciosService);
+  permisosGenerales = this.servicioPermisos.permisos;
 
   obtenerPersona(id: number) {
     this.servicio.obtenerEmpleadosId(id).subscribe((personaFinal: any) => {
@@ -33,5 +36,6 @@ export class GestionRolesEspecificoComponent implements OnInit {
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     this.obtenerPersona(this.id);
+    console.log(this.permisosGenerales());
   }
 }

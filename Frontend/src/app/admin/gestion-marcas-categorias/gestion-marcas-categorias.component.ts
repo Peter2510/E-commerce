@@ -13,11 +13,14 @@ export class GestionMarcasCategoriasComponent implements OnInit {
   categoria = this.servicio.categorias;
   marcastotal = this.servicio.marcas;
   //elementos de pagina y moda;
-  elementoSeleccionado: string = 'Marcas';
+  elementoSeleccionado!: string;
   isDropdownOpen = false;
   isModalVisible = false;
   editable: string = '';
   seleccionado?: categoria | Marca;
+  // para la creacion
+  nuevoNombreCategoria!: string;
+  nuevoNombreMarca!: string;
 
   //abre los modals
   openModal(tipoElemento: string, elemento?: categoria | Marca) {
@@ -53,7 +56,20 @@ export class GestionMarcasCategoriasComponent implements OnInit {
 
     this.isDropdownOpen = false;
   }
+
+  // funcion para la creacion
+  crearCategoria() {
+    this.servicio.creacionCategoria(this.nuevoNombreCategoria).subscribe();
+  }
+
+  // funcion para la maraca
+  crearMarca() {
+    this.servicio.creacionMarca(this.nuevoNombreMarca).subscribe();
+  }
+
   ngOnInit() {
+    this.elementoSeleccionado = 'Marca';
+
     console.log(this.elementoSeleccionado, this.isModalVisible);
   }
 }
