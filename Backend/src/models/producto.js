@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../configs/database.configs');
 const Marca = require('./marca');
+const Categoria = require('./categoria');
 
 const Producto = sequelize.define(
   'Producto',
@@ -32,6 +33,10 @@ const Producto = sequelize.define(
         notEmpty: {
           msg: 'La categoria no puede estar vacía'
         }
+      },
+      references: {
+        model: Categoria,
+        key: 'id'
       }
     },
     descripcion: {

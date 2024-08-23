@@ -10,15 +10,15 @@ const UrlImangen = sequelize.define(
       primaryKey: true,
       autoIncrement: true
     },
-    ulrImagen: {
+    nombre: {
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
         notNull: {
-          msg: 'La url de la imagen no puede ser nula'
+          msg: 'El nombre de la imagen no puede ser nula'
         },
         notEmpty: {
-          msg: 'La url de la imagen no puede estar vacía'
+          msg: 'El nombre de la imagen no puede estar vacía'
         }
       }
     },
