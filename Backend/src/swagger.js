@@ -1787,6 +1787,465 @@ const swaggerOptions = {
             }
           }
         }
+      },
+      "/crearProducto": {
+        "post": {
+          "summary": "Crea un nuevo producto",
+          "tags": [
+            "Productos"
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/producto",
+                  "properties": {
+                    "nombre": {
+                      "type": "string",
+                      "example": "Monitor Full HD"
+                    },
+                    "precio": {
+                      "type": "decimal",
+                      "example": "195.00"
+                    },
+                    "descripcion": {
+                      "type": "string",
+                      "example": "Pantalla full hd para pc"
+                    },
+                    "minimoInventario": {
+                      "type": "integer",
+                      "example": 20
+                    },
+                    "idCategoria": {
+                      "type": "integer",
+                      "example": 3
+                    },
+                    "idMarca": {
+                      "type": "integer",
+                      "example": 3
+                    },
+                    "imagenes": {
+                      "type": "array",
+                      "description": "Arreglo de imagen o imágenes del producto",
+                      "items": {
+                        "type": "img"
+                      }
+                    }
+                  },
+                  "required": ["nombre", "precio", "descripcion", "minimoInventario", "idCategoria", "idMarca", "imagenes"]
+                },
+                "examples": {
+                  "producto": {
+                    "value": {
+                      "nombre": "Monitor Full HD",
+                      "precio": "195.00",
+                      "descripcion": "Pantalla full hd para pc",
+                      "minimoInventario": 20,
+                      "idCategoria": 3,
+                      "idMarca": 3,
+                      "imagenes": [
+                        "file1.jpg",
+                        "file2.png"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Producto creado con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Producto creado con éxito"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Error en la solicitud",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error al subir imagen"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error interno del servidor"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/producto/{id}": {
+        "get": {
+          "summary": "Obtiene un producto por ID",
+          "tags": [
+            "Productos"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "description": "ID del producto",
+                "example": 10
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Producto encontrado con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "producto": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 10
+                          },
+                          "nombre": {
+                            "type": "string",
+                            "example": "Monitor Full HD"
+                          },
+                          "idCategoria": {
+                            "type": "integer",
+                            "example": 3
+                          },
+                          "descripcion": {
+                            "type": "string",
+                            "example": "Pantalla full hd para pc"
+                          },
+                          "precio": {
+                            "type": "string",
+                            "example": "195.00"
+                          },
+                          "minimoInventario": {
+                            "type": "integer",
+                            "example": 20
+                          },
+                          "idMarca": {
+                            "type": "integer",
+                            "example": 3
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-08-23T02:41:28.087Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-08-23T02:41:28.087Z"
+                          },
+                          "marca": {
+                            "type": "string",
+                            "example": "Marca X"
+                          },
+                          "categoria": {
+                            "type": "string",
+                            "example": "Categoría Y"
+                          },
+                          "url_imagenes": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "nombre": {
+                                  "type": "string",
+                                  "example": "cf854ed066707b18b3836f6d8342c4a9.png"
+                                },
+                                "url": {
+                                  "type": "string",
+                                  "description": "URL de la imagen del producto, es necesario almacenar el nombre para actualizar o eliminar la imagen",
+                                  "format": "uri",
+                                  "example": "bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                                }
+                              },
+                              "example": [
+                                {
+                                  "nombre": "cf854ed066707b18b3836f6d8342c4a9.png",
+                                  "url": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                                },
+                                {
+                                  "nombre": "2b192bdc328aa66d66d2fa15a6586ccf.png",
+                                  "url": "https://bucket.s3.amazonaws.com/2b192bdc328aa66d66d2fa15a6586ccf.png"
+                                },
+                                {
+                                  "nombre": "d397d0c9a8237862a17895a71b94e1a2.png",
+                                  "url": "https://bucket.s3.amazonaws.com/d397d0c9a8237862a17895a71b94e1a2.png"
+                                }
+                              ]
+                              
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Producto no encontrado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Producto no encontrado"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error interno del servidor"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/editarProducto": {
+        "put": {
+          "summary": "Edita un producto existente",
+          "tags": [
+            "Productos"
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 10
+                    },
+                    "nombre": {
+                      "type": "string",
+                      "example": "Monitor Full HD"
+                    },
+                    "precio": {
+                      "type": "string",
+                      "example": "195.00"
+                    },
+                    "descripcion": {
+                      "type": "string",
+                      "example": "Pantalla full hd para pc"
+                    },
+                    "minimoInventario": {
+                      "type": "integer",
+                      "example": 20
+                    },
+                    "idCategoria": {
+                      "type": "integer",
+                      "example": 3
+                    },
+                    "idMarca": {
+                      "type": "integer",
+                      "example": 3
+                    },
+                    "imagenesEliminar": {
+                      "type": "array",
+                      "description": "Arreglo de los nombres de la imagen o imagenes que se eliminaran del producto",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "imagenes": {
+                      "type": "array",
+                      "description": "Arreglo de imagen o imágenes que se agregaran al producto",
+                      "items": {
+                        "type": "string",
+                        "format": "binary"
+                      }
+                    }
+                  },
+                  "required": ["id", "nombre", "precio", "descripcion", "minimoInventario", "idCategoria", "idMarca"]
+                },
+                "examples": {
+                  "producto": {
+                    "value": {
+                      "id": 10,
+                      "nombre": "Monitor Ultra HD",
+                      "precio": "250.00",
+                      "descripcion": "Pantalla ultra hd para pc",
+                      "minimoInventario": 15,
+                      "idCategoria": 4,
+                      "idMarca": 2,
+                      "imagenesEliminar": [
+                        "imagen123.jpg"
+                      ],
+                      "imagenes": [
+                        "file3.jpg",
+                        "file4.png"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Producto editado con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Producto editado con éxito"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Error en la solicitud",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error al subir imagen"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Producto no encontrado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Producto no encontrado"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error interno del servidor"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
     
