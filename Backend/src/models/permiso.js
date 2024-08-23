@@ -2,14 +2,14 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../configs/database.configs');
 
 const Permiso = sequelize.define(
-  'Permiso',
+  'tipopermiso',
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    permiso: {
+    tipo: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
@@ -22,10 +22,25 @@ const Permiso = sequelize.define(
         },
       },
     },
+
+    tipoarea:{
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true,
+      validate: {
+  
+        notEmpty: {
+          msg: 'El permiso no puede ser vacio',
+        },
+      },
+    },
+
   },
   {
-    schema: 'usuarios',
-    tableName: 'permiso',
+    schema: 'permisos',
+    tableName: 'tipopermiso',
+    timestamps: false, 
+
   }
 );
 

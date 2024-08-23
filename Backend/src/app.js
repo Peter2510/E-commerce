@@ -15,6 +15,7 @@ const clientesRoutes = require('./routes/clientes.routes');
 const productosRoutes = require('./routes/productos.routes');
 const marcasRoutes = require('./routes/marcas.routes');
 const categoriasRoutes = require('./routes/categorias.routes');
+const permisosRoutes = require('./routes/permisos.routes.js');
 
 app.use(express.json());
 app.use(cookieParser());
@@ -38,7 +39,10 @@ app.use(jwtValidacion,productosRoutes);
 app.use(jwtValidacion,categoriasRoutes);
 app.use(jwtValidacion,marcasRoutes);
 app.use(jwtValidacion,adminstracionRoutes);
-app.use(jwtValidacion,clientesRoutes);
+app.use(jwtValidacion, clientesRoutes);
+app.use(jwtValidacion, permisosRoutes);
+
+
 
 
 module.exports = app;
