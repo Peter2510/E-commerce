@@ -17,6 +17,7 @@ import { RouterLink } from '@angular/router';
 import { GestionCriticaComponent } from './admin/gestion-critica/gestion-critica.component';
 import { GestionProductosComponent } from './admin/gestion-productos/gestion-productos.component';
 import { GestionProductosEspecificaComponent } from './admin/gestion-productos-especifica/gestion-productos-especifica.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { GestionProductosEspecificaComponent } from './admin/gestion-productos-e
     HeaderComponent,
     RouterLink,
     AdminheaderComponent,
-    ClienteModule
+    ClienteModule,
+    ReactiveFormsModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],

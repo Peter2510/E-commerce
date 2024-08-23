@@ -1,66 +1,79 @@
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div *ngIf = "!mostrar"class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <br><br><br>
         <h2 class="text-2xl font-bold mb-6 text-center">Formulario de Registro</h2>
-        <form (ngSubmit)="cambiar()" >
-            <div class="mb-4">
-                <label for="nombre" class="block text-gray-700 font-medium mb-2">Nombre</label>
-                <input type="text" id="nombre" name="nombre" [(ngModel)]="persona.nombre" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-            </div>
+        <form [formGroup]="formulario" (ngSubmit)="crearUsuario()">
 
-            <div class="mb-4">
-                <label for="correo" class="block text-gray-700 font-medium mb-2">Correo Electrónico</label>
-                <input type="email" id="correo" name="correo" [(ngModel)]="persona.correoElectronico" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-            </div>
-
-            <div class="mb-4">
-                <label for="nit" class="block text-gray-700 font-medium mb-2">NIT</label>
-                <input type="text" id="nit" name="nit" [(ngModel)]="persona.nit" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-            </div>
-
-            <div class="mb-4">
-                <label for="direccion" class="block text-gray-700 font-medium mb-2">Dirección</label>
-                <input type="text" id="direccion" name="direccion" [(ngModel)]="persona.direccion" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-            </div>
-
-            <div class="mb-6">
-                <label for="forma_pago" class="block text-gray-700 font-medium mb-2">Forma de Pago</label>
-                <select id="forma_pago" name="forma_pago" [(ngModel)]="persona.idTipoFormaPago" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                    <option value=1>Recoger en tienda</option>
-                    <option value=2>Entrega a domicilio</option>
-                </select>
-            </div>
-            <button type="submit" class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" >
-                Continuar
-            </button>
-        </form>
-    </div>
-    <div *ngIf = "mostrar">
-        <div class="min-h-screen flex items-center justify-center bg-gray-900">
-            <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-sm">
-              <h2 class="text-3xl font-bold text-center text-white mb-8">Crea tu Usuario</h2>
-              
-            <form (ngSubmit)="crearUsuario()">
-            <div class="mb-6">
-              <label class="block text-gray-300 text-sm font-medium mb-2" for="email">UserName</label>
-              <input type="text" id="username" name="username" [(ngModel)]="usuario.nombreUsuario" placeholder="Ingrese su username" required 
-                class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            </div>
-          
-            <div class="mb-6">
-              <label class="block text-gray-300 text-sm font-medium mb-2" for="password">Password</label>
-              <input type="password" id="password" name="password"  [(ngModel)]="usuario.contrasenia" placeholder="Enter your password" required 
-                class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            </div>
-            <button type="submit" 
-              class="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-              Crear Usuario
-            </button>
-            <button type="submit" 
-              class="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-              Regresar
-            </button>
-              </form>
+          <div class="mb-4">
+            <label for="nombre" class="block text-gray-700 font-medium mb-2">Nombre</label>
+            <input type="text" id="nombre" formControlName="nombre" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div *ngIf="formulario.get('nombre')?.invalid && formulario.get('nombre')?.touched" class="text-red-500">
+              <div *ngIf="formulario.get('nombre')?.errors?.['required']">El nombre es requerido.</div>
+              <div *ngIf="formulario.get('nombre')?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres.</div>
             </div>
           </div>
+        
+          <div class="mb-4">
+            <label for="correo" class="block text-gray-700 font-medium mb-2">Correo Electrónico</label>
+            <input type="email" id="correo" formControlName="correo" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div *ngIf="formulario.get('correo')?.invalid && formulario.get('correo')?.touched" class="text-red-500">
+              <div *ngIf="formulario.get('correo')?.errors?.['required']">El correo es requerido.</div>
+              <div *ngIf="formulario.get('correo')?.errors?.['email']">Debe ser un correo electrónico válido.</div>
+            </div>
+          </div>
+        
+          <div class="mb-4">
+            <label for="nit" class="block text-gray-700 font-medium mb-2">NIT</label>
+            <input type="text" id="nit" formControlName="nit" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div *ngIf="formulario.get('nit')?.invalid && formulario.get('nit')?.touched" class="text-red-500">
+              <div *ngIf="formulario.get('nit')?.errors?.['required']">El NIT es requerido.</div>
+              <div *ngIf="formulario.get('nit')?.errors?.['pattern']">El NIT debe contener solo números.</div>
+            </div>
+          </div>
+        
+          <div class="mb-4">
+            <label for="direccion" class="block text-gray-700 font-medium mb-2">Dirección</label>
+            <input type="text" id="direccion" formControlName="direccion" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div *ngIf="formulario.get('direccion')?.invalid && formulario.get('direccion')?.touched" class="text-red-500">
+              <div *ngIf="formulario.get('direccion')?.errors?.['required']">La dirección es requerida.</div>
+              <div *ngIf="formulario.get('direccion')?.errors?.['minlength']">La dirección debe tener al menos 5 caracteres.</div>
+            </div>
+          </div>
+        
+          <div class="mb-4">
+            <label for="nombreUsuario" class="block text-gray-700 font-medium mb-2">Nombre Usuario</label>
+            <input type="text" id="nombreUsuario" formControlName="nombreUsuario" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div *ngIf="formulario.get('nombreUsuario')?.invalid && formulario.get('nombreUsuario')?.touched" class="text-red-500">
+              <div *ngIf="formulario.get('nombreUsuario')?.errors?.['required']">El nombre de usuario es requerido.</div>
+              <div *ngIf="formulario.get('nombreUsuario')?.errors?.['minlength']">El nombre de usuario debe tener al menos 3 caracteres.</div>
+            </div>
+          </div>
+        
+          <div class="mb-4">
+            <label for="contrasenia" class="block text-gray-700 font-medium mb-2">Contraseña</label>
+            <input type="password" id="contrasenia" formControlName="contrasenia" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div *ngIf="formulario.get('contrasenia')?.invalid && formulario.get('contrasenia')?.touched" class="text-red-500">
+              <div *ngIf="formulario.get('contrasenia')?.errors?.['required']">La contraseña es requerida.</div>
+              <div *ngIf="formulario.get('contrasenia')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.</div>
+            </div>
+          </div>
+        
+          <div class="mb-6">
+            <label for="forma_pago" class="block text-gray-700 font-medium mb-2">Forma de Pago</label>
+            <select id="forma_pago" formControlName="idTipoFormaPago" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="1">Recoger en tienda</option>
+              <option value="2">Entrega a domicilio</option>
+            </select>
+            <div *ngIf="formulario.get('idTipoFormaPago')?.invalid && formulario.get('idTipoFormaPago')?.touched" class="text-red-500">
+              <div *ngIf="formulario.get('idTipoFormaPago')?.errors?.['required']">Debe seleccionar una forma de pago.</div>
+            </div>
+          </div>
+        
+          <button type="submit" class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            Continuar
+          </button>
+        </form>
+        
+               
     </div>
 </body>

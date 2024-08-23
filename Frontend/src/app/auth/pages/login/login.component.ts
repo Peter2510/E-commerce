@@ -17,14 +17,7 @@ export class LoginComponent {
   verificacion:boolean=false;
   correoElectronico!:string;
   contrasenia!:string;
-  user: User = {
-    id: 0,
-    nombreUsuario: '',
-    contrasenia: '',
-    persona: undefined,
-    activo: true,
-    idTipoUsuario: 0
-  };
+  user: User = new User();
   constructor(private authService: AuthService, private router: Router, private cookie: CookieService) {
 
   }
@@ -65,7 +58,7 @@ export class LoginComponent {
     this.authService.verificar(this.correoElectronico, this.token).subscribe({
       next: (response: any) => {
         this.inicioSesion(response.token);
-        
+  
 
       },
       error: (error) => {
