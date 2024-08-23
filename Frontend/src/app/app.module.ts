@@ -18,7 +18,7 @@ import { GestionCriticaComponent } from './admin/gestion-critica/gestion-critica
 import { GestionProductosComponent } from './admin/gestion-productos/gestion-productos.component';
 import { GestionProductosEspecificaComponent } from './admin/gestion-productos-especifica/gestion-productos-especifica.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CarritoDeComprasComponent } from './carrito-de-compras/carrito-de-compras.component';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +26,6 @@ import { CarritoDeComprasComponent } from './carrito-de-compras/carrito-de-compr
     GestionCriticaComponent,
     GestionProductosComponent,
     GestionProductosEspecificaComponent,
-    CarritoDeComprasComponent,
   ],
   imports: [
     BrowserModule,
