@@ -18,6 +18,8 @@ import { GestionCriticaComponent } from './admin/gestion-critica/gestion-critica
 import { GestionProductosComponent } from './admin/gestion-productos/gestion-productos.component';
 import { GestionProductosEspecificaComponent } from './admin/gestion-productos-especifica/gestion-productos-especifica.component';
 import { FormsModule } from '@angular/forms';
+import { ModalEliminarComponent } from './admin/modal-eliminar/modal-eliminar.component';
+import { ModalEditarComponent } from './admin/modal-editar/modal-editar.component';
 
 @NgModule({
   declarations: [

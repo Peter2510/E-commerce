@@ -116,10 +116,46 @@ export class ServicioAdminService {
       )
       .pipe(
         tap((response: any) => {
-          console.log('Categorías recibidas:', response.categorias); // Verifica los datos
-          this.categorias.set(response.categorias); // Asegúrate de que estás accediendo al arreglo directamente
+          this.categorias.set(response.categorias);
         })
       )
       .subscribe();
+  }
+
+  // CRUD DE ELEMENTOS DE CATEGORIAS Y MARCAS
+  //funcion para actualizar las categorias actualizarCategoria
+  actualizarCategoria(id: number | undefined, nombre: string) {
+    this.http
+      .put(
+        `${environment.baseUrlEnv}/${this.directivaCategoria}/actualizarCategoria/${id}`,
+        { id: id, nombreCategoria: nombre },
+        { withCredentials: true }
+      )
+      .subscribe();
+  }
+
+  //funcion para actualizar las marcas actualizarMarca
+  actualizarMarca(id: number | undefined, nombre: string) {
+    return this.http.put(
+      `${environment.baseUrlEnv}/${this.directivaMarcas}/actualizarMarca/${id}`,
+      { nombreMarca: nombre },
+      { withCredentials: true }
+    );
+  }
+
+  //funcion para elminar las categorias actualizarCategoria
+  eliminarCategoria(id: number | undefined) {
+    return this.http.delete(
+      `${environment.baseUrlEnv}/${this.directivaCategoria}/eliminarCategoria/${id}`,
+      { withCredentials: true }
+    );
+  }
+
+  //funcion para elminar las marcas actualizarCategoria
+  eliminarMarca(id: number | undefined) {
+    return this.http.delete(
+      `${environment.baseUrlEnv}/${this.directivaMarcas}/eliminarMarca/${id}`,
+      { withCredentials: true }
+    );
   }
 }
