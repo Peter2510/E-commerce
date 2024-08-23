@@ -17,6 +17,7 @@ import { RouterLink } from '@angular/router';
 import { GestionCriticaComponent } from './admin/gestion-critica/gestion-critica.component';
 import { GestionProductosComponent } from './admin/gestion-productos/gestion-productos.component';
 import { GestionProductosEspecificaComponent } from './admin/gestion-productos-especifica/gestion-productos-especifica.component';
+import { CarritoDeComprasComponent } from './carrito-de-compras/carrito-de-compras.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { GestionProductosEspecificaComponent } from './admin/gestion-productos-e
     GestionCriticaComponent,
     GestionProductosComponent,
     GestionProductosEspecificaComponent,
+    CarritoDeComprasComponent,
   ],
   imports: [
     BrowserModule,

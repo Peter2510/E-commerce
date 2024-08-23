@@ -38,4 +38,9 @@ export class LitadoProductosComponent {
     // Agrega más productos según sea necesario
   ];
 
+
+  obtenerProductos(){
+    
+  }
+
 }

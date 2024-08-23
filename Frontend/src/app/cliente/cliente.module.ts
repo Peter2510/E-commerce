@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { LitadoProductosComponent } from './pages/litado-productos/litado-productos.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
+import { CarritoDeComprasComponent } from './pages/carrito-de-compras/carrito-de-compras.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
     HomeComponent,
     LitadoProductosComponent,
     PerfilComponent,
-    WelcomeComponent  
+    WelcomeComponent,
+    CarritoDeComprasComponent  
   ],
   imports: [
     CommonModule,
