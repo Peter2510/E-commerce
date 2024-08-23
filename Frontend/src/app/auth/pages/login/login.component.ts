@@ -74,7 +74,8 @@ export class LoginComponent {
 
   inicioSesion(token:string){
         this.parseJwt(token)
-    this.cookie.set('token',JSON.stringify(this.user));
+    this.cookie.set('token2',JSON.stringify(this.user));
+    this.cookie.set('token',token);
         //guardar user en cookies o localstorage xd
         const message = `Bienvenido, ${this.user.nombreUsuario}`;
         
@@ -102,6 +103,9 @@ export class LoginComponent {
     const usuario = JSON.parse(jsonPayload);
     this.user.nombreUsuario = usuario.nombreUsuario;
     this.user.idTipoUsuario = usuario.idTipoUsuario;
+    this.user.id = usuario.idUsuario
+    console.log(this.user);
+    
   }
 
 }

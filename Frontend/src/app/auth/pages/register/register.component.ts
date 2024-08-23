@@ -27,7 +27,8 @@ export class RegisterComponent {
     nit: new FormControl('', [Validators.required, Validators.pattern('[0-9]+')]),
     direccion: new FormControl('', [Validators.required, Validators.minLength(5)]),
     nombreUsuario: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    contrasenia: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    contrasenia: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    contrasenia2: new FormControl('', [Validators.required, Validators.minLength(8)]),
     idTipoFormaPago: new FormControl('', [Validators.required])
   });
   constructor(private authservice: AuthService) {
@@ -35,8 +36,7 @@ export class RegisterComponent {
   }
 
   crearUsuario() {
-    if (this.formulario.valid) {
-      this.persona = new Person(this.formulario.get('nombre')?.value || '')
+    if (this.formulario.valid && this.formulario.get('contrasenia')?.value === this.formulario.get('contrasenia2')?.value) {
       this.persona = new Person(
         this.formulario.get('nombre')?.value || '',
         this.formulario.get('correo')?.value || '',

@@ -57,7 +57,15 @@
               <div *ngIf="formulario.get('contrasenia')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.</div>
             </div>
           </div>
-        
+
+          <div class="mb-4">
+            <label for="contrasenia" class="block text-gray-700 font-medium mb-2">Confirme la Contraseña</label>
+            <input type="password" id="contrasenia2" formControlName="contrasenia2" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div *ngIf="formulario.get('contrasenia2')?.invalid && formulario.get('contrasenia')?.touched" class="text-red-500">
+              <div *ngIf="formulario.get('contrasenia2')?.errors?.['required']">La contraseña es requerida.</div>
+              <div *ngIf="formulario.get('contrasenia2')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.</div>
+            </div>
+          </div>
           <div class="mb-6">
             <label for="forma_pago" class="block text-gray-700 font-medium mb-2">Forma de Pago</label>
             <select id="forma_pago" formControlName="idTipoFormaPago" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
