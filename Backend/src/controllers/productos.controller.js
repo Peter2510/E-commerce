@@ -5,7 +5,6 @@ const Categoria = require('../models/categoria');
 const UrlImangen = require("../models/imagenProducto");
 const { manejoErrores } = require("../utils/manejoErrores.utils");
 const { subirArchivo, obtenerUrlFirmada, eliminarArchivo } = require("../utils/manejoArchivos.utils");
-const crypto = require('crypto');
 
 
 
@@ -30,7 +29,7 @@ const crearProducto = async (req, res) => {
         }, { transaction: t });
 
         for (const imagen of arrayImagenes) {
-            imagen.name = crypto.randomBytes(16).toString('hex') + '.' + imagen.name.split('.').pop();
+            
             const respuesta = await subirArchivo(imagen);
             if (respuesta.$metadata.httpStatusCode === 200) {
 
@@ -155,7 +154,6 @@ const editarProducto = async (req, res) => {
 
             for (const imagen of arrayImagenes) {
 
-                imagen.name = crypto.randomBytes(16).toString('hex') + '.' + imagen.name.split('.').pop();
                 const respuesta = await subirArchivo(imagen);
 
                 if (respuesta.$metadata.httpStatusCode === 200) {

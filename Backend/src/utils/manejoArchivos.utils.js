@@ -3,10 +3,13 @@ const fs = require('fs')
 const { PutObjectCommand, GetObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const cliente = require('../configs/clienteS3.configs');
+const crypto = require('crypto');
+
 
 const subirArchivo = async (archivo) => {
 
     const stream = fs.createReadStream(archivo.tempFilePath)
+    archivo.name = crypto.randomBytes(16).toString('hex') + '.' + archivo.name.split('.').pop();
 
     const uploadParams = {
         Bucket: process.env.AWS_BUCKET_NAME,
