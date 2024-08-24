@@ -186,7 +186,118 @@ const swaggerOptions = {
             idPersona: 2,
             idTipoUsuario: 0,
           },
+        }, 
+        Usuario: {
+          type: "object",
+          properties: {
+            id: {
+              type: "integer",
+              description: "ID del usuario, clave primaria, autoincrementable",
+              example: 1,
+            },
+            nombreUsuario: {
+              type: "string",
+              description:
+                "Nombre de usuario registrado. No puede ser nulo ni vacío",
+              example: "miNombr3Usuario",
+            },
+            contrasenia: {
+              type: "string",
+              description:
+                "Contraseña para acceder a la plataforma. No puede ser nula ni vacía",
+              example: "kd9fñc..s",
+            },
+            activo: {
+              type: "boolean",
+              description:
+                "Define si el usuario tiene permitido iniciar sesión",
+              default: true,
+              example: true,
+            },
+            a2fActivo: {
+              type: "boolean",
+              description:
+                "Define si el usuario tiene activo la autentificación de doble factor",
+              default: false,
+              example: false,
+            },
+            idPersona: {
+              type: "integer",
+              description:
+                "LLave foránea que referencia a la persona asociada al perfil",
+              example: 2,
+            },
+            idTipoUsuario: {
+              type: "integer",
+              description: "LLave foránea que define el tipo de usuario",
+              example: 0,
+            },
+          },
+          required: [
+            "nombreUsuario",
+            "contrasenia",
+            "activo",
+            "a2fActivo",
+            "idPersona",
+            "idTipoUsuario",
+          ],
+          example: {
+            id: 1,
+            nombreUsuario: "miNombr3Usuario",
+            contrasenia: "kd9fñc..s",
+            activo: true,
+            a2fActivo: false,
+            idPersona: 2,
+            idTipoUsuario: 0,
+          },
+        },
+        Marca:{
+          type: "object",
+          properties:{
+            id:{
+              type: "integer",
+              description: "ID de la marca, clave primaria, autoincrementable",
+              example: 1,
+            },
+            nombreMarca:{
+              type: "string",
+              description: "Nombre de la marca, no puede ser nulo o vacio",
+              example: "Adidas"
+            }
+          },
+          required:[
+            "nombreMarca"
+          ],
+          example:{
+            id:1,
+            nombreMarca: "Adidas"
+          }, 
+        },
+
+      Categoria:{
+        type: "object",
+        properties:{
+          id:{
+            type: "integer",
+            description: "ID de la categoria, clave primaria, autoincrementable",
+            example: 1,
+          },
+          nombreMarca:{
+            type: "string",
+            description: "Nombre de la Categoria, no puede ser nulo o vacio",
+            example: "Ropa"
+          }
+        },
+        required:[
+          "nombreCategoria"
+        ],
+        example:{
+          id:1,
+          nombreCategoria: "Ropa"
         }
+        
+    }
+
       },
     },
     "paths": {
@@ -320,6 +431,276 @@ const swaggerOptions = {
             },
             "404": {
               "description": "Persona no encontrada"
+            }
+          }
+        }
+      },
+
+      "/categorias": {
+        "get": {
+          "summary": "Obtener la lista de categorias",
+          "responses": {
+            "200": {
+              "description": "Lista de categorias",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Categoria"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Crear una nueva persona",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Persona"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Categoria creada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Categoria"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/categoria/{id}": {
+        "get": {
+          "summary": "Obtener una categoria por ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Categoria encontrada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Categoria"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Categoria no encontrada"
+            }
+          }
+        },
+        "put": {
+          "summary": "Actualizar una categoria existente",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Categoria"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Categoria actualizada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Categoria"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Categoria no encontrada"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Eliminar una categoria",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Categoria eliminada"
+            },
+            "404": {
+              "description": "Categoria no encontrada"
+            }
+          }
+        }
+      },
+
+      "/marcas": {
+        "get": {
+          "summary": "Obtener la lista de marcas",
+          "responses": {
+            "200": {
+              "description": "Lista de marcas",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Marca"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Crear una nueva marca",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Marca"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Marca creada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Marca"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/marcas/{id}": {
+        "get": {
+          "summary": "Obtener una marca por ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Marca encontrada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Marca"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Marca no encontrada"
+            }
+          }
+        },
+        "put": {
+          "summary": "Actualizar una marca existente",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Marca"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Marca actualizada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Marca"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Marca no encontrada"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Eliminar una marca",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Marca eliminada"
+            },
+            "404": {
+              "description": "Marca no encontrada"
             }
           }
         }
