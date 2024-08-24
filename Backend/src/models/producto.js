@@ -12,7 +12,7 @@ const Producto = sequelize.define(
       autoIncrement: true
     },
     nombre: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(200),
       allowNull: false,
       validate: {
           notNull: {

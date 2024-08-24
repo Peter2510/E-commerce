@@ -1798,7 +1798,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/crearProducto": {
+      "/api/v1/producto/crearProducto": {
         "post": {
           "summary": "Crea un nuevo producto",
           "tags": [
@@ -1929,7 +1929,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/producto/{id}": {
+      "/api/v1/productos/producto/{id}": {
         "get": {
           "summary": "Obtiene un producto por ID",
           "tags": [
@@ -2091,7 +2091,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/editarProducto": {
+      "/api/v1/productos/editarProducto": {
         "put": {
           "summary": "Edita un producto existente",
           "tags": [
