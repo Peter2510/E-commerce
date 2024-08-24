@@ -5,6 +5,9 @@ import { clienteGuardGuard } from './guard/cliente-guard.guard';
 import { LitadoProductosComponent } from './pages/litado-productos/litado-productos.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
+import { CarritoDeComprasComponent } from './pages/carrito-de-compras/carrito-de-compras.component';
+import { DetalleProductoComponent } from './pages/detalle-producto/detalle-producto.component';
+
 
 const routes: Routes = [{
   path:'',
@@ -19,6 +22,16 @@ const routes: Routes = [{
     {
       path: 'perfil',
       component: PerfilComponent,
+      canActivate:[clienteGuardGuard]
+    },
+    {
+      path: 'carrito-compras',
+      component: CarritoDeComprasComponent,
+      canActivate:[clienteGuardGuard]
+    },
+    {
+      path: 'producto/:id',
+      component: DetalleProductoComponent,
       canActivate:[clienteGuardGuard]
     },
     {

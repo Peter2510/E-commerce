@@ -8,7 +8,9 @@ import { LitadoProductosComponent } from './pages/litado-productos/litado-produc
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { CarritoDeComprasComponent } from './pages/carrito-de-compras/carrito-de-compras.component';
+import { DetalleProductoComponent } from './pages/detalle-producto/detalle-producto.component';
 
+import { FormsModule } from '@angular/forms'; 
 
 @NgModule({
   declarations: [
@@ -16,11 +18,13 @@ import { CarritoDeComprasComponent } from './pages/carrito-de-compras/carrito-de
     LitadoProductosComponent,
     PerfilComponent,
     WelcomeComponent,
-    CarritoDeComprasComponent  
+    CarritoDeComprasComponent,
+    DetalleProductoComponent  
   ],
   imports: [
     CommonModule,
-    ClienteRoutingModule
+    ClienteRoutingModule,
+    FormsModule
   ],
   providers:[CookieService]
 })

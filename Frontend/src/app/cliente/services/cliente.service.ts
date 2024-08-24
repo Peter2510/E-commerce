@@ -27,4 +27,8 @@ export class ClienteService {
     return this.http.get(`${this.baseUrl}/producto/:id`);
   }
 
+  getProducto(id: number){
+    return this.http.get(`${this.baseUrl}/producto/${id}`);
+  }
+
 }

@@ -1,21 +1,22 @@
+<p>hola que hacen aqui </p>
 <div class="bg-gray-100 min-h-screen p-6">
     <div class="container mx-auto">
       <h2 class="text-3xl font-bold mb-6 text-gray-800">Carrito de Compras</h2>
       <div class="bg-white rounded-lg shadow-lg p-4">
         <!-- Lista de productos en el carrito -->
-        <div class="space-y-4">
+        <div *ngFor="let producto of cartItems" class="space-y-4">
           <div class="flex items-center justify-between p-4 border-b">
             <div class="flex items-center">
               <img class="w-16 h-16 rounded" src="https://via.placeholder.com/150" alt="Imagen del Producto" />
               <div class="ml-4">
-                <h3 class="text-lg font-semibold text-gray-700">Nombre del Producto</h3>
-                <p class="text-gray-600">Descripción del Producto</p>
+                <h3 class="text-lg font-semibold text-gray-700">{{producto.nombre}}</h3>
+                <p class="text-gray-600">{{producto.descripcion}}</p>
               </div>
             </div>
             <div class="flex items-center">
-              <p class="text-lg font-bold text-gray-800">$50.00</p>
-              <input type="number" value="1" class="ml-4 w-16 text-center border-gray-300 rounded p-1" />
-              <button class="ml-4 text-red-600 hover:text-red-800">
+              <p class="text-lg font-bold text-gray-800">{{producto.precio}}</p>
+              <input type="number" (input)="getTotal($event)" [(ngModel)]="producto.cantidad" class="ml-4 w-16 text-center border-gray-300 rounded p-1" />
+              <button (click)="removeItem(12)" class="ml-4 text-red-600 hover:text-red-800">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>

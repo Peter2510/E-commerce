@@ -1,4 +1,5 @@
 
+
 <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
     <span class="sr-only">Open sidebar</span>
     <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -10,7 +11,7 @@
     <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
        <ul class="space-y-2 font-medium">
         <li>
-            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            <a href="/cliente/carrito-compras" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M7 4h-2l-1 2H1v2h1l3.6 7.59-.35.59A1.003 1.003 0 0 0 6 18h12v-2H7.42l.94-2H19a1 1 0 0 0 .92-.63l3-7a1 1 0 0 0-.92-1.37H6.21L5.27 4H7zm12.18 4-2.4 5H8.53L6.53 8H19.18zM7 20c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
                </svg>
@@ -54,10 +55,14 @@
              </a>
           </li>
        </ul>
+       
     </div>
+    
  </aside>
  
+ 
  <div class="p-4 sm:ml-64">
+   <router-outlet></router-outlet>
     <app-perfil *ngIf="mostrarPerfil" [usuario]="usuario"></app-perfil> 
  </div>
  
