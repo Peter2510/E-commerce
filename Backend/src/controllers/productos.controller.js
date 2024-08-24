@@ -4,7 +4,7 @@ const Marca = require('../models/marca');
 const Categoria = require('../models/categoria');
 const UrlImangen = require("../models/imagenProducto");
 const { manejoErrores } = require("../utils/manejoErrores.utils");
-const { subirArchivo, obtenerUrlFirmada, eliminarArchivo } = require("../utils/manejoArchivos.utils");
+const { subirArchivo, obtenerUrlFirmada, eliminarArchivo, generarNombreArchivo } = require("../utils/manejoArchivos.utils");
 
 
 
@@ -30,7 +30,11 @@ const crearProducto = async (req, res) => {
 
         for (const imagen of arrayImagenes) {
             
+            //genera un nombre aleatorio y unico para cada imagen
+            imagen.name = generarNombreArchivo(imagen);
+
             const respuesta = await subirArchivo(imagen);
+
             if (respuesta.$metadata.httpStatusCode === 200) {
 
                 await UrlImangen.create({
@@ -133,8 +137,6 @@ const editarProducto = async (req, res) => {
             transaction: t
         });
 
-        
-
         // //Para eliminar imagenes
         if(imagenesEliminar){
             //array con el nombre de las imagenes a eliminar
@@ -153,6 +155,8 @@ const editarProducto = async (req, res) => {
             const arrayImagenes = Array.isArray(imagenes) ? imagenes : [imagenes];
 
             for (const imagen of arrayImagenes) {
+
+                imagen.name = generarNombreArchivo(imagen);
 
                 const respuesta = await subirArchivo(imagen);
 
