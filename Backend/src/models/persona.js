@@ -73,4 +73,7 @@ const Persona = sequelize.define(
   }
 );
 
+Persona.belongsTo(FormaPago, { foreignKey: 'idTipoFormaPago', as: 'formaPago' });
+
+
 module.exports = Persona;

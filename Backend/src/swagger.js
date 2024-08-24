@@ -187,7 +187,7 @@ const swaggerOptions = {
             idTipoUsuario: 0,
           },
         },
-        "Producto": {
+        Producto: {
           "type": "object",
           "properties": {
             "id": {
@@ -232,7 +232,7 @@ const swaggerOptions = {
             "idMarca": 3
           }
         },
-          "UrlImagen": {
+          UrlImagen: {
             "type": "object",
             "properties": {
               "id": {
@@ -822,7 +822,7 @@ const swaggerOptions = {
                       "formaPagos": {
                         "type": "array",
                         "items": {
-                          "$ref": "#/components/schemas/FormaPago"
+                          "$ref": "#/components/schemas/formaPago"
                         },
                         example: [
                           {
@@ -1534,6 +1534,14 @@ const swaggerOptions = {
                             "type": "string",
                             "format": "date-time",
                             "example": "2024-08-20T05:21:02.204Z"
+                          },
+                          "idTipoFormaPago": {
+                            "type": "integer",
+                            "example": 2
+                          },
+                          "tipoFormaPago": {
+                            "type": "string",
+                            "example": "Recoger en tienda"
                           }
                         }
                       }
@@ -1800,7 +1808,7 @@ const swaggerOptions = {
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/producto",
+                  "$ref": "#/components/schemas/Producto",
                   "properties": {
                     "nombre": {
                       "type": "string",

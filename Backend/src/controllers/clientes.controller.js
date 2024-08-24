@@ -4,6 +4,7 @@ const { manejoErrores } = require('../utils/manejoErrores.utils');
 const { Op } = require('sequelize');
 const { sequelize } = require("../configs/database.configs");
 const bcrypt = require("bcrypt");
+const FormaPago = require("../models/formaPago");
 
 const obtenerClientePorId = async (req, res) =>{
 
@@ -22,12 +23,23 @@ const obtenerClientePorId = async (req, res) =>{
   
       const persona = await Persona.findOne({
         where: {id: usuario.idPersona},
-        attributes: ['id', 'nombre', 'correoElectronico', 'fechaCreacion']
+        attributes: ['id', 'nombre', 'correoElectronico', 'fechaCreacion', 'direccion', 'idTipoFormaPago']
       });
   
       if(!usuario){
         return res.status(404).json({ok: false, mensaje: 'Usuario no encontrado'});
       }
+
+      const formaPago = await FormaPago.findOne({
+        where: {id: persona.idTipoFormaPago},
+        attributes: ['id', 'tipo']
+      });
+
+      if(!formaPago){
+        return res.status(404).json({ok: false, mensaje: 'Forma de pago no encontrada'});
+      }
+
+      persona.setDataValue('tipoFormaPago', formaPago.tipo);
   
       res.status(200).json({ok: true , usuario: usuario, persona: persona});
   
