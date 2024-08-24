@@ -11,6 +11,6 @@ const api = '/api/v1/productos';
 router.post(`${api}/crearProducto`,validarProducto, ProductosController.crearProducto);
 router.get(`${api}/producto/:id`, ProductosController.obtenerProducto);
 router.put(`${api}/editarProducto`,validarEdicionProducto, ProductosController.editarProducto);
-
+router.put(`${api}/cambiarEstadoProducto/:id`, ProductosController.cambiarEstadoActivoProducto);
 
 module.exports = router;

@@ -216,6 +216,11 @@ const swaggerOptions = {
               "description": "Cantidad mínima de inventario que debe haber",
               "example": 10
             },
+            "activo": {
+              "type": "boolean",
+              "description": "Define si el producto está disponible para la venta",
+              "example": true
+            },
             "idMarca": {
               "type": "integer",
               "example": 3
@@ -1354,7 +1359,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/administracion/obtenerClientes": {
+      "/api/v1/cliente/obtenerClientes": {
         "get": {
           "summary": "Obtener todos los clientes",
           "operationId": "obtenerClientes",
@@ -1458,7 +1463,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/administracion/obtenerClientePorId/{id}": {
+      "/api/v1/clientes/obtenerClientePorId/{id}": {
         "get": {
           "summary": "Obtener un cliente por Id de usuario",
           "operationId": "obtenerClientePorId",
@@ -1573,7 +1578,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/administracion/editarCliente": {
+      "/api/v1/cliente/editarCliente": {
         "post": {
           "summary": "Editar datos de un cliente",
           "operationId": "editarCliente",
@@ -1688,7 +1693,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/administracion/actualizarContrasenia": {
+      "/api/v1/cliente/actualizarContrasenia": {
         "post": {
           "summary": "Actualizar la contraseña de un cliente",
           "operationId": "actualizarContrasenia",
@@ -1705,9 +1710,15 @@ const swaggerOptions = {
                       "description": "ID del usuario a editar",
                       "example": 1,
                     },
-                    "contrasenia": {
+                    "contraseniaActual": {
                       "type": "string",
-                      "example": "nuevaContraseña123"
+                      "descrption": "Contraseña actual del usuario",
+                      "example": "ddf58c"
+                    },
+                    "nuevaContrasenia": {
+                      "type": "string",
+                      "descrption": "Nueva contrasenia",
+                      "example": "dlg99()8"
                     }
                   }
                 }
@@ -1749,6 +1760,26 @@ const swaggerOptions = {
                       "mensaje": {
                         "type": "string",
                         "example": "La contraseña es requerida"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Contrasenia actual incorrecta",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "La contrasenia actual no es correcta"
                       }
                     }
                   }
@@ -2208,6 +2239,106 @@ const swaggerOptions = {
                       "mensaje": {
                         "type": "string",
                         "example": "Error al subir imagen"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Producto no encontrado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Producto no encontrado"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error interno del servidor"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/productos/cambiarEstadoProducto/{id}": {
+        "put": {
+          "summary": "Habilitar o deshabilitar un producto",
+          "tags": [
+            "Productos"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID del producto a dehabilitar",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 12
+              }
+            },
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  type: "object",
+                  properties: {
+                    estado: {
+                      type: "boolean",
+                      descripcion: "Estado del producto",
+                      example: "true"
+                    }
+                  },
+                  required: ["estado"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Producto deshabilitado con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Producto deshabilitado con éxito",
                       }
                     }
                   }

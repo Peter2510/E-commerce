@@ -145,7 +145,11 @@ const editarProducto = async (req, res) => {
                 //eliminar imagen de la base de datos
                 await UrlImangen.destroy( {where: { nombre: nombreImagen }},  { transaction: t });
                 //eliminar imagen del bucket
-                await eliminarArchivo(nombreImagen);
+                const respuesta = await eliminarArchivo(nombreImagen);
+                if (respuesta.$metadata.httpStatusCode !== 204) {
+                    await t.rollback();
+                    return res(400).json({ ok: false, mensaje: 'Error al eliminar imagen' });
+                }
             }
 
         }
@@ -185,9 +189,38 @@ const editarProducto = async (req, res) => {
     }
 }
 
+const cambiarEstadoActivoProducto = async (req, res) => {
+   
+    const { id } = req.params;
+    const { estado } = req.body;
+
+    try {
+
+        const producto = await Producto.findByPk(id);
+
+        if (!producto) {
+            return res.status(404).json({ ok: false, mensaje: 'Producto no encontrado' });
+        }
+
+        await Producto.update({
+            activo: estado
+        }, {
+            where: {
+                id
+            }
+        });
+
+        return res.json({ ok: true, mensaje: 'Estado del producto actualizado con éxito' });
+
+    } catch (error) {
+        await manejoErrores(error, res, "Producto");
+    }
+}
+
 
 module.exports = {
     crearProducto,
     obtenerProducto,
-    editarProducto
+    editarProducto,
+    cambiarEstadoActivoProducto
 }
