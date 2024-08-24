@@ -1460,7 +1460,7 @@ const swaggerOptions = {
       },
       "/api/v1/administracion/obtenerClientePorId/{id}": {
         "get": {
-          "summary": "Obtener un cliente por ID",
+          "summary": "Obtener un cliente por Id de usuario",
           "operationId": "obtenerClientePorId",
           "tags": ["Cliente"],
           "parameters": [
@@ -1587,6 +1587,7 @@ const swaggerOptions = {
                   "properties": {
                     "id": {
                       "type": "integer",
+                      "description": "ID del usuario a editar",
                       "example": 1
                     },
                     "nombreUsuario": {
@@ -1701,7 +1702,8 @@ const swaggerOptions = {
                   "properties": {
                     "id": {
                       "type": "integer",
-                      "example": 1
+                      "description": "ID del usuario a editar",
+                      "example": 1,
                     },
                     "contrasenia": {
                       "type": "string",
