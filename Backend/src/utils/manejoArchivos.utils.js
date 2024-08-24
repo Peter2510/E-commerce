@@ -9,7 +9,6 @@ const crypto = require('crypto');
 const subirArchivo = async (archivo) => {
 
     const stream = fs.createReadStream(archivo.tempFilePath)
-    archivo.name = crypto.randomBytes(16).toString('hex') + '.' + archivo.name.split('.').pop();
 
     const uploadParams = {
         Bucket: process.env.AWS_BUCKET_NAME,
@@ -40,8 +39,13 @@ const eliminarArchivo = async (nombreArchivo) => {
     return await cliente.send(command)
 }
 
+const generarNombreArchivo = (archivo) => {
+    return crypto.randomBytes(16).toString('hex') + '.' + archivo.name.split('.').pop();
+}
+
 module.exports = {
     subirArchivo,
     obtenerUrlFirmada,
-    eliminarArchivo
+    eliminarArchivo,
+    generarNombreArchivo
 }
