@@ -22,6 +22,18 @@ const Marca = sequelize.define(
                 },
             },
         },
+        imagen: {
+            type: DataTypes.STRING,
+            allowNull: false, // la imagen no puede ser null
+            validate: {
+                notNull:{
+                    msg: "La imagen de la marca no puede ser nula"
+                },
+                notEmpty:{
+                    msg: "la imagen no puede estar vacia"
+                }
+            }
+          }
     },
     {
         schema: "catalogo",

@@ -185,6 +185,9 @@ const editarProducto = async (req, res) => {
     }
 }
 
+//listar por categoria, por marca, por precio, por nombre A-Z Z-A
+//Filtros de categoria, y por marca
+
 
 module.exports = {
     crearProducto,

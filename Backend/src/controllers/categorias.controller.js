@@ -2,12 +2,15 @@ const Categoria = require("../models/categoria");
 const {sequelize} = require("../configs/database.configs");
 const { manejoErrores } = require('../utils/manejoErrores.utils');
 const { Op } = require('sequelize');
+const { generarNombreArchivo, subirArchivo, obtenerUrlFirmada, eliminarArchivo } = require("../utils/manejoArchivos.utils");
+const Marca = require("../models/marca");
 
 const crearCategoria = async (req, res) => {
     const t = await sequelize.transaction();
 
     try{
         const {nombreCategoria} = req.body;
+        const {imagen} = req.files; //obtenemos la imagen
 
         //validamos el nombre de la cat
         if(!nombreCategoria){
@@ -15,6 +18,14 @@ const crearCategoria = async (req, res) => {
             return res
                 .status(400)
                 .json({ok:false, mensaje: "El nombre de la Categoria es requerido"})       
+        }
+
+        //Validamos que venga una imagen
+        if(!imagen){
+          await t.rollback();
+          return res
+            .status(400)
+            .json({ok:false, mensaje:"La imagen de la categoria es requerida"})
         }
     
         //validamos que el nombre no exista
@@ -29,9 +40,21 @@ const crearCategoria = async (req, res) => {
                 .status(409)
                 .json({ok: false, mensaje: "El nombre de la Categoria ya existe"});
         }
+
+        //Suimos la imagen
+        imagen.name = generarNombreArchivo(imagen);
+        const respuesta = await subirArchivo(imagen);
+        if(respuesta.$metadata.httpStatusCode !==200) {
+          await t.rollback();
+          return res
+            .status(500)
+            .json({ ok: false, mensaje: "Error al subir imagen"})
+        }
+
+        const nombreImagen = imagen.name;
     
-        //Se crea la Categoria
-        await Categoria.create({nombreCategoria}, {transaction:t});
+        //Se crea la Categoria con la imagen
+        await Categoria.create({nombreCategoria, imagen: nombreImagen}, {transaction:t});
     
         await t.commit();
         res.status(201.).json({ok:true, mensaje: "Nombre de Categoria creado correctamente"})
@@ -43,13 +66,34 @@ const crearCategoria = async (req, res) => {
 };
 
 const obtenerCategorias = async (req, res) => {
-    try {
+  try {
       const categorias = await Categoria.findAll();
-      res.status(200).json({ ok: true, categorias });
-    } catch (error) {
-      await manejoErrores(error, res, "Categoria");
-    }
-  };
+
+      // Crear un array para almacenar las categorias con sus URLs de imágenes firmadas
+      const categoriasConImagenes = await Promise.all(
+          categorias.map(async (categoria) => {
+              // Verificar si la propiedad 'imagen' existe y no está vacía
+              if (categoria.imagen) {
+                  // Obtener la URL firmada para la imagen de la marca
+                  const url = await obtenerUrlFirmada(categoria.imagen);
+
+                  // Asignar la URL firmada a la propiedad de imagen de la marca
+                  categoria.setDataValue("imagen", [{ "nombre": categoria.imagen, "url": url }]);
+              } else {
+                  // Si no hay imagen, asignar un valor predeterminado o vacío
+                  categoria.setDataValue("imagen", []);
+              }
+
+              return categoria;
+          })
+      );
+
+      res.status(200).json({ ok: true, categorias: categoriasConImagenes });
+  } catch (error) {
+      await manejoErrores(error, res, "Marca");
+  }
+};
+
 
 
 const obtenerCategoriaPorId = async (req, res) => {
@@ -61,7 +105,8 @@ const obtenerCategoriaPorId = async (req, res) => {
       if (!categoria) {
         return res.status(404).json({ ok: false, mensaje: "Categoria No Encontrada" });
       }
-  
+      const url = await obtenerUrlFirmada(categoria.imagen)
+      categoria.setDataValue("imagen", [{"nombre": categoria.imagen, "url":url}])
       res.status(200).json({ ok: true, categoria });
     } catch (error) {
       await manejoErrores(error, res, "Categoria");
@@ -71,12 +116,12 @@ const obtenerCategoriaPorId = async (req, res) => {
 
   const actualizarCategoria = async (req, res) => {
     const { id } = req.params;
-    const { nombreCategoria } = req.body;
-  
+    const { nuevoNombre } = req.body;
+    const { nuevaImagen } = req.files || {};  
     const t = await sequelize.transaction(); 
   
     try {
-      if (!nombreCategoria) {
+      if (!nuevoNombre) {
         await t.rollback();
         return res
           .status(400)
@@ -90,13 +135,36 @@ const obtenerCategoriaPorId = async (req, res) => {
         await t.rollback();
         return res.status(404).json({ ok: false, mensaje: "Categoria no encontrada" });
       }
-  
-      // Actualizar la categoria
-      categoria.nombreCategoria = nombreCategoria;
-      await categoria.save({ transaction: t });
+
+      if(nuevaImagen){
+        const eliminarImagen = await eliminarArchivo(categoria.imagen);
+        
+        if(eliminarImagen.$metadata.httpStatusCode !==204){
+          await t.rollback();
+          return res
+            .status(500)
+            .json({ ok: false, mensaje: "Error al eliminar la imagen"})
+        }
+
+        nuevaImagen.name = generarNombreArchivo(nuevaImagen);
+
+        const respuesta = await subirArchivo(nuevaImagen);
+
+        if (respuesta.$metadata.httpStatusCode !== 200){
+          await t.rollback();
+          return res
+            .status(500)
+            .json({ ok: false, mensaje: "Error al subir la imagen"})
+        }
+
+        await categoria.update({nombre: nuevoNombre, imagen: nuevaImagen.name}, {transaction:t});
+
+      }
+
+      await categoria.update({nombre: nuevoNombre}, {transaction:t})
   
       await t.commit(); 
-      res.status(200).json({ ok: true, mensaje: "Nombre categoria actualizada correctamente" });
+      res.status(200).json({ ok: true, mensaje: "Categoria actualizada correctamente" });
   
     } catch (error) {  
       await t.rollback(); 
