@@ -4,6 +4,7 @@ import { User } from 'src/app/interfaces/user.interface';
 import { AuthService } from '../../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +18,8 @@ export class RegisterComponent {
     contrasenia: '',
     persona: undefined,
     activo: true,
-    idTipoUsuario: 1
+    idTipoUsuario: 1,
+    a2fActivo:false
   };
   persona: Person = new Person();
   
@@ -31,7 +33,7 @@ export class RegisterComponent {
     contrasenia2: new FormControl('', [Validators.required, Validators.minLength(8)]),
     idTipoFormaPago: new FormControl('', [Validators.required])
   });
-  constructor(private authservice: AuthService) {
+  constructor(private authservice: AuthService,private router:Router) {
 
   }
 
@@ -52,7 +54,8 @@ export class RegisterComponent {
         contrasenia: this.formulario.get('contrasenia')?.value || '',
         persona: this.persona,
         activo: true, 
-        idTipoUsuario: 1 
+        idTipoUsuario: 1,
+        a2fActivo:false
       };
       this.usuario.persona = this.persona;
       console.log(this.usuario);
@@ -63,6 +66,7 @@ export class RegisterComponent {
             title: 'OK',
             text: "Usuario creado correctamente",
           });
+          this.router.navigate(['/'])
         },
         error:(err=>{
           console.log(err);

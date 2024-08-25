@@ -16,7 +16,7 @@ export class HomeComponent {
 
 
   constructor(private service:ClienteService,private cookie:CookieService,private router:Router){
-    service.getCliente(JSON.parse(cookie.get('token2')).id,cookie.get('token')).subscribe(
+    service.getCliente().subscribe(
     {
       next: (response: any) => {
         const persona = response.persona;
@@ -32,14 +32,15 @@ export class HomeComponent {
   }
 
   cerrarSesion(){
-    console.log('cerrando sesion');
     this.service.cerrarSesion().subscribe({
       next:(response:any)=>{
+      console.log('cerrando sesion');
         this.cookie.delete('token')
         this.cookie.delete('token2')
         this.router.navigate(['/'])
       },
       error: (error) => {
+        console.log(error);
       }
     }
     )

@@ -6,6 +6,7 @@ export class User {
   contrasenia: string;
   persona: Person | undefined;
   activo: boolean;
+  a2fActivo:boolean;
   idTipoUsuario: number;
 
   constructor(
@@ -21,5 +22,6 @@ export class User {
     this.persona = persona;
     this.activo = activo || true;
     this.idTipoUsuario = idTipoUsuario || 0;
+    this.a2fActivo = false
   }
 }

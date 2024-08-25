@@ -46,7 +46,7 @@ export class LoginComponent {
         Swal.fire({
           icon: 'error',
           title: 'Error al iniciar sesión',
-          text: error.error.error || 'Ha ocurrido un error inesperado 2.',
+          text: error.error.mensaje || 'Ha ocurrido un error inesperado 2.',
         });
       }
 

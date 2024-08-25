@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { LitadoProductosComponent } from './pages/litado-productos/litado-productos.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
   ],
   imports: [
     CommonModule,
-    ClienteRoutingModule
+    ClienteRoutingModule,
+    FormsModule
   ],
   providers:[CookieService]
 })
