@@ -225,7 +225,7 @@ const swaggerOptions = {
               "type": "integer",
               "example": 3
             }
-          }, 
+          },
           "required": ["nombre", "idCategoria", "precio", "minimoInventario", "idMarca"],
           "example": {
             "id": 1,
@@ -237,162 +237,162 @@ const swaggerOptions = {
             "idMarca": 3
           }
         },
-          UrlImagen: {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "integer",
-                "example": 1
-              },
-              "ulrImagen": {
-                "type": "string",
-                "description": "URL de la imagen del producto, la imagen sera almacenana en el servicio S3 de AWS",
-                "example": "https://example.com/images/producto1.jpg"
-              },
-              "idProducto": {
-                "type": "integer",
-                "example": 1
-              }
+        UrlImagen: {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
             },
-            "required": ["urlImagen", "idProducto"],
-            "example": {
-              "id": 1,
-              "urlImagen": "https://aws.com/images/producto1.jpg",
-              "idProducto": 1
+            "ulrImagen": {
+              "type": "string",
+              "description": "URL de la imagen del producto, la imagen sera almacenana en el servicio S3 de AWS",
+              "example": "https://example.com/images/producto1.jpg"
+            },
+            "idProducto": {
+              "type": "integer",
+              "example": 1
             }
+          },
+          "required": ["urlImagen", "idProducto"],
+          "example": {
+            "id": 1,
+            "urlImagen": "https://aws.com/images/producto1.jpg",
+            "idProducto": 1
+          }
         }
       }
     },
     "paths": {
       "/api/v1/crearCliente": {
-          "post": {
-            "summary": "Crear un nuevo cliente",
-            "operationId": "crearCliente",
-            "tags": ["Auth"],
-            "requestBody": {
+        "post": {
+          "summary": "Crear un nuevo cliente",
+          "operationId": "crearCliente",
+          "tags": ["Auth"],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Usuario" },
+                    { "$ref": "#/components/schemas/Persona" }
+                  ]
+                },
+                "example": {
+                  "nombreUsuario": "admin",
+                  "contrasenia": "12345678",
+                  "persona": {
+                    "nombre": "Nombre prueba",
+                    "correoElectronico": "admin@a.com",
+                    "direccion": "Mi direccion",
+                    "idTipoFormaPago": 1,
+                    "nit": "2368547"
+                  },
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Cliente registrado correctamente",
               "content": {
                 "application/json": {
                   "schema": {
-                    "allOf": [
-                      { "$ref": "#/components/schemas/Usuario" },
-                      { "$ref": "#/components/schemas/Persona" }
-                    ]
-                  },
-                  "example": {
-                    "nombreUsuario": "admin",
-                    "contrasenia": "12345678",
-                    "persona": {
-                      "nombre": "Nombre prueba",
-                      "correoElectronico": "admin@a.com",
-                      "direccion": "Mi direccion",
-                      "idTipoFormaPago": 1,
-                      "nit": "2368547"
-                    },
-                  }
-                }
-              },
-              "required": true
-            },
-            "responses": {
-              "200": {
-                "description": "Cliente registrado correctamente",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "ok": {
-                          "type": "boolean",
-                          "example": true
-                        },
-                        "mensaje": {
-                          "type": "string",
-                          "example": "Registrado correctamente"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "400": {
-                "description": "Error en la creación del cliente",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "ok": {
-                          "type": "boolean",
-                          "example": false
-                        },
-                        "mensaje": {
-                          "type": "string",
-                          "example": "La contraseña debe tener al menos 8 caracteres"
-                        },
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
                       },
-                      "examples": {
-                        "shortPassword": {
-                          "summary": "Contraseña demasiado corta",
-                          "value": {
-                            "ok": false,
-                            "mensaje": "La contraseña debe tener al menos 8 caracteres"
-                          }
-                        },
-                        "passwordRequired": {
-                          "summary": "Contraseña no proporcionada",
-                          "value": {
-                            "ok": false,
-                            "mensaje": "La contraseña debe tener al menos 8 caracteres"
-                          }
-                        }
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Registrado correctamente"
                       }
                     }
                   }
                 }
-              },
-              "409": {
-                "description": "Correo electrónico ya registrado",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "ok": {
-                          "type": "boolean",
-                          "example": false
-                        },
-                        "mensaje": {
-                          "type": "string",
-                          "example": "Correo electrónico ya registrado"
+              }
+            },
+            "400": {
+              "description": "Error en la creación del cliente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "La contraseña debe tener al menos 8 caracteres"
+                      },
+                    },
+                    "examples": {
+                      "shortPassword": {
+                        "summary": "Contraseña demasiado corta",
+                        "value": {
+                          "ok": false,
+                          "mensaje": "La contraseña debe tener al menos 8 caracteres"
                         }
-                      }
-                    }
-                  }
-                }
-              },
-              "500": {
-                "description": "Error interno del servidor",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "ok": {
-                          "type": "boolean",
-                          "example": false
-                        },
-                        "mensaje": {
-                          "type": "string",
-                          "example": "Error interno del servidor: [detalle del error]"
+                      },
+                      "passwordRequired": {
+                        "summary": "Contraseña no proporcionada",
+                        "value": {
+                          "ok": false,
+                          "mensaje": "La contraseña debe tener al menos 8 caracteres"
                         }
                       }
                     }
                   }
                 }
               }
+            },
+            "409": {
+              "description": "Correo electrónico ya registrado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Correo electrónico ya registrado"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error interno del servidor: [detalle del error]"
+                      }
+                    }
+                  }
+                }
+              }
             }
-                      
           }
+
+        }
       },
       "/api/v1/login": {
         "post": {
@@ -1075,22 +1075,22 @@ const swaggerOptions = {
                         "type": "boolean",
                         "example": true
                       },
-                      usuario:{
+                      usuario: {
                         type: "object",
-                          example: {
-                            "usuario": {
-                              "id": 1,
-                              "nombreUsuario": "Jhony19",
-                              "a2fActivo": true,
-                              "idPersona": 1,
-                              "idTipoUsuario": 1,
-                              "activo": true
-                            },
-                            "persona": {
-                              "id": 1,
-                              "nombre": "Jhony Fuentes",
-                              "correoElectronico": "reyesif268@albarulo.com",
-                              "fechaCreacion": "2024-08-20T05:21:02.204Z"
+                        example: {
+                          "usuario": {
+                            "id": 1,
+                            "nombreUsuario": "Jhony19",
+                            "a2fActivo": true,
+                            "idPersona": 1,
+                            "idTipoUsuario": 1,
+                            "activo": true
+                          },
+                          "persona": {
+                            "id": 1,
+                            "nombre": "Jhony Fuentes",
+                            "correoElectronico": "reyesif268@albarulo.com",
+                            "fechaCreacion": "2024-08-20T05:21:02.204Z"
                           }
                         }
                       }
@@ -1163,54 +1163,54 @@ const swaggerOptions = {
                         "type": "array",
                         example: [
                           {
-                              "usuario": {
-                                  "id": 2,
-                                  "nombreUsuario": "Jhony19",
-                                  "a2fActivo": true,
-                                  "idPersona": 2,
-                                  "idTipoUsuario": 1,
-                                  "activo": true
-                              },
-                              "persona": {
-                                  "id": 2,
-                                  "nombre": "Jhony Fuentes",
-                                  "correoElectronico": "a1@a.com",
-                                  "fechaCreacion": "2024-08-20T06:15:43.557Z"
-                              }
+                            "usuario": {
+                              "id": 2,
+                              "nombreUsuario": "Jhony19",
+                              "a2fActivo": true,
+                              "idPersona": 2,
+                              "idTipoUsuario": 1,
+                              "activo": true
+                            },
+                            "persona": {
+                              "id": 2,
+                              "nombre": "Jhony Fuentes",
+                              "correoElectronico": "a1@a.com",
+                              "fechaCreacion": "2024-08-20T06:15:43.557Z"
+                            }
                           },
                           {
-                              "usuario": {
-                                  "id": 1,
-                                  "nombreUsuario": "Jhony19",
-                                  "a2fActivo": true,
-                                  "idPersona": 1,
-                                  "idTipoUsuario": 1,
-                                  "activo": true
-                              },
-                              "persona": {
-                                  "id": 1,
-                                  "nombre": "Jhony Fuentes",
-                                  "correoElectronico": "reyesif268@albarulo.com",
-                                  "fechaCreacion": "2024-08-20T05:21:02.204Z"
-                              }
+                            "usuario": {
+                              "id": 1,
+                              "nombreUsuario": "Jhony19",
+                              "a2fActivo": true,
+                              "idPersona": 1,
+                              "idTipoUsuario": 1,
+                              "activo": true
+                            },
+                            "persona": {
+                              "id": 1,
+                              "nombre": "Jhony Fuentes",
+                              "correoElectronico": "reyesif268@albarulo.com",
+                              "fechaCreacion": "2024-08-20T05:21:02.204Z"
+                            }
                           },
                           {
-                              "usuario": {
-                                  "id": 13,
-                                  "nombreUsuario": "admin2",
-                                  "a2fActivo": false,
-                                  "idPersona": 11,
-                                  "idTipoUsuario": 1,
-                                  "activo": true
-                              },
-                              "persona": {
-                                  "id": 11,
-                                  "nombre": "Nombre12",
-                                  "correoElectronico": "admin@a.com",
-                                  "fechaCreacion": "2024-08-21T19:08:08.378Z"
-                              }
+                            "usuario": {
+                              "id": 13,
+                              "nombreUsuario": "admin2",
+                              "a2fActivo": false,
+                              "idPersona": 11,
+                              "idTipoUsuario": 1,
+                              "activo": true
+                            },
+                            "persona": {
+                              "id": 11,
+                              "nombre": "Nombre12",
+                              "correoElectronico": "admin@a.com",
+                              "fechaCreacion": "2024-08-21T19:08:08.378Z"
+                            }
                           }
-                      ]
+                        ]
                       }
                     }
                   }
@@ -2069,7 +2069,7 @@ const swaggerOptions = {
                                   "url": "https://bucket.s3.amazonaws.com/d397d0c9a8237862a17895a71b94e1a2.png"
                                 }
                               ]
-                              
+
                             }
                           }
                         }
@@ -2387,9 +2387,189 @@ const swaggerOptions = {
             }
           }
         }
+      },
+      "/api/v1/productos/productosRandom/{cantidad}": {
+        "get": {
+          "sumary": "Obtiene  productos aleatorios",
+          "tags": [
+            "Productos"
+          ],
+          "parameters": [
+            {
+              "name": "cantidad",
+              "in": "path",
+              "description": "Cantidad de productos a obtener",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 5
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Cantidad de productos obtendidosa con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "productos": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "description": "Objeto con los datos del producto",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": "45"
+                            },
+                            "nombre": {
+                              "type": "string",
+                              "example": "Monitor Full HD"
+                            },
+                            "precio": {
+                              "type": "decimal",
+                              "example": "263.25"
+                            },
+                            "marca": {
+                              "type": "array",
+                              "description": "Objeto con el nombre de la marca",
+                              "example": {
+                                "marca": {
+                                  "nombreMarca": "Marca X"
+                                }
+                              }
+                            },
+                            "categoria": {
+                              "type": "array",
+                              "description": "Objeto con el nombre de la categoria",
+                              "example": {
+                                "categoria": {
+                                  "nombreCategoria": "Tecnologia"
+                                }
+                              }
+                            },
+                            "url_imagenes": {
+                              "type": "string",
+                              "description": "URL de la imagen del producto",
+                              "example": "bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                            }
+                          },
+                          "example": [
+                            {
+                              "id": 45,
+                              "nombre": "Monitor Full HD",
+                              "precio": "263.25",
+                              "marca": {
+                                "nombreMarca": "Marca X"
+                              },
+                              "categoria": {
+                                "nombreCategoria": "Tecnologia"
+                              },
+                              "url_imagenes": [{
+                                "nombre": "cf854ed066707b18b3836f6d8342c4a9.png",
+                                "url": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                              },
+                              {
+                                "nombre": "cf854ed066707b18b3836f6d8342c4a9.png",
+                                "url": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                              }
+                              ]
+                            },
+                            {
+                              "id": 46,
+                              "nombre": "Monitor Ultra HD",
+                              "precio": "300.00",
+                              "marca": {
+                                "nombreMarca": "Marca Y"
+                              },
+                              "categoria": {
+                                "nombreCategoria": "Tecnologia"
+                              },
+                              "url_imagenes": [{
+                                "nombre": "cf854ed066707b18b3836f6d8342c4a9.png",
+                                "url": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                              }]
+                            },
+                            {
+                              "id": 47,
+                              "nombre": "Monitor Ultra HD",
+                              "precio": "300.00",
+                              "marca": {
+                                "nombreMarca": "Marca Y"
+                              },
+                              "categoria": {
+                                "nombreCategoria": "Tecnologia"
+                              },
+                              "url_imagenes": [{
+                                "nombre": "cf854ed066707b18b3836f6d8342c4a9.png",
+                                "url": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                              },
+                              {
+                                "nombre": "cf854ed066707b18b3836f6d8342c4a9.png",
+                                "url": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                              }]
+                            }
+                          ]
+
+                        }
+                      }
+
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "No se encontraron productos",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "No se encontraron productos"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500":{
+              "description": "Error al obtener productos",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error al obtener productos"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
-    
+
   },
   apis: ["./routes/*.js"],
 };
