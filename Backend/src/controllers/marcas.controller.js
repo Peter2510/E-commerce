@@ -1,7 +1,7 @@
 const Marca = require("../models/marca");
 const {sequelize} = require("../configs/database.configs");
 const { manejoErrores } = require('../utils/manejoErrores.utils');
-const { Op } = require('sequelize');
+const { Op, json } = require('sequelize');
 const {subirArchivo, generarNombreArchivo, obtenerUrlFirmada, eliminarArchivo} = require('../utils/manejoArchivos.utils') 
 
 
@@ -116,64 +116,64 @@ const obtenerMarcaPorId = async (req, res) => {
   const actualizarMarca = async (req, res) => {
     const { id } = req.params;
     const { nuevoNombre } = req.body;
-    const { nuevaImagen} = req.files || {};
+    const { nuevaImagen } = req.files || {};
     const t = await sequelize.transaction(); 
-  
+
     try {
-      if (!nuevoNombre) {
-        await t.rollback();
-        return res
-          .status(400)
-          .json({ ok: false, mensaje: "El nombre de la marca es requerido" });
-      }
-  
-      // Verificar si la marca existe
-      const marca = await Marca.findByPk(id);
-  
-      if (!marca) {
-        await t.rollback();
-        return res.status(404).json({ ok: false, mensaje: "Marca no encontrada" });
-      }
-      //Eliminar
-      if(nuevaImagen) {
-        //si viene nueva imagen
-        const eliminarImagen = await eliminarArchivo(marca.imagen);
+        if (!nuevoNombre) {
+            await t.rollback();
+            return res
+                .status(400)
+                .json({ ok: false, mensaje: "El nombre de la marca es requerido" });
+        }
 
-        console.log(eliminarImagen);
-        if (eliminarImagen.$metadata.httpStatusCode !== 204) {
-          await t.rollback();
-          return res
-              .status(500)
-              .json({ ok: false, mensaje: "Error al eliminar la imagen" });
-      }
+        // Verificar si la marca existe
+        const marca = await Marca.findByPk(id);
 
-        nuevaImagen.name = generarNombreArchivo(nuevaImagen);
-
-        const respuesta = await subirArchivo(nuevaImagen); // Función que maneja la subida de archivos
-
-        if (respuesta.$metadata.httpStatusCode !== 200) {
-          await t.rollback();
-          return res
-              .status(500)
-              .json({ ok: false, mensaje: "Error al subir la imagen" });
-      }
-
-      await marca.update({nombre: nuevoNombre, imagen: nuevaImagen.name }, {transaction:t})
+        if (!marca) {
+            await t.rollback();
+            return res.status(404).json({ ok: false, mensaje: "Marca no encontrada" });
+        }
 
 
-      }
+        if (nuevaImagen) {
+            // Si viene nueva imagen, eliminar la antigua
+            const eliminarImagen = await eliminarArchivo(marca.imagen);
 
-      await marca.update({nombre: nuevoNombre }, {transaction:t})
-      // Actualizar la marca
-  
-      await t.commit(); 
-      res.status(200).json({ ok: true, mensaje: "Marca actualizada correctamente" });
-  
+            if (eliminarImagen.$metadata.httpStatusCode !== 204) {
+                await t.rollback();
+                return res
+                    .status(500)
+                    .json({ ok: false, mensaje: "Error al eliminar la imagen" });
+            }
+
+            nuevaImagen.name = generarNombreArchivo(nuevaImagen);
+
+            const respuesta = await subirArchivo(nuevaImagen);
+
+            if (respuesta.$metadata.httpStatusCode !== 200) {
+                await t.rollback();
+                return res
+                    .status(500)
+                    .json({ ok: false, mensaje: "Error al subir la imagen" });
+            }
+
+            // Actualizar la marca con nuevo nombre e imagen
+            await marca.update({ nombreMarca: nuevoNombre, imagen: nuevaImagen.name }, { transaction: t });
+        } else {
+            // Si no hay nueva imagen, solo actualizar el nombre
+            await marca.update({ nombreMarca: nuevoNombre }, { transaction: t });
+        }
+
+        await t.commit(); 
+        return res.status(200).json({ ok: true, mensaje: "Marca actualizada correctamente" });
+
     } catch (error) {  
-      await t.rollback(); 
-      await manejoErrores(error, res, "Marca");
+        await t.rollback(); 
+        await manejoErrores(error, res, "Marca");
     }
-  };
+};
+
 
 const eliminarMarca = async (req, res) => {
     const { id } = req.params;

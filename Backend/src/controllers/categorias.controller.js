@@ -3,7 +3,6 @@ const {sequelize} = require("../configs/database.configs");
 const { manejoErrores } = require('../utils/manejoErrores.utils');
 const { Op } = require('sequelize');
 const { generarNombreArchivo, subirArchivo, obtenerUrlFirmada, eliminarArchivo } = require("../utils/manejoArchivos.utils");
-const Marca = require("../models/marca");
 
 const crearCategoria = async (req, res) => {
     const t = await sequelize.transaction();
@@ -74,10 +73,10 @@ const obtenerCategorias = async (req, res) => {
           categorias.map(async (categoria) => {
               // Verificar si la propiedad 'imagen' existe y no está vacía
               if (categoria.imagen) {
-                  // Obtener la URL firmada para la imagen de la marca
+                  // Obtener la URL firmada para la imagen de la categoria
                   const url = await obtenerUrlFirmada(categoria.imagen);
 
-                  // Asignar la URL firmada a la propiedad de imagen de la marca
+                  // Asignar la URL firmada a la propiedad de imagen de la categoria
                   categoria.setDataValue("imagen", [{ "nombre": categoria.imagen, "url": url }]);
               } else {
                   // Si no hay imagen, asignar un valor predeterminado o vacío
@@ -90,7 +89,7 @@ const obtenerCategorias = async (req, res) => {
 
       res.status(200).json({ ok: true, categorias: categoriasConImagenes });
   } catch (error) {
-      await manejoErrores(error, res, "Marca");
+      await manejoErrores(error, res, "Categoria");
   }
 };
 
@@ -117,60 +116,64 @@ const obtenerCategoriaPorId = async (req, res) => {
   const actualizarCategoria = async (req, res) => {
     const { id } = req.params;
     const { nuevoNombre } = req.body;
-    const { nuevaImagen } = req.files || {};  
+    const { nuevaImagen } = req.files || {};
     const t = await sequelize.transaction(); 
-  
+
     try {
-      if (!nuevoNombre) {
-        await t.rollback();
-        return res
-          .status(400)
-          .json({ ok: false, mensaje: "El nombre de la categoria es requerido" });
-      }
-  
-      // Verificar si la categoria existe
-      const categoria = await Categoria.findByPk(id);
-  
-      if (!categoria) {
-        await t.rollback();
-        return res.status(404).json({ ok: false, mensaje: "Categoria no encontrada" });
-      }
-
-      if(nuevaImagen){
-        const eliminarImagen = await eliminarArchivo(categoria.imagen);
-        
-        if(eliminarImagen.$metadata.httpStatusCode !==204){
-          await t.rollback();
-          return res
-            .status(500)
-            .json({ ok: false, mensaje: "Error al eliminar la imagen"})
+        if (!nuevoNombre) {
+            await t.rollback();
+            return res
+                .status(400)
+                .json({ ok: false, mensaje: "El nombre de la categoria es requerido" });
         }
 
-        nuevaImagen.name = generarNombreArchivo(nuevaImagen);
+        // Verificar si la categoria existe
+        const categoria = await Categoria.findByPk(id);
 
-        const respuesta = await subirArchivo(nuevaImagen);
-
-        if (respuesta.$metadata.httpStatusCode !== 200){
-          await t.rollback();
-          return res
-            .status(500)
-            .json({ ok: false, mensaje: "Error al subir la imagen"})
+        if (!categoria) {
+            await t.rollback();
+            return res.status(404).json({ ok: false, mensaje: "Categoria no encontrada" });
         }
 
-        await categoria.update({nombre: nuevoNombre, imagen: nuevaImagen.name}, {transaction:t});
 
-      }
+        if (nuevaImagen) {
+            // Si viene nueva imagen, eliminar la antigua
+            const eliminarImagen = await eliminarArchivo(categoria.imagen);
 
-      await categoria.update({nombre: nuevoNombre}, {transaction:t})
-  
-      await t.commit(); 
-      res.status(200).json({ ok: true, mensaje: "Categoria actualizada correctamente" });
-  
+            if (eliminarImagen.$metadata.httpStatusCode !== 204) {
+                await t.rollback();
+                return res
+                    .status(500)
+                    .json({ ok: false, mensaje: "Error al eliminar la imagen" });
+            }
+
+            nuevaImagen.name = generarNombreArchivo(nuevaImagen);
+
+            const respuesta = await subirArchivo(nuevaImagen);
+
+            if (respuesta.$metadata.httpStatusCode !== 200) {
+                await t.rollback();
+                return res
+                    .status(500)
+                    .json({ ok: false, mensaje: "Error al subir la imagen" });
+            }
+
+            // Actualizar la categoria con nuevo nombre e imagen
+            await categoria.update({ nombreCategoria: nuevoNombre, imagen: nuevaImagen.name }, { transaction: t });
+        } else {
+            // Si no hay nueva imagen, solo actualizar el nombre
+            await categoria.update({ nombreCategoria: nuevoNombre }, { transaction: t });
+        }
+
+        await t.commit(); 
+        return res.status(200).json({ ok: true, mensaje: "Categoria actualizada correctamente" });
+
     } catch (error) {  
-      await t.rollback(); 
-      await manejoErrores(error, res, "Categoria");
+        await t.rollback(); 
+        await manejoErrores(error, res, "Categoria");
     }
-  };
+};
+
 
 const eliminarCategoria = async (req, res) => {
     const { id } = req.params;
