@@ -40,7 +40,7 @@ app.use(jwtValidacion,categoriasRoutes);
 app.use(jwtValidacion,marcasRoutes);
 app.use(jwtValidacion,adminstracionRoutes);
 app.use(jwtValidacion, clientesRoutes);
-app.use( permisosRoutes);
+app.use( jwtValidacion, permisosRoutes);
 
 
 
