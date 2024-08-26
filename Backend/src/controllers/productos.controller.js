@@ -185,9 +185,8 @@ const editarProducto = async (req, res) => {
     }
 }
 
-
 const filtrarProductos = async (req, res) => {
-    const { idCategoria, idMarca } = req.query; // Obtener los filtros de la solicitud
+    const { idCategoria, idMarca, sortBy = 'nombre', order = 'ASC' } = req.query;
 
     try {
         // Construir la cláusula where dinámica
@@ -201,12 +200,26 @@ const filtrarProductos = async (req, res) => {
             whereClause.idMarca = idMarca;
         }
 
-        // Obtener productos filtrados según los parámetros proporcionados
+        // Validar y establecer el criterio de ordenamiento
+        const validSortFields = ['nombre', 'precio', 'minimoInventario'];
+        const validOrders = ['ASC', 'DESC'];
+
+        // Validar el campo de ordenamiento
+        if (!validSortFields.includes(sortBy)) {
+            return res.status(400).json({ ok: false, mensaje: 'Campo de ordenamiento no válido' });
+        }
+
+        // Validar el tipo de ordenamiento
+        if (!validOrders.includes(order.toUpperCase())) {
+            return res.status(400).json({ ok: false, mensaje: 'Tipo de ordenamiento no válido' });
+        }
+
+        // Obtener productos filtrados y ordenados según los parámetros proporcionados
         const productos = await Producto.findAll({
             where: whereClause,
+            order: [[sortBy, order.toUpperCase()]] // Ordenar por el campo y tipo especificados
         });
 
-        // Si no se encuentran productos
         if (!productos.length) {
             return res.status(404).json({ ok: false, mensaje: 'No se encontraron productos con los filtros proporcionados' });
         }
@@ -240,7 +253,10 @@ const filtrarProductos = async (req, res) => {
     } catch (error) {
         await manejoErrores(error, res, "Producto");
     }
+
+    //http://localhost:3200/api/v1/productos/filtrar?idMarca=3&idCategoria=4&sortBy=precio&order=ASC
 };
+
 
 
 

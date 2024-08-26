@@ -2304,6 +2304,200 @@ const swaggerOptions = {
         }
       },
 
+
+"/api/v1/productos/filtrar": {
+  "get": {
+    "summary": "Filtrar productos por varios criterios",
+    "tags": [
+      "Productos"
+    ],
+    "parameters": [
+      {
+        "name": "idMarca",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "description": "ID de la marca",
+          "example": 3
+        }
+      },
+      {
+        "name": "idCategoria",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "description": "ID de la categoría",
+          "example": 4
+        }
+      },
+      {
+        "name": "sortBy",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "description": "Campo por el cual ordenar los resultados (e.g., nombre, precio)",
+          "example": "precio"
+        }
+      },
+      {
+        "name": "order",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "description": "Orden de los resultados (ASC o DESC)",
+          "enum": ["ASC", "DESC"],
+          "example": "ASC"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Productos filtrados con éxito",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "productos": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 10
+                      },
+                      "nombre": {
+                        "type": "string",
+                        "example": "Monitor Full HD"
+                      },
+                      "idCategoria": {
+                        "type": "integer",
+                        "example": 3
+                      },
+                      "descripcion": {
+                        "type": "string",
+                        "example": "Pantalla full hd para pc"
+                      },
+                      "precio": {
+                        "type": "string",
+                        "example": "195.00"
+                      },
+                      "minimoInventario": {
+                        "type": "integer",
+                        "example": 20
+                      },
+                      "idMarca": {
+                        "type": "integer",
+                        "example": 3
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-08-23T02:41:28.087Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-08-23T02:41:28.087Z"
+                      },
+                      "marca": {
+                        "type": "string",
+                        "example": "Marca X"
+                      },
+                      "categoria": {
+                        "type": "string",
+                        "example": "Categoría Y"
+                      },
+                      "url_imagenes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "nombre": {
+                              "type": "string",
+                              "example": "cf854ed066707b18b3836f6d8342c4a9.png"
+                            },
+                            "url": {
+                              "type": "string",
+                              "description": "URL de la imagen del producto, es necesario almacenar el nombre para actualizar o eliminar la imagen",
+                              "format": "uri",
+                              "example": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                            }
+                          }
+                        },
+                        "example": [
+                          {
+                            "nombre": "cf854ed066707b18b3836f6d8342c4a9.png",
+                            "url": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                          },
+                          {
+                            "nombre": "2b192bdc328aa66d66d2fa15a6586ccf.png",
+                            "url": "https://bucket.s3.amazonaws.com/2b192bdc328aa66d66d2fa15a6586ccf.png"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Productos no encontrados",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "No se encontraron productos con los criterios especificados"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Error interno del servidor",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Error interno del servidor"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+
+
       "/categorias": {
         "get": {
           "summary": "Obtener la lista de categorias",
