@@ -2,6 +2,7 @@ import {Component } from '@angular/core';
 import { User } from 'src/app/interfaces/user.interface';
 import { ClienteService } from '../../services/cliente.service';
 import Swal from 'sweetalert2';
+import { formaPago } from 'src/app/interfaces/formaPago';
 
 @Component({
   selector: 'app-perfil',
@@ -16,6 +17,8 @@ export class PerfilComponent {
   contrasenaActual: string = '';
   nuevaContrasena: string = '';
   confirmarContrasena: string = '';
+  formasPago!: formaPago[]
+
   constructor(private servicio: ClienteService) {
   }
   ngOnInit(){
@@ -23,14 +26,22 @@ export class PerfilComponent {
       next: (response: any) => {
         this.usuario = response.usuario
         this.usuario.persona = response.persona
+        this.usuario2 = response.usuario
+        this.usuario2.persona = response.persona
       },
       error: (error) => {
       }
     })
+    this.servicio.getFormasPago().subscribe({
+      next:(response:any)=>{
+        this.formasPago = response.formaPagos
+      },
+      error:(error)=>{
+
+      }
+    })
   }
-  cargar() {
-    console.log(this.usuario);
-  }
+  
   guardarInformacionPersonal(){
     this.servicio.actualizarDatos(this.usuario2).subscribe({
       next:(Response:any)=>{

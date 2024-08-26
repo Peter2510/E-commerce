@@ -5,6 +5,8 @@ import { AuthService } from '../../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { ClienteService } from 'src/app/cliente/services/cliente.service';
+import { formaPago } from 'src/app/interfaces/formaPago';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +24,8 @@ export class RegisterComponent {
     a2fActivo:false
   };
   persona: Person = new Person();
-  
+  formasPago!:formaPago[]
+
   formulario = new FormGroup({
     nombre: new FormControl('', [Validators.required, Validators.minLength(3)]),
     correo: new FormControl('', [Validators.required, Validators.email]),
@@ -33,8 +36,12 @@ export class RegisterComponent {
     contrasenia2: new FormControl('', [Validators.required, Validators.minLength(8)]),
     idTipoFormaPago: new FormControl('', [Validators.required])
   });
-  constructor(private authservice: AuthService,private router:Router) {
-
+  constructor(private authservice: AuthService,private router:Router,clienteService:ClienteService) {
+    clienteService.getFormasPago().subscribe({
+      next:(response:any)=>{
+        this.formasPago = response.formaPagos
+      }
+    })
   }
 
   crearUsuario() {

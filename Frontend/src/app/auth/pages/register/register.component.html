@@ -69,8 +69,7 @@
           <div class="mb-6">
             <label for="forma_pago" class="block text-gray-700 font-medium mb-2">Forma de Pago</label>
             <select id="forma_pago" formControlName="idTipoFormaPago" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="1">Recoger en tienda</option>
-              <option value="2">Entrega a domicilio</option>
+              <option *ngFor="let opcion of formasPago" value={{opcion.id}}>{{opcion.tipo}}</option>
             </select>
             <div *ngIf="formulario.get('idTipoFormaPago')?.invalid && formulario.get('idTipoFormaPago')?.touched" class="text-red-500">
               <div *ngIf="formulario.get('idTipoFormaPago')?.errors?.['required']">Debe seleccionar una forma de pago.</div>

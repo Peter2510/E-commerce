@@ -22,6 +22,10 @@ export class ClienteService {
     });
   }
   
+  getFormasPago(){
+    return this.http.get(`${this.baseUrl}/administracion/getFormasPago`,{withCredentials:true})
+  }
+
   actualizarDatos(user:User){
     user.id = user.persona?.id
     return this.http.post(`${this.baseUrl}/cliente/editarCliente`,user,{withCredentials:true})
