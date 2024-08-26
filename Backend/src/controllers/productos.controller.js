@@ -185,12 +185,71 @@ const editarProducto = async (req, res) => {
     }
 }
 
-//listar por categoria, por marca, por precio, por nombre A-Z Z-A
-//Filtros de categoria, y por marca
+
+const filtrarProductos = async (req, res) => {
+    const { idCategoria, idMarca } = req.query; // Obtener los filtros de la solicitud
+
+    try {
+        // Construir la cláusula where dinámica
+        const whereClause = {};
+
+        if (idCategoria) {
+            whereClause.idCategoria = idCategoria;
+        }
+
+        if (idMarca) {
+            whereClause.idMarca = idMarca;
+        }
+
+        // Obtener productos filtrados según los parámetros proporcionados
+        const productos = await Producto.findAll({
+            where: whereClause,
+        });
+
+        // Si no se encuentran productos
+        if (!productos.length) {
+            return res.status(404).json({ ok: false, mensaje: 'No se encontraron productos con los filtros proporcionados' });
+        }
+
+        // Obtener marcas y categorías asociadas para cada producto
+        const productosConDetalles = await Promise.all(productos.map(async (producto) => {
+            const [marca, categoria, imagenes] = await Promise.all([
+                Marca.findByPk(producto.idMarca),
+                Categoria.findByPk(producto.idCategoria),
+                UrlImangen.findAll({
+                    where: { idProducto: producto.id }
+                })
+            ]);
+
+            let imagenesFirmadas = [];
+            for (const imagen of imagenes) {
+                const url = await obtenerUrlFirmada(imagen.nombre);
+                imagenesFirmadas.push({ nombre: imagen.nombre, url: url });
+            }
+
+            return {
+                ...producto.toJSON(),
+                marca: marca ? marca.nombreMarca : null,
+                categoria: categoria ? categoria.nombreCategoria : null,
+                url_imagenes: imagenesFirmadas
+            };
+        }));
+
+        return res.json({ ok: true, productos: productosConDetalles });
+
+    } catch (error) {
+        await manejoErrores(error, res, "Producto");
+    }
+};
+
+
+
+
 
 
 module.exports = {
     crearProducto,
     obtenerProducto,
-    editarProducto
+    editarProducto,
+    filtrarProductos
 }
