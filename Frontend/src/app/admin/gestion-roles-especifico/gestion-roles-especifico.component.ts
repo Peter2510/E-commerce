@@ -29,7 +29,7 @@ export class GestionRolesEspecificoComponent
   persona!: Person;
   usuario!: User;
   tipoRol: any[] = [];
-  tipoRol2: any[] = [];
+  tipoRol2!: any[];
 
   //servicio
   servicio = inject(ServicioAdminService);
@@ -72,18 +72,36 @@ export class GestionRolesEspecificoComponent
     }
   }
 
+  obtenerRolesUsuario(id: number) {
+    this.servicioPermisos
+      .obtenerPermisosUsuario(id)
+      .subscribe((elementos: any) => {
+        console.log(elementos.todosTipos);
+        this.servicioPermisos.permisosUsuario.set(elementos.todosTipos);
+        this.tipoRol = this.servicioPermisos.permisosUsuario();
+      });
+  }
+
+  incluye(item: any): boolean {
+    return this.servicioPermisos
+      .permisosUsuario()
+      .some((rol) => rol.id === item.id);
+  }
+
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     this.obtenerPersona(this.id);
     //llamada al servicio
-    this.servicioPermisos
-      .obtenerPermisosUsuario(this.id)
-      .subscribe((elementos: any) => {
-        this.tipoRol2 = elementos;
-      });
+    this.obtenerRolesUsuario(this.id);
+
     this.permisosNuevos.set(this.permisosObtenidos());
 
-    console.log(this.permisosGenerales(), this.tipoRol, this.tipoRol2);
+    console.log(
+      this.permisosGenerales(),
+      this.tipoRol,
+      this.tipoRol2,
+      this.servicioPermisos.permisosUsuario()
+    );
   }
 
   guardarRoles() {
@@ -91,6 +109,11 @@ export class GestionRolesEspecificoComponent
   }
 
   ngAfterContentInit(): void {
-    console.log(this.permisosObtenidos(), 'aaaaaaaaaaaaaaa', this.tipoRol2);
+    console.log(
+      this.permisosObtenidos(),
+      'aaaaaaaaaaaaaaa',
+      this.tipoRol2,
+      this.servicioPermisos.permisosUsuario()
+    );
   }
 }
