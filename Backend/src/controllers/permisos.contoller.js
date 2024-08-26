@@ -1,6 +1,8 @@
 const { manejoErrores } = require("../utils/manejoErrores.utils")
 const Permisos= require('../models/permiso')
-const PermisosUsuario= require('../models/permisosUsuario')
+const PermisosUsuario= require('../models/permisosUsuario');
+const Usuario = require("../models/usuario");
+const {sequelize} = require("../configs/database.configs");
 
 
 const obtenerPermisos = async (req, res) => {
@@ -16,14 +18,37 @@ const obtenerPermisos = async (req, res) => {
 }
 
 const guardarPermisos = async (req, res) => {
-    try {
-        //valores
-        const { id } = req.params
-        todosPermisos = []
+    //elminar todo para luego crear los que viene
+    const t = await sequelize.transaction();
 
-        
+    try {
+        const {id} = req.params
+        const {permisosUsuarioArray} = req.body
+        //busqueda que exista el usuario 
+        const existeUsuario = await Usuario.findOne({
+            where:{id: id}, transaction: t
+        })
+        if (!existeUsuario) {
+            await t.rollback();
+             return res
+                .status(409)
+                .json({ok: false, mensaje: "El usuario no existe"});
+
+        }
+        //elimina todo del usuario
+        await PermisosUsuario.destroy({
+                where: {id_empleado: existeUsuario.id}
+        });
+        //  luego crear todos los nuevos elementos
+        for (const elementosNuevos of permisosUsuarioArray) {
+            await PermisosUsuario.create({id_empleado: existeUsuario.id,id_permiso:elementosNuevos.id}, {transaction:t});
+        }
+            await t.commit();
+
+      res.status(200).json({ ok: true, mensaje: "tipopermiso encontrado correctamente" });
     } catch (error) {
-        await manejoErrores(error, res, 'tipopermiso');
+        await t.rollback();
+        await manejoErrores(error, res, "tipopermiso");
     }
 }
 
@@ -64,8 +89,10 @@ const obtenerPermisosUsuario = async (req, res) => {
 }
 
 
+
+
 module.exports = {
     obtenerPermisos: obtenerPermisos,
     guardarPermisos: guardarPermisos,
-    obtenerPermisosUsuario: obtenerPermisosUsuario
+    obtenerPermisosUsuario: obtenerPermisosUsuario,
 }

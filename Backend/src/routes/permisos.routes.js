@@ -6,7 +6,7 @@ const api = '/api/v1/permisos';
 
 
 router.get(`${api}/obtenerPermisos`, permisosContoller.obtenerPermisos);
-router.post(`${api}/guardarPermisos`, permisosContoller.guardarPermisos);
+router.post(`${api}/guardarPermisos/:id`, permisosContoller.guardarPermisos);
 router.get(`${api}/obtenerPermisosUsuario/:id`, permisosContoller.obtenerPermisosUsuario);
 
 
