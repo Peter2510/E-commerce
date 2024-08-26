@@ -13,5 +13,8 @@ router.get(`${api}/producto/:id`, ProductosController.obtenerProducto);
 router.put(`${api}/editarProducto`,validarEdicionProducto, ProductosController.editarProducto);
 router.put(`${api}/cambiarEstadoProducto/:id`, ProductosController.cambiarEstadoActivoProducto);
 router.get(`${api}/productosRandom/:cantidad`, ProductosController.obtenerProductosRandom);
+router.get(`${api}/filtrar`, ProductosController.filtrarProductos);
+
+
 
 module.exports = router;
