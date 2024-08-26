@@ -4,9 +4,8 @@ const cors = require('cors');
 cookieParser = require('cookie-parser');
 const jwtValidacion = require('./middlewares/jwtValidacion');
 const fileUpload = require('express-fileupload');
-
+require('./models/asociaciones');
 const { swaggerUi, swaggerDocs } = require('./swagger.js');
-
 
 //Routes
 const authRoutes = require('./routes/auth.routes');
