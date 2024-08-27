@@ -189,6 +189,78 @@ const editarProducto = async (req, res) => {
     }
 }
 
+const filtrarProductos = async (req, res) => {
+    const { idCategoria, idMarca, sortBy = 'nombre', order = 'ASC' } = req.query;
+
+    try {
+        // Construir la cláusula where dinámica
+        const whereClause = {};
+
+        if (idCategoria) {
+            whereClause.idCategoria = idCategoria;
+        }
+
+        if (idMarca) {
+            whereClause.idMarca = idMarca;
+        }
+
+        // Validar y establecer el criterio de ordenamiento
+        const validSortFields = ['nombre', 'precio', 'minimoInventario'];
+        const validOrders = ['ASC', 'DESC'];
+
+        // Validar el campo de ordenamiento
+        if (!validSortFields.includes(sortBy)) {
+            return res.status(400).json({ ok: false, mensaje: 'Campo de ordenamiento no válido' });
+        }
+
+        // Validar el tipo de ordenamiento
+        if (!validOrders.includes(order.toUpperCase())) {
+            return res.status(400).json({ ok: false, mensaje: 'Tipo de ordenamiento no válido' });
+        }
+
+        // Obtener productos filtrados y ordenados según los parámetros proporcionados
+        const productos = await Producto.findAll({
+            where: whereClause,
+            order: [[sortBy, order.toUpperCase()]] // Ordenar por el campo y tipo especificados
+        });
+
+        if (!productos.length) {
+            return res.status(404).json({ ok: false, mensaje: 'No se encontraron productos con los filtros proporcionados' });
+        }
+
+        // Obtener marcas y categorías asociadas para cada producto
+        const productosConDetalles = await Promise.all(productos.map(async (producto) => {
+            const [marca, categoria, imagenes] = await Promise.all([
+                Marca.findByPk(producto.idMarca),
+                Categoria.findByPk(producto.idCategoria),
+                UrlImangen.findAll({
+                    where: { idProducto: producto.id }
+                })
+            ]);
+
+            let imagenesFirmadas = [];
+            for (const imagen of imagenes) {
+                const url = await obtenerUrlFirmada(imagen.nombre);
+                imagenesFirmadas.push({ nombre: imagen.nombre, url: url });
+            }
+
+            return {
+                ...producto.toJSON(),
+                marca: marca ? marca.nombreMarca : null,
+                categoria: categoria ? categoria.nombreCategoria : null,
+                url_imagenes: imagenesFirmadas
+            };
+        }));
+
+        return res.json({ ok: true, productos: productosConDetalles });
+
+    } catch (error) {
+        await manejoErrores(error, res, "Producto");
+    }
+
+    //http://localhost:3200/api/v1/productos/filtrar?idMarca=3&idCategoria=4&sortBy=precio&order=ASC
+};
+
 const cambiarEstadoActivoProducto = async (req, res) => {
    
     const { id } = req.params;
@@ -274,6 +346,7 @@ module.exports = {
     crearProducto,
     obtenerProducto,
     editarProducto,
+    filtrarProductos,
     cambiarEstadoActivoProducto,
     obtenerProductosRandom
 }
