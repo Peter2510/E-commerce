@@ -37,4 +37,16 @@ export class ClienteService {
     return this.http.post(`${this.baseUrl}/cliente/actualizarContrasenia`,body,{withCredentials:true})
   }
 
+  listarProductos(){
+    return this.http.get(`${this.baseUrl}/producto/listar`);
+  }
+
+  obtenerProducto(id:number){
+    return this.http.get(`${this.baseUrl}/producto/:id`);
+  }
+
+  getProducto(id: number){
+    return this.http.get(`${this.baseUrl}/producto/${id}`);
+  }
+
 }

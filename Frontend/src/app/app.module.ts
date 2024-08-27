@@ -22,6 +22,7 @@ import { ModalEliminarComponent } from './admin/modal-eliminar/modal-eliminar.co
 import { ModalEditarComponent } from './admin/modal-editar/modal-editar.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
+
 @NgModule({
   declarations: [
     AppComponent,

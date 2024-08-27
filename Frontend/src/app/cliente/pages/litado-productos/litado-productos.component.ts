@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Producto } from 'src/app/interfaces/producto.interface';
+import { ClienteService } from '../../services/cliente.service';
 
 @Component({
   selector: 'app-litado-productos',
@@ -7,6 +8,9 @@ import { Producto } from 'src/app/interfaces/producto.interface';
   styleUrls: ['./litado-productos.component.css']
 })
 export class LitadoProductosComponent {
+  productos: Producto[] = [];
+
+  constructor(private clienteServices: ClienteService){}
   products: Producto[] = [
     {
       id: 1,
@@ -37,5 +41,29 @@ export class LitadoProductosComponent {
     },
     // Agrega más productos según sea necesario
   ];
+
+
+  obtenerProductos(){
+    //en este metodo llamaresmo al servicio para listar los producto, para mientras con data fake
+    this.clienteServices.listarProductos().subscribe(
+      (data) => {
+        this.productos = data as Producto[];
+      },
+      (error: any) => {
+        console.error('Error al listar productos:', error);
+      }
+    );
+
+    this.clienteServices.listarProductos().subscribe({
+      next: (response: any) => {
+        this.productos = response as Producto[];
+      },
+      error: (error) => {
+      
+      }
+    }) 
+    
+    
+  }
 
 }

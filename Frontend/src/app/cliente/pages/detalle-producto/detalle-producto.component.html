@@ -1,0 +1,25 @@
+<div class="container mx-auto p-6">
+    <div *ngIf="producto" class="bg-white p-6 rounded-lg shadow-lg">
+      <h1 class="text-3xl font-semibold mb-6">{{ producto.nombre }}</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Galería de Imágenes -->
+        <div>
+          <img [src]="imagenes[0]" alt="{{ producto.nombre }}" class="w-full h-96 object-cover rounded-lg mb-4">
+          <div class="grid grid-cols-3 gap-2">
+            <img *ngFor="let imagen of imagenes" [src]="imagen" alt="{{ producto.nombre }}"
+                 class="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-75 transition"
+                 (click)="setMainImage(imagen)">
+          </div>
+        </div>
+        <!-- Detalles del Producto -->
+        <div>
+          <p class="text-xl text-gray-800 mb-4">{{ producto.descripcion }}</p>
+          <p class="text-2xl font-semibold text-gray-900 mb-4">{{ producto.precio | currency }}</p>
+          <button class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-500 transition">
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
