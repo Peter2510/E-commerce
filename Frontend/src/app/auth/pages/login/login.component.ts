@@ -17,14 +17,7 @@ export class LoginComponent {
   verificacion:boolean=false;
   correoElectronico!:string;
   contrasenia!:string;
-  user: User = {
-    id: 0,
-    nombreUsuario: '',
-    contrasenia: '',
-    persona: undefined,
-    activo: true,
-    idTipoUsuario: 0
-  };
+  user: User = new User();
   constructor(private authService: AuthService, private router: Router, private cookie: CookieService) {
 
   }
@@ -53,7 +46,7 @@ export class LoginComponent {
         Swal.fire({
           icon: 'error',
           title: 'Error al iniciar sesión',
-          text: error.error.error || 'Ha ocurrido un error inesperado 2.',
+          text: error.error.mensaje || 'Ha ocurrido un error inesperado 2.',
         });
       }
 
@@ -65,7 +58,7 @@ export class LoginComponent {
     this.authService.verificar(this.correoElectronico, this.token).subscribe({
       next: (response: any) => {
         this.inicioSesion(response.token);
-        
+  
 
       },
       error: (error) => {
@@ -81,7 +74,8 @@ export class LoginComponent {
 
   inicioSesion(token:string){
         this.parseJwt(token)
-    this.cookie.set('token',JSON.stringify(this.user));
+    this.cookie.set('token2',JSON.stringify(this.user));
+    this.cookie.set('token',token);
         //guardar user en cookies o localstorage xd
         const message = `Bienvenido, ${this.user.nombreUsuario}`;
         
@@ -109,6 +103,9 @@ export class LoginComponent {
     const usuario = JSON.parse(jsonPayload);
     this.user.nombreUsuario = usuario.nombreUsuario;
     this.user.idTipoUsuario = usuario.idTipoUsuario;
+    this.user.id = usuario.idUsuario
+    console.log(this.user);
+    
   }
 
 }

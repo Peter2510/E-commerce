@@ -7,7 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class Guardia {
   constructor(private cookie: CookieService, private router: Router) {}
   Comprobar(ruta: String, route: ActivatedRouteSnapshot): boolean {
-    const cookie = this.cookie.get('token');
+    const cookie = this.cookie.get('token2');
     if (cookie) {
       const idTipoUsuario = JSON.parse(cookie).idTipoUsuario;
       if (idTipoUsuario == 1) {
