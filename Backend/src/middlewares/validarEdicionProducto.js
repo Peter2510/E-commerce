@@ -37,18 +37,18 @@ const validarProducto = [
 
       const marca = await Marca.findByPk(req.body.idMarca);
       if (!marca) {
-        return res.status(400).json({ ok: false, mensaje: ['La marca seleccionada no existe'] });
+        return res.status(400).json({ ok: false, mensaje: 'La marca seleccionada no existe'});
       }
 
       const categoria = await Categoria.findByPk(req.body.idCategoria);
       if (!categoria) {
-        return res.status(400).json({ ok: false, mensaje: ['La categoría seleccionada no existe'] });
+        return res.status(400).json({ ok: false, mensaje: 'La categoría seleccionada no existe' });
       }
 
       next();
     } catch (error) {
       
-      return res.status(500).json({ ok: false, mensaje: ['Error interno del servidor'] });
+      return res.status(500).json({ ok: false, mensaje: 'Error interno del servidor' });
     }
     
 
