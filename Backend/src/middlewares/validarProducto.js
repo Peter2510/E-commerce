@@ -32,25 +32,25 @@ const validarProducto = [
     }
 
     if (!req.files) {
-      return res.status(400).json(['El campo imágenes es obligatorio']);
+      return res.status(400).json({ok: false , mensaje: 'El campo imágenes es obligatorio'});
     }
 
     try {
 
       const marca = await Marca.findByPk(req.body.idMarca);
       if (!marca) {
-        return res.status(400).json({ ok: false, mensaje: ['La marca seleccionada no existe'] });
+        return res.status(404).json({ ok: false, mensaje: 'La marca seleccionada no existe' });
       }
 
       const categoria = await Categoria.findByPk(req.body.idCategoria);
       if (!categoria) {
-        return res.status(400).json({ ok: false, mensaje: ['La categoría seleccionada no existe'] });
+        return res.status(404).json({ ok: false, mensaje: 'La categoría seleccionada no existe' });
       }
 
       next();
     } catch (error) {
       
-      return res.status(500).json({ ok: false, mensaje: ['Error interno del servidor'] });
+      return res.status(500).json({ ok: false, mensaje: 'Error interno del servidor' });
     }
     
 
