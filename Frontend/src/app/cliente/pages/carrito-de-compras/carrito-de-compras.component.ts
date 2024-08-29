@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Carrito } from 'src/app/interfaces/cliente.interface';
+import { Carrito, CarritoCompras, ItemCarrito } from 'src/app/interfaces/cliente.interface';
+import { CarritoComprasService } from '../../services/carrito-compras.service';
 
 @Component({
   selector: 'app-carrito-de-compras',
@@ -7,8 +8,10 @@ import { Carrito } from 'src/app/interfaces/cliente.interface';
   styleUrls: ['./carrito-de-compras.component.css']
 })
 export class CarritoDeComprasComponent implements OnInit {
-  cartItems: Carrito[] = [
-    {
+  carrito!: CarritoCompras;
+  total: number =0;
+  cartItems: ItemCarrito[] = [
+    /*{
       nombre: 'Producto 1',
       descripcion: 'Este es el primer producto.',
       precio: 50.00,
@@ -21,19 +24,32 @@ export class CarritoDeComprasComponent implements OnInit {
       precio: 100.00,
       cantidad: 1,
       imagenUrl: 'https://via.placeholder.com/150'
-    }
+    }*/
   ];
 
-  constructor() { }
+  constructor(private carritoCompras: CarritoComprasService) {
+    this.carrito=this.carritoCompras.getCarrito();
+    this.cartItems = this.carrito.itemsCarrito!; 
+   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.getTotal(Event);
+
+   }
 
   getTotal(event: any): number {
     console.log('hola que hace')
-    return this.cartItems.reduce((total, item) => total + (item.precio * item.cantidad), 0);
+
+    this.total= this.cartItems.reduce((total, item) => 
+      total + ((item.producto?.precio ?? 0) * item.cantidad), 
+      0);
+    return this.total;
   }
 
-  removeItem(index: number): void {
-    this.cartItems.splice(index, 1);
+  removeItem(productoId: number): void {
+    this.carritoCompras.eliminarItem(productoId);
+    this.carrito = this.carritoCompras.getCarrito();
+    this.cartItems = this.carrito.itemsCarrito || []; // Actualiza la lista de ítems
+    this.getTotal(Event); // Recalcula el total
   }
 }

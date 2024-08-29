@@ -8,10 +8,18 @@ import { ClienteService } from '../../services/cliente.service';
   styleUrls: ['./litado-productos.component.css']
 })
 export class LitadoProductosComponent {
-  productos: Producto[] = [];
+  products: Producto[] = [];
 
-  constructor(private clienteServices: ClienteService){}
-  products: Producto[] = [
+  constructor(private clienteServices: ClienteService){
+    this.obtenerProductos();
+  }
+
+  ngOnInit(){
+    this.obtenerProductos();
+    console.log(this.products.length);
+    
+  }
+  /*products: Producto[] = [
     {
       id: 1,
       nombre: 'Product 1',
@@ -40,30 +48,24 @@ export class LitadoProductosComponent {
       imageUrl: 'https://via.placeholder.com/150'
     },
     // Agrega más productos según sea necesario
-  ];
+  ];*/
 
 
-  obtenerProductos(){
-    //en este metodo llamaresmo al servicio para listar los producto, para mientras con data fake
-    this.clienteServices.listarProductos().subscribe(
-      (data) => {
-        this.productos = data as Producto[];
-      },
-      (error: any) => {
-        console.error('Error al listar productos:', error);
-      }
-    );
-
+  obtenerProductos() {
     this.clienteServices.listarProductos().subscribe({
       next: (response: any) => {
-        this.productos = response as Producto[];
+        if (response.ok && Array.isArray(response.productos)) {
+          this.products = response.productos as Producto[];
+        } else {
+          console.error("Estructura inesperada en la respuesta:", response);
+        }
       },
       error: (error) => {
-      
+        console.error("Error al obtener productos:", error);
       }
-    }) 
-    
-    
+    });
   }
+  
+  
 
 }

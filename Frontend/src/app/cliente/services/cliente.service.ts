@@ -38,15 +38,15 @@ export class ClienteService {
   }
 
   listarProductos(){
-    return this.http.get(`${this.baseUrl}/producto/listar`);
+    return this.http.get(`${this.baseUrl}/productos/productosRandom/10`);
   }
 
   obtenerProducto(id:number){
-    return this.http.get(`${this.baseUrl}/producto/:id`);
+    return this.http.get(`${this.baseUrl}/productos/producto/${id}`);
   }
 
   getProducto(id: number){
-    return this.http.get(`${this.baseUrl}/producto/${id}`);
+    return this.http.get(`${this.baseUrl}/productos/producto/${id}`);
   }
 
 }
