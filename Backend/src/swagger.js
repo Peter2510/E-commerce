@@ -187,52 +187,65 @@ const swaggerOptions = {
             idTipoUsuario: 0,
           },
         },
-        Marca:{
+        Marca: {
           type: "object",
-          properties:{
-            id:{
+          properties: {
+            id: {
               type: "integer",
               description: "ID de la marca, clave primaria, autoincrementable",
-              example: 1,
+              example: 1
             },
-            nombreMarca:{
+            nombreMarca: {
               type: "string",
-              description: "Nombre de la marca, no puede ser nulo o vacio",
+              description: "Nombre de la marca, no puede ser nulo o vacío",
               example: "Adidas"
+            },
+            imagen: {
+              type: "string",
+              description: "Nombre del archivo de imagen asociado a la marca",
+              example: "adidas-logo.png"
             }
           },
-          required:[
-            "nombreMarca"
+          required: [
+            "nombreMarca",
+            "imagen"
           ],
-          example:{
-            id:1,
-            nombreMarca: "Adidas"
-          }, 
-        },
-
-      Categoria:{
-        type: "object",
-        properties:{
-          id:{
-            type: "integer",
-            description: "ID de la categoria, clave primaria, autoincrementable",
-            example: 1,
-          },
-          nombreMarca:{
-            type: "string",
-            description: "Nombre de la Categoria, no puede ser nulo o vacio",
-            example: "Ropa"
+          example: {
+            id: 1,
+            nombreMarca: "Adidas",
+            imagen: "adidas-logo.png"
           }
         },
-        required:[
-          "nombreCategoria"
-        ],
-        example:{
-          id:1,
-          nombreCategoria: "Ropa"
-        }
+        Categoria: {
+          type: "object",
+          properties: {
+            id: {
+              type: "integer",
+              description: "ID de la categoría, clave primaria, autoincrementable",
+              example: 1
+            },
+            nombreCategoria: {
+              type: "string",
+              description: "Nombre de la categoría, no puede ser nulo o vacío",
+              example: "Ropa"
+            },
+            imagen: {
+              type: "string",
+              description: "Nombre del archivo de imagen asociado a la categoría",
+              example: "categoria-ropa.png"
+            }
+          },
+          required: [
+            "nombreCategoria",  
+            "imagen"
+          ],
+          example: {
+            id: 1,
+            nombreCategoria: "Ropa",
+            imagen: "categoria-ropa.png"
+          }
+        },
         
-    },
         Producto: {
           "type": "object",
           "properties": {
@@ -2497,276 +2510,879 @@ const swaggerOptions = {
   }
 },
 
-
-      "/categorias": {
-        "get": {
-          "summary": "Obtener la lista de categorias",
-          "responses": {
-            "200": {
-              "description": "Lista de categorias",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Categoria"
+//INICIO DE CATEGORIAS
+"/api/v1/categorias/obtenerCategorias": {
+  "get": {
+    "summary": "Obtener todas las categorías",
+    "tags": [
+      "Categorias"
+    ],
+    "responses": {
+      "200": {
+        "description": "Categorías obtenidas con éxito",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "categorias": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "nombreCategoria": {
+                        "type": "string",
+                        "example": "Electrónica"
+                      },
+                      "imagen": {
+                        "type": "string",
+                        "example": "categoria-electronica.png"
+                      }
                     }
                   }
                 }
               }
             }
           }
-        },
-        "post": {
-          "summary": "Crear una nueva persona",
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Persona"
-                }
-              }
-            }
-          },
-          "responses": {
-            "201": {
-              "description": "Categoria creada",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Categoria"
-                  }
-                }
-              }
-            }
-          }
         }
       },
-      "/categoria/{id}": {
-        "get": {
-          "summary": "Obtener una categoria por ID",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Categoria encontrada",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Categoria"
-                  }
+      "500": {
+        "description": "Error interno del servidor",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Error interno del servidor"
                 }
               }
-            },
-            "404": {
-              "description": "Categoria no encontrada"
-            }
-          }
-        },
-        "put": {
-          "summary": "Actualizar una categoria existente",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              }
-            }
-          ],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Categoria"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Categoria actualizada",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Categoria"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "Categoria no encontrada"
-            }
-          }
-        },
-        "delete": {
-          "summary": "Eliminar una categoria",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              }
-            }
-          ],
-          "responses": {
-            "204": {
-              "description": "Categoria eliminada"
-            },
-            "404": {
-              "description": "Categoria no encontrada"
-            }
-          }
-        }
-      },
-
-      "/marcas": {
-        "get": {
-          "summary": "Obtener la lista de marcas",
-          "responses": {
-            "200": {
-              "description": "Lista de marcas",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Marca"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "post": {
-          "summary": "Crear una nueva marca",
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Marca"
-                }
-              }
-            }
-          },
-          "responses": {
-            "201": {
-              "description": "Marca creada",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Marca"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/marcas/{id}": {
-        "get": {
-          "summary": "Obtener una marca por ID",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Marca encontrada",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Marca"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "Marca no encontrada"
-            }
-          }
-        },
-        "put": {
-          "summary": "Actualizar una marca existente",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              }
-            }
-          ],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Marca"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Marca actualizada",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Marca"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "Marca no encontrada"
-            }
-          }
-        },
-        "delete": {
-          "summary": "Eliminar una marca",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              }
-            }
-          ],
-          "responses": {
-            "204": {
-              "description": "Marca eliminada"
-            },
-            "404": {
-              "description": "Marca no encontrada"
             }
           }
         }
       }
+    }
+  }
+},
+"/api/v1/categorias/crearCategoria": {
+  "post": {
+    "summary": "Crear una nueva categoría",
+    "tags": [
+      "Categorias"
+    ],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "multipart/form-data": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "nombreCategoria": {
+                "type": "string",
+                "description": "Nombre de la categoría",
+                "example": "Electrónica",
+                "nullable": false
+              },
+              "imagen": {
+                "type": "string",
+                "format": "binary",
+                "description": "Archivo de imagen asociado a la categoría",
+                "example": "categoria-electronica.png",
+                "nullable": false
+              }
+            },
+            "required": ["nombreCategoria", "imagen"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "201": {
+        "description": "Categoría creada con éxito",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "categoria": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "nombreCategoria": {
+                      "type": "string",
+                      "example": "Electrónica"
+                    },
+                    "imagen": {
+                      "type": "string",
+                      "example": "categoria-electronica.png"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Solicitud incorrecta, errores de validación",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "El nombre de la categoría o la imagen son requeridos"
+                }
+              }
+            }
+          }
+        }
+      },
+      "409": {
+        "description": "Conflicto, la categoría ya existe",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "La categoría ya existe"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Error interno del servidor",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Error interno del servidor"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+
+"/api/v1/categorias/obtenerCategoria/{id}": {
+  "get": {
+    "summary": "Obtener una categoría específica por ID",
+    "tags": [
+      "Categorias"
+    ],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "description": "ID de la categoría a obtener",
+          "example": 1
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Categoría obtenida con éxito",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "categoria": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "nombreCategoria": {
+                      "type": "string",
+                      "example": "Electrónica"
+                    },
+                    "imagen": {
+                      "type": "string",
+                      "example": "categoria-electronica.png"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Categoría no encontrada",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Categoría no encontrada"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Error interno del servidor",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Error interno del servidor"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+"/api/v1/categorias/actualizarCategoria/{id}": {
+  "put": {
+    "summary": "Actualizar una categoría existente por ID",
+    "tags": [
+      "Categorias"
+    ],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "description": "ID de la categoría a actualizar",
+          "example": 1
+        }
+      }
+    ],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "nombreCategoria": {
+                "type": "string",
+                "description": "El nombre de la categoría",
+                "example": "Electrónica",
+                "nullable": true
+              },
+              "imagen": {
+                "type": "string",
+                "description": "Nombre del archivo de imagen asociado a la categoría",
+                "example": "categoria-electronica.png",
+                "nullable": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Categoría actualizada con éxito",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "categoria": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "nombreCategoria": {
+                      "type": "string",
+                      "example": "Electrónica"
+                    },
+                    "imagen": {
+                      "type": "string",
+                      "example": "categoria-electronica.png"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Solicitud incorrecta, errores de validación",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "errores": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "example": "El nombre de la categoría no puede estar vacío"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Categoría no encontrada",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Categoría no encontrada"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Error interno del servidor",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Error interno del servidor"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+//FIN DE CATEGORIAS
+"/api/v1/marcas/obtenerMarcas": {
+  "get": {
+    "summary": "Obtener todas las marcas",
+    "tags": [
+      "Marcas"
+    ],
+    "responses": {
+      "200": {
+        "description": "Marcas obtenidas con éxito",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "marcas": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "nombreMarca": {
+                        "type": "string",
+                        "example": "Adidas"
+                      },
+                      "imagen": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "nombre": {
+                              "type": "string",
+                              "example": "adidas-logo.png"
+                            },
+                            "url": {
+                              "type": "string",
+                              "example": "https://example.com/url-adidas-logo"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Error interno del servidor",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Error interno del servidor"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+"/api/v1/marcas/crearMarca": {
+  "post": {
+    "summary": "Crear una nueva marca",
+    "tags": [
+      "Marcas"
+    ],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "multipart/form-data": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "nombreMarca": {
+                "type": "string",
+                "description": "Nombre de la marca",
+                "example": "Nike",
+                "nullable": false
+              },
+              "imagen": {
+                "type": "string",
+                "format": "binary",
+                "description": "Archivo de imagen asociado a la marca",
+                "example": "nike-logo.png",
+                "nullable": false
+              }
+            },
+            "required": ["nombreMarca", "imagen"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "201": {
+        "description": "Marca creada con éxito",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "marca": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "nombreMarca": {
+                      "type": "string",
+                      "example": "Nike"
+                    },
+                    "imagen": {
+                      "type": "string",
+                      "example": "nike-logo.png"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Solicitud incorrecta, errores de validación",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "El nombre de la marca o la imagen son requeridos"
+                }
+              }
+            }
+          }
+        }
+      },
+      "409": {
+        "description": "Conflicto, el nombre de la marca ya existe",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "El nombre de la marca ya existe"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Error interno del servidor",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Error interno del servidor"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+
+"/api/v1/marcas/obtenerMarca/{id}": {
+  "get": {
+    "summary": "Obtener una marca por ID",
+    "tags": [
+      "Marcas"
+    ],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        },
+        "description": "ID de la marca"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Marca obtenida con éxito",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "marca": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "nombreMarca": {
+                      "type": "string",
+                      "example": "Nike"
+                    },
+                    "imagen": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "nombre": {
+                            "type": "string",
+                            "example": "nike-logo.png"
+                          },
+                          "url": {
+                            "type": "string",
+                            "example": "https://example.com/url-nike-logo"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Marca no encontrada",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Marca no encontrada"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Error interno del servidor",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Error interno del servidor"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+"/api/v1/marcas/actualizarMarca/{id}": {
+  "put": {
+    "summary": "Actualizar una marca existente",
+    "tags": [
+      "Marcas"
+    ],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        },
+        "description": "ID de la marca a actualizar"
+      }
+    ],
+    "requestBody": {
+      "required": false,
+      "content": {
+        "multipart/form-data": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "nuevoNombre": {
+                "type": "string",
+                "description": "Nuevo nombre de la marca",
+                "example": "Puma"
+              },
+              "nuevaImagen": {
+                "type": "string",
+                "format": "binary",
+                "description": "Nuevo archivo de imagen para la marca",
+                "example": "puma-logo.png"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Marca actualizada con éxito",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Marca actualizada correctamente"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Solicitud incorrecta, errores de validación",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "El nombre de la marca es requerido"
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Marca no encontrada",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Marca no encontrada"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Error interno del servidor",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Error interno del servidor"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
     }
     
   },
