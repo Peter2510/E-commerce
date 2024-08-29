@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ClienteRoutingModule } from './cliente-routing.module';
 import { HomeComponent } from './pages/home/home.component';
 import { CookieService } from 'ngx-cookie-service';
-import { LitadoProductosComponent } from './pages/litado-productos/litado-productos.component';
+import { ListadoProductosComponent } from './pages/listado-productos/listado-productos.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { CarritoDeComprasComponent } from './pages/carrito-de-compras/carrito-de-compras.component';
@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     HomeComponent,
-    LitadoProductosComponent,
+    ListadoProductosComponent,
     PerfilComponent,
     WelcomeComponent,
     CarritoDeComprasComponent,

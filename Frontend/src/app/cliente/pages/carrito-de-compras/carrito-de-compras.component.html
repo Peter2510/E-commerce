@@ -1,42 +1,41 @@
+<div class="bg-gray-100 min-h-screen p-4 sm:p-6">
+  <div class="container mx-auto">
+    <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-gray-800 text-center">Carrito de Compras</h2>
 
-<div class="bg-gray-100 min-h-screen p-6">
-    <div class="container mx-auto">
-      <h2 class="text-3xl font-bold mb-6 text-gray-800">Carrito de Compras</h2>
-      <div class="bg-white rounded-lg shadow-lg p-4">
-        <!-- Lista de productos en el carrito -->
-        <div *ngFor="let producto of cartItems" class="space-y-4">
-          <div class="flex items-center justify-between p-4 border-b">
-            <div class="flex items-center">
-              <img class="w-16 h-16 rounded" src="https://via.placeholder.com/150" alt="Imagen del Producto" />
-              <div class="ml-4">
-                <h3 class="text-lg font-semibold text-gray-700">{{producto.producto?.nombre}}</h3>
-                <p class="text-gray-600">{{producto.producto?.categoria}}</p>
-              </div>
-            </div>
-            <div class="flex items-center">
-              <p class="text-lg font-bold text-gray-800">{{producto.producto?.precio}}</p>
-              <input type="number" (input)="getTotal($event)" [(ngModel)]="producto.cantidad" class="ml-4 w-16 text-center border-gray-300 rounded p-1" />
-              <button (click)="removeItem(producto.producto?.id!)" class="ml-4 text-red-600 hover:text-red-800">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+    <div class="bg-white rounded-lg shadow-lg p-4">
+      <div *ngFor="let producto of cartItems" class="space-y-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border-b">
+        
+          <div class="flex items-center">
+            <img class="w-16 h-16 rounded object-cover" [src]="producto.producto!.url_imagenes[0].url" alt="{{ producto.producto?.nombre }}" />
+            <div class="ml-4">
+              <h3 class="text-base sm:text-lg font-semibold text-gray-700">{{ producto.producto?.nombre }}</h3>
+              <p class="text-sm text-gray-600">{{ producto.producto?.categoria }}</p>
             </div>
           </div>
-          <!-- Repetir el bloque anterior por cada producto -->
-        </div>
-  
-        <!-- Resumen del carrito -->
-        <div class="mt-6 p-4 bg-gray-50 rounded-lg shadow-md">
-          <div class="flex justify-between items-center">
-            <p class="text-lg font-semibold text-gray-700">Total:</p>
-            <p class="text-2xl font-bold text-gray-800">{{total}}</p>
+
+          <div class="flex flex-col sm:flex-row items-center mt-4 sm:mt-0">
+            <p class="text-base sm:text-lg font-bold text-gray-800">{{ producto.producto?.precio | currency }}</p>
+            <input type="number" (input)="getTotal($event)" [(ngModel)]="producto.cantidad" class="ml-4 w-20 sm:w-16 text-center border-gray-300 rounded p-1" />
+            <button (click)="removeItem(producto.producto?.id!)" class="ml-4 text-red-600 hover:text-red-800">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
-          <button class="mt-4 w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-500 transition">
-            Proceder al Pago
-          </button>
         </div>
+      </div>
+
+      <!-- Resumen del carrito -->
+      <div class="mt-6 p-4 bg-gray-50 rounded-lg shadow-md">
+        <div class="flex flex-col sm:flex-row justify-between items-center">
+          <p class="text-base sm:text-lg font-semibold text-gray-700">Total:</p>
+          <p class="text-xl sm:text-2xl font-bold text-gray-800">{{ total | currency }}</p>
+        </div>
+        <button class="mt-4 w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-500 transition">
+          Proceder al Pago
+        </button>
       </div>
     </div>
   </div>
-  
+</div>

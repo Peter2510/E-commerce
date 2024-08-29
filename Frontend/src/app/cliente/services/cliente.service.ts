@@ -41,12 +41,14 @@ export class ClienteService {
     return this.http.get(`${this.baseUrl}/productos/productosRandom/10`);
   }
 
-  obtenerProducto(id:number){
-    return this.http.get(`${this.baseUrl}/productos/producto/${id}`);
-  }
+  
 
   getProducto(id: number){
     return this.http.get(`${this.baseUrl}/productos/producto/${id}`);
+  }
+
+  getCategorias(){
+    return this.http.get(`${this.baseUrl}/categorias/obtenerCategorias`);
   }
 
 }

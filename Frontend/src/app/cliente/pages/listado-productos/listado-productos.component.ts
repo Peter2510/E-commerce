@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { Producto } from 'src/app/interfaces/producto.interface';
 import { ClienteService } from '../../services/cliente.service';
+import { categoria } from '../../../interfaces/producto.interface';
 
 @Component({
-  selector: 'app-litado-productos',
-  templateUrl: './litado-productos.component.html',
-  styleUrls: ['./litado-productos.component.css']
+  selector: 'app-listado-productos',
+  templateUrl: './listado-productos.component.html',
+  styleUrls: ['./listado-productos.component.css']
 })
-export class LitadoProductosComponent {
+export class ListadoProductosComponent {
   products: Producto[] = [];
+  categorias!: categoria[];
 
   constructor(private clienteServices: ClienteService){
     this.obtenerProductos();
@@ -16,6 +18,7 @@ export class LitadoProductosComponent {
 
   ngOnInit(){
     this.obtenerProductos();
+    this.obtenerCategorias();
     console.log(this.products.length);
     
   }
@@ -64,6 +67,21 @@ export class LitadoProductosComponent {
         console.error("Error al obtener productos:", error);
       }
     });
+  }
+  obtenerCategorias(){
+    this.clienteServices.getCategorias().subscribe({
+      next: (response: any) => {
+        if (response.ok && Array.isArray(response.categorias)) {
+          this.categorias = response.categorias as categoria[];
+        } else {
+          console.error("Estructura inesperada en la respuesta:", response);
+        }
+      },
+      error: (error) => {
+        console.error("Error al obtener productos:", error);
+      }
+    });
+
   }
   
   
