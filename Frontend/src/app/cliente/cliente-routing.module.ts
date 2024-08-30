@@ -7,6 +7,7 @@ import { PerfilComponent } from './pages/perfil/perfil.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { CarritoDeComprasComponent } from './pages/carrito-de-compras/carrito-de-compras.component';
 import { DetalleProductoComponent } from './pages/detalle-producto/detalle-producto.component';
+import { ListadoProductoFiltroComponent } from './pages/listado-producto-filtro/listado-producto-filtro.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,11 @@ const routes: Routes = [
       {
         path: 'producto/:id',
         component: DetalleProductoComponent,
+        canActivate: [clienteGuardGuard],
+      },
+      {
+        path: 'producto-categoria/:id',
+        component: ListadoProductoFiltroComponent,
         canActivate: [clienteGuardGuard],
       },
       {

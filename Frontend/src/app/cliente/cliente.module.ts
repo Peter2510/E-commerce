@@ -11,6 +11,8 @@ import { CarritoDeComprasComponent } from './pages/carrito-de-compras/carrito-de
 import { DetalleProductoComponent } from './pages/detalle-producto/detalle-producto.component';
 
 import { FormsModule } from '@angular/forms';
+import { ProductoCardComponent } from './pages/producto-card/producto-card.component';
+import { ListadoProductoFiltroComponent } from './pages/listado-producto-filtro/listado-producto-filtro.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,8 @@ import { FormsModule } from '@angular/forms';
     WelcomeComponent,
     CarritoDeComprasComponent,
     DetalleProductoComponent,
+    ProductoCardComponent,
+    ListadoProductoFiltroComponent,
   ],
   imports: [CommonModule, ClienteRoutingModule, FormsModule],
   providers: [CookieService],
