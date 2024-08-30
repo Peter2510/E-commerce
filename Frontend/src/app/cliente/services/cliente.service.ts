@@ -42,7 +42,7 @@ export class ClienteService {
   }
 
   listarProductosCategoria(id:number){
-    return this.http.get(`${this.baseUrl}/productos/productosRandom/10`);
+    return this.http.get(`${this.baseUrl}/productos/filtrar/?idCategoria=${id}`);
   }
 
   getProducto(id: number){
