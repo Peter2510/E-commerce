@@ -56,6 +56,10 @@ export class CarritoComprasService {
     return this.carrito;
   }
 
+  getCantidadItems():number{
+    return this.carrito.itemsCarrito!.length
+  }
+
   eliminarItem(productoId: number): void {
     // Filtra el carrito para eliminar el ítem con el id especificado
     this.carrito.itemsCarrito = this.carrito.itemsCarrito!.filter(item => item.producto!.id !== productoId);
