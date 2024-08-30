@@ -16,7 +16,7 @@ export interface Marca {
 export interface categoria {
   id?: number;
   nombreCategoria: string;
-  imagen: UrlImage;
+  imagen: UrlImage[];
 }
 
 export interface UrlImage {

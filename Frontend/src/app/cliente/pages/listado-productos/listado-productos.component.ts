@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Producto } from 'src/app/interfaces/producto.interface';
+import { Producto, UrlImage } from 'src/app/interfaces/producto.interface';
 import { ClienteService } from '../../services/cliente.service';
 import { categoria } from '../../../interfaces/producto.interface';
 
@@ -73,6 +73,9 @@ export class ListadoProductosComponent {
       next: (response: any) => {
         if (response.ok && Array.isArray(response.categorias)) {
           this.categorias = response.categorias as categoria[];
+          this.categorias.forEach(element =>{
+            console.log(element)
+          })
         } else {
           console.error("Estructura inesperada en la respuesta:", response);
         }
@@ -83,7 +86,8 @@ export class ListadoProductosComponent {
     });
 
   }
-  
+
+
   
 
 }
