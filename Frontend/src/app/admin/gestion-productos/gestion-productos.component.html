@@ -43,10 +43,10 @@
           <a class="block relative h-48 rounded overflow-hidden">
             <img
               alt="ecommerce"
-              class="object-cover object-center w-full h-full block"
+              class="transition duration-1000 transform hover:scale-105 object-cover object-center w-full h-full block"
               height="260"
               width="420"
-              src="#"
+              [src]="producto.url_imagenes[0].url"
             />
           </a>
           <div class="mt-4">

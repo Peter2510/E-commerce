@@ -21,6 +21,8 @@ import { FormsModule } from '@angular/forms';
 import { ModalEliminarComponent } from './admin/modal-eliminar/modal-eliminar.component';
 import { ModalEditarComponent } from './admin/modal-editar/modal-editar.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CreacionProductosComponent } from './admin/productos/creacion-productos/creacion-productos.component';
+import { EdicionProductosComponent } from './admin/productos/edicion-productos/edicion-productos.component';
 
 
 @NgModule({
@@ -29,6 +31,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     GestionCriticaComponent,
     GestionProductosComponent,
     GestionProductosEspecificaComponent,
+    CreacionProductosComponent,
+    EdicionProductosComponent,
   ],
   imports: [
     BrowserModule,
