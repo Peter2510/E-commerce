@@ -7,9 +7,16 @@ import { CookieService } from 'ngx-cookie-service';
 export class Guardia {
   constructor(private cookie: CookieService, private router: Router) {}
   Comprobar(ruta: String, route: ActivatedRouteSnapshot): boolean {
-    const cookie = this.cookie.get('token');
+    const cookie = this.cookie.get('token2');
     if (cookie) {
-      this.router.navigate(['/cliente']);
+      const idTipoUsuario = JSON.parse(cookie).idTipoUsuario;
+      if (idTipoUsuario == 1) {
+        this.router.navigate(['/admin']);
+      } else if (idTipoUsuario == 2) {
+        this.router.navigate(['/cliente']);
+      } else {
+        this.router.navigate(['/ayudante']);
+      }
       console.log('la cookie ya existe');
       return false;
     } else {

@@ -20,6 +20,8 @@ import { GestionProductosEspecificaComponent } from './admin/gestion-productos-e
 import { FormsModule } from '@angular/forms';
 import { ModalEliminarComponent } from './admin/modal-eliminar/modal-eliminar.component';
 import { ModalEditarComponent } from './admin/modal-editar/modal-editar.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { ModalEditarComponent } from './admin/modal-editar/modal-editar.componen
     AdminheaderComponent,
     ClienteModule,
     FormsModule,
+
+    ReactiveFormsModule,
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],
