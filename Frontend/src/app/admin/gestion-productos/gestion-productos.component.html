@@ -34,7 +34,7 @@
       <div
         class="lg:w-1/4 md:w-1/2 p-4 w-full"
         *ngFor="
-          let user of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+          let producto of this.servicioProducto.productos();
           index as i;
           first as isFirst
         "
@@ -44,17 +44,21 @@
             <img
               alt="ecommerce"
               class="object-cover object-center w-full h-full block"
-              src="https://dummyimage.com/420x260"
+              height="260"
+              width="420"
+              src="#"
             />
           </a>
           <div class="mt-4">
             <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
-              CATEGORY
+              categotia
             </h3>
             <h2 class="text-gray-900 title-font text-lg font-medium">
-              The Catalyzer
+              {{ producto.nombre }}
             </h2>
-            <p class="mt-1">$16.00</p>
+            <p class="mt-1">
+              {{ producto.precio | currency : "Q" }}
+            </p>
             <div class="flex flex-wrap gap-2 mt-4">
               <button
                 type="button"
