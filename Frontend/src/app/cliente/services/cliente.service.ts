@@ -44,6 +44,9 @@ export class ClienteService {
   listarProductosCategoria(id:number){
     return this.http.get(`${this.baseUrl}/productos/filtrar/?idCategoria=${id}`);
   }
+  listarProductosMarcas(id:number){
+    return this.http.get(`${this.baseUrl}/productos/filtrar/?idCategoria=${id}`);
+  }
 
   getProducto(id: number){
     return this.http.get(`${this.baseUrl}/productos/producto/${id}`);
@@ -51,6 +54,10 @@ export class ClienteService {
 
   getCategorias(){
     return this.http.get(`${this.baseUrl}/categorias/obtenerCategorias`);
+  }
+
+  getMarcas(){
+    return this.http.get(`${this.baseUrl}/marcas/obtenerMarcas`);
   }
 
 

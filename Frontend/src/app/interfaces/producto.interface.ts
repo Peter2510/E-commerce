@@ -12,6 +12,7 @@ export interface Producto {
 export interface Marca {
   id?: number;
   nombreMarca: string;
+  imagen: UrlImage[];
 }
 export interface categoria {
   id?: number;
