@@ -7,7 +7,7 @@
 <h2 class="text-3xl font-semibold mb-6 text-center text-gray-700">Categorías</h2>
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
   <div *ngFor="let categoria of categorias" class="relative bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform transform hover:scale-105">
-    <a [routerLink]="['/cliente/producto-categoria', categoria.id]" class="flex flex-col h-full">
+    <a [routerLink]="['/cliente/producto-categoria', categoria.id]"  [queryParams]="{ tipo: 'Categoria', name: categoria.nombreCategoria}" class="flex flex-col h-full">
       <div class="relative w-full h-48">
         <img [src]="categoria.imagen[0].url" alt="{{ categoria.nombreCategoria }}" class="w-full h-full object-cover" />
         <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -23,7 +23,9 @@
     <h2 class="text-3xl font-semibold mb-6 text-center text-gray-700">Marcas</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
       <div *ngFor="let marca of marcas" class="relative bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform transform hover:scale-105">
-        <a [routerLink]="['/cliente/producto-categoria', marca.id]" class="flex flex-col h-full">
+        <a (click)="mostrarProdMarcas(marca.id!)"
+        [routerLink]="['/cliente/producto-categoria', marca.id]"  [queryParams]="{ tipo: 'Marca', name: marca.nombreMarca}" 
+         class="flex flex-col h-full">
           <div class="relative w-full h-48">
             <img [src]="marca.imagen[0].url" alt="{{ marca.nombreMarca }}" class="w-full h-full object-cover" />
             <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
