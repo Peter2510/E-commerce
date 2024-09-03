@@ -8,6 +8,7 @@ import { GestionRolesEspecificoComponent } from '../gestion-roles-especifico/ges
 import { GestionProductosComponent } from '../gestion-productos/gestion-productos.component';
 import { GestionProductosEspecificaComponent } from '../gestion-productos-especifica/gestion-productos-especifica.component';
 import { GestionMarcasCategoriasComponent } from '../gestion-marcas-categorias/gestion-marcas-categorias.component';
+import { CreacionProductosComponent } from '../productos/creacion-productos/creacion-productos.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,12 @@ const routes: Routes = [
         path: 'gestionProductosEspecifico/:id',
         component: GestionProductosEspecificaComponent,
       },
+
+      {
+        path: 'crearProducto',
+        component: CreacionProductosComponent,
+      },
+
       {
         path: '',
         component: VistaGeneralComponent,

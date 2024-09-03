@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { GestionMarcasCategoriasComponent } from '../gestion-marcas-categorias/gestion-marcas-categorias.component';
 import { ModalEliminarComponent } from '../modal-eliminar/modal-eliminar.component';
 import { ModalEditarComponent } from '../modal-editar/modal-editar.component';
+import { CreacionProductosComponent } from '../productos/creacion-productos/creacion-productos.component';
+import { EdicionProductosComponent } from '../productos/edicion-productos/edicion-productos.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { ModalEditarComponent } from '../modal-editar/modal-editar.component';
     GestionMarcasCategoriasComponent,
     ModalEliminarComponent,
     ModalEditarComponent,
+    CreacionProductosComponent,
+    EdicionProductosComponent,
   ],
   imports: [CommonModule, AdminRoutesModule, AdminheaderComponent, FormsModule],
 })

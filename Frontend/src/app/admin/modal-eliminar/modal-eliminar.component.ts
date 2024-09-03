@@ -22,9 +22,17 @@ export class ModalEliminarComponent implements OnInit {
   @Output() closeModal = new EventEmitter<void>();
 
   nombre!: string;
+  imagen!: File;
 
   //servicio
   servicio = inject(ServicioAdminService);
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.imagen = file;
+    }
+  }
 
   //SOLO PARA VER QUE ES
   esMarca(obj?: categoria | Marca): obj is Marca {
@@ -47,11 +55,19 @@ export class ModalEliminarComponent implements OnInit {
   //funcion para editar
   editar() {
     if (this.tipo === 'Marca') {
+      console.log(this.nombre, this.imagen);
+
       this.servicio
-        .actualizarMarca(this.idEliminar?.id, this.nombre)
+        .actualizarMarca(this.idEliminar?.id, this.nombre, this.imagen)
         .subscribe();
     } else {
-      this.servicio.actualizarCategoria(this.idEliminar?.id, this.nombre);
+      console.log(this.imagen);
+
+      this.servicio.actualizarCategoria(
+        this.idEliminar?.id,
+        this.nombre,
+        this.imagen
+      );
     }
   }
   //funcion para obtener el nombre como tal

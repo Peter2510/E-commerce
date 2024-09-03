@@ -24,15 +24,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CreacionProductosComponent } from './admin/productos/creacion-productos/creacion-productos.component';
 import { EdicionProductosComponent } from './admin/productos/edicion-productos/edicion-productos.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
     GestionCriticaComponent,
     GestionProductosComponent,
     GestionProductosEspecificaComponent,
-    CreacionProductosComponent,
-    EdicionProductosComponent,
   ],
   imports: [
     BrowserModule,

@@ -140,21 +140,27 @@ export class ServicioAdminService {
     );
   }
   //funcion para actualizar las categorias actualizarCategoria
-  actualizarCategoria(id: number | undefined, nombre: string) {
+  actualizarCategoria(id: number | undefined, nombre: string, imagen: File) {
+    const formData = new FormData();
+    formData.append('nuevoNombre', nombre);
+    formData.append('nuevaImagen', imagen);
     this.http
       .put(
         `${environment.baseUrlEnv}/${this.directivaCategoria}/actualizarCategoria/${id}`,
-        { id: id, nombreCategoria: nombre },
+        formData,
         { withCredentials: true }
       )
       .subscribe();
   }
 
   //funcion para actualizar las marcas actualizarMarca
-  actualizarMarca(id: number | undefined, nombre: string) {
+  actualizarMarca(id: number | undefined, nombre: string, imagen: File) {
+    const formData = new FormData();
+    formData.append('nuevoNombre', nombre);
+    formData.append('nuevaImagen', imagen);
     return this.http.put(
       `${environment.baseUrlEnv}/${this.directivaMarcas}/actualizarMarca/${id}`,
-      { nombreMarca: nombre },
+      formData,
       { withCredentials: true }
     );
   }

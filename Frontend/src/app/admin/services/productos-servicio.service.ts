@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, signal, Signal } from '@angular/core';
 import { map, tap } from 'rxjs';
 import { Producto } from 'src/app/interfaces/producto.interface';
@@ -22,6 +22,40 @@ export class ProductosServicioService {
           cantidad,
         { withCredentials: true }
       )
+      .pipe(
+        tap((valores: any) => {
+          console.log(valores, valores.productos),
+            this.productos.set(valores.productos);
+        })
+      )
+      .subscribe();
+  }
+
+  creacionProducto(producto: Producto, imagen: File) {
+    const formData = new FormData();
+    formData.append('nombre', producto.nombre);
+    formData.append('precio', producto.precio.toString());
+    formData.append('descripcion', producto.descripcion);
+    formData.append('minimoInventario', producto.minimoInventario.toString());
+    formData.append('idCategoria', producto.categoria?.id?.toString() || '');
+
+    formData.append('idMarca', producto.marca?.id?.toString() || '');
+    formData.append('imagenes', imagen);
+
+    return this.http.post(
+      `${environment.baseUrlEnv}/${this.directiva}/crearProducto/`,
+      formData,
+      { withCredentials: true }
+    );
+  }
+
+  busquedaProductosFiltrado(tipo: string, nombre: string) {
+    const params = { tipo, nombre };
+    this.http
+      .get(`${environment.baseUrlEnv}/${this.directiva}/filtrarRegex/`, {
+        params,
+        withCredentials: true,
+      })
       .pipe(
         tap((valores: any) => {
           console.log(valores), this.productos.set(valores.productos);
