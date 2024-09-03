@@ -5,6 +5,8 @@ const Categoria = require('../models/categoria');
 const UrlImangen = require("../models/imagenProducto");
 const { manejoErrores } = require("../utils/manejoErrores.utils");
 const { subirArchivo, obtenerUrlFirmada, eliminarArchivo, generarNombreArchivo } = require("../utils/manejoArchivos.utils");
+const { where } = require("sequelize");
+const { Op } = require('sequelize');
 
 
 
@@ -342,11 +344,201 @@ const obtenerProductosRandom = async (req, res) => {
 }
 
 
+const filtrarRegex = async (req, res) => {
+    const { tipo, nombre } = req.query;
+
+    try {
+        console.log("aaaa",tipo, nombre);
+        
+        if (tipo && nombre) {
+            switch (tipo) {
+                case 'Precio':
+                    const productosPorPrecio = await Producto.findAll({
+                        where: {
+                            precio: nombre
+                        }
+                    });
+                   const productosConDetallesPrecio = await Promise.all(productosPorPrecio.map(async (producto) => {
+                        // Obtener la marca y la categoría
+                        const [marca, categoria, imagenes] = await Promise.all([
+                            Marca.findByPk(producto.idMarca),
+                            Categoria.findByPk(producto.idCategoria),
+                            UrlImangen.findAll({
+                                where: { idProducto: producto.id }
+                            })
+                        ]);
+
+                        let imagenesFirmadas = [];
+                        for (const imagen of imagenes) {
+                            const url = await obtenerUrlFirmada(imagen.nombre);
+                            imagenesFirmadas.push({ nombre: imagen.nombre, url: url });
+                        }
+
+                        return {
+                            id: producto.id,
+                            nombre: producto.nombre,
+                            precio: producto.precio,
+                            marca: marca ? marca : null,
+                            categoria: categoria ? categoria: null,
+                            url_imagenes: imagenesFirmadas
+                        };
+                    }))
+                            
+                            
+                    return res.json({productos: productosConDetallesPrecio });
+                    
+                case 'Marca':
+                    const marcas = await Marca.findAll({
+                        where: {
+                            nombreMarca: {
+                                [Op.iRegexp]: nombre
+                            }
+                        }
+                    });
+
+                    const productosPorMarcas = await Promise.all(
+                        marcas.map(marca => Producto.findAll({
+                            where: { idMarca: marca.id }
+                        }))
+                    );
+
+
+                    //array con elemenetos concatenados
+                     const productos = productosPorMarcas.flat();
+                    const productosConDetallesMarca = await Promise.all(productos.map(async (producto) => {
+                        // Obtener la marca y la categoría
+                        const [marca, categoria, imagenes] = await Promise.all([
+                            Marca.findByPk(producto.idMarca),
+                            Categoria.findByPk(producto.idCategoria),
+                            UrlImangen.findAll({
+                                where: { idProducto: producto.id }
+                            })
+                        ]);
+
+                        let imagenesFirmadas = [];
+                        for (const imagen of imagenes) {
+                            const url = await obtenerUrlFirmada(imagen.nombre);
+                            imagenesFirmadas.push({ nombre: imagen.nombre, url: url });
+                        }
+
+                        return {
+                            id: producto.id,
+                            nombre: producto.nombre,
+                            precio: producto.precio,
+                            marca: marca ? marca : null,
+                            categoria: categoria ? categoria: null,
+                            url_imagenes: imagenesFirmadas
+                        };
+                    }))
+                         
+
+                    return res.json({productos:productosConDetallesMarca});
+
+                case 'Categoria':
+                    const categorias = await Categoria.findAll({
+                        where: {
+                            nombreCategoria: {
+                                [Op.iRegexp]: nombre
+                            }
+                        }
+                    });
+
+                    const productosPorCategorias = await Promise.all(
+                        categorias.map(categoria => Producto.findAll({
+                            where: { idCategoria: categoria.id }
+                        }))
+                    );
+
+
+                    //array con elemenetos concatenados
+                     const productosCategoria = productosPorCategorias.flat();
+                    const productosConDetallesCategoria = await Promise.all(productosCategoria.map(async (producto) => {
+                        // Obtener la marca y la categoría
+                        const [marca, categoria, imagenes] = await Promise.all([
+                            Marca.findByPk(producto.idMarca),
+                            Categoria.findByPk(producto.idCategoria),
+                            UrlImangen.findAll({
+                                where: { idProducto: producto.id }
+                            })
+                        ]);
+
+                        let imagenesFirmadas = [];
+                        for (const imagen of imagenes) {
+                            const url = await obtenerUrlFirmada(imagen.nombre);
+                            imagenesFirmadas.push({ nombre: imagen.nombre, url: url });
+                        }
+
+                        return {
+                            id: producto.id,
+                            nombre: producto.nombre,
+                            precio: producto.precio,
+                            marca: marca ? marca : null,
+                            categoria: categoria ? categoria: null,
+                            url_imagenes: imagenesFirmadas
+                        };
+                    }))
+                         
+
+                    return res.json({productos:productosConDetallesCategoria});
+
+                case 'Producto':
+                    const productosPorNombre = await Producto.findAll({
+                        where: {
+                            nombre: {
+                                [Op.iRegexp]: nombre
+                            }
+                        }
+                    });
+                    const productosConDetalles = await Promise.all(productosPorNombre.map(async (producto) => {
+                        // Obtener la marca y la categoría
+                        const [marca, categoria, imagenes] = await Promise.all([
+                            Marca.findByPk(producto.idMarca),
+                            Categoria.findByPk(producto.idCategoria),
+                            UrlImangen.findAll({
+                                where: { idProducto: producto.id }
+                            })
+                        ]);
+
+                        let imagenesFirmadas = [];
+                        for (const imagen of imagenes) {
+                            const url = await obtenerUrlFirmada(imagen.nombre);
+                            imagenesFirmadas.push({ nombre: imagen.nombre, url: url });
+                        }
+
+                        return {
+                            id: producto.id,
+                            nombre: producto.nombre,
+                            precio: producto.precio,
+                            marca: marca ? marca : null,
+                            categoria: categoria ? categoria: null,
+                            url_imagenes: imagenesFirmadas
+                        };
+                    }))
+                            
+                            
+                    return res.json({productos: productosConDetalles });
+                    
+                case 'Disponibilidad':
+                    // Aquí puedes agregar la lógica para la disponibilidad
+                    break;
+
+                default:
+                    return res.status(400).json({ error: 'Tipo de búsqueda no válido' });
+            }
+        } else {
+            return res.status(400).json({ error: 'Faltan parámetros de búsqueda' });
+        }
+    } catch (error) {
+        await manejoErrores(error, res, 'Producto');
+    }
+};
+
 module.exports = {
     crearProducto,
     obtenerProducto,
     editarProducto,
     filtrarProductos,
     cambiarEstadoActivoProducto,
-    obtenerProductosRandom
+    obtenerProductosRandom,
+    filtrarRegex
 }
