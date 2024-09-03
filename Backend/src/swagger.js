@@ -3074,7 +3074,141 @@ const swaggerOptions = {
             }
           }
         }
+      },
+ "/api/v1/productos/productos": {
+      "get": {
+        "summary": "Obtener todos los productos",
+        "tags": [
+          "Productos"
+        ],
+        "description": "Recupera todos los productos registrados con detalles de la marca, categoría e imágenes asociadas.",
+        "responses": {
+          "200": {
+            "description": "Lista de productos obtenida exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "productos": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "nombre": {
+                            "type": "string",
+                            "example": "Producto Ejemplo"
+                          },
+                          "precio": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 99.99
+                          },
+                          "descripcion": {
+                            "type": "string",
+                            "example": "Descripción del producto"
+                          },
+                          "minimoInventario": {
+                            "type": "integer",
+                            "example": 10
+                          },
+                          "activo": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "marca": {
+                            "type": "object",
+                            "properties": {
+                              "nombreMarca": {
+                                "type": "string",
+                                "example": "Marca Ejemplo"
+                              }
+                            }
+                          },
+                          "categoria": {
+                            "type": "object",
+                            "properties": {
+                              "nombreCategoria": {
+                                "type": "string",
+                                "example": "Categoría Ejemplo"
+                              }
+                            }
+                          },
+                          "url_imagenes": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "nombre": {
+                                  "type": "string",
+                                  "example": "imagen1.png"
+                                },
+                                "url": {
+                                  "type": "string",
+                                  "example": "https://example.com/imagen1.png"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se encontraron productos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "mensaje": {
+                      "type": "string",
+                      "example": "No hay productos registrados"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "mensaje": {
+                      "type": "string",
+                      "example": "Error al recuperar los productos"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
+    }
     }
   },
   apis: ["./routes/*.js"],

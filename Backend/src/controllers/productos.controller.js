@@ -343,6 +343,52 @@ const obtenerProductosRandom = async (req, res) => {
     }
 }
 
+const obtenerTodosProductos = async (req, res) => {
+    try {
+        const productos = await Producto.findAll({
+            attributes: ['id', 'nombre', 'precio', 'descripcion', 'minimoInventario', 'activo'],
+            include: [
+                {
+                    model: Marca,
+                    as: 'marca',
+                    attributes: ['nombreMarca']
+                },
+                {
+                    model: Categoria,
+                    as: 'categoria',
+                    attributes: ['nombreCategoria']
+                }
+            ]
+        });
+
+        if (productos.length < 1) {
+            return res.status(404).json({ ok: false, mensaje: 'No hay productos registrados' });
+        }
+
+        for (const producto of productos) {
+            const imagenes = await UrlImangen.findAll({
+                where: {
+                    idProducto: producto.id
+                }
+            });
+
+            let imagenesFirmadas = [];
+
+            for (const imagen of imagenes) {
+                const url = await obtenerUrlFirmada(imagen.nombre)
+                imagenesFirmadas.push({nombre: imagen.nombre, url: url});
+            }
+
+            producto.dataValues.url_imagenes = imagenesFirmadas;
+        }
+
+        return res.json({ ok: true, productos });
+
+    } catch (error) {
+        await manejoErrores(error, res, "Producto");
+    }
+}
+
 
 const filtrarRegex = async (req, res) => {
     const { tipo, nombre } = req.query;
@@ -540,5 +586,6 @@ module.exports = {
     filtrarProductos,
     cambiarEstadoActivoProducto,
     obtenerProductosRandom,
-    filtrarRegex
+    filtrarRegex,
+    obtenerTodosProductos
 }

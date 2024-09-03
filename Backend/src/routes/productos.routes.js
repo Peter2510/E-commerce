@@ -16,6 +16,7 @@ router.put(`${api}/cambiarEstadoProducto/:id`, jwtValidacion ,ProductosControlle
 router.get(`${api}/productosRandom/:cantidad`, ProductosController.obtenerProductosRandom);
 router.get(`${api}/filtrar`, ProductosController.filtrarProductos);
 router.get(`${api}/filtrarRegex`, ProductosController.filtrarRegex);
+router.get(`${api}/productos`, jwtValidacion, ProductosController.obtenerTodosProductos);
 
 
 
