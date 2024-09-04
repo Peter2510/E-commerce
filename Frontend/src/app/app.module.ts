@@ -23,6 +23,8 @@ import { ModalEditarComponent } from './admin/modal-editar/modal-editar.componen
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreacionProductosComponent } from './admin/productos/creacion-productos/creacion-productos.component';
 import { EdicionProductosComponent } from './admin/productos/edicion-productos/edicion-productos.component';
+import { EliminarProductoComponent } from './admin/productos/eliminar-producto/eliminar-producto.component';
+import { EditarCantidadComponent } from './admin/inventario/editar-cantidad/editar-cantidad.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { EdicionProductosComponent } from './admin/productos/edicion-productos/e
     GestionCriticaComponent,
     GestionProductosComponent,
     GestionProductosEspecificaComponent,
+    EliminarProductoComponent,
   ],
   imports: [
     BrowserModule,

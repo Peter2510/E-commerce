@@ -4,15 +4,16 @@
     <div class="lg:w-4/5 mx-auto flex flex-wrap">
       <div class="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
         <h2 class="text-sm title-font text-gray-500 tracking-widest">
-          BRAND NAME
+          {{ this.producto.nombre }}
         </h2>
         <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">
-          Animated Night Hill Illustrations
+          {{ this.producto.marca }}
         </h1>
         <div class="flex mb-4">
           <a
             class="flex-grow text-blue-500 border-b-2 border-blue-500 py-2 text-lg px-1"
-            >Estado del producto</a
+          >
+            {{ this.producto.categoria }}</a
           >
         </div>
 
@@ -25,56 +26,48 @@
           id="message"
           rows="4"
           class="leading-relaxed mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Write your thoughts here..."
+          [value]="this.producto.descripcion"
+          readonly
         ></textarea>
 
         <div class="flex border-t border-gray-200 py-2 mx-auto flex-wrap">
-          <span class="text-gray-500">Color</span>
+          <span class="text-gray-500">Activo</span>
           <input
             type="text"
             id="first_name"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Cantidad"
             required
-          />
-        </div>
-        <div class="flex border-t border-gray-200 py-2 mx-auto flex-wrap">
-          <span class="text-gray-500">Size</span>
-          <input
-            type="text"
-            id="first_name"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Cantidad"
-            required
+            [value]="this.producto.activo === true ? 'Activo' : 'Desactivado'"
+            readonly
           />
         </div>
         <div
           class="flex border-t border-b mb-6 border-gray-200 py-2 mx-auto flex-wrap"
         >
-          <span class="text-gray-500">Quantity</span>
+          <span class="text-gray-500">Minimo en inventario</span>
           <input
             type="text"
             id="first_name"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Cantidad"
             required
+            readonly
+            [value]="this.producto.minimoInventario"
           />
         </div>
         <div class="flex">
-          <span class="title-font font-medium text-2xl text-gray-900"
-            >$58.00</span
-          >
-          <button
-            class="flex ml-auto text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded"
-          >
-            Guardar cambios
-          </button>
+          <span class="title-font font-medium text-2xl text-gray-900">{{
+            this.producto.precio | currency : "Q"
+          }}</span>
         </div>
       </div>
       <img
         alt="ecommerce"
         class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded"
-        src="https://dummyimage.com/400x400"
+        width="400"
+        height="400"
+        [src]="this.producto.url_imagenes[0].url"
       />
     </div>
   </div>

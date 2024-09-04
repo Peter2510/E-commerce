@@ -13,6 +13,8 @@ import { ModalEliminarComponent } from '../modal-eliminar/modal-eliminar.compone
 import { ModalEditarComponent } from '../modal-editar/modal-editar.component';
 import { CreacionProductosComponent } from '../productos/creacion-productos/creacion-productos.component';
 import { EdicionProductosComponent } from '../productos/edicion-productos/edicion-productos.component';
+import { EditarCantidadComponent } from '../inventario/editar-cantidad/editar-cantidad.component';
+import { EliminarProductoComponent } from '../productos/eliminar-producto/eliminar-producto.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { EdicionProductosComponent } from '../productos/edicion-productos/edicio
     ModalEditarComponent,
     CreacionProductosComponent,
     EdicionProductosComponent,
+    EditarCantidadComponent,
   ],
   imports: [CommonModule, AdminRoutesModule, AdminheaderComponent, FormsModule],
 })

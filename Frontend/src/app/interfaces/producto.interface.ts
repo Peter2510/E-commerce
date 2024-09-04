@@ -8,6 +8,7 @@ export interface Producto {
   url_imagenes: UrlImage[];
   descripcion: string;
   minimoInventario: number;
+  activo?: boolean;
 }
 
 export interface Marca {

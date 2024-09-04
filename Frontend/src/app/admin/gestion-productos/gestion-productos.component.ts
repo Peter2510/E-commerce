@@ -1,5 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ProductosServicioService } from '../services/productos-servicio.service';
+import { Producto } from 'src/app/interfaces/producto.interface';
+import { EliminarProductoComponent } from '../productos/eliminar-producto/eliminar-producto.component';
+EliminarProductoComponent;
 
 @Component({
   selector: 'app-gestion-productos',
@@ -11,6 +14,8 @@ export class GestionProductosComponent implements OnInit {
   elementoSeleccionado!: string;
   isDropdownOpen = false;
   nombre!: string;
+  isModalVisible: boolean = false;
+  seleccionado: any;
   //pasa el dropdown
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
@@ -30,7 +35,16 @@ export class GestionProductosComponent implements OnInit {
       this.nombre
     );
   }
-  ngOnInit(): void {
-    this.servicioProducto.ObtenerProductos(20);
+
+  //abre los modals
+  openModal(tipoElemento: string, elemento?: Producto) {
+    this.isModalVisible = true;
+    this.seleccionado = elemento;
   }
+
+  closeModal() {
+    this.isModalVisible = false;
+    console.log(this.isModalVisible);
+  }
+  ngOnInit(): void {}
 }

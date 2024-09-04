@@ -13,15 +13,15 @@ export class ProductosServicioService {
   //signals
   public productos = signal<Producto[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.ObtenerProductos();
+  }
 
-  ObtenerProductos(cantidad: number) {
+  ObtenerProductos() {
     this.http
-      .get(
-        `${environment.baseUrlEnv}/${this.directiva}/productosRandom/` +
-          cantidad,
-        { withCredentials: true }
-      )
+      .get(`${environment.baseUrlEnv}/${this.directiva}/productos/`, {
+        withCredentials: true,
+      })
       .pipe(
         tap((valores: any) => {
           console.log(valores, valores.productos),
@@ -62,5 +62,38 @@ export class ProductosServicioService {
         })
       )
       .subscribe();
+  }
+
+  obtenerProductoId(id: number) {
+    return this.http.get(
+      `${environment.baseUrlEnv}/${this.directiva}/producto/` + id,
+      { withCredentials: true }
+    );
+  }
+
+  editarProducto(producto: Producto, imagen: File) {
+    const formData = new FormData();
+    formData.append('id', producto?.id?.toString() || '');
+    formData.append('nombre', producto.nombre);
+    formData.append('precio', producto.precio.toString());
+    formData.append('descripcion', producto.descripcion);
+    formData.append('minimoInventario', producto.minimoInventario.toString());
+    formData.append('idCategoria', producto.categoria?.id?.toString() || '');
+
+    formData.append('idMarca', producto.marca?.id?.toString() || '');
+    formData.append('imagenes', imagen);
+
+    return this.http.put(
+      `${environment.baseUrlEnv}/${this.directiva}/editarProducto/`,
+      formData,
+      { withCredentials: true }
+    );
+  }
+
+  eliminarProducto(id: number | undefined) {
+    return this.http.delete(
+      `${environment.baseUrlEnv}/${this.directiva}/eliminarProducto/` + id,
+      { withCredentials: true }
+    );
   }
 }
