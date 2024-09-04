@@ -20,6 +20,9 @@ router.get(`${api}/productos`, jwtValidacion, ProductosController.obtenerTodosPr
 router.get(`${api}/productos-activos`, jwtValidacion, ProductosController.productosActivos);
 router.get(`${api}/productos-desactivados`, jwtValidacion, ProductosController.productosDesactivados);
 
+// pero viola la integridad
+router.delete(`${api}/eliminarProducto/:id`, ProductosController.eliminarProducto);
+
 
 
 

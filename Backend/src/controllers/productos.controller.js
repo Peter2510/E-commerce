@@ -676,6 +676,26 @@ const productosDesactivados = async (req, res) => {
     }
 }
 
+
+
+//aunque seria de ver bien la integradidad sino mejor evitarnos esto y cambiar de estadp
+const eliminarProducto = async (req, res) => {
+        const { id } = req.params;
+  
+    try {
+      const producto = await Producto.findByPk(id);
+  
+      if (!producto) {
+        return res.status(404).json({ ok: false, mensaje: "producto no encontrada" });
+      }
+  
+      await producto.destroy();
+      res.status(200).json({ ok: true, mensaje: "producto eliminada correctamente" });
+    } catch (error) {
+      await manejoErrores(error, res, "Producto");
+    }
+}
+
 module.exports = {
     crearProducto,
     obtenerProducto,
@@ -686,5 +706,6 @@ module.exports = {
     filtrarRegex,
     obtenerTodosProductos,
     productosActivos,
-    productosDesactivados
+    productosDesactivados,
+    eliminarProducto
 }
