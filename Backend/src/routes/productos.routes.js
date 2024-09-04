@@ -17,6 +17,9 @@ router.get(`${api}/productosRandom/:cantidad`, ProductosController.obtenerProduc
 router.get(`${api}/filtrar`, ProductosController.filtrarProductos);
 router.get(`${api}/filtrarRegex`, ProductosController.filtrarRegex);
 router.get(`${api}/productos`, jwtValidacion, ProductosController.obtenerTodosProductos);
+router.get(`${api}/productos-activos`, jwtValidacion, ProductosController.productosActivos);
+router.get(`${api}/productos-desactivados`, jwtValidacion, ProductosController.productosDesactivados);
+
 
 
 

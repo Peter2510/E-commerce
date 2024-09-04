@@ -3208,6 +3208,242 @@ const swaggerOptions = {
           }
         }
       }
+    },
+    "/api/v1/productos/activos": {
+      "get": {
+        "summary": "Obtener productos activos",
+        "tags": [
+          "Productos"
+        ],
+        "description": "Recupera todos los productos que están marcados como activos, junto con detalles de la marca, categoría e imágenes asociadas.",
+        "responses": {
+          "200": {
+            "description": "Lista de productos activos obtenida exitosamente o mensaje de que no hay productos activos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "mensaje": {
+                      "type": "string",
+                      "example": "No hay productos activos"
+                    },
+                    "productos": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "nombre": {
+                            "type": "string",
+                            "example": "Producto Ejemplo"
+                          },
+                          "precio": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 99.99
+                          },
+                          "descripcion": {
+                            "type": "string",
+                            "example": "Descripción del producto"
+                          },
+                          "minimoInventario": {
+                            "type": "integer",
+                            "example": 10
+                          },
+                          "activo": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "marca": {
+                            "type": "object",
+                            "properties": {
+                              "nombreMarca": {
+                                "type": "string",
+                                "example": "Marca Ejemplo"
+                              }
+                            }
+                          },
+                          "categoria": {
+                            "type": "object",
+                            "properties": {
+                              "nombreCategoria": {
+                                "type": "string",
+                                "example": "Categoría Ejemplo"
+                              }
+                            }
+                          },
+                          "url_imagenes": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "nombre": {
+                                  "type": "string",
+                                  "example": "imagen1.png"
+                                },
+                                "url": {
+                                  "type": "string",
+                                  "example": "https://example.com/imagen1.png"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "mensaje": {
+                      "type": "string",
+                      "example": "Error al recuperar los productos activos"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/productos/desactivados": {
+      "get": {
+        "summary": "Obtener productos desactivados",
+        "tags": [
+          "Productos"
+        ],
+        "description": "Recupera todos los productos que están marcados como desactivados, junto con detalles de la marca, categoría e imágenes asociadas.",
+        "responses": {
+          "200": {
+            "description": "Lista de productos desactivados obtenida exitosamente o mensaje de que no hay productos desactivados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "mensaje": {
+                      "type": "string",
+                      "example": "No hay productos desactivados"
+                    },
+                    "productos": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "nombre": {
+                            "type": "string",
+                            "example": "Producto Ejemplo"
+                          },
+                          "precio": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 99.99
+                          },
+                          "descripcion": {
+                            "type": "string",
+                            "example": "Descripción del producto"
+                          },
+                          "minimoInventario": {
+                            "type": "integer",
+                            "example": 10
+                          },
+                          "activo": {
+                            "type": "boolean",
+                            "example": false
+                          },
+                          "marca": {
+                            "type": "object",
+                            "properties": {
+                              "nombreMarca": {
+                                "type": "string",
+                                "example": "Marca Ejemplo"
+                              }
+                            }
+                          },
+                          "categoria": {
+                            "type": "object",
+                            "properties": {
+                              "nombreCategoria": {
+                                "type": "string",
+                                "example": "Categoría Ejemplo"
+                              }
+                            }
+                          },
+                          "url_imagenes": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "nombre": {
+                                  "type": "string",
+                                  "example": "imagen1.png"
+                                },
+                                "url": {
+                                  "type": "string",
+                                  "example": "https://example.com/imagen1.png"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "mensaje": {
+                      "type": "string",
+                      "example": "Error al recuperar los productos desactivados"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
     }
   },

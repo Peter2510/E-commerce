@@ -579,6 +579,103 @@ const filtrarRegex = async (req, res) => {
     }
 };
 
+const productosActivos = async (req, res) => {
+    try {
+        const productos = await Producto.findAll({
+            where: {
+                activo: true
+            },
+            include: [
+                {
+                    model: Marca,
+                    as: 'marca',
+                    attributes: ['nombreMarca']
+                },
+                {
+                    model: Categoria,
+                    as: 'categoria',
+                    attributes: ['nombreCategoria']
+                }
+            ]
+        });
+
+        if (!productos.length) {
+            return res.status(200).json({ ok: true, mensaje: 'No hay productos activos' });
+        }
+
+        for (const producto of productos) {
+            const imagenes = await UrlImangen.findAll({
+                where: {
+                    idProducto: producto.id
+                }
+            });
+
+            let imagenesFirmadas = [];
+
+            for (const imagen of imagenes) {
+                const url = await obtenerUrlFirmada(imagen.nombre)
+                imagenesFirmadas.push({nombre: imagen.nombre, url: url});
+            }
+
+            producto.dataValues.url_imagenes = imagenesFirmadas;
+        }
+
+
+        return res.json({ ok: true, productos });
+
+    } catch (error) {
+        await manejoErrores(error, res, 'Producto');
+    }
+}
+
+const productosDesactivados = async (req, res) => {
+    try {
+        const productos = await Producto.findAll({
+            where: {
+                activo: false
+            },
+            include: [
+                {
+                    model: Marca,
+                    as: 'marca',
+                    attributes: ['nombreMarca']
+                },
+                {
+                    model: Categoria,
+                    as: 'categoria',
+                    attributes: ['nombreCategoria']
+                }
+            ]
+        });
+
+        if (!productos.length) {
+            return res.status(200).json({ ok: true, mensaje: 'No hay productos desactivados' });
+        }
+
+        for (const producto of productos) {
+            const imagenes = await UrlImangen.findAll({
+                where: {
+                    idProducto: producto.id
+                }
+            });
+
+            let imagenesFirmadas = [];
+
+            for (const imagen of imagenes) {
+                const url = await obtenerUrlFirmada(imagen.nombre)
+                imagenesFirmadas.push({nombre: imagen.nombre, url: url});
+            }
+
+            producto.dataValues.url_imagenes = imagenesFirmadas;
+        }
+
+        return res.json({ ok: true, productos });
+
+    } catch (error) {
+        await manejoErrores(error, res, 'Producto');
+    }
+}
+
 module.exports = {
     crearProducto,
     obtenerProducto,
@@ -587,5 +684,7 @@ module.exports = {
     cambiarEstadoActivoProducto,
     obtenerProductosRandom,
     filtrarRegex,
-    obtenerTodosProductos
+    obtenerTodosProductos,
+    productosActivos,
+    productosDesactivados
 }
