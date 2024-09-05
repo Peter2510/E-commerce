@@ -1,5 +1,6 @@
 const express = require('express');
 const ProductosController = require('../controllers/productos.controller');
+const InventarioController = require('../controllers/inventario.controller');
 const validarProducto = require('../middlewares/validarProducto');
 const validarEdicionProducto = require('../middlewares/validarEdicionProducto');
 const jwtValidacion = require('../middlewares/jwtValidacion');
@@ -22,6 +23,9 @@ router.get(`${api}/productos-desactivados`, jwtValidacion, ProductosController.p
 
 // pero viola la integridad
 router.delete(`${api}/eliminarProducto/:id`, ProductosController.eliminarProducto);
+
+//para inventario
+router.put(`${api}/ingresoMayorCantidadProducto/:id`,InventarioController.ingresoMayorCantidadProducto);
 
 
 
