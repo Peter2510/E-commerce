@@ -1886,7 +1886,7 @@ const swaggerOptions = {
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/producto",
+                  "$ref": "#/components/schemas/Producto",
                   "properties": {
                     "nombre": {
                       "type": "string",
