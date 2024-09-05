@@ -13,19 +13,23 @@ const api = '/api/v1/productos';
 router.post(`${api}/crearProducto`,jwtValidacion,validarProducto, ProductosController.crearProducto);
 router.get(`${api}/producto/:id`, ProductosController.obtenerProducto);
 router.put(`${api}/editarProducto`,jwtValidacion,validarEdicionProducto, ProductosController.editarProducto);
-router.put(`${api}/cambiarEstadoProducto/:id`, jwtValidacion ,ProductosController.cambiarEstadoActivoProducto);
+router.put(`${api}/cambiarEstadoProducto/:id`, ProductosController.cambiarEstadoActivoProducto);
 router.get(`${api}/productosRandom/:cantidad`, ProductosController.obtenerProductosRandom);
 router.get(`${api}/filtrar`, ProductosController.filtrarProductos);
 router.get(`${api}/filtrarRegex`, ProductosController.filtrarRegex);
-router.get(`${api}/productos`, jwtValidacion, ProductosController.obtenerTodosProductos);
-router.get(`${api}/productos-activos`, jwtValidacion, ProductosController.productosActivos);
-router.get(`${api}/productos-desactivados`, jwtValidacion, ProductosController.productosDesactivados);
+router.get(`${api}/productos`,  ProductosController.obtenerTodosProductos);
+router.get(`${api}/productos-activos`,  ProductosController.productosActivos);
+router.get(`${api}/productos-desactivados`,  ProductosController.productosDesactivados);
 
 // pero viola la integridad
 router.delete(`${api}/eliminarProducto/:id`, ProductosController.eliminarProducto);
 
 //para inventario
 router.put(`${api}/ingresoMayorCantidadProducto/:id`,InventarioController.ingresoMayorCantidadProducto);
+router.get(`${api}/obtenerCantidades/`, InventarioController.obtenerCantidades);
+router.post(`${api}/ingresoModificacionCantidesUsuarioProducto/`, InventarioController.ingresoModificacionCantidesUsuarioProducto);
+
+
 
 
 
