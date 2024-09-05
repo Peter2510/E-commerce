@@ -91,6 +91,11 @@ const Producto = sequelize.define(
         key: 'id'
       }
     },
+    activo: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
+    }
   },
   {
     schema: 'catalogo',

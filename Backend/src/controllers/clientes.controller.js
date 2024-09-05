@@ -123,19 +123,38 @@ const actualizarContrasenia = async (req, res) => {
   const t = await sequelize.transaction();
 
   try {
-    const { id, contrasenia } = req.body;
+    const { id, contraseniaActual, nuevaContrasenia } = req.body;
 
     if (!id) {
       await t.rollback();
       return res.status(400).json({ ok: false, mensaje: "El id del usuario es requerido" });
     }
 
-    if (!contrasenia) {
+    if (!contraseniaActual) {
       await t.rollback();
-      return res.status(400).json({ ok: false, mensaje: "La contraseña es requerida" });
+      return res.status(400).json({ ok: false, mensaje: "La contraseña actual es requerida" });
     }
 
-    if (contrasenia.length < 8) {
+    if (!nuevaContrasenia) {
+      await t.rollback();
+      return res.status(400).json({ ok: false, mensaje: "La nueva contraseña es requerida" });
+    }
+
+    const usuario = await Usuario.findOne({ where: { id: id } });
+
+    if (!usuario) {
+      await t.rollback();
+      return res.status(404).json({ ok: false, mensaje: 'Usuario no encontrado' });
+    }
+
+    const contraseniaActualHash = await bcrypt.compare(contraseniaActual, usuario.contrasenia);
+
+    if (!contraseniaActualHash) {
+      await t.rollback();
+      return res.status(401).json({ ok: false, mensaje: "La contraseña actual es incorrecta" });
+    }
+   
+    if (nuevaContrasenia.length < 8) {
       await t.rollback();
       return res.status(400).json({
         ok: false,
@@ -143,15 +162,7 @@ const actualizarContrasenia = async (req, res) => {
       });
     }
 
-    const usuario = await Usuario.findOne({ where: { id: id } });
-    console.log("Usuario encontrado:", usuario);
-
-    if (!usuario) {
-      await t.rollback();
-      return res.status(404).json({ ok: false, mensaje: 'Usuario no encontrado' });
-    }
-
-    const hashContrasenia = await bcrypt.hash(contrasenia, 10);
+    const hashContrasenia = await bcrypt.hash(nuevaContrasenia, 10);
     
     const a = await Usuario.update(
       { contrasenia: hashContrasenia }, 

@@ -193,104 +193,94 @@ const swaggerOptions = {
             id: {
               type: "integer",
               description: "ID de la marca, clave primaria, autoincrementable",
-              example: 1
+              example: 1,
             },
             nombreMarca: {
               type: "string",
-              description: "Nombre de la marca, no puede ser nulo o vacío",
+              description: "Nombre de la marca, no puede ser nulo o vacio",
               example: "Adidas"
-            },
-            imagen: {
-              type: "string",
-              description: "Nombre del archivo de imagen asociado a la marca",
-              example: "adidas-logo.png"
             }
           },
           required: [
-            "nombreMarca",
-            "imagen"
+            "nombreMarca"
           ],
           example: {
             id: 1,
-            nombreMarca: "Adidas",
-            imagen: "adidas-logo.png"
-          }
+            nombreMarca: "Adidas"
+          },
         },
+
         Categoria: {
           type: "object",
           properties: {
             id: {
               type: "integer",
-              description: "ID de la categoría, clave primaria, autoincrementable",
-              example: 1
+              description: "ID de la categoria, clave primaria, autoincrementable",
+              example: 1,
             },
-            nombreCategoria: {
+            nombreMarca: {
               type: "string",
-              description: "Nombre de la categoría, no puede ser nulo o vacío",
+              description: "Nombre de la Categoria, no puede ser nulo o vacio",
               example: "Ropa"
-            },
-            imagen: {
-              type: "string",
-              description: "Nombre del archivo de imagen asociado a la categoría",
-              example: "categoria-ropa.png"
             }
           },
           required: [
-            "nombreCategoria",  
-            "imagen"
+            "nombreCategoria"
           ],
           example: {
             id: 1,
-            nombreCategoria: "Ropa",
-            imagen: "categoria-ropa.png"
+            nombreCategoria: "Ropa"
           }
-        },
-        
-        Producto: {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer",
-              "example": 1
+          , Producto: {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 1
+              },
+              "nombre": {
+                "type": "string",
+                "example": "Laptop Dell"
+              },
+              "idCategoria": {
+                "type": "integer",
+                "example": 2
+              },
+              "descripcion": {
+                "type": "string",
+                "example": "Una laptop de alta gama con procesador Intel i7"
+              },
+              "precio": {
+                "type": "number",
+                "format": "decimal",
+                "example": 1200.99
+              },
+              "minimoInventario": {
+                "type": "integer",
+                "description": "Cantidad mínima de inventario que debe haber",
+                "example": 10
+              },
+              "activo": {
+                "type": "boolean",
+                "description": "Define si el producto está disponible para la venta",
+                "example": true
+              },
+              "idMarca": {
+                "type": "integer",
+                "example": 3
+              }
             },
-            "nombre": {
-              "type": "string",
-              "example": "Laptop Dell"
-            },
-            "idCategoria": {
-              "type": "integer",
-              "example": 2
-            },
-            "descripcion": {
-              "type": "string",
-              "example": "Una laptop de alta gama con procesador Intel i7"
-            },
-            "precio": {
-              "type": "number",
-              "format": "decimal",
-              "example": 1200.99
-            },
-            "minimoInventario": {
-              "type": "integer",
-              "description": "Cantidad mínima de inventario que debe haber",
-              "example": 10
-            },
-            "idMarca": {
-              "type": "integer",
-              "example": 3
+            "required": ["nombre", "idCategoria", "precio", "minimoInventario", "idMarca"],
+            "example": {
+              "id": 1,
+              "nombre": "Laptop Dell",
+              "idCategoria": 2,
+              "descripcion": "Una laptop de alta gama con procesador Intel i7",
+              "precio": 1200.99,
+              "minimoInventario": 10,
+              "idMarca": 3
             }
-          }, 
-          "required": ["nombre", "idCategoria", "precio", "minimoInventario", "idMarca"],
-          "example": {
-            "id": 1,
-            "nombre": "Laptop Dell",
-            "idCategoria": 2,
-            "descripcion": "Una laptop de alta gama con procesador Intel i7",
-            "precio": 1200.99,
-            "minimoInventario": 10,
-            "idMarca": 3
-          }
-        },
+          },
           UrlImagen: {
             "type": "object",
             "properties": {
@@ -314,139 +304,140 @@ const swaggerOptions = {
               "urlImagen": "https://aws.com/images/producto1.jpg",
               "idProducto": 1
             }
+          }
         }
       }
     },
     "paths": {
       "/api/v1/crearCliente": {
-          "post": {
-            "summary": "Crear un nuevo cliente",
-            "operationId": "crearCliente",
-            "tags": ["Auth"],
-            "requestBody": {
+        "post": {
+          "summary": "Crear un nuevo cliente",
+          "operationId": "crearCliente",
+          "tags": ["Auth"],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Usuario" },
+                    { "$ref": "#/components/schemas/Persona" }
+                  ]
+                },
+                "example": {
+                  "nombreUsuario": "admin",
+                  "contrasenia": "12345678",
+                  "persona": {
+                    "nombre": "Nombre prueba",
+                    "correoElectronico": "admin@a.com",
+                    "direccion": "Mi direccion",
+                    "idTipoFormaPago": 1,
+                    "nit": "2368547"
+                  },
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Cliente registrado correctamente",
               "content": {
                 "application/json": {
                   "schema": {
-                    "allOf": [
-                      { "$ref": "#/components/schemas/Usuario" },
-                      { "$ref": "#/components/schemas/Persona" }
-                    ]
-                  },
-                  "example": {
-                    "nombreUsuario": "admin",
-                    "contrasenia": "12345678",
-                    "persona": {
-                      "nombre": "Nombre prueba",
-                      "correoElectronico": "admin@a.com",
-                      "direccion": "Mi direccion",
-                      "idTipoFormaPago": 1,
-                      "nit": "2368547"
-                    },
-                  }
-                }
-              },
-              "required": true
-            },
-            "responses": {
-              "200": {
-                "description": "Cliente registrado correctamente",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "ok": {
-                          "type": "boolean",
-                          "example": true
-                        },
-                        "mensaje": {
-                          "type": "string",
-                          "example": "Registrado correctamente"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "400": {
-                "description": "Error en la creación del cliente",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "ok": {
-                          "type": "boolean",
-                          "example": false
-                        },
-                        "mensaje": {
-                          "type": "string",
-                          "example": "La contraseña debe tener al menos 8 caracteres"
-                        },
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
                       },
-                      "examples": {
-                        "shortPassword": {
-                          "summary": "Contraseña demasiado corta",
-                          "value": {
-                            "ok": false,
-                            "mensaje": "La contraseña debe tener al menos 8 caracteres"
-                          }
-                        },
-                        "passwordRequired": {
-                          "summary": "Contraseña no proporcionada",
-                          "value": {
-                            "ok": false,
-                            "mensaje": "La contraseña debe tener al menos 8 caracteres"
-                          }
-                        }
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Registrado correctamente"
                       }
                     }
                   }
                 }
-              },
-              "409": {
-                "description": "Correo electrónico ya registrado",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "ok": {
-                          "type": "boolean",
-                          "example": false
-                        },
-                        "mensaje": {
-                          "type": "string",
-                          "example": "Correo electrónico ya registrado"
+              }
+            },
+            "400": {
+              "description": "Error en la creación del cliente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "La contraseña debe tener al menos 8 caracteres"
+                      },
+                    },
+                    "examples": {
+                      "shortPassword": {
+                        "summary": "Contraseña demasiado corta",
+                        "value": {
+                          "ok": false,
+                          "mensaje": "La contraseña debe tener al menos 8 caracteres"
                         }
-                      }
-                    }
-                  }
-                }
-              },
-              "500": {
-                "description": "Error interno del servidor",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "ok": {
-                          "type": "boolean",
-                          "example": false
-                        },
-                        "mensaje": {
-                          "type": "string",
-                          "example": "Error interno del servidor: [detalle del error]"
+                      },
+                      "passwordRequired": {
+                        "summary": "Contraseña no proporcionada",
+                        "value": {
+                          "ok": false,
+                          "mensaje": "La contraseña debe tener al menos 8 caracteres"
                         }
                       }
                     }
                   }
                 }
               }
+            },
+            "409": {
+              "description": "Correo electrónico ya registrado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Correo electrónico ya registrado"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error interno del servidor: [detalle del error]"
+                      }
+                    }
+                  }
+                }
+              }
             }
-                      
           }
+
+        }
       },
       "/api/v1/login": {
         "post": {
@@ -1129,22 +1120,22 @@ const swaggerOptions = {
                         "type": "boolean",
                         "example": true
                       },
-                      usuario:{
+                      usuario: {
                         type: "object",
-                          example: {
-                            "usuario": {
-                              "id": 1,
-                              "nombreUsuario": "Jhony19",
-                              "a2fActivo": true,
-                              "idPersona": 1,
-                              "idTipoUsuario": 1,
-                              "activo": true
-                            },
-                            "persona": {
-                              "id": 1,
-                              "nombre": "Jhony Fuentes",
-                              "correoElectronico": "reyesif268@albarulo.com",
-                              "fechaCreacion": "2024-08-20T05:21:02.204Z"
+                        example: {
+                          "usuario": {
+                            "id": 1,
+                            "nombreUsuario": "Jhony19",
+                            "a2fActivo": true,
+                            "idPersona": 1,
+                            "idTipoUsuario": 1,
+                            "activo": true
+                          },
+                          "persona": {
+                            "id": 1,
+                            "nombre": "Jhony Fuentes",
+                            "correoElectronico": "reyesif268@albarulo.com",
+                            "fechaCreacion": "2024-08-20T05:21:02.204Z"
                           }
                         }
                       }
@@ -1217,54 +1208,54 @@ const swaggerOptions = {
                         "type": "array",
                         example: [
                           {
-                              "usuario": {
-                                  "id": 2,
-                                  "nombreUsuario": "Jhony19",
-                                  "a2fActivo": true,
-                                  "idPersona": 2,
-                                  "idTipoUsuario": 1,
-                                  "activo": true
-                              },
-                              "persona": {
-                                  "id": 2,
-                                  "nombre": "Jhony Fuentes",
-                                  "correoElectronico": "a1@a.com",
-                                  "fechaCreacion": "2024-08-20T06:15:43.557Z"
-                              }
+                            "usuario": {
+                              "id": 2,
+                              "nombreUsuario": "Jhony19",
+                              "a2fActivo": true,
+                              "idPersona": 2,
+                              "idTipoUsuario": 1,
+                              "activo": true
+                            },
+                            "persona": {
+                              "id": 2,
+                              "nombre": "Jhony Fuentes",
+                              "correoElectronico": "a1@a.com",
+                              "fechaCreacion": "2024-08-20T06:15:43.557Z"
+                            }
                           },
                           {
-                              "usuario": {
-                                  "id": 1,
-                                  "nombreUsuario": "Jhony19",
-                                  "a2fActivo": true,
-                                  "idPersona": 1,
-                                  "idTipoUsuario": 1,
-                                  "activo": true
-                              },
-                              "persona": {
-                                  "id": 1,
-                                  "nombre": "Jhony Fuentes",
-                                  "correoElectronico": "reyesif268@albarulo.com",
-                                  "fechaCreacion": "2024-08-20T05:21:02.204Z"
-                              }
+                            "usuario": {
+                              "id": 1,
+                              "nombreUsuario": "Jhony19",
+                              "a2fActivo": true,
+                              "idPersona": 1,
+                              "idTipoUsuario": 1,
+                              "activo": true
+                            },
+                            "persona": {
+                              "id": 1,
+                              "nombre": "Jhony Fuentes",
+                              "correoElectronico": "reyesif268@albarulo.com",
+                              "fechaCreacion": "2024-08-20T05:21:02.204Z"
+                            }
                           },
                           {
-                              "usuario": {
-                                  "id": 13,
-                                  "nombreUsuario": "admin2",
-                                  "a2fActivo": false,
-                                  "idPersona": 11,
-                                  "idTipoUsuario": 1,
-                                  "activo": true
-                              },
-                              "persona": {
-                                  "id": 11,
-                                  "nombre": "Nombre12",
-                                  "correoElectronico": "admin@a.com",
-                                  "fechaCreacion": "2024-08-21T19:08:08.378Z"
-                              }
+                            "usuario": {
+                              "id": 13,
+                              "nombreUsuario": "admin2",
+                              "a2fActivo": false,
+                              "idPersona": 11,
+                              "idTipoUsuario": 1,
+                              "activo": true
+                            },
+                            "persona": {
+                              "id": 11,
+                              "nombre": "Nombre12",
+                              "correoElectronico": "admin@a.com",
+                              "fechaCreacion": "2024-08-21T19:08:08.378Z"
+                            }
                           }
-                      ]
+                        ]
                       }
                     }
                   }
@@ -1413,7 +1404,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/administracion/obtenerClientes": {
+      "/api/v1/cliente/obtenerClientes": {
         "get": {
           "summary": "Obtener todos los clientes",
           "operationId": "obtenerClientes",
@@ -1517,7 +1508,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/administracion/obtenerClientePorId/{id}": {
+      "/api/v1/clientes/obtenerClientePorId/{id}": {
         "get": {
           "summary": "Obtener un cliente por Id de usuario",
           "operationId": "obtenerClientePorId",
@@ -1632,7 +1623,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/administracion/editarCliente": {
+      "/api/v1/cliente/editarCliente": {
         "post": {
           "summary": "Editar datos de un cliente",
           "operationId": "editarCliente",
@@ -1747,7 +1738,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/administracion/actualizarContrasenia": {
+      "/api/v1/cliente/actualizarContrasenia": {
         "post": {
           "summary": "Actualizar la contraseña de un cliente",
           "operationId": "actualizarContrasenia",
@@ -1764,9 +1755,15 @@ const swaggerOptions = {
                       "description": "ID del usuario a editar",
                       "example": 1,
                     },
-                    "contrasenia": {
+                    "contraseniaActual": {
                       "type": "string",
-                      "example": "nuevaContraseña123"
+                      "descrption": "Contraseña actual del usuario",
+                      "example": "ddf58c"
+                    },
+                    "nuevaContrasenia": {
+                      "type": "string",
+                      "descrption": "Nueva contrasenia",
+                      "example": "dlg99()8"
                     }
                   }
                 }
@@ -1808,6 +1805,26 @@ const swaggerOptions = {
                       "mensaje": {
                         "type": "string",
                         "example": "La contraseña es requerida"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Contrasenia actual incorrecta",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "La contrasenia actual no es correcta"
                       }
                     }
                   }
@@ -2097,7 +2114,7 @@ const swaggerOptions = {
                                   "url": "https://bucket.s3.amazonaws.com/d397d0c9a8237862a17895a71b94e1a2.png"
                                 }
                               ]
-                              
+
                             }
                           }
                         }
@@ -2316,147 +2333,97 @@ const swaggerOptions = {
           }
         }
       },
-
-
-"/api/v1/productos/filtrar": {
-  "get": {
-    "summary": "Filtrar productos por varios criterios",
-    "tags": [
-      "Productos"
-    ],
-    "parameters": [
-      {
-        "name": "idMarca",
-        "in": "query",
-        "required": false,
-        "schema": {
-          "type": "integer",
-          "description": "ID de la marca",
-          "example": 3
-        }
-      },
-      {
-        "name": "idCategoria",
-        "in": "query",
-        "required": false,
-        "schema": {
-          "type": "integer",
-          "description": "ID de la categoría",
-          "example": 4
-        }
-      },
-      {
-        "name": "sortBy",
-        "in": "query",
-        "required": false,
-        "schema": {
-          "type": "string",
-          "description": "Campo por el cual ordenar los resultados (e.g., nombre, precio)",
-          "example": "precio"
-        }
-      },
-      {
-        "name": "order",
-        "in": "query",
-        "required": false,
-        "schema": {
-          "type": "string",
-          "description": "Orden de los resultados (ASC o DESC)",
-          "enum": ["ASC", "DESC"],
-          "example": "ASC"
-        }
-      }
-    ],
-    "responses": {
-      "200": {
-        "description": "Productos filtrados con éxito",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "ok": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "productos": {
-                  "type": "array",
-                  "items": {
+      "/api/v1/productos/cambiarEstadoProducto/{id}": {
+        "put": {
+          "summary": "Habilitar o deshabilitar un producto",
+          "tags": [
+            "Productos"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID del producto a dehabilitar",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 12
+              }
+            },
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  type: "object",
+                  properties: {
+                    estado: {
+                      type: "boolean",
+                      descripcion: "Estado del producto",
+                      example: "true"
+                    }
+                  },
+                  required: ["estado"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Producto deshabilitado con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
                     "type": "object",
                     "properties": {
-                      "id": {
-                        "type": "integer",
-                        "example": 10
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
                       },
-                      "nombre": {
+                      "mensaje": {
                         "type": "string",
-                        "example": "Monitor Full HD"
+                        "example": "Producto deshabilitado con éxito",
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Producto no encontrado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
                       },
-                      "idCategoria": {
-                        "type": "integer",
-                        "example": 3
-                      },
-                      "descripcion": {
+                      "mensaje": {
                         "type": "string",
-                        "example": "Pantalla full hd para pc"
+                        "example": "Producto no encontrado"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
                       },
-                      "precio": {
+                      "mensaje": {
                         "type": "string",
-                        "example": "195.00"
-                      },
-                      "minimoInventario": {
-                        "type": "integer",
-                        "example": 20
-                      },
-                      "idMarca": {
-                        "type": "integer",
-                        "example": 3
-                      },
-                      "createdAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-08-23T02:41:28.087Z"
-                      },
-                      "updatedAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-08-23T02:41:28.087Z"
-                      },
-                      "marca": {
-                        "type": "string",
-                        "example": "Marca X"
-                      },
-                      "categoria": {
-                        "type": "string",
-                        "example": "Categoría Y"
-                      },
-                      "url_imagenes": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "nombre": {
-                              "type": "string",
-                              "example": "cf854ed066707b18b3836f6d8342c4a9.png"
-                            },
-                            "url": {
-                              "type": "string",
-                              "description": "URL de la imagen del producto, es necesario almacenar el nombre para actualizar o eliminar la imagen",
-                              "format": "uri",
-                              "example": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
-                            }
-                          }
-                        },
-                        "example": [
-                          {
-                            "nombre": "cf854ed066707b18b3836f6d8342c4a9.png",
-                            "url": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
-                          },
-                          {
-                            "nombre": "2b192bdc328aa66d66d2fa15a6586ccf.png",
-                            "url": "https://bucket.s3.amazonaws.com/2b192bdc328aa66d66d2fa15a6586ccf.png"
-                          }
-                        ]
+                        "example": "Error interno del servidor"
                       }
                     }
                   }
@@ -2466,40 +2433,1619 @@ const swaggerOptions = {
           }
         }
       },
-      "404": {
-        "description": "Productos no encontrados",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "ok": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "mensaje": {
-                  "type": "string",
-                  "example": "No se encontraron productos con los criterios especificados"
+      "/api/v1/productos/productosRandom/{cantidad}": {
+        "get": {
+          "sumary": "Obtiene  productos aleatorios",
+          "tags": [
+            "Productos"
+          ],
+          "parameters": [
+            {
+              "name": "cantidad",
+              "in": "path",
+              "description": "Cantidad de productos a obtener",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 5
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Cantidad de productos obtendidosa con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "productos": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "description": "Objeto con los datos del producto",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": "45"
+                            },
+                            "nombre": {
+                              "type": "string",
+                              "example": "Monitor Full HD"
+                            },
+                            "precio": {
+                              "type": "decimal",
+                              "example": "263.25"
+                            },
+                            "marca": {
+                              "type": "array",
+                              "description": "Objeto con el nombre de la marca",
+                              "example": {
+                                "marca": {
+                                  "nombreMarca": "Marca X"
+                                }
+                              }
+                            },
+                            "categoria": {
+                              "type": "array",
+                              "description": "Objeto con el nombre de la categoria",
+                              "example": {
+                                "categoria": {
+                                  "nombreCategoria": "Tecnologia"
+                                }
+                              }
+                            },
+                            "url_imagenes": {
+                              "type": "string",
+                              "description": "URL de la imagen del producto",
+                              "example": "bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                            }
+                          },
+                          "example": [
+                            {
+                              "id": 45,
+                              "nombre": "Monitor Full HD",
+                              "precio": "263.25",
+                              "marca": {
+                                "nombreMarca": "Marca X"
+                              },
+                              "categoria": {
+                                "nombreCategoria": "Tecnologia"
+                              },
+                              "url_imagenes": [{
+                                "nombre": "cf854ed066707b18b3836f6d8342c4a9.png",
+                                "url": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                              },
+                              {
+                                "nombre": "cf854ed066707b18b3836f6d8342c4a9.png",
+                                "url": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                              }
+                              ]
+                            },
+                            {
+                              "id": 46,
+                              "nombre": "Monitor Ultra HD",
+                              "precio": "300.00",
+                              "marca": {
+                                "nombreMarca": "Marca Y"
+                              },
+                              "categoria": {
+                                "nombreCategoria": "Tecnologia"
+                              },
+                              "url_imagenes": [{
+                                "nombre": "cf854ed066707b18b3836f6d8342c4a9.png",
+                                "url": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                              }]
+                            },
+                            {
+                              "id": 47,
+                              "nombre": "Monitor Ultra HD",
+                              "precio": "300.00",
+                              "marca": {
+                                "nombreMarca": "Marca Y"
+                              },
+                              "categoria": {
+                                "nombreCategoria": "Tecnologia"
+                              },
+                              "url_imagenes": [{
+                                "nombre": "cf854ed066707b18b3836f6d8342c4a9.png",
+                                "url": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                              },
+                              {
+                                "nombre": "cf854ed066707b18b3836f6d8342c4a9.png",
+                                "url": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                              }]
+                            }
+                          ]
+
+                        }
+                      }
+
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "No se encontraron productos",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "No se encontraron productos"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error al obtener productos",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error al obtener productos"
+                      }
+                    }
+                  }
                 }
               }
             }
           }
         }
       },
-      "500": {
-        "description": "Error interno del servidor",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "ok": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "mensaje": {
-                  "type": "string",
-                  "example": "Error interno del servidor"
+      "/api/v1/productos/filtrar": {
+        "get": {
+          "summary": "Filtrar productos por varios criterios",
+          "tags": [
+            "Productos"
+          ],
+          "parameters": [
+            {
+              "name": "idMarca",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "description": "ID de la marca",
+                "example": 3
+              }
+            },
+            {
+              "name": "idCategoria",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "description": "ID de la categoría",
+                "example": 4
+              }
+            },
+            {
+              "name": "sortBy",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "Campo por el cual ordenar los resultados (e.g., nombre, precio)",
+                "example": "precio"
+              }
+            },
+            {
+              "name": "order",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "Orden de los resultados (ASC o DESC)",
+                "enum": ["ASC", "DESC"],
+                "example": "ASC"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Productos filtrados con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "productos": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 10
+                            },
+                            "nombre": {
+                              "type": "string",
+                              "example": "Monitor Full HD"
+                            },
+                            "idCategoria": {
+                              "type": "integer",
+                              "example": 3
+                            },
+                            "descripcion": {
+                              "type": "string",
+                              "example": "Pantalla full hd para pc"
+                            },
+                            "precio": {
+                              "type": "string",
+                              "example": "195.00"
+                            },
+                            "minimoInventario": {
+                              "type": "integer",
+                              "example": 20
+                            },
+                            "idMarca": {
+                              "type": "integer",
+                              "example": 3
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-08-23T02:41:28.087Z"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-08-23T02:41:28.087Z"
+                            },
+                            "marca": {
+                              "type": "string",
+                              "example": "Marca X"
+                            },
+                            "categoria": {
+                              "type": "string",
+                              "example": "Categoría Y"
+                            },
+                            "url_imagenes": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "nombre": {
+                                    "type": "string",
+                                    "example": "cf854ed066707b18b3836f6d8342c4a9.png"
+                                  },
+                                  "url": {
+                                    "type": "string",
+                                    "description": "URL de la imagen del producto, es necesario almacenar el nombre para actualizar o eliminar la imagen",
+                                    "format": "uri",
+                                    "example": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                                  }
+                                }
+                              },
+                              "example": [
+                                {
+                                  "nombre": "cf854ed066707b18b3836f6d8342c4a9.png",
+                                  "url": "https://bucket.s3.amazonaws.com/cf854ed066707b18b3836f6d8342c4a9.png"
+                                },
+                                {
+                                  "nombre": "2b192bdc328aa66d66d2fa15a6586ccf.png",
+                                  "url": "https://bucket.s3.amazonaws.com/2b192bdc328aa66d66d2fa15a6586ccf.png"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Productos no encontrados",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "No se encontraron productos con los criterios especificados"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error interno del servidor"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+
+
+      //INICIO DE CATEGORIAS
+      "/api/v1/categorias/obtenerCategorias": {
+        "get": {
+          "summary": "Obtener todas las categorías",
+          "tags": [
+            "Categorias"
+          ],
+          "responses": {
+            "200": {
+              "description": "Categorías obtenidas con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "categorias": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "nombreCategoria": {
+                              "type": "string",
+                              "example": "Electrónica"
+                            },
+                            "imagen": {
+                              "type": "string",
+                              "example": "categoria-electronica.png"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error interno del servidor"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/categorias/crearCategoria": {
+        "post": {
+          "summary": "Crear una nueva categoría",
+          "tags": [
+            "Categorias"
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nombreCategoria": {
+                      "type": "string",
+                      "description": "Nombre de la categoría",
+                      "example": "Electrónica",
+                      "nullable": false
+                    },
+                    "imagen": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "Archivo de imagen asociado a la categoría",
+                      "example": "categoria-electronica.png",
+                      "nullable": false
+                    }
+                  },
+                  "required": ["nombreCategoria", "imagen"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Categoría creada con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "categoria": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "nombreCategoria": {
+                            "type": "string",
+                            "example": "Electrónica"
+                          },
+                          "imagen": {
+                            "type": "string",
+                            "example": "categoria-electronica.png"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Solicitud incorrecta, errores de validación",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "El nombre de la categoría o la imagen son requeridos"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Conflicto, la categoría ya existe",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "La categoría ya existe"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error interno del servidor"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "/api/v1/categorias/obtenerCategoria/{id}": {
+        "get": {
+          "summary": "Obtener una categoría específica por ID",
+          "tags": [
+            "Categorias"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "description": "ID de la categoría a obtener",
+                "example": 1
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Categoría obtenida con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "categoria": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "nombreCategoria": {
+                            "type": "string",
+                            "example": "Electrónica"
+                          },
+                          "imagen": {
+                            "type": "string",
+                            "example": "categoria-electronica.png"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Categoría no encontrada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Categoría no encontrada"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error interno del servidor"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/categorias/actualizarCategoria/{id}": {
+        "put": {
+          "summary": "Actualizar una categoría existente por ID",
+          "tags": [
+            "Categorias"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "description": "ID de la categoría a actualizar",
+                "example": 1
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nombreCategoria": {
+                      "type": "string",
+                      "description": "El nombre de la categoría",
+                      "example": "Electrónica",
+                      "nullable": true
+                    },
+                    "imagen": {
+                      "type": "string",
+                      "description": "Nombre del archivo de imagen asociado a la categoría",
+                      "example": "categoria-electronica.png",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Categoría actualizada con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "categoria": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "nombreCategoria": {
+                            "type": "string",
+                            "example": "Electrónica"
+                          },
+                          "imagen": {
+                            "type": "string",
+                            "example": "categoria-electronica.png"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Solicitud incorrecta, errores de validación",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "errores": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "El nombre de la categoría no puede estar vacío"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Categoría no encontrada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Categoría no encontrada"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error interno del servidor"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      //FIN DE CATEGORIAS
+      "/api/v1/marcas/obtenerMarcas": {
+        "get": {
+          "summary": "Obtener todas las marcas",
+          "tags": [
+            "Marcas"
+          ],
+          "responses": {
+            "200": {
+              "description": "Marcas obtenidas con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "marcas": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "nombreMarca": {
+                              "type": "string",
+                              "example": "Adidas"
+                            },
+                            "imagen": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "nombre": {
+                                    "type": "string",
+                                    "example": "adidas-logo.png"
+                                  },
+                                  "url": {
+                                    "type": "string",
+                                    "example": "https://example.com/url-adidas-logo"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error interno del servidor"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/marcas/crearMarca": {
+        "post": {
+          "summary": "Crear una nueva marca",
+          "tags": [
+            "Marcas"
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nombreMarca": {
+                      "type": "string",
+                      "description": "Nombre de la marca",
+                      "example": "Nike",
+                      "nullable": false
+                    },
+                    "imagen": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "Archivo de imagen asociado a la marca",
+                      "example": "nike-logo.png",
+                      "nullable": false
+                    }
+                  },
+                  "required": ["nombreMarca", "imagen"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Marca creada con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "marca": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "nombreMarca": {
+                            "type": "string",
+                            "example": "Nike"
+                          },
+                          "imagen": {
+                            "type": "string",
+                            "example": "nike-logo.png"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Solicitud incorrecta, errores de validación",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "El nombre de la marca o la imagen son requeridos"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Conflicto, el nombre de la marca ya existe",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "El nombre de la marca ya existe"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error interno del servidor"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "/api/v1/marcas/obtenerMarca/{id}": {
+        "get": {
+          "summary": "Obtener una marca por ID",
+          "tags": [
+            "Marcas"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "ID de la marca"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Marca obtenida con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "marca": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "nombreMarca": {
+                            "type": "string",
+                            "example": "Nike"
+                          },
+                          "imagen": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "nombre": {
+                                  "type": "string",
+                                  "example": "nike-logo.png"
+                                },
+                                "url": {
+                                  "type": "string",
+                                  "example": "https://example.com/url-nike-logo"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Marca no encontrada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Marca no encontrada"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error interno del servidor"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/marcas/actualizarMarca/{id}": {
+        "put": {
+          "summary": "Actualizar una marca existente",
+          "tags": [
+            "Marcas"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "ID de la marca a actualizar"
+            }
+          ],
+          "requestBody": {
+            "required": false,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nuevoNombre": {
+                      "type": "string",
+                      "description": "Nuevo nombre de la marca",
+                      "example": "Puma"
+                    },
+                    "nuevaImagen": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "Nuevo archivo de imagen para la marca",
+                      "example": "puma-logo.png"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Marca actualizada con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Marca actualizada correctamente"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Solicitud incorrecta, errores de validación",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "El nombre de la marca es requerido"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Marca no encontrada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Marca no encontrada"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error interno del servidor"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+
+
+
+      "/api/v1/productos/productos": {
+        "get": {
+          "summary": "Obtener todos los productos",
+          "tags": [
+            "Productos"
+          ],
+          "description": "Recupera todos los productos registrados con detalles de la marca, categoría e imágenes asociadas.",
+          "responses": {
+            "200": {
+              "description": "Lista de productos obtenida exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "productos": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "nombre": {
+                              "type": "string",
+                              "example": "Producto Ejemplo"
+                            },
+                            "precio": {
+                              "type": "number",
+                              "format": "float",
+                              "example": 99.99
+                            },
+                            "descripcion": {
+                              "type": "string",
+                              "example": "Descripción del producto"
+                            },
+                            "minimoInventario": {
+                              "type": "integer",
+                              "example": 10
+                            },
+                            "activo": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "marca": {
+                              "type": "object",
+                              "properties": {
+                                "nombreMarca": {
+                                  "type": "string",
+                                  "example": "Marca Ejemplo"
+                                }
+                              }
+                            },
+                            "categoria": {
+                              "type": "object",
+                              "properties": {
+                                "nombreCategoria": {
+                                  "type": "string",
+                                  "example": "Categoría Ejemplo"
+                                }
+                              }
+                            },
+                            "url_imagenes": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "nombre": {
+                                    "type": "string",
+                                    "example": "imagen1.png"
+                                  },
+                                  "url": {
+                                    "type": "string",
+                                    "example": "https://example.com/imagen1.png"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "No se encontraron productos",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "No hay productos registrados"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error al recuperar los productos"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/productos/activos": {
+        "get": {
+          "summary": "Obtener productos activos",
+          "tags": [
+            "Productos"
+          ],
+          "description": "Recupera todos los productos que están marcados como activos, junto con detalles de la marca, categoría e imágenes asociadas.",
+          "responses": {
+            "200": {
+              "description": "Lista de productos activos obtenida exitosamente o mensaje de que no hay productos activos",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "No hay productos activos"
+                      },
+                      "productos": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "nombre": {
+                              "type": "string",
+                              "example": "Producto Ejemplo"
+                            },
+                            "precio": {
+                              "type": "number",
+                              "format": "float",
+                              "example": 99.99
+                            },
+                            "descripcion": {
+                              "type": "string",
+                              "example": "Descripción del producto"
+                            },
+                            "minimoInventario": {
+                              "type": "integer",
+                              "example": 10
+                            },
+                            "activo": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "marca": {
+                              "type": "object",
+                              "properties": {
+                                "nombreMarca": {
+                                  "type": "string",
+                                  "example": "Marca Ejemplo"
+                                }
+                              }
+                            },
+                            "categoria": {
+                              "type": "object",
+                              "properties": {
+                                "nombreCategoria": {
+                                  "type": "string",
+                                  "example": "Categoría Ejemplo"
+                                }
+                              }
+                            },
+                            "url_imagenes": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "nombre": {
+                                    "type": "string",
+                                    "example": "imagen1.png"
+                                  },
+                                  "url": {
+                                    "type": "string",
+                                    "example": "https://example.com/imagen1.png"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error al recuperar los productos activos"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/productos/desactivados": {
+        "get": {
+          "summary": "Obtener productos desactivados",
+          "tags": [
+            "Productos"
+          ],
+          "description": "Recupera todos los productos que están marcados como desactivados, junto con detalles de la marca, categoría e imágenes asociadas.",
+          "responses": {
+            "200": {
+              "description": "Lista de productos desactivados obtenida exitosamente o mensaje de que no hay productos desactivados",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "No hay productos desactivados"
+                      },
+                      "productos": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "nombre": {
+                              "type": "string",
+                              "example": "Producto Ejemplo"
+                            },
+                            "precio": {
+                              "type": "number",
+                              "format": "float",
+                              "example": 99.99
+                            },
+                            "descripcion": {
+                              "type": "string",
+                              "example": "Descripción del producto"
+                            },
+                            "minimoInventario": {
+                              "type": "integer",
+                              "example": 10
+                            },
+                            "activo": {
+                              "type": "boolean",
+                              "example": false
+                            },
+                            "marca": {
+                              "type": "object",
+                              "properties": {
+                                "nombreMarca": {
+                                  "type": "string",
+                                  "example": "Marca Ejemplo"
+                                }
+                              }
+                            },
+                            "categoria": {
+                              "type": "object",
+                              "properties": {
+                                "nombreCategoria": {
+                                  "type": "string",
+                                  "example": "Categoría Ejemplo"
+                                }
+                              }
+                            },
+                            "url_imagenes": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "nombre": {
+                                    "type": "string",
+                                    "example": "imagen1.png"
+                                  },
+                                  "url": {
+                                    "type": "string",
+                                    "example": "https://example.com/imagen1.png"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error del servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error al recuperar los productos desactivados"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -2507,12 +4053,6 @@ const swaggerOptions = {
         }
       }
     }
-  }
-},
-
-
-    }
-    
   },
   apis: ["./routes/*.js"],
 };
