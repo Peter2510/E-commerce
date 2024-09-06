@@ -66,46 +66,64 @@ export class LoginComponent {
         Swal.fire({
           icon: 'error',
           title: 'Error token incorecto',
-          text: error.error.error || 'Ha ocurrido un error inesperado.',
+          text: error.error.mensaje || 'Ha ocurrido un error inesperado.',
         });
       }
     })      
   }
 
-  inicioSesion(token:string){
-        this.parseJwt(token)
-    this.cookie.set('token2',JSON.stringify(this.user));
-    this.cookie.set('token',token);
-        //guardar user en cookies o localstorage xd
-        const message = `Bienvenido, ${this.user.nombreUsuario}`;
-        
-        Swal.fire({
-          icon: 'success',
-          title: 'Inicio de sesión exitoso ',
-          text: message,
-        });
-        if (this.user.idTipoUsuario == 1) {
-          this.router.navigate(['/admin']);
-        } else if (this.user.idTipoUsuario == 2) {
-          this.router.navigate(['/cliente']);
-        } else {
-          this.router.navigate(['/ayudante']);
-        }
+  async inicioSesion(token:string){
+    try {
+      this.cookie.set('token',token);
+      await this.parseJwt(token)
+      //guardar user en cookies o localstorage xd
+      const message = `Bienvenido, ${this.user.nombreUsuario}`;
+      Swal.fire({
+        icon: 'success',
+        title: 'Inicio de sesión exitoso ',
+        text: message,
+      });
+      if (this.user.idTipoUsuario == 1) {
+        this.router.navigate(['/admin']);
+      } else if (this.user.idTipoUsuario == 2) {
+        this.router.navigate(['/cliente']);
+      } else {
+        this.router.navigate(['/ayudante']);
+      }
 
+    } catch (error) {
+      
+    }
   }
-  parseJwt(token:String) {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-
-    const usuario = JSON.parse(jsonPayload);
-    this.user.nombreUsuario = usuario.nombreUsuario;
-    this.user.idTipoUsuario = usuario.idTipoUsuario;
-    this.user.id = usuario.idUsuario
-    console.log(this.user);
-    
+  parseJwt(token: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+  
+        const usuario = JSON.parse(jsonPayload);
+        this.user.idTipoUsuario = usuario.idTipoUsuario;
+        
+        this.authService.getCliente(usuario.idUsuario).subscribe({
+          next: (response: any) => {
+            this.user = response.usuario;
+            this.user.persona = response.persona;
+            this.cookie.set('token2', JSON.stringify(this.user));
+            console.log(this.user);
+            resolve(); 
+          },
+          error: (error) => {
+            console.log(error);
+            reject(error); 
+          }
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 
 }

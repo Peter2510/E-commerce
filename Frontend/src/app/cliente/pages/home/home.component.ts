@@ -11,32 +11,19 @@ import { User } from 'src/app/interfaces/user.interface';
 })
 export class HomeComponent {
   
-  usuario:User = new User();
   mostrarPerfil:boolean=false
 
 
   constructor(private service:ClienteService,private cookie:CookieService,private router:Router){
-    service.getCliente().subscribe(
-    {
-      next: (response: any) => {
-        const persona = response.persona;
-        const usuario = response.usuario;
-        this.usuario = usuario
-        this.usuario.persona = persona
-      },
-      error: (error) => {
-
-      }
-    }
-    )
+    
   }
 
   cerrarSesion(){
     this.service.cerrarSesion().subscribe({
       next:(response:any)=>{
       console.log('cerrando sesion');
-        this.cookie.delete('token')
-        this.cookie.delete('token2')
+        this.cookie.delete('token','/')
+        this.cookie.delete('token2','/')
         this.router.navigate(['/'])
       },
       error: (error) => {

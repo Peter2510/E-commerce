@@ -14,13 +14,6 @@ export class ClienteService {
   cerrarSesion() {
     return this.http.post(`${this.baseUrl}/auth/logOut`,null,{withCredentials:true});
   }
-
-  getCliente() {
-    const id_cliente = JSON.parse(this.cookie.get('token2')).id
-    return this.http.get(`${this.baseUrl}/cliente/obtenerClientePorId/${id_cliente}`, {
-      withCredentials: true
-    });
-  }
   
   getFormasPago(){
     return this.http.get(`${this.baseUrl}/administracion/getFormasPago`,{withCredentials:true})

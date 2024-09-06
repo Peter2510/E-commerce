@@ -3,6 +3,7 @@ import { User } from 'src/app/interfaces/user.interface';
 import { ClienteService } from '../../services/cliente.service';
 import Swal from 'sweetalert2';
 import { formaPago } from 'src/app/interfaces/formaPago';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-perfil',
@@ -19,25 +20,16 @@ export class PerfilComponent {
   confirmarContrasena: string = '';
   formasPago!: formaPago[]
 
-  constructor(private servicio: ClienteService) {
+  constructor(private servicio: ClienteService,private cookie:CookieService) {
   }
   ngOnInit(){
-    this.servicio.getCliente().subscribe({
-      next: (response: any) => {
-        this.usuario = response.usuario
-        this.usuario.persona = response.persona
-        this.usuario2 = response.usuario
-        this.usuario2.persona = response.persona
-      },
-      error: (error) => {
-      }
-    })
+    this.usuario = JSON.parse(this.cookie.get('token2'))
+    this.usuario2 = JSON.parse(this.cookie.get('token2'))
     this.servicio.getFormasPago().subscribe({
       next:(response:any)=>{
         this.formasPago = response.formaPagos
       },
       error:(error)=>{
-
       }
     })
   }
@@ -50,6 +42,8 @@ export class PerfilComponent {
           title: 'OK',
           text: "Datos actualizados correctamente",
         });
+        this.usuario = this.usuario2
+        JSON.parse(this.cookie.get('token2')).nombreUsuario = this.usuario2.nombreUsuario
       },
       error:(err)=>{
         console.log(err)
@@ -71,6 +65,7 @@ export class PerfilComponent {
             title: 'OK',
             text: "Contrasenia actualizada correctamente",
           });
+
           this.vistaCambio = false
         },
         error:(err)=>{
