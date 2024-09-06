@@ -39,7 +39,13 @@
       </svg>
       <span class="ml-2 text-lg">Ecommerce</span>
     </a>
-    <div class="lg:w-2/5 inline-flex lg:justify-end ml-5 lg:ml-0">
+
+    <nav>
+      <a class="mr-2 hover:text-gray-900" routerLink="/admin/gestionEnvios">
+        Gestion de Envios
+      </a>
+    </nav>
+    <div class="md:w-1/6 inline-flex">
       <button
         class="inline-flex items-center bg-gray-100 border-0 py-1 px-2 focus:outline-none hover:bg-gray-200 rounded text-xs mt-4 md:mt-0"
         (click)="this.cerrarSesion()"

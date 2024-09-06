@@ -18,13 +18,8 @@ import { GestionCriticaComponent } from './admin/gestion-critica/gestion-critica
 import { GestionProductosComponent } from './admin/gestion-productos/gestion-productos.component';
 import { GestionProductosEspecificaComponent } from './admin/gestion-productos-especifica/gestion-productos-especifica.component';
 import { FormsModule } from '@angular/forms';
-import { ModalEliminarComponent } from './admin/modal-eliminar/modal-eliminar.component';
-import { ModalEditarComponent } from './admin/modal-editar/modal-editar.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CreacionProductosComponent } from './admin/productos/creacion-productos/creacion-productos.component';
-import { EdicionProductosComponent } from './admin/productos/edicion-productos/edicion-productos.component';
 import { EliminarProductoComponent } from './admin/productos/eliminar-producto/eliminar-producto.component';
-import { EditarCantidadComponent } from './admin/inventario/editar-cantidad/editar-cantidad.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +42,6 @@ import { EditarCantidadComponent } from './admin/inventario/editar-cantidad/edit
     AdminheaderComponent,
     ClienteModule,
     FormsModule,
-
     ReactiveFormsModule,
   ],
   providers: [CookieService],

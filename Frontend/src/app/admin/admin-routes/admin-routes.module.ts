@@ -10,6 +10,7 @@ import { GestionProductosEspecificaComponent } from '../gestion-productos-especi
 import { GestionMarcasCategoriasComponent } from '../gestion-marcas-categorias/gestion-marcas-categorias.component';
 import { CreacionProductosComponent } from '../productos/creacion-productos/creacion-productos.component';
 import { EdicionProductosComponent } from '../productos/edicion-productos/edicion-productos.component';
+import { GestorEnvioComponent } from '../Paquetes/gestor-envio/gestor-envio.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,10 @@ const routes: Routes = [
       {
         path: 'editarProducto/:id',
         component: EdicionProductosComponent,
+      },
+      {
+        path: 'gestionEnvios',
+        component: GestorEnvioComponent,
       },
 
       {

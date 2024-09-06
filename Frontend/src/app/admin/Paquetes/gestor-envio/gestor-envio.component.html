@@ -109,63 +109,6 @@
       <div class="w-full py-6">
         <h1 class="text-2xl font-semibold mb-8">Productos Activos</h1>
       </div>
-      <div
-        class="lg:w-1/4 md:w-1/2 p-4 w-full"
-        *ngFor="
-          let producto of this.servicioInventario.productosActivos();
-          index as i;
-          first as isFirst
-        "
-      >
-        <div class="h-full p-4 border border-gray-200 rounded-lg">
-          <a
-            class="block relative h-48 rounded overflow-hidden"
-            routerLink="/admin/gestionProductosEspecifico/{{ producto.id }}"
-          >
-            <img
-              alt="ecommerce"
-              class="transition duration-1000 transform hover:scale-105 object-cover object-center w-full h-full block"
-              height="260"
-              width="420"
-              [src]="producto.url_imagenes[0].url"
-            />
-          </a>
-          <div class="mt-4">
-            <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
-              {{ producto.marca.nombreMarca }}
-            </h3>
-            <h2 class="text-gray-900 title-font text-lg font-medium">
-              {{ producto.nombre }}
-            </h2>
-            <p class="mt-1">
-              {{ producto.precio | currency : "Q" }}
-            </p>
-            <span
-              class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300"
-            >
-              <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
-              Disponible
-            </span>
-
-            <div class="flex flex-wrap gap-2 mt-4">
-              <button
-                type="button"
-                class="text-yellow-900 bg-white border border-yellow-300 focus:outline-none hover:bg-yellow-100 focus:ring-4 focus:ring-yellow-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-yellow-800 dark:text-white dark:border-yellow-600 dark:hover:bg-yellow-700 dark:hover:border-yellow-600 dark:focus:ring-yellow-700"
-                (click)="openModal('eliminar', producto)"
-              >
-                Edicion de cantidad
-              </button>
-              <button
-                type="button"
-                class="text-red-900 bg-white border border-red-300 focus:outline-none hover:bg-red-100 focus:ring-4 focus:ring-red-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-800 dark:text-white dark:border-red-600 dark:hover:bg-red-700 dark:hover:border-red-600 dark:focus:ring-red-700"
-                (click)="this.cambiarEstado(producto.id, false)"
-              >
-                Dar de baja
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- Separador con espacio adicional -->
       <div class="w-full my-16">
@@ -178,63 +121,6 @@
       </div>
 
       <!-- Productos Desactivados -->
-      <div
-        class="lg:w-1/4 md:w-1/2 p-4 w-full"
-        *ngFor="
-          let producto of this.servicioInventario.productosDesactivos();
-          index as i;
-          first as isFirst
-        "
-      >
-        <div class="h-full p-4 border border-gray-200 rounded-lg">
-          <a
-            class="block relative h-48 rounded overflow-hidden"
-            routerLink="/admin/gestionProductosEspecifico/{{ producto.id }}"
-          >
-            <img
-              alt="ecommerce"
-              class="transition duration-1000 transform hover:scale-105 object-cover object-center w-full h-full block"
-              height="260"
-              width="420"
-              [src]="producto.url_imagenes[0].url"
-            />
-          </a>
-          <div class="mt-4">
-            <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
-              {{ producto.marca.nombreMarca }}
-            </h3>
-            <h2 class="text-gray-900 title-font text-lg font-medium">
-              {{ producto.nombre }}
-            </h2>
-            <p class="mt-1">
-              {{ producto.precio | currency : "Q" }}
-            </p>
-            <span
-              class="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300"
-            >
-              <span class="w-2 h-2 me-1 bg-red-500 rounded-full"></span>
-              No Disponible
-            </span>
-
-            <div class="flex flex-wrap gap-2 mt-4">
-              <button
-                type="button"
-                class="text-green-900 bg-white border border-green-300 focus:outline-none hover:bg-green-100 focus:ring-4 focus:ring-green-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-800 dark:text-white dark:border-green-600 dark:hover:bg-green-700 dark:hover:border-green-600 dark:focus:ring-green-700"
-                (click)="this.cambiarEstado(producto.id, true)"
-              >
-                Reactivar
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="this.isModalVisible">
-      <app-editar-cantidad
-        [id]="this.seleccionado"
-        [isVisible]="this.isModalVisible"
-        (closeModal)="closeModal()"
-      ></app-editar-cantidad>
     </div>
   </div>
 </section>

@@ -60,4 +60,18 @@ export class ServicioInventarioService {
       }
     );
   }
+
+  agregarMasProducto(id: number | undefined, cantidad: number) {
+    return this.http.put(
+      `${environment.baseUrlEnv}/${this.directiva}/ingresoMayorCantidadProducto/` +
+        id,
+      { cantidad: cantidad },
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  //funcion para las cantidades
+  obtenerCantidadesProductosInventario() {}
 }
