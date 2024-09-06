@@ -2,6 +2,7 @@ const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/database.configs");
 const Usuario = require("./usuario");
 const FormaPago = require("./formaPago");
+const EstadoCompra = require("./estadoCompra");
 
 const Compra = sequelize.define(
   "Compra",
@@ -23,7 +24,7 @@ const Compra = sequelize.define(
         },
       },
     },
-    precioTotal: {
+    "precioTotal": {
       type: DataTypes.DECIMAL(11, 2),
       allowNull: false,
       validate: {
@@ -33,6 +34,7 @@ const Compra = sequelize.define(
         notEmpty: {
           msg: "El total no puede estar vacio",
         },
+        min: 0.0
       },
     },
     fecha: {
@@ -44,8 +46,17 @@ const Compra = sequelize.define(
       type: DataTypes.DECIMAL(11, 2),
       allowNull: false,
       defaultValue: 0.0,
+      validate: {
+        notNull: {
+          msg: "El recargo no puede ser nulo",
+        },
+        notEmpty: {
+          msg: "El recargo no puede estar vacio",
+        },
+      },
+      min: 0.0
     },
-    idUsuario: {
+    "idUsuario": {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
@@ -61,7 +72,7 @@ const Compra = sequelize.define(
         key: "id",
       },
     },
-    idFormaEntrega: {
+    "idFormaEntrega": {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
@@ -77,11 +88,29 @@ const Compra = sequelize.define(
         key: "id",
       },
     },
+    "idEstadoCompra": {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+      validate: {
+        notNull: {
+          msg: "El idEstadoCompra no puede ser nulo",
+        },
+        notEmpty: {
+          msg: "El idEstadoCompra no puede estar vacio",
+        },
+      },
+      references: {
+        model: EstadoCompra,
+        key: "id",
+      },
+    },
   },
   {
     schema: "compras",
     tableName: "compra",
   }
 );
+
 
 module.exports = Compra;

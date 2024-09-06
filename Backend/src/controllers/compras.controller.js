@@ -3,45 +3,80 @@ const { sequelize } = require("../configs/database.configs");
 const Compra = require("../models/compra");
 const DetalleCompra = require("../models/detalleCompra");
 const Producto = require("../models/producto");
+const PorcentajeRecargo = require("../models/porcentajeRecargo");
+const inventario = require("../models/inventario");
 
 const registrarCompra = async (req, res) => {
   const { idUsuario, nit, direccionEntrega, idFormaEntrega, productos } =
     req.body;
+  const t = await sequelize.transaction();
 
   try {
-    const t = await sequelize.transaction();
-
-    //proceder a registrar una compra
-
+    // Registrar una compra
     const compra = await Compra.create(
       {
         nit,
         direccionEntrega,
         idFormaEntrega,
         idUsuario,
+        precioTotal: 0.0,
       },
       { transaction: t }
     );
 
-    //proceder a registrar un producto en el detalleProducto segun el id registrado antes
+    let precioTotal = 0;
 
     for (let producto of productos) {
-      
       const productoComprar = await Producto.findByPk(producto.id);
-      
-      await DetalleCompra.create({
+
+      const detalleRegistrado = await DetalleCompra.create({
           cantidadProducto: producto.cantidad,
           precioUnitario: productoComprar.precio,
-          precioTotal: producto.precioTotal,
+          precioTotal: producto.cantidad * productoComprar.precio,
           idCompra: compra.id,
           idProducto: producto.id,
-        },{ transaction: t }
+        },
+        { transaction: t }
       );
+
+      // Dar de baja del inventario
+      await inventario.update({
+          cantidadtotal: sequelize.literal(
+            `cantidadtotal - ${producto.cantidad}`
+          ),
+        },
+        {
+          where: {
+            idproducto: producto.id,
+          },
+          transaction: t,
+        }
+      );
+
+      precioTotal += parseFloat(detalleRegistrado.precioTotal);
     }
 
-    res.json({ ok: true , mensaje: "Pedido registrado correctamente" });
+    if (idFormaEntrega === 2) {
+
+      const porcentajeRecargo = await PorcentajeRecargo.findOne({
+        transaction: t,
+      });
+
+      const porcentaje = parseFloat(porcentajeRecargo.porcentaje);
+      
+      const recargo = precioTotal * (porcentaje / 100);
+
+      await compra.update({ precioTotal, recargo }, { transaction: t });
+    } else {
+      await compra.update({ precioTotal }, { transaction: t });
+    }
+
+    await t.commit();
+
+    res.json({ ok: true, mensaje: "Pedido registrado correctamente" });
   } catch (error) {
     await t.rollback();
+    console.log(error);
     await manejoErrores(error, res, "Producto");
   }
 };

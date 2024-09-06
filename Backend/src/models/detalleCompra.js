@@ -9,7 +9,7 @@ const DetalleCompra = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    cantidadProducto: {
+    "cantidadProducto": {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
@@ -21,7 +21,7 @@ const DetalleCompra = sequelize.define(
         },
       },
     },
-    precioUnitario: {
+    "precioUnitario": {
       type: DataTypes.DECIMAL(11, 2),
       allowNull: false,
       validate: {
@@ -33,7 +33,7 @@ const DetalleCompra = sequelize.define(
         },
       },
     },
-    precioTotal: {
+    "precioTotal": {
       type: DataTypes.DECIMAL(11, 2),
       allowNull: false,
       validate: {
@@ -43,10 +43,9 @@ const DetalleCompra = sequelize.define(
         notEmpty: {
           msg: "El precio total no puede estar vacio",
         },
-      },
-      defaultValue: precioUnitario * cantidadProducto,
+      }
     },
-    idCompra: {
+    "idCompra": {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
@@ -62,7 +61,7 @@ const DetalleCompra = sequelize.define(
         key: "id",
       },
     },
-    idProducto: {
+    "idProducto": {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
@@ -82,7 +81,14 @@ const DetalleCompra = sequelize.define(
   {
     schema: "compras",
     tableName: "detalleCompra",
+    hooks: {
+      beforeSave: (detalleCompra) => {
+        detalleCompra.precioTotal = detalleCompra.cantidadProducto * detalleCompra.precioUnitario;
+      },
+    },
   }
 );
+
+
 
 module.exports = DetalleCompra;
