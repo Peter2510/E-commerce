@@ -1,4 +1,4 @@
-import {Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { User } from 'src/app/interfaces/user.interface';
 import { ClienteService } from '../../services/cliente.service';
 import Swal from 'sweetalert2';
@@ -8,80 +8,91 @@ import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
-  styleUrls: ['./perfil.component.css']
+  styleUrls: ['./perfil.component.css'],
 })
 export class PerfilComponent {
-  usuario: User = new User();
-  usuario2:User = new User();
+  //usuario: User = new User();
+  usuario2: User = new User();
+  // para que sea como input
+  // usuario: input()
+  @Input() usuario: User = new User();
   tabActivo: string = 'infoPersonal';
-  vistaCambio:boolean = false
+  vistaCambio: boolean = false;
   contrasenaActual: string = '';
   nuevaContrasena: string = '';
   confirmarContrasena: string = '';
-  formasPago!: formaPago[]
+  formasPago!: formaPago[];
 
-  constructor(private servicio: ClienteService,private cookie:CookieService) {
-  }
-  ngOnInit(){
-    this.usuario = JSON.parse(this.cookie.get('token2'))
-    this.usuario2 = JSON.parse(this.cookie.get('token2'))
-    this.servicio.getFormasPago().subscribe({
-      next:(response:any)=>{
-        this.formasPago = response.formaPagos
+  constructor(private servicio: ClienteService) {}
+  ngOnInit() {
+    this.servicio.getCliente().subscribe({
+      next: (response: any) => {
+        this.usuario = response.usuario;
+        this.usuario.persona = response.persona;
+        this.usuario2 = response.usuario;
+        this.usuario2.persona = response.persona;
       },
-      error:(error)=>{
-      }
-    })
+      error: (error) => {},
+    });
+    this.servicio.getFormasPago().subscribe({
+      next: (response: any) => {
+        this.formasPago = response.formaPagos;
+      },
+      error: (error) => {},
+    });
   }
-  
-  guardarInformacionPersonal(){
+
+  guardarInformacionPersonal() {
     this.servicio.actualizarDatos(this.usuario2).subscribe({
-      next:(Response:any)=>{
+      next: (Response: any) => {
         Swal.fire({
           icon: 'success',
           title: 'OK',
-          text: "Datos actualizados correctamente",
+          text: 'Datos actualizados correctamente',
         });
         this.usuario = this.usuario2
         JSON.parse(this.cookie.get('token2')).nombreUsuario = this.usuario2.nombreUsuario
       },
-      error:(err)=>{
-        console.log(err)
+      error: (err) => {
+        console.log(err);
         Swal.fire({
           icon: 'error',
           title: 'error',
-          text: err.error.mensaje||"Datos no actualizada correctamente",
+          text: err.error.mensaje || 'Datos no actualizada correctamente',
         });
-      }
-    })
+      },
+    });
   }
-  cambiarContrasena(){
-    if(this.usuario.id && this.nuevaContrasena && this.confirmarContrasena ){
-    this.servicio.actualizarContrasenia(this.usuario.id,this.contrasenaActual,this.nuevaContrasena).subscribe(
-      {
-        next:(response:any)=>{
-          Swal.fire({
-            icon: 'success',
-            title: 'OK',
-            text: "Contrasenia actualizada correctamente",
-          });
-
-          this.vistaCambio = false
-        },
-        error:(err)=>{
-          Swal.fire({
-            icon: 'error',
-            title: 'error',
-            text: err.error.mensaje||"Error al actualizar contrasenia",
-          });
-        }
-      }
-    )
-    }else{
+  cambiarContrasena() {
+    if (this.usuario.id && this.nuevaContrasena && this.confirmarContrasena) {
+      this.servicio
+        .actualizarContrasenia(
+          this.usuario.id,
+          this.contrasenaActual,
+          this.nuevaContrasena
+        )
+        .subscribe({
+          next: (response: any) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'OK',
+              text: 'Contrasenia actualizada correctamente',
+            });
+            this.vistaCambio = false;
+          },
+          error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'error',
+              text: err.error.mensaje || 'Error al actualizar contrasenia',
+            });
+          },
+        });
+    } else {
       Swal.fire({
         icon: 'error',
         title: 'error',
-        text: "Llene correctamente el formulario",
+        text: 'Llene correctamente el formulario',
       });
     }
   }

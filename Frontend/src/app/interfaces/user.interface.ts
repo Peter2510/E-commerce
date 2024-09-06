@@ -1,12 +1,12 @@
-import { Person } from "./person.interface";
+import { Person } from './person.interface';
 
 export class User {
-  id: number|undefined;
+  id: number | undefined;
   nombreUsuario: string;
   contrasenia: string;
   persona: Person | undefined;
   activo: boolean;
-  a2fActivo:boolean;
+  a2fActivo: boolean;
   idTipoUsuario: number;
 
   constructor(
@@ -22,6 +22,12 @@ export class User {
     this.persona = persona;
     this.activo = activo || true;
     this.idTipoUsuario = idTipoUsuario || 0;
-    this.a2fActivo = false
+    this.a2fActivo = false;
   }
+}
+
+// INTERFAZ PARA LOS TIPOS DE USUARIO
+export interface tipoUsuario {
+  id: number;
+  tipo: string;
 }

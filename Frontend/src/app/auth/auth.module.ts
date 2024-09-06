@@ -6,12 +6,10 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { HeaderComponent } from '../utils/header/header.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-
+import { AdminheaderComponent } from '../utils/adminheader/adminheader.component';
 
 @NgModule({
   declarations: [LoginComponent, RegisterComponent],
-  imports: [CommonModule, AuthRoutingModule,
-    FormsModule,ReactiveFormsModule],
+  imports: [CommonModule, AuthRoutingModule, FormsModule, ReactiveFormsModule],
 })
 export class AuthModule {}

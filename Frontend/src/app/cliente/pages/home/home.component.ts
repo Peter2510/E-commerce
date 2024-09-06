@@ -3,6 +3,8 @@ import { ClienteService } from '../../services/cliente.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { User } from 'src/app/interfaces/user.interface';
+import { Carrito } from '../../../interfaces/cliente.interface';
+import { CarritoComprasService } from '../../services/carrito-compras.service';
 
 @Component({
   selector: 'app-home',
@@ -12,10 +14,25 @@ import { User } from 'src/app/interfaces/user.interface';
 export class HomeComponent {
   
   mostrarPerfil:boolean=false
+  usuario:User = new User();
+  
+  constructor(private service:ClienteService,
+              private cookie:CookieService,
+              private carritoService: CarritoComprasService,
+              private router:Router){
+    service.getCliente().subscribe(
+    {
+      next: (response: any) => {
+        const persona = response.persona;
+        const usuario = response.usuario;
+        this.usuario = usuario
+        this.usuario.persona = persona
+      },
+      error: (error) => {
 
-
-  constructor(private service:ClienteService,private cookie:CookieService,private router:Router){
-    
+      }
+    }
+    )
   }
 
   cerrarSesion(){
@@ -31,5 +48,10 @@ export class HomeComponent {
       }
     }
     )
+  }
+
+  cantidadCarrito():number{
+    return this.carritoService.getCantidadItems();
+
   }
 }

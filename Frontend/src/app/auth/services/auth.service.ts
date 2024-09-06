@@ -15,18 +15,18 @@ export class AuthService {
   login(correoElectronico: string, contrasenia: string) {
     const body = { correoElectronico, contrasenia };
     console.log(body);
-    
+
     return this.http.post(`${this.baseUrl}/auth/login`, body);
   }
 
   verificar(correoElectronico: string, token: string) {
     const body = { correoElectronico, token };
-    console.log(body);  
+    console.log(body);
     return this.http.post(`${this.baseUrl}/auth/verify-2fa`, body);
   }
 
-  registro(usuario:User){
-    return this.http.post(`${this.baseUrl}/auth/crearCliente`,usuario)
+  registro(usuario: User) {
+    return this.http.post(`${this.baseUrl}/auth/crearCliente`, usuario);
   }
   getCliente(id_cliente:number) {
     return this.http.get(`${this.baseUrl}/cliente/obtenerClientePorId/${id_cliente}`, {

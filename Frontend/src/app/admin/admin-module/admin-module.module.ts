@@ -7,6 +7,15 @@ import { HeaderComponent } from 'src/app/utils/header/header.component';
 import { AdminheaderComponent } from 'src/app/utils/adminheader/adminheader.component';
 import { GestionInventarioComponent } from '../gestion-inventario/gestion-inventario.component';
 import { GestionRolesEspecificoComponent } from '../gestion-roles-especifico/gestion-roles-especifico.component';
+import { FormsModule } from '@angular/forms';
+import { GestionMarcasCategoriasComponent } from '../gestion-marcas-categorias/gestion-marcas-categorias.component';
+import { ModalEliminarComponent } from '../modal-eliminar/modal-eliminar.component';
+import { ModalEditarComponent } from '../modal-editar/modal-editar.component';
+import { CreacionProductosComponent } from '../productos/creacion-productos/creacion-productos.component';
+import { EdicionProductosComponent } from '../productos/edicion-productos/edicion-productos.component';
+import { EditarCantidadComponent } from '../inventario/editar-cantidad/editar-cantidad.component';
+import { EliminarProductoComponent } from '../productos/eliminar-producto/eliminar-producto.component';
+import { GestorEnvioComponent } from '../Paquetes/gestor-envio/gestor-envio.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +23,14 @@ import { GestionRolesEspecificoComponent } from '../gestion-roles-especifico/ges
     VistaGeneralComponent,
     GestionInventarioComponent,
     GestionRolesEspecificoComponent,
+    GestionMarcasCategoriasComponent,
+    ModalEliminarComponent,
+    ModalEditarComponent,
+    CreacionProductosComponent,
+    EdicionProductosComponent,
+    EditarCantidadComponent,
+    GestorEnvioComponent,
   ],
-  imports: [CommonModule, AdminRoutesModule, AdminheaderComponent],
+  imports: [CommonModule, AdminRoutesModule, AdminheaderComponent, FormsModule],
 })
 export class AdminModuleModule {}

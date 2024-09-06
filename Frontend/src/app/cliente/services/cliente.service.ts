@@ -14,6 +14,13 @@ export class ClienteService {
   cerrarSesion() {
     return this.http.post(`${this.baseUrl}/auth/logOut`,null,{withCredentials:true});
   }
+
+  getCliente() {
+    const id_cliente = JSON.parse(this.cookie.get('token2')).id
+    return this.http.get(`${this.baseUrl}/cliente/obtenerClientePorId/${id_cliente}`, {
+      withCredentials: true
+    });
+  }
   
   getFormasPago(){
     return this.http.get(`${this.baseUrl}/administracion/getFormasPago`,{withCredentials:true})
@@ -29,5 +36,23 @@ export class ClienteService {
     console.log(body);
     return this.http.post(`${this.baseUrl}/cliente/actualizarContrasenia`,body,{withCredentials:true})
   }
+
+  listarProductos(){
+    return this.http.get(`${this.baseUrl}/productos/productosRandom/10`);
+  }
+
+  listarProductosCategoria(id:number){
+    return this.http.get(`${this.baseUrl}/productos/filtrar/?idCategoria=${id}`);
+  }
+
+  getProducto(id: number){
+    return this.http.get(`${this.baseUrl}/productos/producto/${id}`);
+  }
+
+  getCategorias(){
+    return this.http.get(`${this.baseUrl}/categorias/obtenerCategorias`);
+  }
+
+
 
 }
