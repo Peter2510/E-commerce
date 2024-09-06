@@ -51,7 +51,6 @@ export class PerfilComponent {
           text: 'Datos actualizados correctamente',
         });
         this.usuario = this.usuario2
-        JSON.parse(this.cookie.get('token2')).nombreUsuario = this.usuario2.nombreUsuario
       },
       error: (err) => {
         console.log(err);
