@@ -17,6 +17,9 @@ import { RouterLink } from '@angular/router';
 import { GestionCriticaComponent } from './admin/gestion-critica/gestion-critica.component';
 import { GestionProductosComponent } from './admin/gestion-productos/gestion-productos.component';
 import { GestionProductosEspecificaComponent } from './admin/gestion-productos-especifica/gestion-productos-especifica.component';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { EliminarProductoComponent } from './admin/productos/eliminar-producto/eliminar-producto.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +27,7 @@ import { GestionProductosEspecificaComponent } from './admin/gestion-productos-e
     GestionCriticaComponent,
     GestionProductosComponent,
     GestionProductosEspecificaComponent,
+    EliminarProductoComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +40,9 @@ import { GestionProductosEspecificaComponent } from './admin/gestion-productos-e
     HeaderComponent,
     RouterLink,
     AdminheaderComponent,
-    ClienteModule
+    ClienteModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],
