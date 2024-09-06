@@ -7,6 +7,8 @@ const { manejoErrores } = require("../utils/manejoErrores.utils");
 const { subirArchivo, obtenerUrlFirmada, eliminarArchivo, generarNombreArchivo } = require("../utils/manejoArchivos.utils");
 const { where } = require("sequelize");
 const { Op } = require('sequelize');
+const inventario = require("../models/inventario");
+const estadoInventario = require("../models/estadoInventario");
 
 
 
@@ -73,10 +75,23 @@ const obtenerProducto = async (req, res) => {
             return res.status(404).json({ ok: false, mensaje: 'Producto no encontrado' });
         }
 
-        const [marca, categoria] = await Promise.all([
+        const [marca, categoria, stock] = await Promise.all([
             Marca.findByPk(producto.idMarca),
-            Categoria.findByPk(producto.idCategoria)
+            Categoria.findByPk(producto.idCategoria),
+            inventario.findOne({
+                where: {
+                    idproducto: producto.id
+                }
+            }),
         ]);
+
+        let estado = null
+
+        if(stock){
+            estado = await estadoInventario.findOne({where: {
+                id: stock.idestadoinventario
+            }});
+        }
 
         const imagenes = await UrlImangen.findAll({
             where: {
@@ -95,13 +110,17 @@ const obtenerProducto = async (req, res) => {
             return res.status(404).json({ ok: false, mensaje: 'Marca o categoría no encontrada' });
         }
 
+        console.log(estado)
+
         return res.json({
             ok: true,
             producto: {
                 ...producto.toJSON(),
                 marca: marca.nombreMarca,
                 categoria: categoria.nombreCategoria,
-                url_imagenes: imagenesFirmadas
+                url_imagenes: imagenesFirmadas,
+                stock: stock ? stock.cantidadtotal : 0,
+                estado: estado.estado ? estado.estado : null
             }
         });
 
@@ -232,12 +251,17 @@ const filtrarProductos = async (req, res) => {
 
         // Obtener marcas y categorías asociadas para cada producto
         const productosConDetalles = await Promise.all(productos.map(async (producto) => {
-            const [marca, categoria, imagenes] = await Promise.all([
+            const [marca, categoria, imagenes,stock] = await Promise.all([
                 Marca.findByPk(producto.idMarca),
                 Categoria.findByPk(producto.idCategoria),
                 UrlImangen.findAll({
                     where: { idProducto: producto.id }
-                })
+                }),
+                inventario.findOne({
+                    where: {
+                        idproducto: producto.id
+                    }
+                }),
             ]);
 
             let imagenesFirmadas = [];
@@ -246,11 +270,22 @@ const filtrarProductos = async (req, res) => {
                 imagenesFirmadas.push({ nombre: imagen.nombre, url: url });
             }
 
+            let estado = null
+
+            if(stock){
+                estado = await estadoInventario.findOne({where: {
+                id: stock.idestadoinventario
+            }});
+             }
+
             return {
                 ...producto.toJSON(),
                 marca: marca ? marca.nombreMarca : null,
                 categoria: categoria ? categoria.nombreCategoria : null,
-                url_imagenes: imagenesFirmadas
+                url_imagenes: imagenesFirmadas,
+                stock: stock ? stock.cantidadtotal : 0,
+                estado: estado ? estado.estado : null
+
             };
         }));
 
@@ -312,6 +347,9 @@ const obtenerProductosRandom = async (req, res) => {
             ],
             order: sequelize.random(),
             limit: cantidad,
+            where : {
+                activo: true
+            }
         });
 
         if (productos.length < 1) {
@@ -332,7 +370,25 @@ const obtenerProductosRandom = async (req, res) => {
                 imagenesFirmadas.push({nombre: imagen.nombre, url: url});
             }
 
+            let estado = null
+
+            const stock = await inventario.findOne({
+                where: {
+                    idproducto: producto.id
+            }});
+
+            console.log(stock)
+    
+            if(stock){
+                estado = await estadoInventario.findOne({where: {
+                    id: stock.idestadoinventario
+                }});
+                producto.setDataValue("stock", stock.cantidadtotal);
+                producto.setDataValue("estado", estado.estado);
+            }
+
             producto.dataValues.url_imagenes = imagenesFirmadas;
+            
         }
 
         return res.json({ ok: true, productos });
@@ -380,6 +436,27 @@ const obtenerTodosProductos = async (req, res) => {
             }
 
             producto.dataValues.url_imagenes = imagenesFirmadas;
+
+            let estado = null
+
+            const stock = await inventario.findOne({
+                where: {
+                    idproducto: producto.id
+            }});
+
+            console.log(stock)
+    
+            if(stock){
+                estado = await estadoInventario.findOne({where: {
+                    id: stock.idestadoinventario
+                }});
+                producto.setDataValue("stock", stock.cantidadtotal);
+                producto.setDataValue("estado", estado.estado);
+            }else{
+                producto.setDataValue("stock", 0);
+                producto.setDataValue("estado", null);
+            }
+
         }
 
         return res.json({ ok: true, productos });
@@ -618,6 +695,27 @@ const productosActivos = async (req, res) => {
             }
 
             producto.dataValues.url_imagenes = imagenesFirmadas;
+
+            let estado = null
+
+            const stock = await inventario.findOne({
+                where: {
+                    idproducto: producto.id
+            }});
+
+            console.log(stock)
+    
+            if(stock){
+                estado = await estadoInventario.findOne({where: {
+                    id: stock.idestadoinventario
+                }});
+                producto.setDataValue("stock", stock.cantidadtotal);
+                producto.setDataValue("estado", estado.estado);
+            }else{
+                producto.setDataValue("stock", 0);
+                producto.setDataValue("estado", null);
+            }
+
         }
 
 
@@ -667,6 +765,27 @@ const productosDesactivados = async (req, res) => {
             }
 
             producto.dataValues.url_imagenes = imagenesFirmadas;
+
+            let estado = null
+
+            const stock = await inventario.findOne({
+                where: {
+                    idproducto: producto.id
+            }});
+
+            console.log(stock)
+    
+            if(stock){
+                estado = await estadoInventario.findOne({where: {
+                    id: stock.idestadoinventario
+                }});
+                producto.setDataValue("stock", stock.cantidadtotal);
+                producto.setDataValue("estado", estado.estado);
+            }else{
+                producto.setDataValue("stock", 0);
+                producto.setDataValue("estado", null);
+            }
+
         }
 
         return res.json({ ok: true, productos });
@@ -695,6 +814,7 @@ const eliminarProducto = async (req, res) => {
       await manejoErrores(error, res, "Producto");
     }
 }
+
 
 module.exports = {
     crearProducto,
