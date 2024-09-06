@@ -8,6 +8,7 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { CarritoDeComprasComponent } from './pages/carrito-de-compras/carrito-de-compras.component';
 import { DetalleProductoComponent } from './pages/detalle-producto/detalle-producto.component';
 import { ListadoProductoFiltroComponent } from './pages/listado-producto-filtro/listado-producto-filtro.component';
+import { ProcederPagoComponent } from './pages/proceder-pago/proceder-pago.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,11 @@ const routes: Routes = [
       {
         path: 'producto-categoria/:id',
         component: ListadoProductoFiltroComponent,
+        canActivate: [clienteGuardGuard],
+      },
+      {
+        path: 'proceder-pago',
+        component: ProcederPagoComponent,
         canActivate: [clienteGuardGuard],
       },
       {
