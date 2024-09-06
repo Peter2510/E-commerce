@@ -43,15 +43,6 @@ const ingresoMayorCantidadProducto = async (req, res) => {
 }
 
 
-const obtenerCantidades = async (req, res) => {
-    try {
-        
-    } catch (error) {
-           await manejoErrores(error, res, "Inventario");
-        
-    }
-}
-
 
 
 //funcion para ingresar las modificaciiones con usuarios
@@ -94,6 +85,5 @@ const ingresoModificacionCantidesUsuarioProducto= async (req, res)  => {
 
 module.exports = {
     ingresoMayorCantidadProducto,
-    obtenerCantidades,
     ingresoModificacionCantidesUsuarioProducto
 }
