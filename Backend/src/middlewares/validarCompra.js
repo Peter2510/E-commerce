@@ -53,6 +53,15 @@ const validarCompra = [
         }
         
         //validar cantidad de producto a buscar
+        const cantidadEnInventario = await inventario.findOne({
+            where: {
+                idProducto: producto.id
+            }
+        });
+
+        if(cantidadEnInventario.cantidad < producto.cantidad){
+            return res.status(400).json({ok: false, mensaje: `No hay suficiente stock de ${buscarProducto.nombre} en inventario`});
+        }
         
      }
 

@@ -1,5 +1,6 @@
 const { manejoErrores } = require("../utils/manejoErrores.utils");
 const { sequelize } = require("../configs/database.configs");
+const Compra = require("../models/compra");
 
 const registrarCompra = async (req, res) => {
 
@@ -10,7 +11,18 @@ const registrarCompra = async (req, res) => {
 
         //proceder a registrar una compra
 
+        const compra = await Compra.create({
+            nit,
+            direccionEntrega,
+            idFormaEntrega,
+            idUsuario
+        }, { transaction: t });
+
         //proceder a registrar un producto en el detalleProducto segun el id registrado antes
+
+        
+
+
 
         res.json({ message: "Compra registrada correctamente" });
 
