@@ -59,7 +59,7 @@ const validarCompra = [
             }
         });
 
-        if(cantidadEnInventario.cantidad < producto.cantidad){
+        if(cantidadEnInventario.cantidadtotal < producto.cantidad){
             return res.status(400).json({ok: false, mensaje: `No hay suficiente stock de ${buscarProducto.nombre} en inventario`});
         }
         
