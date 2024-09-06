@@ -1,5 +1,11 @@
 const FormaPago = require("../models/formaPago");
+const Persona = require("../models/persona");
 const TipoUsuario = require("../models/tipoUsuario");
+const Usuario = require("../models/usuario");
+const bcrypt = require("bcrypt");
+const { manejoErrores } = require('../utils/manejoErrores.utils');
+const { sequelize } = require("../configs/database.configs");
+const { Op } = require('sequelize');
 
 const getTipoUsuarios = async (req, res) => {
   try {
@@ -7,7 +13,7 @@ const getTipoUsuarios = async (req, res) => {
       attributes: ["id", "tipo"],
       order: [["id", "ASC"]],
     });
-    res.status(400).json({ ok: true, tipoUsuarios: users });
+    res.status(200).json({ ok: true, tipoUsuarios: users });
   } catch (error) {
     console.log(error);
     res
@@ -25,7 +31,7 @@ const crearTipoUsuario = async (req, res) => {
       .status(200)
       .json({ ok: true, mensaje: "Tipo de usuario creado correctamente" });
   } catch (error) {
-    const respuesta = await manejoErrores(error, res, "Tipo de usuario");
+    await manejoErrores(error, res, "Tipo de usuario");
   }
 };
 
@@ -38,7 +44,7 @@ const crearFormaPago = async (req, res) => {
       .status(200)
       .json({ ok: true, mensaje: "Forma de pago creado correctamente" });
   } catch (error) {
-    const respuesta = await manejoErrores(error, res, "Forma de pago");
+    await manejoErrores(error, res, "Forma de pago");
   }
 };
 
@@ -57,38 +63,186 @@ const getFormasPago = async (req, res) => {
   }
 };
 
-async function manejoErrores(error, res, tabla) {
-  if (error.name === "SequelizeValidationError") {
-    
-    // Se extraen mensajes de validación del orm
-    const messages = error.errors.map((err) => err.message);
+const editarTipoUsuario = async (req, res) => {
+  try {
+    const { id, nuevoNombre } = req.body;
 
-    res.status(400).json({
-      ok: false,
-      mensaje: messages.join(", "),
-    });
+    const busqueda = await TipoUsuario.findOne({ where: { tipo: nuevoNombre } });
 
-  } else if (error.name === "SequelizeUniqueConstraintError") {
-    res.status(400).json({
-      ok: false,
-      mensaje: "Campo ya registrado",
-    });
-  } else if (error.name === "SequelizeDatabaseError") {
-    res.status(500).json({
-      ok: false,
-      mensaje: "Error en la base de datos: " + error.message,
-    });
-  } else {
-    res.status(500).json({
-      ok: false,
-      mensaje: "Error interno del servidor: " + error.message,
-    });
+    if (busqueda) {
+      return res.status(409).json({
+        ok: false,
+        mensaje: 'El tipo de usuario ya existe'
+      });
+    }
+
+    await TipoUsuario.update({ tipo: nuevoNombre}, { where: {id: id}})
+
+    res.status(200).json({ok: true, mensaje: "Tipo de usuario actualizado correctamente"})
+
+  } catch (error) {
+    await manejoErrores(error,res,'Tipo Usuario')
   }
+};
+
+const editarFormaPago = async (req, res) =>{
+
+  try {
+    
+    const {id, nuevoNombre } = req.body;
+
+    const busqueda = await FormaPago.findOne({where: {tipo: nuevoNombre}});
+
+    if(busqueda){
+      return res.status(409).json({ok: false, mensaje: 'Forma de pago ya registrada' });
+    }
+
+    await FormaPago.update({tipo: nuevoNombre}, {where: {id: id}});
+
+    res.status(200).json({ok: true, mensaje: 'Forma de pago actualizada correctamente'})
+
+
+  } catch (error) {
+    await manejoErrores(error, res, 'Forma de pago')
+  }
+
 }
+
+const obtenerAdminPorId = async (req, res) =>{
+
+  try {
+
+    const {id} = req.params;
+
+      const usuario = await Usuario.findOne({
+      where: {id: id, idTipoUsuario: 1},
+      attributes: ['id', 'nombreUsuario', 'a2fActivo', 'idPersona', 'idTipoUsuario', 'activo']
+    });
+
+    if(!usuario){
+      return res.status(404).json({ok: false, mensaje: 'Usuario no encontrado'});
+    }
+
+    const persona = await Persona.findOne({
+      where: {id: usuario.idPersona},
+      attributes: ['id', 'nombre', 'correoElectronico', 'fechaCreacion']
+    });
+
+    if(!usuario){
+      return res.status(404).json({ok: false, mensaje: 'Usuario no encontrado'});
+    }
+
+    res.status(200).json({ok: true , usuario: usuario, persona: persona});
+
+    
+  } catch (error) {
+    await manejoErrores(error, res, 'Usuario')
+  }
+
+}
+
+const obtenerEmpleados = async (req, res) => {
+  try {
+
+    const usuarios = await Usuario.findAll({
+      attributes: ['id', 'nombreUsuario', 'a2fActivo', 'idPersona', 'idTipoUsuario', 'activo'],
+      where: {
+        idTipoUsuario: {
+          [Op.or]: [1, 3]
+        }
+      }
+    });
+
+    if (usuarios.length === 0) {
+      return res.status(404).json({ ok: false, mensaje: 'No se encontraron usuarios' });
+    }
+
+    const resultado = [];
+
+    for (const usuario of usuarios) {
+      const persona = await Persona.findOne({
+        where: { id: usuario.idPersona },
+        attributes: ['id', 'nombre', 'correoElectronico', 'fechaCreacion']
+      });
+
+      resultado.push({
+        usuario: usuario,
+        persona: persona || null
+      });
+    }
+
+    return res.status(200).json({ ok: true, empleados: resultado });
+
+  } catch (error) {
+    await manejoErrores(error, res, 'Usuario');
+  }
+};
+
+const crearAdmin = async (req, res) => {
+  const t = await sequelize.transaction(); 
+
+  try {
+    const { nombreUsuario, contrasenia, persona } = req.body;
+
+    const email = await Persona.findOne({
+      where: { correoElectronico: persona.correoElectronico },
+      transaction: t,
+    });
+
+    if (email) {
+      await t.rollback();
+      return res
+        .status(409)
+        .json({ ok: false, mensaje: "Correo electronico ya registrado" });
+    }
+
+    if (!contrasenia) {
+      await t.rollback();
+      return res
+        .status(400)
+        .json({ ok: false, mensaje: "La contraseña es requerida" });
+    }
+
+    if (contrasenia.length < 8) {
+      await t.rollback();
+      return res
+        .status(400)
+        .json({
+          ok: false,
+          mensaje: "La contraseña debe tener al menos 8 caracteres",
+        });
+    }
+
+    // Se crea la persona
+    const newPersona = await Persona.create(persona, { transaction: t });
+
+    // Se crea el usuario
+    const hashedPassword = await bcrypt.hash(contrasenia, 10);
+    await Usuario.create({
+      nombreUsuario,
+      contrasenia: hashedPassword,
+      idPersona: newPersona.id,
+      idTipoUsuario: 1,
+    }, { transaction: t });
+
+    await t.commit(); 
+    res.status(200).json({ ok: true, mensaje: "Registrado correctamente" });
+
+  } catch (error) {  
+    await t.rollback(); 
+    await manejoErrores(error, res, "Admin");
+  }
+};
+
 
 module.exports = {
     getTipoUsuarios,
     crearTipoUsuario,
     crearFormaPago,
-    getFormasPago
+    getFormasPago,
+    editarTipoUsuario, 
+    editarFormaPago,
+    obtenerAdminPorId,
+    obtenerEmpleados,
+    crearAdmin
 };

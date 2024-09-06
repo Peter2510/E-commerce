@@ -60,15 +60,7 @@ const Persona = sequelize.define(
     },
     idTipoFormaPago: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: 'El tipo de forma de pago no puede ser nulo',
-        },
-        notEmpty: {
-          msg: 'El tipo de forma de pago no puede ser vacio',
-        },
-      },
+      allowNull: true,
       references: {
         model: FormaPago,
         key: 'id'
@@ -80,5 +72,8 @@ const Persona = sequelize.define(
     tableName: 'persona',
   }
 );
+
+Persona.belongsTo(FormaPago, { foreignKey: 'idTipoFormaPago', as: 'formaPago' });
+
 
 module.exports = Persona;

@@ -2,7 +2,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
 const jwtValidacion = (req, res, next) => {
-  const token = req.cookies.access_token;
+  const token = req.cookies.token;
 
   if (!token) {
     return res.status(401).json({ ok: false, mensaje: 'Token no proporcionado' });
