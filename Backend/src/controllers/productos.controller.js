@@ -19,7 +19,7 @@ const crearProducto = async (req, res) => {
     try {
 
         const { imagenes } = req.files;
-        const { nombre, precio, descripcion, minimoInventario, idCategoria, idMarca } = req.body;
+        const { nombre, precio, descripcion, minimoInventario, idCategoria, idMarca,cantidadInventario } = req.body;
 
         const arrayImagenes = Array.isArray(imagenes) ? imagenes : [imagenes];
 
@@ -50,6 +50,14 @@ const crearProducto = async (req, res) => {
                 await t.rollback();
                 return res.json({ ok: false, mensaje: 'Error al subir imagen' });
             }
+        }
+
+        if(cantidadInventario){
+            await inventario.create({
+                idproducto: producto.id,
+                cantidadtotal: cantidadInventario,
+                idestadoinventario: 1
+            }, { transaction: t });
         }
 
         await t.commit();
