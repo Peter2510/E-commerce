@@ -1,3 +1,5 @@
+import { inventario } from "./inventario.interface";
+
 export interface Producto {
   id?: number;
   nombre: string;
@@ -9,6 +11,7 @@ export interface Producto {
   descripcion: string;
   minimoInventario: number;
   activo?: boolean;
+  inventario?: inventario;
 }
 
 export interface Marca {
