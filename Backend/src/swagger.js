@@ -4630,6 +4630,89 @@ const swaggerOptions = {
           }
         }
       },
+      "/api/v1/compras/comprasPorFecha/{fecha}": {
+        "get": {
+          "summary": "Obtener compras por fecha",
+          "tags": ["Compras"],
+          "description": "Obtiene una lista de compras filtradas por la fecha.",
+          "parameters": [
+            {
+              "name": "fecha",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date",
+                "example": "2024-09-07"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Compras obtenidas exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "compras": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Compra"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Fecha no válida",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Fecha no válida"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Compras no encontradas",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Compras no encontradas"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "/api/v1/compras/comprasPorEstadoCompra/{idEstadoCompra}": {
         "get": {
           "summary": "Obtener compras por estado de la compra",
@@ -4838,7 +4921,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/compras/ComprasPorUsuarioYEstadoCompra/{idUsuario}/{idEstadoCompra}": {
+      "/api/v1/compras/comprasPorUsuarioYEstadoCompra/{idUsuario}/{idEstadoCompra}": {
         "get": {
           "summary": "Obtener compras por usuario y estado",
           "tags": ["Compras"],
@@ -4909,7 +4992,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/compras/ComprasPorUsuarioYFecha/{idUsuario}/{fecha}": {
+      "/api/v1/compras/comprasPorUsuarioYFecha/{idUsuario}/{fecha}": {
         "get": {
           "summary": "Obtener compras por usuario y fecha",
           "tags": ["Compras"],
@@ -5205,89 +5288,6 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/compras/comprasPorFecha/{fecha}": {
-        "get": {
-          "summary": "Obtener compras por fecha",
-          "tags": ["Compras"],
-          "description": "Obtiene una lista de compras filtradas por la fecha.",
-          "parameters": [
-            {
-              "name": "fecha",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "string",
-                "format": "date",
-                "example": "2024-09-07"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Compras obtenidas exitosamente",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "ok": {
-                        "type": "boolean",
-                        "example": true
-                      },
-                      "compras": {
-                        "type": "array",
-                        "items": {
-                          "$ref": "#/components/schemas/Compra"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "Fecha no válida",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "ok": {
-                        "type": "boolean",
-                        "example": false
-                      },
-                      "mensaje": {
-                        "type": "string",
-                        "example": "Fecha no válida"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "Compras no encontradas",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "ok": {
-                        "type": "boolean",
-                        "example": false
-                      },
-                      "mensaje": {
-                        "type": "string",
-                        "example": "Compras no encontradas"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
       "/api/v1/compras/comprasPorFechaYEstadoCompra/{fecha}/{idEstadoCompra}": {
         "get": {
           "summary": "Obtener compras por fecha y estado de la compra",
@@ -5472,7 +5472,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/compras/ComprasPorFechaYEstadoCompraYFormaEntrega/{fecha}/{idEstadoCompra}/{idFormaEntrega}": {
+      "/api/v1/compras/comprasPorFechaYEstadoCompraYFormaEntrega/{fecha}/{idEstadoCompra}/{idFormaEntrega}": {
         "get": {
           "summary": "Obtener compras por fecha, estado de compra y forma de entrega",
           "tags": ["Compras"],
