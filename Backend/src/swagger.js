@@ -6454,4 +6454,3 @@ module.exports = {
   swaggerUi,
   swaggerDocs,
 };
-
