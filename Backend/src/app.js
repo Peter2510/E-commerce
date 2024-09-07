@@ -15,6 +15,7 @@ const marcasRoutes = require('./routes/marcas.routes');
 const categoriasRoutes = require('./routes/categorias.routes');
 const permisosRoutes = require('./routes/permisos.routes.js');
 const comprasRoutes = require('./routes/compras.routes');
+const tiendaRoutes = require('./routes/tienda.routes');
 
 app.use(express.json());
 app.use(cookieParser());
@@ -41,6 +42,7 @@ app.use(adminstracionRoutes);
 app.use(clientesRoutes);
 app.use(permisosRoutes);
 app.use(comprasRoutes);
+app.use(tiendaRoutes)
 
 
 
