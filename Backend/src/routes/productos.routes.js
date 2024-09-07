@@ -10,7 +10,7 @@ const router = express.Router();
 const api = '/api/v1/productos';
 
 // Rutas para la entidad Marca
-router.post(`${api}/crearProducto`,validarProducto, ProductosController.crearProducto);
+router.post(`${api}/crearProducto`,jwtValidacion,validarProducto, ProductosController.crearProducto);
 router.get(`${api}/producto/:id`, ProductosController.obtenerProducto);
 router.put(`${api}/editarProducto`,validarEdicionProducto, ProductosController.editarProducto);
 router.put(`${api}/cambiarEstadoProducto/:id`, ProductosController.cambiarEstadoActivoProducto);
@@ -26,9 +26,8 @@ router.delete(`${api}/eliminarProducto/:id`, ProductosController.eliminarProduct
 
 //para inventario
 router.put(`${api}/ingresoMayorCantidadProducto/:id`,InventarioController.ingresoMayorCantidadProducto);
+router.get(`${api}/obtenerEstadosInventario/`, InventarioController.obtenerEstadosInventario);
 router.post(`${api}/ingresoModificacionCantidesUsuarioProducto/`, InventarioController.ingresoModificacionCantidesUsuarioProducto);
-
-
 
 
 
