@@ -163,7 +163,7 @@ const buscarCompras = async (filtro, res, tipoError) => {
       where: filtro,
     });
 
-    if (!compras || compras.length === 0) {
+    if (!compras) {
       return res.status(404).json({
         ok: false,
         mensaje: tipoError + " no encontrada(s)",
@@ -190,15 +190,7 @@ const obtenerComprasPorEstado = async (req, res) => {
   try {
     const { idEstadoCompra } = req.params;
 
-    const compras = await Compra.findAll({
-      include: obtenerIncludeCompras(),
-      attributes: obtenerAtributosCompras(), 
-      where: {
-        idEstadoCompra: idEstadoCompra,
-      },
-    });
-
-    res.json({ ok: true, compras });
+    buscarCompras({ idEstadoCompra }, res, "Estado de Compra");
 
   } catch (error) {
     await manejoErrores(error, res, "Compra");
@@ -209,16 +201,7 @@ const obtenerComprasPorUsuarioYEstado = async (req, res) => {
   try {
     const { idUsuario, idEstadoCompra } = req.params;
 
-    const compras = await Compra.findAll({
-      include: obtenerIncludeCompras(),
-      attributes: obtenerAtributosCompras(), 
-      where: {
-        idUsuario: idUsuario,
-        idEstadoCompra: idEstadoCompra,
-      },
-    });
-
-    res.json({ ok: true, compras });
+    buscarCompras({ idUsuario, idEstadoCompra }, res, "Compras");
 
   } catch (error) {
     await manejoErrores(error, res, "Compra");
@@ -230,7 +213,6 @@ const obtenerComprasPorUsuarioYFecha = async (req, res) => {
   try {
     const { idUsuario, fecha } = req.params;
 
-    const usuario = await Usuario.findByPk(idUsuario);
 
     if(fecha instanceof Date && !isNaN(fecha)){
       return res.status(400).json({
@@ -238,16 +220,8 @@ const obtenerComprasPorUsuarioYFecha = async (req, res) => {
         mensaje: "Fecha no válida",
       });
     }
-    const compras = await Compra.findAll({
-      include: obtenerIncludeCompras(),
-      attributes: obtenerAtributosCompras(), 
-      where: {
-        idUsuario: idUsuario,
-        fecha: sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), fecha),
-      },
-    });
 
-    res.json({ ok: true, compras });
+    buscarCompras({ idUsuario, fecha: sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), fecha) }, res, "Compras");
 
   } catch (error) {
     await manejoErrores(error, res, "Compra");
@@ -258,15 +232,7 @@ const obtenerComprasPorFormaEntrega = async (req, res) => {
   try {
     const { idFormaEntrega } = req.params;
 
-    const compras = await Compra.findAll({
-      include: obtenerIncludeCompras(),
-      attributes: obtenerAtributosCompras(), 
-      where: {
-        idFormaEntrega: idFormaEntrega,
-      },
-    });
-
-    res.json({ ok: true, compras });
+    buscarCompras({ idFormaEntrega }, res, "Forma de Entrega");
 
   } catch (error) {
     await manejoErrores(error, res, "Compra");
@@ -277,36 +243,18 @@ const obtenerComprasPorUsuarioYFormaEntrega = async (req, res) => {
   try {
     const { idUsuario, idFormaEntrega } = req.params;
 
-    const compras = await Compra.findAll({
-      include: obtenerIncludeCompras(),
-      attributes: obtenerAtributosCompras(), 
-      where: {
-        idUsuario: idUsuario,
-        idFormaEntrega: idFormaEntrega,
-      },
-    });
-
-    res.json({ ok: true, compras });
+    buscarCompras({ idUsuario, idFormaEntrega }, res, "Compras");
 
   } catch (error) {
     await manejoErrores(error, res, "Compra");
   }
 }
 
-const obtenerComprasPorEstadoYFormaEntrega = async (req, res) => {
+const obtenerComprasPorEstadoCompraYFormaEntrega = async (req, res) => {
   try {
     const { idEstadoCompra, idFormaEntrega } = req.params;
 
-    const compras = await Compra.findAll({
-      include: obtenerIncludeCompras(),
-      attributes: obtenerAtributosCompras(), 
-      where: {
-        idEstadoCompra: idEstadoCompra,
-        idFormaEntrega: idFormaEntrega,
-      },
-    });
-
-    res.json({ ok: true, compras });
+    buscarCompras({ idEstadoCompra, idFormaEntrega }, res, "Compras");
 
   } catch (error) {
     await manejoErrores(error, res, "Compra");
@@ -324,15 +272,7 @@ const obtenerComprasPorFecha = async (req, res) => {
       });
     }
 
-    const compras = await Compra.findAll({
-      include: obtenerIncludeCompras(),
-      attributes: obtenerAtributosCompras(), 
-      where: {
-        fecha: sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), fecha),
-      },
-    });
-
-    res.json({ ok: true, compras });
+    buscarCompras({ fecha: sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), fecha) }, res, "Compras");
 
   } catch (error) {
     await manejoErrores(error, res, "Compra");
@@ -350,18 +290,7 @@ const obtenerComprasPorFechaYEstado = async (req, res) => {
       });
     }
 
-    const estado = await EstadoCompra.findByPk(idEstadoCompra);
-
-    const compras = await Compra.findAll({
-      include: obtenerIncludeCompras(),
-      attributes: obtenerAtributosCompras(), 
-      where: {
-        fecha: sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), fecha),
-        idEstadoCompra: idEstadoCompra,
-      },
-    });
-
-    res.json({ ok: true, compras });
+    buscarCompras({ fecha: sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), fecha), idEstadoCompra }, res, "Compras");
 
   } catch (error) {
     await manejoErrores(error, res, "Compra");
@@ -379,23 +308,14 @@ const obtenerComprasPorFechaYFormaEntrega = async (req, res) => {
       });
     }
 
-    const compras = await Compra.findAll({
-      include: obtenerIncludeCompras(),
-      attributes: obtenerAtributosCompras(), 
-      where: {
-        fecha: sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), fecha),
-        idFormaEntrega: idFormaEntrega,
-      },
-    });
-
-    res.json({ ok: true, compras });
+    buscarCompras({ fecha: sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), fecha), idFormaEntrega }, res, "Compras");
 
   } catch (error) {
     await manejoErrores(error, res, "Compra");
   }
 }
 
-const obtenerComprasPorFechaYEstadoYFormaEntrega = async (req, res) => {
+const obtenerComprasPorFechaYEstadoCompraYFormaEntrega = async (req, res) => {
   try {
     const { fecha, idEstadoCompra, idFormaEntrega } = req.params;
 
@@ -406,17 +326,7 @@ const obtenerComprasPorFechaYEstadoYFormaEntrega = async (req, res) => {
       });
     }
 
-    const compras = await Compra.findAll({
-      include: obtenerIncludeCompras(),
-      attributes: obtenerAtributosCompras(), 
-      where: {
-        fecha: sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), fecha),
-        idEstadoCompra: idEstadoCompra,
-        idFormaEntrega: idFormaEntrega,
-      },
-    });
-
-    res.json({ ok: true, compras });
+    buscarCompras({ fecha: sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), fecha), idEstadoCompra, idFormaEntrega }, res, "Compras");
 
   } catch (error) {
     await manejoErrores(error, res, "Compra");
@@ -433,11 +343,11 @@ module.exports = {
   obtenerComprasPorUsuarioYFecha,
   obtenerComprasPorFormaEntrega,
   obtenerComprasPorUsuarioYFormaEntrega,
-  obtenerComprasPorEstadoYFormaEntrega,
+  obtenerComprasPorEstadoCompraYFormaEntrega,
   obtenerComprasPorFecha,
   obtenerComprasPorFechaYEstado,
   obtenerComprasPorFechaYFormaEntrega,
-  obtenerComprasPorFechaYEstadoYFormaEntrega
+  obtenerComprasPorFechaYEstadoCompraYFormaEntrega
 };
 
 /**

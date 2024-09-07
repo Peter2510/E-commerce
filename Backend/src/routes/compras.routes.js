@@ -34,7 +34,7 @@ router.get(
   jwtValidacion,
   validarEstadoCompraGet,
   validarFormaEntregaGet,
-  comprasController.obtenerComprasPorEstadoYFormaEntrega
+  comprasController.obtenerComprasPorEstadoCompraYFormaEntrega
 );
 
 router.get(
@@ -62,7 +62,7 @@ router.get(
   jwtValidacion,
   validarFormaEntregaGet,
   validarEstadoCompraGet,
-  comprasController.obtenerComprasPorFechaYEstadoYFormaEntrega
+  comprasController.obtenerComprasPorFechaYEstadoCompraYFormaEntrega
 );
 
 router.get(
