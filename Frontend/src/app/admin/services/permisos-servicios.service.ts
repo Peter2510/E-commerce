@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CookieOptions, CookieService } from 'ngx-cookie-service';
 import { map, Observable } from 'rxjs';
 import {
   permisousuario,
@@ -20,8 +21,13 @@ export class PermisosServiciosService {
 
   public permisosUsuario = signal<tipopermiso[]>([]);
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private cookie: CookieService
+  ) {
     this.obtenerPermisos();
+    //this.obtenerPermisosUsuario(JSON.parse(this.cookie.get('token2')).id);
   }
 
   //funcion para obtener los permispos
@@ -40,7 +46,7 @@ export class PermisosServiciosService {
       .subscribe();
   }
 
-  obtenerPermisosUsuario(id: number): Observable<tipopermiso[]> {
+  obtenerPermisosUsuario(id: number | undefined): Observable<tipopermiso[]> {
     return this.http.get<tipopermiso[]>(
       `${environment.baseUrlEnv}/${this.directiva}/obtenerPermisosUsuario/${id}`,
       { withCredentials: true }

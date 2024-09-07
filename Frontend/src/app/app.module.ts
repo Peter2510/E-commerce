@@ -20,7 +20,7 @@ import { GestionProductosEspecificaComponent } from './admin/gestion-productos-e
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EliminarProductoComponent } from './admin/productos/eliminar-producto/eliminar-producto.component';
-
+import { CommonModule } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,6 +43,7 @@ import { EliminarProductoComponent } from './admin/productos/eliminar-producto/e
     ClienteModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonModule,
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],

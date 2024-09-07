@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { tap } from 'rxjs';
+import { estadoinventario } from 'src/app/interfaces/inventario.interface';
 import { Producto } from 'src/app/interfaces/producto.interface';
 import { environment } from 'src/environments/environment.development';
 
@@ -13,10 +14,12 @@ export class ServicioInventarioService {
   //signals
   public productosActivos = signal<Producto[]>([]);
   public productosDesactivos = signal<Producto[]>([]);
+  public estadosInventario = signal<estadoinventario[]>([]);
 
   constructor(private http: HttpClient) {
     this.obtenerProductosActivos();
     this.obtenerProductosDesactivos();
+    this.obtenerEstadosInventario();
   }
 
   obtenerProductosActivos() {
@@ -72,6 +75,20 @@ export class ServicioInventarioService {
     );
   }
 
-  //funcion para las cantidades
-  obtenerCantidadesProductosInventario() {}
+  //funcion para las obtenerEstadosInventario
+  obtenerEstadosInventario() {
+    this.http
+      .get(
+        `${environment.baseUrlEnv}/${this.directiva}/obtenerEstadosInventario/`,
+        {
+          withCredentials: true,
+        }
+      )
+      .pipe(
+        tap((valores: any) => {
+          this.estadosInventario.set(valores.todosEstados);
+        })
+      )
+      .subscribe();
+  }
 }

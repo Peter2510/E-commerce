@@ -73,6 +73,8 @@ export class GestionRolesEspecificoComponent
   }
 
   obtenerRolesUsuario(id: number) {
+    console.log(this.servicioPermisos.permisosUsuario(), 'permisos');
+
     this.servicioPermisos
       .obtenerPermisosUsuario(id)
       .subscribe((elementos: any) => {
@@ -109,11 +111,11 @@ export class GestionRolesEspecificoComponent
   }
 
   ngAfterContentInit(): void {
-    console.log(
-      this.permisosObtenidos(),
-      'aaaaaaaaaaaaaaa',
-      this.tipoRol2,
-      this.servicioPermisos.permisosUsuario()
-    );
+    // console.log(
+    //   this.permisosObtenidos(),
+    //   'aaaaaaaaaaaaaaa',
+    //   this.tipoRol2,
+    //   this.servicioPermisos.permisosUsuario()
+    // );
   }
 }
