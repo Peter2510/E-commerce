@@ -25,7 +25,8 @@ const EstadoCompra = sequelize.define(
     },
     {
         schema: "compras",
-        tableName: "estadoCompra"
+        tableName: "estadoCompra",
+        timestamps: false,
     }
 );
 

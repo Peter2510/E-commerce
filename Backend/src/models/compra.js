@@ -56,6 +56,18 @@ const Compra = sequelize.define(
       },
       min: 0.0
     },
+    "direccionEntrega": {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "La direccion de entrega no puede ser nulo",
+        },
+        notEmpty: {
+          msg: "La direccion de entrega no puede estar vacio",
+        },
+      },
+    },
     "idUsuario": {
       type: DataTypes.INTEGER,
       allowNull: false,

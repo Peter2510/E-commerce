@@ -6,6 +6,7 @@ const Compra = require("./compra");
 const Usuario = require("./usuario");
 const FormaPago = require("./formaPago");
 const EstadoCompra = require("./estadoCompra");
+const Persona = require("./persona");
 
 Marca.hasMany(Producto, {
   foreignKey: "idMarca",
@@ -27,6 +28,18 @@ Producto.belongsTo(Categoria, {
   as: "categoria",
 });
 
+Usuario.belongsTo(Persona, {
+  foreignKey: "idPersona",
+  as: "persona"
+});
+
+Persona.hasOne(Usuario, { 
+  foreignKey: 'idPersona', 
+  as: 'usuarios' 
+});
+
+
+
 DetalleCompra.belongsTo(Producto, {
   foreignKey: "idProducto",
   as: "producto",
@@ -42,18 +55,23 @@ EstadoCompra.hasMany(Compra, {
   as: "compras",
 });
 
+Compra.belongsTo(EstadoCompra, {
+  foreignKey: "idEstadoCompra",
+  as: "estadoCompra",
+});
+
 DetalleCompra.belongsTo(Compra, {
   foreignKey: "idCompra",
   as: "compra",
 });
 
-Usuario.hasMany(Compra, {
-  foreignKey: "idUsuario",
-  as: "compras",
+Compra.hasMany(DetalleCompra, {
+  foreignKey: "idCompra",
+  as: "detalleCompra",
 });
 
-FormaPago.hasMany(Compra, {
-  foreignKey: "idFormaEntrega",
+Usuario.hasMany(Compra, {
+  foreignKey: "idUsuario",
   as: "compras",
 });
 
@@ -62,17 +80,16 @@ Compra.belongsTo(Usuario, {
   as: "usuario",
 });
 
+FormaPago.hasMany(Compra, {
+  foreignKey: "idFormaEntrega",
+  as: "compras",
+});
+
 Compra.belongsTo(FormaPago, {
   foreignKey: "idFormaEntrega",
-  as: "formaPago",
+  as: "formaEntrega",
 });
 
-Compra.belongsTo(EstadoCompra, {
-  foreignKey: "idEstadoCompra",
-  as: "estadoCompra",
-});
 
-Compra.hasMany(DetalleCompra, {
-  foreignKey: "idCompra",
-  as: "detalleCompra",
-});
+
+

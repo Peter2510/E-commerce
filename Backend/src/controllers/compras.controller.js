@@ -5,6 +5,12 @@ const DetalleCompra = require("../models/detalleCompra");
 const Producto = require("../models/producto");
 const PorcentajeRecargo = require("../models/porcentajeRecargo");
 const inventario = require("../models/inventario");
+const Usuario = require("../models/usuario");
+const Persona = require("../models/persona");
+const Marca = require("../models/marca");
+const Categoria = require("../models/categoria");
+const EstadoCompra = require("../models/estadoCompra");
+const FormaPago = require("../models/formaPago");
 
 const registrarCompra = async (req, res) => {
   const { idUsuario, nit, direccionEntrega, idFormaEntrega, productos } =
@@ -81,8 +87,357 @@ const registrarCompra = async (req, res) => {
   }
 };
 
+const obtenerIncludeCompras = () => {
+  return [
+    {
+      model: Usuario,
+      as: "usuario",
+      attributes: ["id", "nombreUsuario"],
+      include: [
+        {
+          model: Persona,
+          as: "persona",
+          attributes: ["id", "nombre"],
+        },
+      ],
+    },
+    {
+      model: EstadoCompra,
+      as: "estadoCompra",
+      attributes: ["estado"],
+    },
+    {
+      model: FormaPago,
+      as: "formaEntrega",
+      attributes: ["tipo"],
+    },
+    {
+      model: DetalleCompra,
+      as: "detalleCompra",
+      attributes: ["cantidadProducto", "precioUnitario", "precioTotal"],
+      include: [
+        {
+          model: Producto,
+          as: "producto",
+          attributes: ["nombre", "descripcion", "precio"],
+          include: [
+            {
+              model: Marca,
+              as: "marca",
+              attributes: ["nombreMarca"],
+            },
+            {
+              model: Categoria,
+              as: "categoria",
+              attributes: ["nombreCategoria"],
+            },
+          ],
+        },
+      ],
+    },
+  ];
+};
+
+const obtenerAtributosCompras = () => {
+  return ["id", "nit", "precioTotal", "fecha", "recargo", "direccionEntrega"];
+};
+
+const obtenerCompras = async (req, res) => {
+  try {
+    const compras = await Compra.findAll({
+      include: obtenerIncludeCompras(),
+      attributes: obtenerAtributosCompras(), 
+    });
+
+    res.json({ ok: true, compras });
+  } catch (error) {
+    await manejoErrores(error, res, "Compra");
+  }
+};
+
+const buscarCompras = async (filtro, res, tipoError) => {
+  try {
+    const compras = await Compra.findAll({
+      include: obtenerIncludeCompras(),
+      attributes: obtenerAtributosCompras(),
+      where: filtro,
+    });
+
+    if (!compras || compras.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        mensaje: tipoError + " no encontrada(s)",
+      });
+    }
+
+    return res.json({ ok: true, compras });
+  } catch (error) {
+    await manejoErrores(error, res, tipoError);
+  }
+};
+
+const obtenerCompra = (req, res) => {
+  const { idCompra } = req.params;
+  buscarCompras({ id:idCompra }, res, "Compra");
+};
+
+const obtenerComprasPorUsuario = (req, res) => {
+  const { idUsuario } = req.params;
+  buscarCompras({ idUsuario }, res, "Compras");
+};
+
+const obtenerComprasPorEstado = async (req, res) => {
+  try {
+    const { idEstadoCompra } = req.params;
+
+    const compras = await Compra.findAll({
+      include: obtenerIncludeCompras(),
+      attributes: obtenerAtributosCompras(), 
+      where: {
+        idEstadoCompra: idEstadoCompra,
+      },
+    });
+
+    res.json({ ok: true, compras });
+
+  } catch (error) {
+    await manejoErrores(error, res, "Compra");
+  }
+}
+
+const obtenerComprasPorUsuarioYEstado = async (req, res) => {
+  try {
+    const { idUsuario, idEstadoCompra } = req.params;
+
+    const compras = await Compra.findAll({
+      include: obtenerIncludeCompras(),
+      attributes: obtenerAtributosCompras(), 
+      where: {
+        idUsuario: idUsuario,
+        idEstadoCompra: idEstadoCompra,
+      },
+    });
+
+    res.json({ ok: true, compras });
+
+  } catch (error) {
+    await manejoErrores(error, res, "Compra");
+  }
+}
+
+const obtenerComprasPorUsuarioYFecha = async (req, res) => {
+  
+  try {
+    const { idUsuario, fecha } = req.params;
+
+    const usuario = await Usuario.findByPk(idUsuario);
+
+    if(fecha instanceof Date && !isNaN(fecha)){
+      return res.status(400).json({
+        ok: false,
+        mensaje: "Fecha no válida",
+      });
+    }
+    const compras = await Compra.findAll({
+      include: obtenerIncludeCompras(),
+      attributes: obtenerAtributosCompras(), 
+      where: {
+        idUsuario: idUsuario,
+        fecha: sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), fecha),
+      },
+    });
+
+    res.json({ ok: true, compras });
+
+  } catch (error) {
+    await manejoErrores(error, res, "Compra");
+  }
+}
+
+const obtenerComprasPorFormaEntrega = async (req, res) => {
+  try {
+    const { idFormaEntrega } = req.params;
+
+    const compras = await Compra.findAll({
+      include: obtenerIncludeCompras(),
+      attributes: obtenerAtributosCompras(), 
+      where: {
+        idFormaEntrega: idFormaEntrega,
+      },
+    });
+
+    res.json({ ok: true, compras });
+
+  } catch (error) {
+    await manejoErrores(error, res, "Compra");
+  }
+}
+
+const obtenerComprasPorUsuarioYFormaEntrega = async (req, res) => {
+  try {
+    const { idUsuario, idFormaEntrega } = req.params;
+
+    const compras = await Compra.findAll({
+      include: obtenerIncludeCompras(),
+      attributes: obtenerAtributosCompras(), 
+      where: {
+        idUsuario: idUsuario,
+        idFormaEntrega: idFormaEntrega,
+      },
+    });
+
+    res.json({ ok: true, compras });
+
+  } catch (error) {
+    await manejoErrores(error, res, "Compra");
+  }
+}
+
+const obtenerComprasPorEstadoYFormaEntrega = async (req, res) => {
+  try {
+    const { idEstadoCompra, idFormaEntrega } = req.params;
+
+    const compras = await Compra.findAll({
+      include: obtenerIncludeCompras(),
+      attributes: obtenerAtributosCompras(), 
+      where: {
+        idEstadoCompra: idEstadoCompra,
+        idFormaEntrega: idFormaEntrega,
+      },
+    });
+
+    res.json({ ok: true, compras });
+
+  } catch (error) {
+    await manejoErrores(error, res, "Compra");
+  }
+}
+
+const obtenerComprasPorFecha = async (req, res) => {
+  try {
+    const { fecha } = req.params;
+
+    if(fecha instanceof Date && !isNaN(fecha)){
+      return res.status(400).json({
+        ok: false,
+        mensaje: "Fecha no válida",
+      });
+    }
+
+    const compras = await Compra.findAll({
+      include: obtenerIncludeCompras(),
+      attributes: obtenerAtributosCompras(), 
+      where: {
+        fecha: sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), fecha),
+      },
+    });
+
+    res.json({ ok: true, compras });
+
+  } catch (error) {
+    await manejoErrores(error, res, "Compra");
+  }
+}
+
+const obtenerComprasPorFechaYEstado = async (req, res) => {
+  try {
+    const { fecha, idEstadoCompra } = req.params;
+
+    if(fecha instanceof Date && !isNaN(fecha)){
+      return res.status(400).json({
+        ok: false,
+        mensaje: "Fecha no válida",
+      });
+    }
+
+    const estado = await EstadoCompra.findByPk(idEstadoCompra);
+
+    const compras = await Compra.findAll({
+      include: obtenerIncludeCompras(),
+      attributes: obtenerAtributosCompras(), 
+      where: {
+        fecha: sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), fecha),
+        idEstadoCompra: idEstadoCompra,
+      },
+    });
+
+    res.json({ ok: true, compras });
+
+  } catch (error) {
+    await manejoErrores(error, res, "Compra");
+  }
+}
+
+const obtenerComprasPorFechaYFormaEntrega = async (req, res) => {
+  try {
+    const { fecha, idFormaEntrega } = req.params;
+
+    if(fecha instanceof Date && !isNaN(fecha)){
+      return res.status(400).json({
+        ok: false,
+        mensaje: "Fecha no válida",
+      });
+    }
+
+    const compras = await Compra.findAll({
+      include: obtenerIncludeCompras(),
+      attributes: obtenerAtributosCompras(), 
+      where: {
+        fecha: sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), fecha),
+        idFormaEntrega: idFormaEntrega,
+      },
+    });
+
+    res.json({ ok: true, compras });
+
+  } catch (error) {
+    await manejoErrores(error, res, "Compra");
+  }
+}
+
+const obtenerComprasPorFechaYEstadoYFormaEntrega = async (req, res) => {
+  try {
+    const { fecha, idEstadoCompra, idFormaEntrega } = req.params;
+
+    if(fecha instanceof Date && !isNaN(fecha)){
+      return res.status(400).json({
+        ok: false,
+        mensaje: "Fecha no válida",
+      });
+    }
+
+    const compras = await Compra.findAll({
+      include: obtenerIncludeCompras(),
+      attributes: obtenerAtributosCompras(), 
+      where: {
+        fecha: sequelize.where(sequelize.fn('DATE', sequelize.col('fecha')), fecha),
+        idEstadoCompra: idEstadoCompra,
+        idFormaEntrega: idFormaEntrega,
+      },
+    });
+
+    res.json({ ok: true, compras });
+
+  } catch (error) {
+    await manejoErrores(error, res, "Compra");
+  }
+}
+
 module.exports = {
   registrarCompra,
+  obtenerCompras,
+  obtenerCompra,
+  obtenerComprasPorUsuario,
+  obtenerComprasPorEstado,
+  obtenerComprasPorUsuarioYEstado,
+  obtenerComprasPorUsuarioYFecha,
+  obtenerComprasPorFormaEntrega,
+  obtenerComprasPorUsuarioYFormaEntrega,
+  obtenerComprasPorEstadoYFormaEntrega,
+  obtenerComprasPorFecha,
+  obtenerComprasPorFechaYEstado,
+  obtenerComprasPorFechaYFormaEntrega,
+  obtenerComprasPorFechaYEstadoYFormaEntrega
 };
 
 /**
