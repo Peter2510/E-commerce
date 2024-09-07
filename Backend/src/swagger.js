@@ -231,6 +231,7 @@ const swaggerOptions = {
             id: 1,
             nombreCategoria: "Ropa"
           }
+          }
           , Producto: {
             "type": "object",
             "properties": {
@@ -304,12 +305,106 @@ const swaggerOptions = {
               "urlImagen": "https://aws.com/images/producto1.jpg",
               "idProducto": 1
             }
-          }
-        }
+          },
+          "Compra": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 1
+              },
+              "nit": {
+                "type": "string",
+                "example": "123456789"
+              },
+              "precioTotal": {
+                "type": "number",
+                "format": "decimal",
+                "example": 100.00
+              },
+              "fecha": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2024-09-07T05:37:11.143Z"
+              },
+              "recargo": {
+                "type": "number",
+                "format": "decimal",
+                "example": 5.00
+              },
+              "direccionEntrega": {
+                "type": "string",
+                "example": "123 Calle Principal"
+              },
+              "usuario": {
+                "$ref": "#/components/schemas/Usuario"
+              },
+              "estadoCompra": {
+                "$ref": "#/components/schemas/EstadoCompra"
+              },
+              "formaEntrega": {
+                "$ref": "#/components/schemas/TipoEntrega"
+              },
+              "detalleCompra": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DetalleCompra"
+                }
+              }
+            }
+          },
+          "EstadoCompra": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 1
+              },
+              "estado": {
+                "type": "string",
+                "example": "Pendiente"
+              }
+            }
+          },
+          "TipoEntrega": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 1
+              },
+              "tipo": {
+                "type": "string",
+                "example": "A domicilio"
+              }
+            }
+          },
+          "DetalleCompra": {
+            "type": "object",
+            "properties": {
+              "cantidadProducto": {
+                "type": "integer",
+                "example": 2
+              },
+              "precioUnitario": {
+                "type": "number",
+                "format": "decimal",
+                "example": 25.00
+              },
+              "precioTotal": {
+                "type": "number",
+                "format": "decimal",
+                "example": 50.00
+              },
+              "productos": {
+                "$ref": "#/components/schemas/Producto"
+              }
+            }
+          } 
       }
     },
     "paths": {
-      "/api/v1/crearCliente": {
+      "/api/v1/auth/crearCliente": {
         "post": {
           "summary": "Crear un nuevo cliente",
           "operationId": "crearCliente",
@@ -439,7 +534,7 @@ const swaggerOptions = {
 
         }
       },
-      "/api/v1/login": {
+      "/api/v1/auth/login": {
         "post": {
           "summary": "Inicia sesión y retorna un token JWT",
           "operationId": "login",
@@ -541,7 +636,7 @@ const swaggerOptions = {
           }
         },
       },
-      "/api/v1/logOut": {
+      "/api/v1/auth/logOut": {
         "post": {
           "summary": "Cerrar sesión del usuario actual",
           "operationId": "logOut",
@@ -590,7 +685,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/verify-2fa": {
+      "/api/v1/auth/verify-2fa": {
         "post": {
           "summary": "Verificar el código de autenticación de dos factores",
           "operationId": "verificar2FA",
@@ -4048,6 +4143,1474 @@ const swaggerOptions = {
                   }
                 }
               }
+            }
+          }
+        }
+      },
+      "/api/v1/compras/registrarCompra": {
+        "post": {
+          "summary": "Registrar una nueva compra",
+          "description": "Permite registrar una nueva compra en el sistema.",
+          "operationId": "registrarCompra",
+          "tags": ["Compras"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "idUsuario": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "nit": {
+                      "type": "string",
+                      "example": "1234567890"
+                    },
+                    "direccionEntrega": {
+                      "type": "string",
+                      "example": "123 Calle Falsa, Ciudad, País"
+                    },
+                    "idFormaEntrega": {
+                      "type": "integer",
+                      "example": 2
+                    },
+                    "productos": {
+                      "type": "array",
+                      "description": "Lista de productos a comprar",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "cantidad": {
+                            "type": "integer",
+                            "example": 3
+                          }
+                        },
+                        "required": ["id", "cantidad"]
+                      }
+                    }
+                  },
+                  "required": ["idUsuario", "nit", "direccionEntrega", "idFormaEntrega", "productos"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Compra registrada correctamente.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Pedido registrado correctamente"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Solicitud inválida.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error en la solicitud"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "No se encontró el recurso. El mensaje varia según el error.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Producto no encontrado"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/compras/compras": {
+        "get": {
+          "summary": "Obtener todas las compras",
+          "tags": ["Compras"],
+          "description": "Recupera una lista de todas las compras con detalles relacionados, incluyendo usuarios, estados, formas de pago, y productos.",
+          "responses": {
+            "200": {
+              "description": "Lista de compras obtenida exitosamente.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "compras": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 23
+                            },
+                            "nit": {
+                              "type": "string",
+                              "example": "CF"
+                            },
+                            "precioTotal": {
+                              "type": "string",
+                              "example": "3130.46"
+                            },
+                            "fecha": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-09-07T05:37:11.143Z"
+                            },
+                            "recargo": {
+                              "type": "string",
+                              "example": "313.05"
+                            },
+                            "direccionEntrega": {
+                              "type": "string",
+                              "example": "Xela"
+                            },
+                            "usuario": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 15
+                                },
+                                "nombreUsuario": {
+                                  "type": "string",
+                                  "example": "simon1234"
+                                },
+                                "persona": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 13
+                                    },
+                                    "nombre": {
+                                      "type": "string",
+                                      "example": "simon"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "estadoCompra": {
+                              "type": "object",
+                              "properties": {
+                                "estado": {
+                                  "type": "string",
+                                  "example": "Pendiente de entregar"
+                                }
+                              }
+                            },
+                            "formaEntrega": {
+                              "type": "object",
+                              "properties": {
+                                "tipo": {
+                                  "type": "string",
+                                  "example": "A domicilio"
+                                }
+                              }
+                            },
+                            "detalleCompra": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "cantidadProducto": {
+                                    "type": "integer",
+                                    "example": 2
+                                  },
+                                  "precioUnitario": {
+                                    "type": "string",
+                                    "example": "1565.23"
+                                  },
+                                  "precioTotal": {
+                                    "type": "string",
+                                    "example": "3130.46"
+                                  },
+                                  "producto": {
+                                    "type": "object",
+                                    "properties": {
+                                      "nombre": {
+                                        "type": "string",
+                                        "example": "Escritorio blanco nevado 35,6 x 85 x 25 cm"
+                                      },
+                                      "descripcion": {
+                                        "type": "string",
+                                        "example": "Escritorio para niño"
+                                      },
+                                      "precio": {
+                                        "type": "string",
+                                        "example": "1565.23"
+                                      },
+                                      "marca": {
+                                        "type": "object",
+                                        "properties": {
+                                          "nombreMarca": {
+                                            "type": "string",
+                                            "example": "Xiaomi"
+                                          }
+                                        }
+                                      },
+                                      "categoria": {
+                                        "type": "object",
+                                        "properties": {
+                                          "nombreCategoria": {
+                                            "type": "string",
+                                            "example": "Literatura"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error en el servidor al obtener las compras.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error en el servidor."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/compras/comprasPorUsuario/{idUsuario}": {
+        "get": {
+          "summary": "Obtener compras por usuario",
+          "tags": ["Compras"],
+          "description": "Recupera una lista de todas las compras realizadas por un usuario específico con detalles relacionados, incluyendo usuarios, estados, formas de pago, y productos.",
+          "parameters": [
+            {
+              "name": "idUsuario",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 15
+              },
+              "description": "ID del usuario para el cual se buscan las compras."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Lista de compras obtenida exitosamente para el usuario especificado.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "compras": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 23
+                            },
+                            "nit": {
+                              "type": "string",
+                              "example": "CF"
+                            },
+                            "precioTotal": {
+                              "type": "string",
+                              "example": "3130.46"
+                            },
+                            "fecha": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-09-07T05:37:11.143Z"
+                            },
+                            "recargo": {
+                              "type": "string",
+                              "example": "313.05"
+                            },
+                            "direccionEntrega": {
+                              "type": "string",
+                              "example": "Xela"
+                            },
+                            "usuario": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 15
+                                },
+                                "nombreUsuario": {
+                                  "type": "string",
+                                  "example": "simon1234"
+                                },
+                                "persona": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 13
+                                    },
+                                    "nombre": {
+                                      "type": "string",
+                                      "example": "simon"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "estadoCompra": {
+                              "type": "object",
+                              "properties": {
+                                "estado": {
+                                  "type": "string",
+                                  "example": "Pendiente de entregar"
+                                }
+                              }
+                            },
+                            "formaEntrega": {
+                              "type": "object",
+                              "properties": {
+                                "tipo": {
+                                  "type": "string",
+                                  "example": "A domicilio"
+                                }
+                              }
+                            },
+                            "detalleCompra": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "cantidadProducto": {
+                                    "type": "integer",
+                                    "example": 2
+                                  },
+                                  "precioUnitario": {
+                                    "type": "string",
+                                    "example": "1565.23"
+                                  },
+                                  "precioTotal": {
+                                    "type": "string",
+                                    "example": "3130.46"
+                                  },
+                                  "producto": {
+                                    "type": "object",
+                                    "properties": {
+                                      "nombre": {
+                                        "type": "string",
+                                        "example": "Escritorio blanco nevado 35,6 x 85 x 25 cm"
+                                      },
+                                      "descripcion": {
+                                        "type": "string",
+                                        "example": "Escritorio para niño"
+                                      },
+                                      "precio": {
+                                        "type": "string",
+                                        "example": "1565.23"
+                                      },
+                                      "marca": {
+                                        "type": "object",
+                                        "properties": {
+                                          "nombreMarca": {
+                                            "type": "string",
+                                            "example": "Xiaomi"
+                                          }
+                                        }
+                                      },
+                                      "categoria": {
+                                        "type": "object",
+                                        "properties": {
+                                          "nombreCategoria": {
+                                            "type": "string",
+                                            "example": "Literatura"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error en el servidor al obtener las compras para el usuario especificado.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error en el servidor."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/compras/comprasPorEstadoCompra/{idEstadoCompra}": {
+        "get": {
+          "summary": "Obtener compras por estado de la compra",
+          "tags": ["Compras"],
+          "description": "Obtiene una lista de compras filtradas por el estado de compra.",
+          "parameters": [
+            {
+              "name": "idEstadoCompra",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 1
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Compras obtenidas exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "compras": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 23
+                            },
+                            "nit": {
+                              "type": "string",
+                              "example": "CF"
+                            },
+                            "precioTotal": {
+                              "type": "string",
+                              "example": "3130.46"
+                            },
+                            "fecha": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-09-07T05:37:11.143Z"
+                            },
+                            "recargo": {
+                              "type": "string",
+                              "example": "313.05"
+                            },
+                            "direccionEntrega": {
+                              "type": "string",
+                              "example": "Xela"
+                            },
+                            "usuario": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 15
+                                },
+                                "nombreUsuario": {
+                                  "type": "string",
+                                  "example": "simon1234"
+                                },
+                                "persona": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 13
+                                    },
+                                    "nombre": {
+                                      "type": "string",
+                                      "example": "simon"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "estadoCompra": {
+                              "type": "object",
+                              "properties": {
+                                "estado": {
+                                  "type": "string",
+                                  "example": "Pendiente de entregar"
+                                }
+                              }
+                            },
+                            "formaEntrega": {
+                              "type": "object",
+                              "properties": {
+                                "tipo": {
+                                  "type": "string",
+                                  "example": "A domicilio"
+                                }
+                              }
+                            },
+                            "detalleCompra": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "cantidadProducto": {
+                                    "type": "integer",
+                                    "example": 2
+                                  },
+                                  "precioUnitario": {
+                                    "type": "string",
+                                    "example": "1565.23"
+                                  },
+                                  "precioTotal": {
+                                    "type": "string",
+                                    "example": "3130.46"
+                                  },
+                                  "producto": {
+                                    "type": "object",
+                                    "properties": {
+                                      "nombre": {
+                                        "type": "string",
+                                        "example": "Escritorio blanco nevado 35,6 x 85 x 25 cm"
+                                      },
+                                      "descripcion": {
+                                        "type": "string",
+                                        "example": "Escritorio para niño"
+                                      },
+                                      "precio": {
+                                        "type": "string",
+                                        "example": "1565.23"
+                                      },
+                                      "marca": {
+                                        "type": "object",
+                                        "properties": {
+                                          "nombreMarca": {
+                                            "type": "string",
+                                            "example": "Xiaomi"
+                                          }
+                                        }
+                                      },
+                                      "categoria": {
+                                        "type": "object",
+                                        "properties": {
+                                          "nombreCategoria": {
+                                            "type": "string",
+                                            "example": "Literatura"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Recurso no encontrado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Estado de Compra no encontrado"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error en el servidor al obtener las compras para el usuario especificado.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error en el servidor."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/compras/ComprasPorUsuarioYEstadoCompra/{idUsuario}/{idEstadoCompra}": {
+        "get": {
+          "summary": "Obtener compras por usuario y estado",
+          "tags": ["Compras"],
+          "description": "Obtiene una lista de compras filtradas por el ID de usuario y el estado de compra.",
+          "parameters": [
+            {
+              "name": "idUsuario",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 15
+              }
+            },
+            {
+              "name": "idEstadoCompra",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 1
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Compras obtenidas exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "compras": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Compra"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Compras no encontradas",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Compras no encontradas"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/compras/ComprasPorUsuarioYFecha/{idUsuario}/{fecha}": {
+        "get": {
+          "summary": "Obtener compras por usuario y fecha",
+          "tags": ["Compras"],
+          "description": "Obtiene una lista de compras filtradas por el ID de usuario y la fecha.",
+          "parameters": [
+            {
+              "name": "idUsuario",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 15
+              }
+            },
+            {
+              "name": "fecha",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date",
+                "example": "2024-09-07"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Compras obtenidas exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "compras": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Compra"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Fecha no válida",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Fecha no válida"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Compras no encontradas",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Compras no encontradas"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/compras/comprasPorFormaEntrega/{idFormaEntrega}": {
+        "get": {
+          "summary": "Obtener compras por forma de entrega",
+          "tags": ["Compras"],
+          "description": "Obtiene una lista de compras filtradas por la forma de entrega.",
+          "parameters": [
+            {
+              "name": "idFormaEntrega",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 1
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Compras obtenidas exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "compras": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Compra"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Recurso no encontrado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Compras no encontradas"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/compras/comprasPorUsuarioYFormaEntrega/{idUsuario}/{idFormaEntrega}": {
+        "get": {
+          "summary": "Obtener compras por usuario y forma de entrega",
+          "tags": ["Compras"],
+          "description": "Obtiene una lista de compras filtradas por el ID de usuario y la forma de entrega.",
+          "parameters": [
+            {
+              "name": "idUsuario",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 15
+              }
+            },
+            {
+              "name": "idFormaEntrega",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 1
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Compras obtenidas exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "compras": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Compra"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Compras no encontradas",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Compras no encontradas"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/compras/comprasPorEstadoCompraYFormaEntrega/{idEstadoCompra}/{idFormaEntrega}": {
+        "get": {
+          "summary": "Obtener compras por estado de compra y forma de entrega",
+          "tags": ["Compras"],
+          "description": "Obtiene una lista de compras filtradas por el estado de compra y la forma de entrega.",
+          "parameters": [
+            {
+              "name": "idEstadoCompra",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 1
+              }
+            },
+            {
+              "name": "idFormaEntrega",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 1
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Compras obtenidas exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "compras": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Compra"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Compras no encontradas",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Compras no encontradas"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/compras/comprasPorFecha/{fecha}": {
+        "get": {
+          "summary": "Obtener compras por fecha",
+          "tags": ["Compras"],
+          "description": "Obtiene una lista de compras filtradas por la fecha.",
+          "parameters": [
+            {
+              "name": "fecha",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date",
+                "example": "2024-09-07"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Compras obtenidas exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "compras": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Compra"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Fecha no válida",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Fecha no válida"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Compras no encontradas",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Compras no encontradas"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/compras/comprasPorFechaYEstadoCompra/{fecha}/{idEstadoCompra}": {
+        "get": {
+          "summary": "Obtener compras por fecha y estado de la compra",
+          "tags": ["Compras"],
+          "description": "Obtiene una lista de compras filtradas por la fecha y el estado de compra.",
+          "parameters": [
+            {
+              "name": "fecha",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date",
+                "example": "2024-09-07"
+              }
+            },
+            {
+              "name": "idEstadoCompra",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 1
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Compras obtenidas exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "compras": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Compra"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Fecha no válida",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Fecha no válida"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Compras no encontradas",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Compras no encontradas"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/compras/comprasPorFechaYFormaEntrega/{fecha}/{idFormaEntrega}": {
+        "get": {
+          "summary": "Obtener compras por fecha y forma de entrega",
+          "tags": ["Compras"],
+          "description": "Obtiene una lista de compras filtradas por la fecha y la forma de entrega.",
+          "parameters": [
+            {
+              "name": "fecha",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date",
+                "example": "2024-09-07"
+              }
+            },
+            {
+              "name": "idFormaEntrega",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 1
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Compras obtenidas exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "compras": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Compra"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Fecha no válida",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Fecha no válida"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Compras no encontradas",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Compras no encontradas"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/compras/ComprasPorFechaYEstadoCompraYFormaEntrega/{fecha}/{idEstadoCompra}/{idFormaEntrega}": {
+        "get": {
+          "summary": "Obtener compras por fecha, estado de compra y forma de entrega",
+          "tags": ["Compras"],
+          "description": "Obtiene una lista de compras filtradas por la fecha, el estado de compra y la forma de entrega.",
+          "parameters": [
+            {
+              "name": "fecha",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date",
+                "example": "2024-09-07"
+              }
+            },
+            {
+              "name": "idEstadoCompra",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 1
+              }
+            },
+            {
+              "name": "idFormaEntrega",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 1
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Compras obtenidas exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "compras": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Compra"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Fecha no válida",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Fecha no válida"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Compras no encontradas",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Compras no encontradas"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Compra": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 23
+            },
+            "nit": {
+              "type": "string",
+              "example": "CF"
+            },
+            "precioTotal": {
+              "type": "string",
+              "example": "3130.46"
+            },
+            "fecha": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2024-09-07T05:37:11.143Z"
+            },
+            "recargo": {
+              "type": "string",
+              "example": "313.05"
+            },
+            "direccionEntrega": {
+              "type": "string",
+              "example": "Cr 123 #45-67"
+            },
+            "formaEntrega": {
+              "type": "string",
+              "example": "Envío a domicilio"
+            },
+            "estadoCompra": {
+              "type": "string",
+              "example": "Enviado"
             }
           }
         }
