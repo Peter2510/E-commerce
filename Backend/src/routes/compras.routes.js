@@ -4,8 +4,8 @@ const jwtValidacion = require("../middlewares/jwtValidacion");
 const validarCompra = require("../middlewares/validarCompra");
 const {validarExistenciaUsuarioGet} = require("../middlewares/validacionUsuario");
 const {validarFormaEntregaGet} = require("../middlewares/validarFormaEntrega");
-const {validarEstadoCompraGet} = require("../middlewares/validarEstadoCompra");
-const {validarExistenciaCompraGet} = require("../middlewares/validarExistenciaCompra");
+const {validarEstadoCompraGet, validarEstadoCompraPost} = require("../middlewares/validarEstadoCompra");
+const {validarExistenciaCompraGet, validarExistenciaCompraPost} = require("../middlewares/validarExistenciaCompra");
 
 const router = express.Router();
 const api = "/api/v1/compras";
@@ -16,21 +16,21 @@ router.get(`${api}/compras`, jwtValidacion, comprasController.obtenerCompras);
 router.get(`${api}/Compra/:idCompra`, jwtValidacion, validarExistenciaCompraGet, comprasController.obtenerCompra);
 
 router.get(
-  `${api}/ComprasPorEstadoCompra/:idEstadoCompra`,
+  `${api}/comprasPorEstadoCompra/:idEstadoCompra`,
   jwtValidacion,
   validarEstadoCompraGet,
   comprasController.obtenerComprasPorEstado
 );
 
 router.get(
-  `${api}/ComprasPorFormaEntrega/:idFormaEntrega`,
+  `${api}/comprasPorFormaEntrega/:idFormaEntrega`,
   jwtValidacion,
   validarFormaEntregaGet,
   comprasController.obtenerComprasPorFormaEntrega
 );
 
 router.get(
-  `${api}/ComprasPorEstadoCompraYFormaEntrega/:idEstadoCompra/:idFormaEntrega`,
+  `${api}/comprasPorEstadoCompraYFormaEntrega/:idEstadoCompra/:idFormaEntrega`,
   jwtValidacion,
   validarEstadoCompraGet,
   validarFormaEntregaGet,
@@ -38,27 +38,27 @@ router.get(
 );
 
 router.get(
-  `${api}/ComprasPorFecha/:fecha`,
+  `${api}/comprasPorFecha/:fecha`,
   jwtValidacion,
   comprasController.obtenerComprasPorFecha
 );
 
 router.get(
-  `${api}/ComprasPorFechaYEstadoCompra/:fecha/:idEstadoCompra`,
+  `${api}/comprasPorFechaYEstadoCompra/:fecha/:idEstadoCompra`,
   jwtValidacion,
   validarEstadoCompraGet,
   comprasController.obtenerComprasPorFechaYEstado,
 );
 
 router.get(
-  `${api}/ComprasPorFechaYFormaEntrega/:fecha/:idFormaEntrega`,
+  `${api}/comprasPorFechaYFormaEntrega/:fecha/:idFormaEntrega`,
   jwtValidacion,
   validarFormaEntregaGet,
   comprasController.obtenerComprasPorFechaYFormaEntrega
 );
 
 router.get(
-  `${api}/ComprasPorFechaYEstadoCompraYFormaEntrega/:fecha/:idEstadoCompra/:idFormaEntrega`,
+  `${api}/comprasPorFechaYEstadoCompraYFormaEntrega/:fecha/:idEstadoCompra/:idFormaEntrega`,
   jwtValidacion,
   validarFormaEntregaGet,
   validarEstadoCompraGet,
@@ -66,14 +66,14 @@ router.get(
 );
 
 router.get(
-  `${api}/ComprasPorUsuario/:idUsuario`,
+  `${api}/comprasPorUsuario/:idUsuario`,
   jwtValidacion,
   validarExistenciaUsuarioGet,
   comprasController.obtenerComprasPorUsuario
 );
 
 router.get(
-  `${api}/ComprasPorUsuarioYEstadoCompra/:idUsuario/:idEstadoCompra`,
+  `${api}/comprasPorUsuarioYEstadoCompra/:idUsuario/:idEstadoCompra`,
   jwtValidacion,
   validarExistenciaUsuarioGet,
   validarEstadoCompraGet,
@@ -81,18 +81,40 @@ router.get(
 );
 
 router.get(
-  `${api}/ComprasPorUsuarioYFecha/:idUsuario/:fecha`,
+  `${api}/comprasPorUsuarioYFecha/:idUsuario/:fecha`,
   jwtValidacion,
   validarExistenciaUsuarioGet,
   comprasController.obtenerComprasPorUsuarioYFecha
 );
 
 router.get(
-  `${api}/ComprasPorUsuarioYFormaEntrega/:idUsuario/:idFormaEntrega`,
+  `${api}/comprasPorUsuarioYFormaEntrega/:idUsuario/:idFormaEntrega`,
   jwtValidacion,
   validarExistenciaUsuarioGet,
   validarFormaEntregaGet,
   comprasController.obtenerComprasPorUsuarioYFormaEntrega
+);
+
+router.get(
+  `${api}/detalleCompra/:idCompra`,
+  jwtValidacion,
+  validarExistenciaCompraGet,
+  comprasController.obtenerDetalleCompra
+)
+
+router.get(
+  `${api}/compraYDetalleCompra/:idCompra`,
+  jwtValidacion,
+  validarExistenciaCompraGet,
+  comprasController.obtenerCompraYDetalleCompra
+)
+
+router.patch(
+  `${api}/actualizarEstadoCompra`,
+  jwtValidacion,
+  validarExistenciaCompraPost,
+  validarEstadoCompraPost,
+  comprasController.actualizarEstadoCompra
 );
 
 module.exports = router;

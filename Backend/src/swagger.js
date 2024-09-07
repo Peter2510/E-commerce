@@ -4340,6 +4340,10 @@ const swaggerOptions = {
                             "estadoCompra": {
                               "type": "object",
                               "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
                                 "estado": {
                                   "type": "string",
                                   "example": "Pendiente de entregar"
@@ -4349,64 +4353,13 @@ const swaggerOptions = {
                             "formaEntrega": {
                               "type": "object",
                               "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
                                 "tipo": {
                                   "type": "string",
                                   "example": "A domicilio"
-                                }
-                              }
-                            },
-                            "detalleCompra": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "cantidadProducto": {
-                                    "type": "integer",
-                                    "example": 2
-                                  },
-                                  "precioUnitario": {
-                                    "type": "string",
-                                    "example": "1565.23"
-                                  },
-                                  "precioTotal": {
-                                    "type": "string",
-                                    "example": "3130.46"
-                                  },
-                                  "producto": {
-                                    "type": "object",
-                                    "properties": {
-                                      "nombre": {
-                                        "type": "string",
-                                        "example": "Escritorio blanco nevado 35,6 x 85 x 25 cm"
-                                      },
-                                      "descripcion": {
-                                        "type": "string",
-                                        "example": "Escritorio para niño"
-                                      },
-                                      "precio": {
-                                        "type": "string",
-                                        "example": "1565.23"
-                                      },
-                                      "marca": {
-                                        "type": "object",
-                                        "properties": {
-                                          "nombreMarca": {
-                                            "type": "string",
-                                            "example": "Xiaomi"
-                                          }
-                                        }
-                                      },
-                                      "categoria": {
-                                        "type": "object",
-                                        "properties": {
-                                          "nombreCategoria": {
-                                            "type": "string",
-                                            "example": "Literatura"
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
                                 }
                               }
                             }
@@ -4529,6 +4482,10 @@ const swaggerOptions = {
                             "estadoCompra": {
                               "type": "object",
                               "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
                                 "estado": {
                                   "type": "string",
                                   "example": "Pendiente de entregar"
@@ -4538,64 +4495,13 @@ const swaggerOptions = {
                             "formaEntrega": {
                               "type": "object",
                               "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
                                 "tipo": {
                                   "type": "string",
                                   "example": "A domicilio"
-                                }
-                              }
-                            },
-                            "detalleCompra": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "cantidadProducto": {
-                                    "type": "integer",
-                                    "example": 2
-                                  },
-                                  "precioUnitario": {
-                                    "type": "string",
-                                    "example": "1565.23"
-                                  },
-                                  "precioTotal": {
-                                    "type": "string",
-                                    "example": "3130.46"
-                                  },
-                                  "producto": {
-                                    "type": "object",
-                                    "properties": {
-                                      "nombre": {
-                                        "type": "string",
-                                        "example": "Escritorio blanco nevado 35,6 x 85 x 25 cm"
-                                      },
-                                      "descripcion": {
-                                        "type": "string",
-                                        "example": "Escritorio para niño"
-                                      },
-                                      "precio": {
-                                        "type": "string",
-                                        "example": "1565.23"
-                                      },
-                                      "marca": {
-                                        "type": "object",
-                                        "properties": {
-                                          "nombreMarca": {
-                                            "type": "string",
-                                            "example": "Xiaomi"
-                                          }
-                                        }
-                                      },
-                                      "categoria": {
-                                        "type": "object",
-                                        "properties": {
-                                          "nombreCategoria": {
-                                            "type": "string",
-                                            "example": "Literatura"
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
                                 }
                               }
                             }
@@ -4662,7 +4568,86 @@ const swaggerOptions = {
                       "compras": {
                         "type": "array",
                         "items": {
-                          "$ref": "#/components/schemas/Compra"
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 23
+                            },
+                            "nit": {
+                              "type": "string",
+                              "example": "CF"
+                            },
+                            "precioTotal": {
+                              "type": "string",
+                              "example": "3130.46"
+                            },
+                            "fecha": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-09-07T05:37:11.143Z"
+                            },
+                            "recargo": {
+                              "type": "string",
+                              "example": "313.05"
+                            },
+                            "direccionEntrega": {
+                              "type": "string",
+                              "example": "Xela"
+                            },
+                            "usuario": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 15
+                                },
+                                "nombreUsuario": {
+                                  "type": "string",
+                                  "example": "simon1234"
+                                },
+                                "persona": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 13
+                                    },
+                                    "nombre": {
+                                      "type": "string",
+                                      "example": "simon"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "estadoCompra": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "estado": {
+                                  "type": "string",
+                                  "example": "Pendiente de entregar"
+                                }
+                              }
+                            },
+                            "formaEntrega": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "tipo": {
+                                  "type": "string",
+                                  "example": "A domicilio"
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -4800,6 +4785,10 @@ const swaggerOptions = {
                             "estadoCompra": {
                               "type": "object",
                               "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
                                 "estado": {
                                   "type": "string",
                                   "example": "Pendiente de entregar"
@@ -4809,64 +4798,13 @@ const swaggerOptions = {
                             "formaEntrega": {
                               "type": "object",
                               "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
                                 "tipo": {
                                   "type": "string",
                                   "example": "A domicilio"
-                                }
-                              }
-                            },
-                            "detalleCompra": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "cantidadProducto": {
-                                    "type": "integer",
-                                    "example": 2
-                                  },
-                                  "precioUnitario": {
-                                    "type": "string",
-                                    "example": "1565.23"
-                                  },
-                                  "precioTotal": {
-                                    "type": "string",
-                                    "example": "3130.46"
-                                  },
-                                  "producto": {
-                                    "type": "object",
-                                    "properties": {
-                                      "nombre": {
-                                        "type": "string",
-                                        "example": "Escritorio blanco nevado 35,6 x 85 x 25 cm"
-                                      },
-                                      "descripcion": {
-                                        "type": "string",
-                                        "example": "Escritorio para niño"
-                                      },
-                                      "precio": {
-                                        "type": "string",
-                                        "example": "1565.23"
-                                      },
-                                      "marca": {
-                                        "type": "object",
-                                        "properties": {
-                                          "nombreMarca": {
-                                            "type": "string",
-                                            "example": "Xiaomi"
-                                          }
-                                        }
-                                      },
-                                      "categoria": {
-                                        "type": "object",
-                                        "properties": {
-                                          "nombreCategoria": {
-                                            "type": "string",
-                                            "example": "Literatura"
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
                                 }
                               }
                             }
@@ -4961,7 +4899,86 @@ const swaggerOptions = {
                       "compras": {
                         "type": "array",
                         "items": {
-                          "$ref": "#/components/schemas/Compra"
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 23
+                            },
+                            "nit": {
+                              "type": "string",
+                              "example": "CF"
+                            },
+                            "precioTotal": {
+                              "type": "string",
+                              "example": "3130.46"
+                            },
+                            "fecha": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-09-07T05:37:11.143Z"
+                            },
+                            "recargo": {
+                              "type": "string",
+                              "example": "313.05"
+                            },
+                            "direccionEntrega": {
+                              "type": "string",
+                              "example": "Xela"
+                            },
+                            "usuario": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 15
+                                },
+                                "nombreUsuario": {
+                                  "type": "string",
+                                  "example": "simon1234"
+                                },
+                                "persona": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 13
+                                    },
+                                    "nombre": {
+                                      "type": "string",
+                                      "example": "simon"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "estadoCompra": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "estado": {
+                                  "type": "string",
+                                  "example": "Pendiente de entregar"
+                                }
+                              }
+                            },
+                            "formaEntrega": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "tipo": {
+                                  "type": "string",
+                                  "example": "A domicilio"
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -5033,7 +5050,86 @@ const swaggerOptions = {
                       "compras": {
                         "type": "array",
                         "items": {
-                          "$ref": "#/components/schemas/Compra"
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 23
+                            },
+                            "nit": {
+                              "type": "string",
+                              "example": "CF"
+                            },
+                            "precioTotal": {
+                              "type": "string",
+                              "example": "3130.46"
+                            },
+                            "fecha": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-09-07T05:37:11.143Z"
+                            },
+                            "recargo": {
+                              "type": "string",
+                              "example": "313.05"
+                            },
+                            "direccionEntrega": {
+                              "type": "string",
+                              "example": "Xela"
+                            },
+                            "usuario": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 15
+                                },
+                                "nombreUsuario": {
+                                  "type": "string",
+                                  "example": "simon1234"
+                                },
+                                "persona": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 13
+                                    },
+                                    "nombre": {
+                                      "type": "string",
+                                      "example": "simon"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "estadoCompra": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "estado": {
+                                  "type": "string",
+                                  "example": "Pendiente de entregar"
+                                }
+                              }
+                            },
+                            "formaEntrega": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "tipo": {
+                                  "type": "string",
+                                  "example": "A domicilio"
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -5115,7 +5211,86 @@ const swaggerOptions = {
                       "compras": {
                         "type": "array",
                         "items": {
-                          "$ref": "#/components/schemas/Compra"
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 23
+                            },
+                            "nit": {
+                              "type": "string",
+                              "example": "CF"
+                            },
+                            "precioTotal": {
+                              "type": "string",
+                              "example": "3130.46"
+                            },
+                            "fecha": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-09-07T05:37:11.143Z"
+                            },
+                            "recargo": {
+                              "type": "string",
+                              "example": "313.05"
+                            },
+                            "direccionEntrega": {
+                              "type": "string",
+                              "example": "Xela"
+                            },
+                            "usuario": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 15
+                                },
+                                "nombreUsuario": {
+                                  "type": "string",
+                                  "example": "simon1234"
+                                },
+                                "persona": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 13
+                                    },
+                                    "nombre": {
+                                      "type": "string",
+                                      "example": "simon"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "estadoCompra": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "estado": {
+                                  "type": "string",
+                                  "example": "Pendiente de entregar"
+                                }
+                              }
+                            },
+                            "formaEntrega": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "tipo": {
+                                  "type": "string",
+                                  "example": "A domicilio"
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -5186,7 +5361,86 @@ const swaggerOptions = {
                       "compras": {
                         "type": "array",
                         "items": {
-                          "$ref": "#/components/schemas/Compra"
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 23
+                            },
+                            "nit": {
+                              "type": "string",
+                              "example": "CF"
+                            },
+                            "precioTotal": {
+                              "type": "string",
+                              "example": "3130.46"
+                            },
+                            "fecha": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-09-07T05:37:11.143Z"
+                            },
+                            "recargo": {
+                              "type": "string",
+                              "example": "313.05"
+                            },
+                            "direccionEntrega": {
+                              "type": "string",
+                              "example": "Xela"
+                            },
+                            "usuario": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 15
+                                },
+                                "nombreUsuario": {
+                                  "type": "string",
+                                  "example": "simon1234"
+                                },
+                                "persona": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 13
+                                    },
+                                    "nombre": {
+                                      "type": "string",
+                                      "example": "simon"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "estadoCompra": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "estado": {
+                                  "type": "string",
+                                  "example": "Pendiente de entregar"
+                                }
+                              }
+                            },
+                            "formaEntrega": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "tipo": {
+                                  "type": "string",
+                                  "example": "A domicilio"
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -5257,7 +5511,86 @@ const swaggerOptions = {
                       "compras": {
                         "type": "array",
                         "items": {
-                          "$ref": "#/components/schemas/Compra"
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 23
+                            },
+                            "nit": {
+                              "type": "string",
+                              "example": "CF"
+                            },
+                            "precioTotal": {
+                              "type": "string",
+                              "example": "3130.46"
+                            },
+                            "fecha": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-09-07T05:37:11.143Z"
+                            },
+                            "recargo": {
+                              "type": "string",
+                              "example": "313.05"
+                            },
+                            "direccionEntrega": {
+                              "type": "string",
+                              "example": "Xela"
+                            },
+                            "usuario": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 15
+                                },
+                                "nombreUsuario": {
+                                  "type": "string",
+                                  "example": "simon1234"
+                                },
+                                "persona": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 13
+                                    },
+                                    "nombre": {
+                                      "type": "string",
+                                      "example": "simon"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "estadoCompra": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "estado": {
+                                  "type": "string",
+                                  "example": "Pendiente de entregar"
+                                }
+                              }
+                            },
+                            "formaEntrega": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "tipo": {
+                                  "type": "string",
+                                  "example": "A domicilio"
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -5329,7 +5662,86 @@ const swaggerOptions = {
                       "compras": {
                         "type": "array",
                         "items": {
-                          "$ref": "#/components/schemas/Compra"
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 23
+                            },
+                            "nit": {
+                              "type": "string",
+                              "example": "CF"
+                            },
+                            "precioTotal": {
+                              "type": "string",
+                              "example": "3130.46"
+                            },
+                            "fecha": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-09-07T05:37:11.143Z"
+                            },
+                            "recargo": {
+                              "type": "string",
+                              "example": "313.05"
+                            },
+                            "direccionEntrega": {
+                              "type": "string",
+                              "example": "Xela"
+                            },
+                            "usuario": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 15
+                                },
+                                "nombreUsuario": {
+                                  "type": "string",
+                                  "example": "simon1234"
+                                },
+                                "persona": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 13
+                                    },
+                                    "nombre": {
+                                      "type": "string",
+                                      "example": "simon"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "estadoCompra": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "estado": {
+                                  "type": "string",
+                                  "example": "Pendiente de entregar"
+                                }
+                              }
+                            },
+                            "formaEntrega": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "tipo": {
+                                  "type": "string",
+                                  "example": "A domicilio"
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -5421,7 +5833,86 @@ const swaggerOptions = {
                       "compras": {
                         "type": "array",
                         "items": {
-                          "$ref": "#/components/schemas/Compra"
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 23
+                            },
+                            "nit": {
+                              "type": "string",
+                              "example": "CF"
+                            },
+                            "precioTotal": {
+                              "type": "string",
+                              "example": "3130.46"
+                            },
+                            "fecha": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-09-07T05:37:11.143Z"
+                            },
+                            "recargo": {
+                              "type": "string",
+                              "example": "313.05"
+                            },
+                            "direccionEntrega": {
+                              "type": "string",
+                              "example": "Xela"
+                            },
+                            "usuario": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 15
+                                },
+                                "nombreUsuario": {
+                                  "type": "string",
+                                  "example": "simon1234"
+                                },
+                                "persona": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 13
+                                    },
+                                    "nombre": {
+                                      "type": "string",
+                                      "example": "simon"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "estadoCompra": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "estado": {
+                                  "type": "string",
+                                  "example": "Pendiente de entregar"
+                                }
+                              }
+                            },
+                            "formaEntrega": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "tipo": {
+                                  "type": "string",
+                                  "example": "A domicilio"
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -5522,7 +6013,86 @@ const swaggerOptions = {
                       "compras": {
                         "type": "array",
                         "items": {
-                          "$ref": "#/components/schemas/Compra"
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 23
+                            },
+                            "nit": {
+                              "type": "string",
+                              "example": "CF"
+                            },
+                            "precioTotal": {
+                              "type": "string",
+                              "example": "3130.46"
+                            },
+                            "fecha": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2024-09-07T05:37:11.143Z"
+                            },
+                            "recargo": {
+                              "type": "string",
+                              "example": "313.05"
+                            },
+                            "direccionEntrega": {
+                              "type": "string",
+                              "example": "Xela"
+                            },
+                            "usuario": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 15
+                                },
+                                "nombreUsuario": {
+                                  "type": "string",
+                                  "example": "simon1234"
+                                },
+                                "persona": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 13
+                                    },
+                                    "nombre": {
+                                      "type": "string",
+                                      "example": "simon"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "estadoCompra": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "estado": {
+                                  "type": "string",
+                                  "example": "Pendiente de entregar"
+                                }
+                              }
+                            },
+                            "formaEntrega": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": "1"
+                                },
+                                "tipo": {
+                                  "type": "string",
+                                  "example": "A domicilio"
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -5572,45 +6142,302 @@ const swaggerOptions = {
             }
           }
         }
-      }
-    },
-    "components": {
-      "schemas": {
-        "Compra": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer",
-              "example": 23
+      },
+      "/api/v1/compras/detalleCompra/{idCompra}": {
+        "get": {
+          "summary": "Obtener detalle de la compra",
+          "tags": ["Compras"],
+          "description": "Obtiene el detalle de una compra específica por su ID, incluyendo información del producto, marca y categoría.",
+          "parameters": [
+            {
+              "name": "idCompra",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 1
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Detalle de compra obtenido exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "detalleCompra": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "cantidadProducto": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "precioUnitario": {
+                              "type": "string",
+                              "example": "15.50"
+                            },
+                            "precioTotal": {
+                              "type": "string",
+                              "example": "31.00"
+                            },
+                            "producto": {
+                              "type": "object",
+                              "properties": {
+                                "nombre": {
+                                  "type": "string",
+                                  "example": "Laptop"
+                                },
+                                "descripcion": {
+                                  "type": "string",
+                                  "example": "Laptop con procesador Intel Core i7"
+                                },
+                                "precio": {
+                                  "type": "string",
+                                  "example": "1500.00"
+                                },
+                                "marca": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 1
+                                    },
+                                    "nombreMarca": {
+                                      "type": "string",
+                                      "example": "Dell"
+                                    }
+                                  }
+                                },
+                                "categoria": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 2
+                                    },
+                                    "nombreCategoria": {
+                                      "type": "string",
+                                      "example": "Electrónica"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             },
-            "nit": {
-              "type": "string",
-              "example": "CF"
+            "404": {
+              "description": "Compra no encontrada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Detalle de compra no encontrado"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/compras/compraYDetalleCompra/{idCompra}": {
+        "get": {
+          "summary": "Obtener compra y su detalle",
+          "tags": ["Compras"],
+          "description": "Obtiene una compra específica junto con su detalle, incluyendo información de productos, estado de compra y otros datos relacionados.",
+          "parameters": [
+            {
+              "name": "idCompra",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "example": 1
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Compra y su detalle obtenidos exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "compra": {
+                        "type": "object",
+                        "properties": {
+                          "idCompra": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "fecha": {
+                            "type": "string",
+                            "example": "2024-09-07T10:00:00Z"
+                          },
+                          "total": {
+                            "type": "string",
+                            "example": "150.00"
+                          },
+                          "detalleCompra": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "cantidadProducto": {
+                                  "type": "integer",
+                                  "example": 2
+                                },
+                                "precioUnitario": {
+                                  "type": "string",
+                                  "example": "75.00"
+                                },
+                                "precioTotal": {
+                                  "type": "string",
+                                  "example": "150.00"
+                                },
+                                "producto": {
+                                  "type": "object",
+                                  "properties": {
+                                    "nombre": {
+                                      "type": "string",
+                                      "example": "Smartphone"
+                                    },
+                                    "descripcion": {
+                                      "type": "string",
+                                      "example": "Smartphone de última generación"
+                                    },
+                                    "precio": {
+                                      "type": "string",
+                                      "example": "75.00"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             },
-            "precioTotal": {
-              "type": "string",
-              "example": "3130.46"
+            "404": {
+              "description": "Compra no encontrada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Compra no encontrada"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/compras/actualizarEstadoCompra": {
+        "patch": {
+          "summary": "Actualizar estado de la compra",
+          "tags": ["Compras"],
+          "description": "Actualiza el estado de una compra específica.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "idCompra": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "idEstadoCompra": {
+                      "type": "integer",
+                      "description": "ID del nuevo estado de compra",
+                      "example": 2
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Estado de compra actualizado exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Estado de compra actualizado"
+                      }
+                    }
+                  }
+                }
+              }
             },
-            "fecha": {
-              "type": "string",
-              "format": "date-time",
-              "example": "2024-09-07T05:37:11.143Z"
-            },
-            "recargo": {
-              "type": "string",
-              "example": "313.05"
-            },
-            "direccionEntrega": {
-              "type": "string",
-              "example": "Cr 123 #45-67"
-            },
-            "formaEntrega": {
-              "type": "string",
-              "example": "Envío a domicilio"
-            },
-            "estadoCompra": {
-              "type": "string",
-              "example": "Enviado"
+            "404": {
+              "description": "Compra no encontrada",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Compra no encontrada"
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
