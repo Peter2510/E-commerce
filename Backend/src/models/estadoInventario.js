@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../configs/database.configs');
 
-const FormaPago = sequelize.define(
+const estadoinventario = sequelize.define(
   'estadoinventario',
   {
     id: {
@@ -31,4 +31,4 @@ const FormaPago = sequelize.define(
   }
 );
 
-module.exports = FormaPago;
+module.exports = estadoinventario;
