@@ -11,6 +11,8 @@ import {
   tipopermiso,
 } from 'src/app/interfaces/permisos.interface';
 import { User } from 'src/app/interfaces/user.interface';
+import { TiendaServicioService } from 'src/app/admin/services/tienda-servicio.service';
+import { tienda } from 'src/app/interfaces/tienda.interface';
 
 @Component({
   selector: 'app-adminheader',
@@ -25,13 +27,18 @@ export class AdminheaderComponent implements OnInit {
   usuario!: User;
   mostrarPerfil: boolean = false;
   tipoPermisos: tipopermiso[] = [];
-
+  empresa!: tienda;
   constructor(
     private service: ServicioAdminService,
     private serviceCliente: ClienteService,
     private cookie: CookieService,
-    public servicioPermisos: PermisosServiciosService
-  ) {}
+    public servicioPermisos: PermisosServiciosService,
+    public servicioTienda: TiendaServicioService
+  ) {
+    this.empresa = this.servicioTienda.infoEmpresa();
+    console.log(this.empresa);
+  }
+
   irGestionRoles() {
     this.router.navigateByUrl('/gestionRoles');
   }
@@ -64,5 +71,7 @@ export class AdminheaderComponent implements OnInit {
       },
       error: (error) => {},
     });
+
+    console.log(this.servicioTienda.infoEmpresa(), this.empresa);
   }
 }

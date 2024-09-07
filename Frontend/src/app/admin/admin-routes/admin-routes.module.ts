@@ -11,6 +11,7 @@ import { GestionMarcasCategoriasComponent } from '../gestion-marcas-categorias/g
 import { CreacionProductosComponent } from '../productos/creacion-productos/creacion-productos.component';
 import { EdicionProductosComponent } from '../productos/edicion-productos/edicion-productos.component';
 import { GestorEnvioComponent } from '../Paquetes/gestor-envio/gestor-envio.component';
+import { EditarInformacionComponent } from '../empresa/editar-informacion/editar-informacion.component';
 
 const routes: Routes = [
   {
@@ -52,6 +53,10 @@ const routes: Routes = [
       {
         path: 'gestionEnvios',
         component: GestorEnvioComponent,
+      },
+      {
+        path: 'gestionEmpresa',
+        component: EditarInformacionComponent,
       },
 
       {

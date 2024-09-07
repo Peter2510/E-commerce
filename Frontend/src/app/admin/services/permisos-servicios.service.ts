@@ -20,12 +20,14 @@ export class PermisosServiciosService {
   public permisosNuevos = signal<tipopermiso[]>([]);
 
   public permisosUsuario = signal<tipopermiso[]>([]);
+  public permisosUsuarioIngresado = signal<any>([]);
 
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
     private cookie: CookieService
   ) {
+    this.obtenerPermisosUsuarioIngreado();
     this.obtenerPermisos();
     //this.obtenerPermisosUsuario(JSON.parse(this.cookie.get('token2')).id);
   }
@@ -52,6 +54,48 @@ export class PermisosServiciosService {
       { withCredentials: true }
     );
   }
+
+  private arraysAreDifferent(arr1: any[], arr2: any[]): boolean {
+    if (arr1.length !== arr2.length) return true;
+
+    // Convertir los arrays a JSON strings para compararlos
+    const arr1Str = JSON.stringify(arr1);
+    const arr2Str = JSON.stringify(arr2);
+
+    return arr1Str !== arr2Str;
+  }
+  obtenerPermisosUsuarioIngreado() {
+    this.http
+      .get<tipopermiso[]>(
+        `${environment.baseUrlEnv}/${this.directiva}/obtenerPermisosUsuario/${
+          JSON.parse(this.cookie.get('token2')).id
+        }`,
+        { withCredentials: true }
+      )
+      .pipe(
+        map((elemento: any) => {
+          // Comprobar si los permisos obtenidos son diferentes a los permisos actuales
+          if (
+            this.arraysAreDifferent(
+              elemento.todosTipos,
+              this.permisosUsuarioIngresado()
+            )
+          ) {
+            // Solo actualizar si son diferentes
+            this.permisosUsuarioIngresado.set(elemento.todosTipos);
+            console.log(
+              elemento.todosTipos,
+              'aca permisos de logeado',
+              elemento.todosTipos[0]?.tipo
+            );
+          } else {
+            console.log('Los permisos no cambiaron');
+          }
+        })
+      )
+      .subscribe();
+  }
+
   guardarRoles(roles: tipopermiso[], id: number) {
     this.http
       .post(

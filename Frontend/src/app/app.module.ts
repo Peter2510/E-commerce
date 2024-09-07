@@ -21,6 +21,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EliminarProductoComponent } from './admin/productos/eliminar-producto/eliminar-producto.component';
 import { CommonModule } from '@angular/common';
+import { EditarInformacionComponent } from './admin/empresa/editar-informacion/editar-informacion.component';
 @NgModule({
   declarations: [
     AppComponent,
