@@ -48,7 +48,7 @@
     </nav>
     <a
       class="flex order-first lg:order-none lg:w-1/5 title-font font-medium items-center text-gray-900 lg:items-center lg:justify-center mb-4 md:mb-0"
-      routerlink="/admin"
+      [routerLink]="['/admin']"
     >
       <!-- <div *ngIf="!this.servicioTienda.infoEmpresa().nombre; else conLogo">
         <svg
@@ -68,9 +68,10 @@
       </div> -->
       <img
         [src]="this.servicioTienda.infoEmpresa().imagen.url"
-        alt="comer"
         width="100"
         height="100"
+        alt="comer"
+        class="w-24 h-24 rounded-full shadow-lg border-2 border-gray-300 object-cover"
       />
       <!-- <ng-template #conLogo>
         <svg

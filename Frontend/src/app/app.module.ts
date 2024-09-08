@@ -14,18 +14,15 @@ import { HeaderComponent } from './utils/header/header.component';
 import { AdminModuleModule } from './admin/admin-module/admin-module.module';
 import { AdminheaderComponent } from './utils/adminheader/adminheader.component';
 import { RouterLink } from '@angular/router';
-import { GestionCriticaComponent } from './admin/gestion-critica/gestion-critica.component';
 import { GestionProductosComponent } from './admin/gestion-productos/gestion-productos.component';
 import { GestionProductosEspecificaComponent } from './admin/gestion-productos-especifica/gestion-productos-especifica.component';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EliminarProductoComponent } from './admin/productos/eliminar-producto/eliminar-producto.component';
 import { CommonModule } from '@angular/common';
-import { EditarInformacionComponent } from './admin/empresa/editar-informacion/editar-informacion.component';
 @NgModule({
   declarations: [
     AppComponent,
-    GestionCriticaComponent,
     GestionProductosComponent,
     GestionProductosEspecificaComponent,
     EliminarProductoComponent,

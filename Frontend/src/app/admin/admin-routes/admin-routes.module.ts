@@ -12,6 +12,7 @@ import { CreacionProductosComponent } from '../productos/creacion-productos/crea
 import { EdicionProductosComponent } from '../productos/edicion-productos/edicion-productos.component';
 import { GestorEnvioComponent } from '../Paquetes/gestor-envio/gestor-envio.component';
 import { EditarInformacionComponent } from '../empresa/editar-informacion/editar-informacion.component';
+import { EdicionEspecificaEmpresaComponent } from '../empresa/edicion-especifica-empresa/edicion-especifica-empresa.component';
 
 const routes: Routes = [
   {
@@ -57,6 +58,10 @@ const routes: Routes = [
       {
         path: 'gestionEmpresa',
         component: EditarInformacionComponent,
+      },
+      {
+        path: 'edicionEmpresa',
+        component: EdicionEspecificaEmpresaComponent,
       },
 
       {

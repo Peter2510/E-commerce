@@ -91,4 +91,7 @@ export class ServicioInventarioService {
       )
       .subscribe();
   }
+
+  //funcion para dar de baja a un usuario
+  darBaja() {}
 }
