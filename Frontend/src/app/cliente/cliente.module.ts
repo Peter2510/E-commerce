@@ -15,6 +15,9 @@ import { ProductoCardComponent } from './pages/producto-card/producto-card.compo
 import { ListadoProductoFiltroComponent } from './pages/listado-producto-filtro/listado-producto-filtro.component';
 import { ProcederPagoComponent } from './pages/proceder-pago/proceder-pago.component';
 
+import { BuscarComponent } from './pages/buscar/buscar.component';
+import { MaterialModule } from '../material/material.module';
+
 @NgModule({
   declarations: [
     HomeComponent,
@@ -26,8 +29,9 @@ import { ProcederPagoComponent } from './pages/proceder-pago/proceder-pago.compo
     ProductoCardComponent,
     ListadoProductoFiltroComponent,
     ProcederPagoComponent,
+    BuscarComponent,
   ],
-  imports: [CommonModule, ClienteRoutingModule, FormsModule],
+  imports: [CommonModule, ClienteRoutingModule, FormsModule, MaterialModule],
   providers: [CookieService],
 })
 export class ClienteModule {}

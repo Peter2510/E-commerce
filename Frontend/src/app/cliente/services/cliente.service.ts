@@ -42,6 +42,10 @@ export class ClienteService {
     return this.http.get(`${this.baseUrl}/productos/productosRandom/10`);
   }
 
+  listarProductosTodos(){
+    return this.http.get(`${this.baseUrl}/productos/productos`);
+  }
+
   listarProductosCategoria(id:number){
     return this.http.get(`${this.baseUrl}/productos/filtrar/?idCategoria=${id}`);
   }
