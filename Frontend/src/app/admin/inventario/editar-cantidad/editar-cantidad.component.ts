@@ -22,7 +22,11 @@ export class EditarCantidadComponent {
   @Output() closeModal = new EventEmitter<void>();
 
   agregarMasCantidad() {
-    this.servicio.agregarMasProducto(this.id?.id, this.cantidad).subscribe();
+    this.servicio
+      .agregarMasProducto(this.id?.id, this.cantidad)
+      .subscribe((elemento) => {
+        console.log(elemento);
+      });
   }
 
   cerrar() {

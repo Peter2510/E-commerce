@@ -21,7 +21,8 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EliminarProductoComponent } from './admin/productos/eliminar-producto/eliminar-producto.component';
 import { ReportesComponent } from './admin/reportes/reportes.component';
-
+import { CommonModule } from '@angular/common';
+import { EditarInformacionComponent } from './admin/empresa/editar-informacion/editar-informacion.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,6 +46,7 @@ import { ReportesComponent } from './admin/reportes/reportes.component';
     ClienteModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonModule,
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],

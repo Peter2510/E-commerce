@@ -12,6 +12,7 @@ import { CreacionProductosComponent } from '../productos/creacion-productos/crea
 import { EdicionProductosComponent } from '../productos/edicion-productos/edicion-productos.component';
 import { GestorEnvioComponent } from '../Paquetes/gestor-envio/gestor-envio.component';
 import { ReportesComponent } from '../reportes/reportes.component';
+import { EditarInformacionComponent } from '../empresa/editar-informacion/editar-informacion.component';
 
 const routes: Routes = [
   {
@@ -57,7 +58,11 @@ const routes: Routes = [
       {
         path: 'reportes',
         component: ReportesComponent,
+      },      {
+        path: 'gestionEmpresa',
+        component: EditarInformacionComponent,
       },
+
       {
         path: '',
         component: VistaGeneralComponent,
