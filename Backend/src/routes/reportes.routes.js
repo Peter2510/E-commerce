@@ -9,6 +9,10 @@ const api = '/api/v1/reportes';
 
 router.get(`${api}/topUsuariosCompras`, reportesController.obtenerTopUsuarios)
 router.get(`${api}/totalCompraUsuario`, reportesController.totalComprasPorUsuario)
+router.get(`${api}/promedioCompraUsuario`, reportesController.promedioCompraPorUsuario)
+router.get(`${api}/compraMasAltaYBaja`, reportesController.compraMasAltaYbaja)
+router.get(`${api}/formasDeEntrega`, reportesController.comprasPorFormaDeEntrega)
+//router.get(`${api}/formasDeEntrega`, reportesController.comprasPorFormaDeEntrega)
 
 
 module.exports = router;
