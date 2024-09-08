@@ -12,4 +12,14 @@ export class ReportesService {
   public getCompraxFecha(fecha:String){
     return this.http.get(`${this.url}/compras/comprasPorFecha/${fecha}`,{withCredentials:true})
   }
+
+  public getComprasxUsuario(idUsuario:number){
+    console.log(idUsuario);
+    
+    return this.http.get(`${this.url}/compras/comprasPorUsuario/${idUsuario}`,{withCredentials:true})  
+  }
+
+  public getComprasxEstado(idEstadoCompra:number){
+    return this.http.get(`${this.url}/compras/comprasPorEstadoCompra/${idEstadoCompra}`,{withCredentials:true})  
+  }
 }

@@ -3,15 +3,13 @@
   <label for="reportType" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una opcion</label>
   <select id="reportType" [(ngModel)]="tipo" name="reporteType" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
     <option value="" selected>Tipo de reporte</option>
-    <option value="general">Compras por fecha</option>
+    <option value="fecha">Compras por fecha</option>
     <option value="usuario">Compras por Usuario</option>
     <option value="estado">Compras por estado de compra</option>
-    <option value="usuario-estado">Compras por usuario y estado de compra</option>
-    <option value="usuario-fecha">Compras por usuario y fecha</option>
   </select>
 
   <!-- Mostrar el campo de fecha solo si se selecciona 'general' -->
-  <div *ngIf="tipo === 'general'" class="mt-4">
+  <div *ngIf="tipo === 'fecha'" class="mt-4">
     <label for="fecha" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selecciona una fecha</label>
     <input type="date" id="fecha" [(ngModel)]="fecha" name="fecha" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
   </div>
@@ -20,6 +18,16 @@
     <label for="numeroUsuario" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ingresa el id del usuario</label>
     <input type="number" id="numeroUsuario" [(ngModel)]="idUsuario" name="numeroUsuario" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
   </div>
+
+  <div *ngIf="tipo === 'estado'" class="mt-4">
+    <select id="reportType" [(ngModel)]="estado" name="estado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+      <option value="1" selected>Pendiente de entregar</option>
+      <option value="2">Entregado</option>
+      <option value="3">Cancelado</option>
+      <option value="4">Empacado</option>
+    </select>
+  </div>
+
 
   <br>
   <button type="button" (click)="generarReporte()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Generar</button>
