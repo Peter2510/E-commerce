@@ -38,7 +38,7 @@
       </div>
     </nav>
 
-    <div class="siEsUsuario" *ngIf="this.usuario.idTipoUsuario === 1">
+    <div class="siEsUsuario" *ngIf="this.idTipoUsuario === 1">
       <nav>
         <a class="mr-4 hover:text-gray-900 text-sm font-medium" routerLink="/admin/gestionRoles">
           Gestion de usuarios
@@ -53,7 +53,7 @@
     </div>
 
     <div class="md:w-1/6 inline-flex lg:mt-4 md:mt-2">
-      <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-2 focus:outline-none hover:bg-gray-200 rounded text-xs mt-4 md:mt-0">
+      <button (click)="cerrarSesion()" class="inline-flex items-center bg-gray-100 border-0 py-1 px-2 focus:outline-none hover:bg-gray-200 rounded text-xs mt-4 md:mt-0">
         Cerrar Sesion
         <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
           <path d="M5 12h14M12 5l7 7-7 7"></path>

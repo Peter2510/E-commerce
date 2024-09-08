@@ -26,6 +26,8 @@ export class AdminheaderComponent implements OnInit {
   router = inject(Router);
 
   usuario!: User;
+  idUsuario = this.loginService.getIdUsuario();
+  idTipoUsuario = this.loginService.getIdTipoUsuario();
   mostrarPerfil: boolean = false;
   tipoPermisos: tipopermiso[] = [];
   empresa!: tienda;
@@ -48,9 +50,7 @@ export class AdminheaderComponent implements OnInit {
   cerrarSesion() {
     this.serviceCliente.cerrarSesion().subscribe({
       next: (response: any) => {
-        console.log('cerrando sesion');
-        this.cookie.delete('token');
-        this.cookie.delete('token2');
+        this.loginService.logout();
         this.router.navigate(['/']);
       },
       error: (error) => {
@@ -65,7 +65,9 @@ export class AdminheaderComponent implements OnInit {
 
     if (id_cliente != null) {
 
-      this.service.obtenerEmpleadosId(id_cliente).subscribe({
+      this.idUsuario = id_cliente;
+
+      this.service.obtenerEmpleadosId(this.idUsuario).subscribe({
         next: (response: any) => {
           console.log(response);
 
