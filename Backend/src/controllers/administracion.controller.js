@@ -230,7 +230,9 @@ const crearAdmin = async (req, res) => {
 
   } catch (error) {  
     await t.rollback(); 
+    console.log(error)
     await manejoErrores(error, res, "Admin");
+    
   }
 };
 
