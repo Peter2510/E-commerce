@@ -20,6 +20,7 @@ import { GestionProductosEspecificaComponent } from './admin/gestion-productos-e
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EliminarProductoComponent } from './admin/productos/eliminar-producto/eliminar-producto.component';
+import { ReportesComponent } from './admin/reportes/reportes.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { EliminarProductoComponent } from './admin/productos/eliminar-producto/e
     GestionProductosComponent,
     GestionProductosEspecificaComponent,
     EliminarProductoComponent,
+    ReportesComponent,
   ],
   imports: [
     BrowserModule,
