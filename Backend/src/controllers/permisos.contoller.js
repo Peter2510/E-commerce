@@ -23,7 +23,9 @@ const guardarPermisos = async (req, res) => {
 
     try {
         const {id} = req.params
-        const {permisosUsuarioArray} = req.body
+        const { permisosUsuarioArray } = req.body
+        console.log(id, permisosUsuarioArray,"aaaaa");
+        
         //busqueda que exista el usuario 
         const existeUsuario = await Usuario.findOne({
             where:{id: id}, transaction: t
@@ -41,6 +43,8 @@ const guardarPermisos = async (req, res) => {
         });
         //  luego crear todos los nuevos elementos
         for (const elementosNuevos of permisosUsuarioArray) {
+            console.log(existeUsuario.id,elementosNuevos.id);
+            
             await PermisosUsuario.create({id_empleado: existeUsuario.id,id_permiso:elementosNuevos.id}, {transaction:t});
         }
             await t.commit();

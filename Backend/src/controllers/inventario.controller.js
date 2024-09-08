@@ -2,6 +2,7 @@ const { sequelize } = require("../configs/database.configs");
 const Producto = require('../models/producto');
 const Inventario = require('../models/inventario');
 const RegistroInventario = require('../models/registroInventario');
+const EstadoInventario = require('../models/estadoInventario');
 const Marca = require('../models/marca');
 const Categoria = require('../models/categoria');
 const UrlImangen = require("../models/imagenProducto");
@@ -18,9 +19,6 @@ const ingresoMayorCantidadProducto = async (req, res) => {
         const { id } = req.params;
         const { cantidad } = req.body;
 
-
-        console.log(id, cantidad, "aaaaa");
-        
 
         // aca se obtiene el elemento y se le agrega mas, verifica si no tiene nada lo crea
         const [inventarioRegistrado, created] = await Inventario.findOrCreate({
@@ -43,15 +41,6 @@ const ingresoMayorCantidadProducto = async (req, res) => {
 }
 
 
-const obtenerCantidades = async (req, res) => {
-    try {
-        
-    } catch (error) {
-           await manejoErrores(error, res, "Inventario");
-        
-    }
-}
-
 
 
 //funcion para ingresar las modificaciiones con usuarios
@@ -72,6 +61,7 @@ const ingresoModificacionCantidesUsuarioProducto= async (req, res)  => {
             fechaingreso: new Date(),
             id_empleado: registroInventario.id_empleado
         }, { transaction: t });
+            console.log(nuevoIngreso);
 
         if (nuevoIngreso) {
             console.log(nuevoIngreso);
@@ -92,8 +82,24 @@ const ingresoModificacionCantidesUsuarioProducto= async (req, res)  => {
 }
 
 
+const obtenerEstadosInventario = async (req, res) => {
+    try {
+        const todosEstados = await EstadoInventario.findAll();
+        if (todosEstados) {
+        return res.json({ ok: true, todosEstados });
+            
+        }
+        return res.json({ ok: false });
+        
+    } catch (error) {
+           await manejoErrores(error, res, "estadoinventario");
+        
+    }
+}
+
+
 module.exports = {
     ingresoMayorCantidadProducto,
-    obtenerCantidades,
-    ingresoModificacionCantidesUsuarioProducto
+    ingresoModificacionCantidesUsuarioProducto,
+    obtenerEstadosInventario
 }
