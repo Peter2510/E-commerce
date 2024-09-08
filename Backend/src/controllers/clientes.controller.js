@@ -23,7 +23,7 @@ const obtenerClientePorId = async (req, res) =>{
   
       const persona = await Persona.findOne({
         where: {id: usuario.idPersona},
-        attributes: ['id', 'nombre', 'correoElectronico', 'fechaCreacion', 'direccion', 'idTipoFormaPago']
+        attributes: ['id', 'nombre', 'correoElectronico', 'fechaCreacion', 'direccion', 'idTipoFormaPago', 'nit']
       });
   
       if(!usuario){
@@ -69,7 +69,7 @@ const obtenerClientes = async (req, res) => {
       for (const usuario of usuarios) {
         const persona = await Persona.findOne({
           where: { id: usuario.idPersona },
-          attributes: ['id', 'nombre', 'correoElectronico', 'fechaCreacion']
+          attributes: ['id', 'nombre', 'correoElectronico', 'fechaCreacion', "nit"]
         });
   
         resultado.push({
