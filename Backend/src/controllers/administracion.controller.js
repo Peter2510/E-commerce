@@ -259,7 +259,7 @@ const obtenerReporteEstadisticas = async (req, res) => {
     return res.json({
       ok: true,
       reporte: [
-        {tipo: "Usuarios registrados", cantidad: usuariosRegistrados},
+        {tipo: "Clientes registrados", cantidad: usuariosRegistrados},
         {tipo: "Productos registrados", cantidad: productosRegistrados},
         {tipo: "Productos activos", cantidad: productosActivos},
         {tipo: "Productos inactivos", cantidad: productosInactivos},

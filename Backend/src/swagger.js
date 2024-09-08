@@ -3911,7 +3911,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/productos/productosActivos": {
+      "/api/v1/productos/productos-activos": {
         "get": {
           "summary": "Obtener productos activos",
           "tags": [
@@ -4029,7 +4029,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/productos/productosDesactivados": {
+      "/api/v1/productos/productos-desactivados": {
         "get": {
           "summary": "Obtener productos desactivados",
           "tags": [
@@ -6448,7 +6448,7 @@ const swaggerOptions = {
             "Administracion"
           ],
           "summary": "Obtiene el reporte de estadísticas",
-          "description": "Genera un reporte que incluye la cantidad de usuarios registrados, productos registrados, productos activos, inactivos y el estado del inventario.",
+          "description": "Genera un reporte que incluye la cantidad de clientes registrados, productos registrados, productos activos, inactivos y el estado del inventario.",
           "operationId": "obtenerReporteEstadisticas",
           "responses": {
             "200": {
@@ -6469,7 +6469,7 @@ const swaggerOptions = {
                           "properties": {
                             "tipo": {
                               "type": "string",
-                              "example": "Usuarios registrados"
+                              "example": "clientes registrados"
                             },
                             "cantidad": {
                               "type": "integer",
@@ -6478,7 +6478,7 @@ const swaggerOptions = {
                           }
                         },
                         "example": [
-                          {"tipo": "Usuarios registrados", "cantidad": 150},
+                          {"tipo": "Clientes registrados", "cantidad": 150},
                           {"tipo": "Productos registrados", "cantidad": 500},
                           {"tipo": "Productos activos", "cantidad": 300},
                           {"tipo": "Productos inactivos", "cantidad": 200},

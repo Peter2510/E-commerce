@@ -18,8 +18,8 @@ router.get(`${api}/productosRandom/:cantidad`, ProductosController.obtenerProduc
 router.get(`${api}/filtrar`, ProductosController.filtrarProductos);
 router.get(`${api}/filtrarRegex`, ProductosController.filtrarRegex);
 router.get(`${api}/productos`,  ProductosController.obtenerTodosProductos);
-router.get(`${api}/productosActivos`,  ProductosController.productosActivos);
-router.get(`${api}/productosDesactivados`,  ProductosController.productosDesactivados);
+router.get(`${api}/productos-activos`,  ProductosController.productosActivos);
+router.get(`${api}/productos-desactivados`,  ProductosController.productosDesactivados);
 
 // pero viola la integridad
 router.delete(`${api}/eliminarProducto/:id`, ProductosController.eliminarProducto);
