@@ -6,6 +6,8 @@ const bcrypt = require("bcrypt");
 const { manejoErrores } = require('../utils/manejoErrores.utils');
 const { sequelize } = require("../configs/database.configs");
 const { Op } = require('sequelize');
+const Producto = require('../models/producto');
+const inventario = require('../models/inventario');
 
 const getTipoUsuarios = async (req, res) => {
   try {
@@ -236,6 +238,42 @@ const crearAdmin = async (req, res) => {
   }
 };
 
+const obtenerReporteEstadisticas = async (req, res) => {
+  try {
+    const [
+      usuariosRegistrados,
+      productosRegistrados,
+      productosActivos,
+      productosInactivos,
+      productosSinInventario,
+      productosConInventario
+    ] = await Promise.all([
+      Usuario.count(),
+      Producto.count(),
+      Producto.count({ where: { activo: true } }),
+      Producto.count({ where: { activo: false } }),
+      inventario.count({ where: { cantidadtotal: 0 } }),
+      inventario.count({ where: { cantidadtotal: { [Op.gt]: 0 } } })
+    ]);
+
+    return res.json({
+      ok: true,
+      reporte: [
+        {tipo: "Usuarios registrados", cantidad: usuariosRegistrados},
+        {tipo: "Productos registrados", cantidad: productosRegistrados},
+        {tipo: "Productos activos", cantidad: productosActivos},
+        {tipo: "Productos inactivos", cantidad: productosInactivos},
+        {tipo: "Productos con unidades", cantidad: productosConInventario},
+        {tipo: "Productos sin unidades", cantidad: productosSinInventario}
+      ]
+    });
+
+  } catch (error) {
+    await manejoErrores(error, res, "Reporte");
+  }
+};
+
+
 
 module.exports = {
     getTipoUsuarios,
@@ -246,5 +284,6 @@ module.exports = {
     editarFormaPago,
     obtenerAdminPorId,
     obtenerEmpleados,
-    crearAdmin
+    crearAdmin,
+    obtenerReporteEstadisticas
 };

@@ -80,6 +80,7 @@ const crearProducto = async (req, res) => {
     return res.json({ ok: true, mensaje: "Producto creado con éxito" });
   } catch (error) {
     await t.rollback();
+    console.error(error);
     await manejoErrores(error, res, "Producto");
   }
 };

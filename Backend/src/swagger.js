@@ -3911,7 +3911,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/productos/activos": {
+      "/api/v1/productos/productosActivos": {
         "get": {
           "summary": "Obtener productos activos",
           "tags": [
@@ -4029,7 +4029,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/productos/desactivados": {
+      "/api/v1/productos/productosDesactivados": {
         "get": {
           "summary": "Obtener productos desactivados",
           "tags": [
@@ -6433,6 +6433,78 @@ const swaggerOptions = {
                       "mensaje": {
                         "type": "string",
                         "example": "Compra no encontrada"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/administracion/reporteGeneral": {
+        "get": {
+          "tags": [
+            "Administracion"
+          ],
+          "summary": "Obtiene el reporte de estadísticas",
+          "description": "Genera un reporte que incluye la cantidad de usuarios registrados, productos registrados, productos activos, inactivos y el estado del inventario.",
+          "operationId": "obtenerReporteEstadisticas",
+          "responses": {
+            "200": {
+              "description": "Reporte generado correctamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "reporte": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "tipo": {
+                              "type": "string",
+                              "example": "Usuarios registrados"
+                            },
+                            "cantidad": {
+                              "type": "integer",
+                              "example": 150
+                            }
+                          }
+                        },
+                        "example": [
+                          {"tipo": "Usuarios registrados", "cantidad": 150},
+                          {"tipo": "Productos registrados", "cantidad": 500},
+                          {"tipo": "Productos activos", "cantidad": 300},
+                          {"tipo": "Productos inactivos", "cantidad": 200},
+                          {"tipo": "Productos con unidades", "cantidad": 100},
+                          {"tipo": "Productos sin unidades", "cantidad": 50}
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error en el servidor",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "ok": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "mensaje": {
+                        "type": "string",
+                        "example": "Error al generar el reporte"
                       }
                     }
                   }

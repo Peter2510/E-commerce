@@ -17,5 +17,7 @@ router.get(`${api}/obtenerAdminPorId/:id`, jwtValidacion, AdministracionControll
 router.get(`${api}/obtenerEmpleados`, jwtValidacion, AdministracionController.obtenerEmpleados);
 router.post(`${api}/crearAdmin`, jwtValidacion, validarCreacionAdmin, AdministracionController.crearAdmin);
 
+router.get(`${api}/reporteGeneral`, jwtValidacion,AdministracionController.obtenerReporteEstadisticas);
+
 
 module.exports = router;
