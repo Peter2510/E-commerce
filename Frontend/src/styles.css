@@ -6,9 +6,9 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .sticky-navbar {
-    z-index: 10; /* Menor que el z-index del contenido */
+    z-index: 10;
   }
   
-body {
+.sticky-content {
     margin-top: 45px;
  }
