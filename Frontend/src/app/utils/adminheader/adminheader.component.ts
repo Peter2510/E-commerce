@@ -13,6 +13,7 @@ import {
 import { User } from 'src/app/interfaces/user.interface';
 import { TiendaServicioService } from 'src/app/admin/services/tienda-servicio.service';
 import { tienda } from 'src/app/interfaces/tienda.interface';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
   selector: 'app-adminheader',
@@ -33,7 +34,8 @@ export class AdminheaderComponent implements OnInit {
     private serviceCliente: ClienteService,
     private cookie: CookieService,
     public servicioPermisos: PermisosServiciosService,
-    public servicioTienda: TiendaServicioService
+    public servicioTienda: TiendaServicioService,
+    private loginService: AuthService
   ) {
     this.empresa = this.servicioTienda.infoEmpresa();
     console.log(this.empresa);
@@ -58,20 +60,27 @@ export class AdminheaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const id_cliente = JSON.parse(this.cookie.get('token2')).id;
-    this.service.obtenerEmpleadosId(id_cliente).subscribe({
-      next: (response: any) => {
-        console.log(response);
 
-        const persona = response.persona;
-        const usuario = response.usuario;
-        this.usuario = usuario;
-        this.usuario.persona = persona;
-        console.log(this.usuario.id);
-      },
-      error: (error) => {},
-    });
+    const id_cliente = this.loginService.getIdUsuario();
 
-    console.log(this.servicioTienda.infoEmpresa(), this.empresa);
+    if (id_cliente != null) {
+
+      this.service.obtenerEmpleadosId(id_cliente).subscribe({
+        next: (response: any) => {
+          console.log(response);
+
+          const persona = response.persona;
+          const usuario = response.usuario;
+          this.usuario = usuario;
+          this.usuario.persona = persona;
+          console.log(this.usuario.id);
+        },
+        error: (error) => { },
+      });
+
+      console.log(this.servicioTienda.infoEmpresa(), this.empresa);
+    }
+
+
   }
 }

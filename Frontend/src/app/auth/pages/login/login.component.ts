@@ -93,7 +93,7 @@ export class LoginComponent {
     console.log(idTipoUsuario, "String");
 
     if (idTipoUsuario !== null) {
-      const id = Number.parseInt(idTipoUsuario);
+      const id = idTipoUsuario;
       
       console.log("idUsuario", this.authService.getIdTipoUsuario())
       console.log("nombreUsuario", this.authService.getNombreUsuario())
@@ -101,13 +101,13 @@ export class LoginComponent {
       console.log("IAT", this.authService.getIATToken())
       console.log("EXP", this.authService.getExpToken())
     
-      // if (id === 1) {
-      //   this.router.navigate(['/admin']);
-      // } else if (id === 2) {
-      //   this.router.navigate(['/cliente']);
-      // } else {
-      //   this.router.navigate(['/ayudante']);
-      // }
+      if (id === 1) {
+        this.router.navigate(['/admin']);
+      } else if (id === 2) {
+        this.router.navigate(['/cliente']);
+      } else {
+        this.router.navigate(['/ayudante']);
+      }
 
 
 

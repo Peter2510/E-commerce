@@ -57,15 +57,15 @@ export class AuthService {
     this.cookieService.delete(this.cookieName);
   }
 
-  getIdUsuario(): string | null {
+  getIdUsuario(): number | null {
     const decodedToken = this.decodeToken();
-    if (decodedToken && decodedToken.role) {
-      return decodedToken.role;
+    if (decodedToken && decodedToken.idUsuario) {
+      return decodedToken.idUsuario;
     }
     return null;
   }
 
-  getIdTipoUsuario(): string | null {
+  getIdTipoUsuario(): number | null {
     const decodedToken = this.decodeToken();
     if (decodedToken && decodedToken.idTipoUsuario) {
       return decodedToken.idTipoUsuario;

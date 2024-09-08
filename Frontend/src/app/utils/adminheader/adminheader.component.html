@@ -1,91 +1,64 @@
-<!-- nueva navbar -->
-<nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
-  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-    <!-- Logo y Nombre de la Empresa -->
-    <a class="flex items-center space-x-3 rtl:space-x-reverse" routerLink="/admin">
-      <img
-         [src]="this.servicioTienda.infoEmpresa().imagen.url"
-        alt="Logo"
-        class="h-8"
-      />
-      <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-        {{ this.servicioTienda.infoEmpresa() ? this.servicioTienda.infoEmpresa().nombre : 'E-commerce' }}
-      </span>
+<header class="text-gray-600 body-font">
+  <div class="container mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center">
+    <!-- Información de la empresa -->
+    <a [routerLink]="'/admin'" class="flex items-center lg:w-1/5 title-font font-medium text-gray-900 mb-4 md:mb-0">
+      <img [src]="this.servicioTienda.infoEmpresa().imagen.url" width="100" height="100" alt="comer" class="w-24 h-24 rounded-full shadow-lg border-2 border-gray-300 object-cover"/>
+      <span class="ml-4 text-lg">{{ this.servicioTienda.infoEmpresa() ? this.servicioTienda.infoEmpresa().nombre : "E-commerce" }}</span>
     </a>
 
-    <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-      <!-- Botón de Cierre de Sesión -->
-      <button
-        class="inline-flex items-center bg-gray-800 text-gray-100 border-0 py-2 px-4 hover:bg-gray-700 rounded text-sm"
-        (click)="this.cerrarSesion()"
-      >
-        Cerrar sesión
-        <svg
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          class="w-4 h-4 ml-2"
-          viewBox="0 0 24 24"
-        >
+    <!-- Menú de navegación -->
+    <nav class="flex lg:w-2/5 flex-wrap items-center text-xs md:ml-auto">
+      <div *ngFor="let item of this.servicioPermisos.permisosUsuarioIngresado()">
+        <div *ngIf="item.id == 1; else permiso2">
+          <a class="mr-4 hover:text-gray-900 text-sm font-medium" routerLink="/admin/gestionProductos">
+            Gestion de productos
+          </a>
+        </div>
+        <ng-template #permiso2>
+          <div *ngIf="item.id === 3; else permiso3">
+            <a class="mr-4 hover:text-gray-900 text-sm font-medium" routerLink="/admin/gestionInventario">
+              Gestion de inventario
+            </a>
+          </div>
+        </ng-template>
+        <ng-template #permiso3>
+          <div *ngIf="item.id === 2; else permiso4">
+            <a class="mr-4 hover:text-gray-900 text-sm font-medium" routerLink="/admin/gestionMarcasCategorias">
+              Gestion de Marcas y categorias
+            </a>
+          </div>
+        </ng-template>
+        <ng-template #permiso4>
+          <div *ngIf="item.id === 4">
+            <a class="mr-4 hover:text-gray-900 text-sm font-medium" routerLink="/admin/gestionEnvios">
+              Gestion de Envios
+            </a>
+          </div>
+        </ng-template>
+      </div>
+    </nav>
+
+    <div class="siEsUsuario" *ngIf="this.usuario.idTipoUsuario === 1">
+      <nav>
+        <a class="mr-4 hover:text-gray-900 text-sm font-medium" routerLink="/admin/gestionRoles">
+          Gestion de usuarios
+        </a>
+        <a class="mr-4 hover:text-gray-900 text-sm font-medium" routerLink="/admin/gestionEmpresa">
+          Gestion de Empresa
+        </a>
+        <a class="mr-4 hover:text-gray-900 text-sm font-medium" routerLink="/admin/reportes">
+          Reportes
+        </a>
+      </nav>
+    </div>
+
+    <div class="md:w-1/6 inline-flex lg:mt-4 md:mt-2">
+      <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-2 focus:outline-none hover:bg-gray-200 rounded text-xs mt-4 md:mt-0">
+        Cerrar Sesion
+        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
           <path d="M5 12h14M12 5l7 7-7 7"></path>
         </svg>
       </button>
-      <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
-        <span class="sr-only">Open main menu</span>
-        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-        </svg>
-      </button>
-    </div>
-
-    <!-- Menú desplegable para dispositivos pequeños -->
-    <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
-      <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-        <ng-container *ngFor="let item of this.servicioPermisos.permisosUsuarioIngresado()">
-          <li *ngIf="item.id == 1">
-            <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white" routerLink="/admin/gestionProductos">
-              Gestión de productos
-            </a>
-          </li>
-          <li *ngIf="item.id === 3">
-            <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white" routerLink="/admin/gestionInventario">
-              Gestión de inventario
-            </a>
-          </li>
-          <li *ngIf="item.id === 2">
-            <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white" routerLink="/admin/gestionMarcasCategorias">
-              Gestión de Marcas y categorías
-            </a>
-          </li>
-          <li *ngIf="item.id === 4">
-            <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white" routerLink="/admin/gestionEnvios">
-              Gestión de Envíos
-            </a>
-          </li>
-        </ng-container>
-
-        <!-- Navegación Adicional para Administradores -->
-        <div *ngIf="this.usuario.idTipoUsuario === 1" class="md:flex space-x-4 lg:ml-auto lg:space-x-6">
-          <li>
-            <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white" routerLink="/admin/gestionRoles">
-              Gestión de usuarios
-            </a>
-          </li>
-          <li>
-            <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white" routerLink="/admin/gestionEmpresa">
-              Gestión de Empresa
-            </a>
-          </li>
-          <li>
-            <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white" routerLink="/admin/reportes">
-              Reportes
-            </a>
-          </li>
-        </div>
-      </ul>
     </div>
   </div>
-</nav>
-
+</header>

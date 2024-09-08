@@ -3,6 +3,7 @@ import { Injectable, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CookieOptions, CookieService } from 'ngx-cookie-service';
 import { map, Observable } from 'rxjs';
+import { AuthService } from 'src/app/auth/services/auth.service';
 import {
   permisousuario,
   tipopermiso,
@@ -25,7 +26,8 @@ export class PermisosServiciosService {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private cookie: CookieService
+    private cookie: CookieService,
+    private loginservice: AuthService
   ) {
     this.obtenerPermisosUsuarioIngreado();
     this.obtenerPermisos();
@@ -65,10 +67,14 @@ export class PermisosServiciosService {
     return arr1Str !== arr2Str;
   }
   obtenerPermisosUsuarioIngreado() {
+
+    let idUsuario = this.loginservice.getIdUsuario();
+    console.log('idUsuario', idUsuario);
+
     this.http
       .get<tipopermiso[]>(
         `${environment.baseUrlEnv}/${this.directiva}/obtenerPermisosUsuario/${
-          JSON.parse(this.cookie.get('token2')).id
+          idUsuario
         }`,
         { withCredentials: true }
       )
