@@ -4,3 +4,11 @@
 @tailwind utilities;
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.sticky-navbar {
+    z-index: 10; /* Menor que el z-index del contenido */
+  }
+  
+body {
+    margin-top: 45px;
+ }
