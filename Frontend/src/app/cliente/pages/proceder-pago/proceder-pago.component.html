@@ -1,103 +1,121 @@
 <div class="container mx-auto p-6">
-    <div class="bg-white p-8 rounded-lg shadow-lg">
-      <h1 class="text-3xl font-bold mb-6 text-gray-800">Proceder al Pago</h1>
-  
+  <div class="bg-white p-8 rounded-lg shadow-lg">
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">Proceder al Pago</h1>
+
+    <!-- Paso 1: Seleccionar método de entrega -->
+    <div class="mb-6">
+
+
       <!-- Paso 1: Seleccionar método de entrega -->
       <div class="mb-6">
-        
-        
-        <!-- Paso 1: Seleccionar método de entrega -->
-<div class="mb-6">
-    <h2 class="text-xl font-medium mb-4 flex items-center text-gray-800">
-      <i class="fas fa-shipping-fast text-purple-600 mr-3"></i> Método de Entrega
-    </h2>
-    <ul class="grid w-full gap-6 md:grid-cols-2">
-      <!-- Opción Servicio a Domicilio -->
-      <li>
-        <input type="radio" id="domicilio-option" name="metodoEntrega" value="domicilio" [(ngModel)]="metodoEntrega" class="hidden peer" required>
-        <label for="domicilio-option" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-purple-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
-          <div class="block">
-            <i class="fas fa-home text-purple-600 mb-2"></i>
-            <div class="w-full text-lg font-semibold">Servicio a Domicilio</div>
-            <div class="w-full text-sm">Recibe el producto directamente en tu hogar.</div>
-          </div>
-        </label>
-      </li>
-      <!-- Opción Recoger en Tienda -->
-      <li>
-        <input type="radio" id="tienda-option" name="metodoEntrega" value="tienda" [(ngModel)]="metodoEntrega" class="hidden peer">
-        <label for="tienda-option" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-purple-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
-          <div class="block">
-            <i class="fas fa-store text-purple-600 mb-2"></i>
-            <div class="w-full text-lg font-semibold">Recoger en Tienda</div>
-            <div class="w-full text-sm">Pasa por nuestra tienda a recoger tu producto.</div>
-          </div>
-        </label>
-      </li>
-    </ul>
-  </div>
-  
-  
-        <!-- Dirección de envío (si eligió Servicio a Domicilio) -->
-        <div *ngIf="metodoEntrega === 'domicilio'" class="mt-6">
-          <h2 class="text-lg font-medium mb-2 text-gray-800">Dirección de Envío</h2>
-          <div class="relative">
-            <i class="fas fa-map-marker-alt absolute left-3 top-3 text-purple-600"></i>
-            <input [(ngModel)]="direccionEnvio" class="border rounded-lg w-full p-3 pl-10 mb-4 focus:outline-none focus:ring-2 focus:ring-purple-500" type="text" placeholder="Ingrese su dirección de envío">
-          </div>
-        </div>
-      </div>
-  
-      <!-- Paso 2: Datos de Facturación -->
-      <div class="mb-6">
         <h2 class="text-xl font-medium mb-4 flex items-center text-gray-800">
-          <i class="fas fa-file-invoice-dollar text-purple-600 mr-3"></i> Datos de Facturación
+          <i class="fas fa-shipping-fast text-purple-600 mr-3"></i> Método de Entrega
         </h2>
-  
-        <!-- NIT -->
-        <div class="mb-4">
-          <label class="block mb-2 flex items-center">
-            <input type="radio" name="nitOption" value="registrado" [(ngModel)]="nitOption" class="mr-2 text-purple-600 focus:ring-purple-600">
-            <span class="text-gray-700">Usar NIT registrado: {{ nitRegistrado }}</span>
-          </label>
-          <label class="block mb-2 flex items-center">
-            <input type="radio" name="nitOption" value="nuevo" [(ngModel)]="nitOption" class="mr-2 text-purple-600 focus:ring-purple-600">
-            <span class="text-gray-700">Ingresar nuevo NIT</span>
-          </label>
-  
-          <!-- Campo para ingresar nuevo NIT -->
-          <div *ngIf="nitOption === 'nuevo'" class="relative">
-            <i class="fas fa-id-card absolute left-3 top-3 text-purple-600"></i>
-            <input [(ngModel)]="nuevoNit" class="border rounded-lg w-full p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-purple-500" type="text" placeholder="Ingrese su NIT">
-          </div>
-        </div>
-  
-        <!-- Dirección de Facturación -->
-        <div class="mb-4">
-          
+        <ul class="grid w-full gap-6 md:grid-cols-2">
+          <!-- Opción Servicio a Domicilio -->
+          <li>
+            <input type="radio" id="domicilio-option" name="metodoEntrega" value="domicilio" [(ngModel)]="metodoEntrega"
+              class="hidden peer" required>
+            <label for="domicilio-option"
+              class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-purple-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+              <div class="block">
+                <i class="fas fa-home text-purple-600 mb-2"></i>
+                <div class="w-full text-lg font-semibold">Servicio a Domicilio</div>
+                <div class="w-full text-sm">Recibe el producto directamente en tu hogar.</div>
+              </div>
+            </label>
+          </li>
+          <!-- Opción Recoger en Tienda -->
+          <li>
+            <input type="radio" id="tienda-option" name="metodoEntrega" value="tienda" [(ngModel)]="metodoEntrega"
+              class="hidden peer">
+            <label for="tienda-option"
+              class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-purple-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+              <div class="block">
+                <i class="fas fa-store text-purple-600 mb-2"></i>
+                <div class="w-full text-lg font-semibold">Recoger en Tienda</div>
+                <div class="w-full text-sm">Pasa por nuestra tienda a recoger tu producto.</div>
+              </div>
+            </label>
+          </li>
+        </ul>
+      </div>
 
-<div class="flex items-center mb-4">
-    <input id="default-radio-1" type="radio" name="direccionFacturacionOption" value="registrada" [(ngModel)]="direccionFacturacionOption" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-    <label for="default-radio-1" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Usar dirección registrada: {{ direccionFacturacionRegistrada }}</label>
-</div>
-<div class="flex items-center">
-    <input checked id="default-radio-2" type="radio" name="direccionFacturacionOption" value="nueva" [(ngModel)]="direccionFacturacionOption"class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-    <label for="default-radio-2" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Ingresar nueva dirección de facturación</label>
-</div>
 
-  
-          <!-- Campo para ingresar nueva dirección -->
-          <div *ngIf="direccionFacturacionOption === 'nueva'" class="relative">
-            <i class="fas fa-home absolute left-3 top-3 text-purple-600"></i>
-            <input [(ngModel)]="nuevaDireccionFacturacion" class="border rounded-lg w-full p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-purple-500" type="text" placeholder="Ingrese la nueva dirección de facturación">
-          </div>
+      <!-- Dirección de envío (si eligió Servicio a Domicilio) -->
+      <div *ngIf="metodoEntrega === 'domicilio'" class="mt-6">
+        <h2 class="text-lg font-medium mb-2 text-gray-800">Dirección de Envío</h2>
+        <div class="relative">
+          <i class="fas fa-map-marker-alt absolute left-3 top-3 text-purple-600"></i>
+          <input [(ngModel)]="direccionEnvio"
+            class="border rounded-lg w-full p-3 pl-10 mb-4 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            type="text" placeholder="Ingrese su dirección de envío">
         </div>
       </div>
-  
-      <!-- Botón para proceder al pago -->
-      <button (click)="procederAlPago()" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-500 transition flex items-center justify-center w-full">
-        <i class="fas fa-shopping-cart mr-2"></i> Continuar con el pago
-      </button>
     </div>
+
+    <!-- Paso 2: Datos de Facturación -->
+    <div class="mb-6">
+      <h2 class="text-xl font-medium mb-4 flex items-center text-gray-800">
+        <i class="fas fa-file-invoice-dollar text-purple-600 mr-3"></i> Datos de Facturación
+      </h2>
+
+      <!-- NIT -->
+      <div class="mb-4">
+        <label class="block mb-2 flex items-center">
+          <input type="radio" name="nitOption" value="registrado" [(ngModel)]="nitOption"
+            class="mr-2 text-purple-600 focus:ring-purple-600">
+          <span class="text-gray-700">Usar NIT registrado: {{ nitRegistrado }}</span>
+        </label>
+        <label class="block mb-2 flex items-center">
+          <input type="radio" name="nitOption" value="nuevo" [(ngModel)]="nitOption"
+            class="mr-2 text-purple-600 focus:ring-purple-600">
+          <span class="text-gray-700">Ingresar nuevo NIT</span>
+        </label>
+
+        <!-- Campo para ingresar nuevo NIT -->
+        <div *ngIf="nitOption === 'nuevo'" class="relative">
+          <i class="fas fa-id-card absolute left-3 top-3 text-purple-600"></i>
+          <input [(ngModel)]="nuevoNit"
+            class="border rounded-lg w-full p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-purple-500" type="text"
+            placeholder="Ingrese su NIT">
+        </div>
+      </div>
+
+      <!-- Dirección de Facturación -->
+      <div class="mb-4">
+
+
+        <div class="flex items-center mb-4">
+          <input id="default-radio-1" type="radio" name="direccionFacturacionOption" value="registrada"
+            [(ngModel)]="direccionFacturacionOption"
+            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+          <label for="default-radio-1" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Usar dirección
+            registrada: {{ direccionFacturacionRegistrada }}</label>
+        </div>
+        <div class="flex items-center">
+          <input checked id="default-radio-2" type="radio" name="direccionFacturacionOption" value="nueva"
+            [(ngModel)]="direccionFacturacionOption"
+            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+          <label for="default-radio-2" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Ingresar nueva
+            dirección de facturación</label>
+        </div>
+
+
+        <!-- Campo para ingresar nueva dirección -->
+        <div *ngIf="direccionFacturacionOption === 'nueva'" class="relative">
+          <i class="fas fa-home absolute left-3 top-3 text-purple-600"></i>
+          <input [(ngModel)]="nuevaDireccionFacturacion"
+            class="border rounded-lg w-full p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-purple-500" type="text"
+            placeholder="Ingrese la nueva dirección de facturación">
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón para proceder al pago -->
+    <button (click)="procederAlPago()"
+      class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-500 transition flex items-center justify-center w-full">
+      <i class="fas fa-shopping-cart mr-2"></i> Continuar con el pago
+    </button>
   </div>
-  
+</div>
