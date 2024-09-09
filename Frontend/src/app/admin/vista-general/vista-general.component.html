@@ -1,4 +1,83 @@
 <app-adminheader></app-adminheader>
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-lg max-w-2xl w-full">
+    <h2 class="text-3xl font-bold text-gray-800 text-center mb-6">
+      Información del Usuario
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Información del usuario -->
+      <div class="col-span-1">
+        <h3 class="text-xl font-semibold text-gray-700 mb-4">
+          Datos de Usuario
+        </h3>
+
+        <p class="text-gray-600 mt-2">
+          <span class="font-medium">Nombre de usuario:</span>
+          <span class="font-bold text-lg">{{ usuario.nombreUsuario }}</span>
+        </p>
+
+        <p class="text-gray-600 mt-2 flex items-center">
+          <span class="font-medium mr-2">Activo:</span>
+          <span
+            [ngClass]="
+              usuario.activo
+                ? 'bg-green-100 text-green-800'
+                : 'bg-red-100 text-red-800'
+            "
+            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
+          >
+            {{ usuario.activo ? "Sí" : "No" }}
+          </span>
+        </p>
+        <p class="text-gray-600 mt-2 flex items-center">
+          <span class="font-medium mr-2">A2F Activo:</span>
+          <span
+            [ngClass]="
+              usuario.a2fActivo
+                ? 'bg-green-100 text-green-800'
+                : 'bg-red-100 text-red-800'
+            "
+            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
+          >
+            {{ usuario.a2fActivo ? "Sí" : "No" }}
+          </span>
+        </p>
+
+        <p class="text-gray-600 mt-2">
+          <span class="font-medium">ID Tipo de Usuario:</span>
+          {{ usuario.idTipoUsuario == 1 ? "Administrador" : "Ayudante" }}
+        </p>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="col-span-1">
+        <h3 class="text-xl font-semibold text-gray-700 mb-4">
+          Datos Personales
+        </h3>
+        <p class="text-gray-600 mt-2">
+          <span class="font-medium">Nombre:</span>
+          <span class="font-bold text-lg">{{ usuario.persona.nombre }}</span>
+        </p>
+        <p class="text-gray-600 mt-2">
+          <span class="font-medium">NIT:</span> {{ usuario.persona.nit }}
+        </p>
+        <p class="text-gray-600 mt-2">
+          <span class="font-medium">Correo Electrónico:</span>
+          {{ usuario.persona.correoElectronico }}
+        </p>
+        <p class="text-gray-600 mt-2">
+          <span class="font-medium">Dirección:</span>
+          {{ usuario.persona.direccion }}
+        </p>
+        <p class="text-gray-600 mt-2">
+          <span class="font-medium">Fecha de Creación:</span>
+          {{ usuario.persona.fechaCreacion | date }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
 <section class="bg-gray-50 py-8 antialiased dark:bg-gray-900 md:py-12">
     <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
