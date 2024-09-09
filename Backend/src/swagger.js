@@ -6442,7 +6442,7 @@ const swaggerOptions = {
           }
         }
       },
-      "/api/v1/reportes/topUsuariosCompras": {
+      "/api/v1/reportes/topUsuariosCompras?cantidad=n": {
   "get": {
     "summary": "Obtener el top de usuarios por cantidad de compras",
     "tags": ["Reportes"],
@@ -6522,7 +6522,7 @@ const swaggerOptions = {
     }
   }
 },
-"/api/v1/reportes/totalCompraUsuario": {
+"/api/v1/reportes/totalCompraUsuario?cantidad=n": {
   "get": {
     "summary": "Obtener el total de compras por usuario",
     "tags": ["Reportes"],
@@ -6606,7 +6606,7 @@ const swaggerOptions = {
     }
   }
 },
-"/api/v1/reportes/promedioCompraUsuario": {
+"/api/v1/reportes/promedioCompraUsuario?cantidad=n": {
   "get": {
     "summary": "Obtener el promedio de compra por usuario",
     "tags": ["Reportes"],
@@ -6793,7 +6793,7 @@ const swaggerOptions = {
     }
   }
 },
-"/api/v1/productosMasComprados": {
+"/api/v1/productosMasComprados?cantidad=n": {
   "get": {
     "summary": "Obtener los productos más comprados",
     "tags": ["Reportes"],
@@ -6873,7 +6873,7 @@ const swaggerOptions = {
     }
   }
 },
-"/api/v1/marcasMasVendidas": {
+"/api/v1/marcasMasVendidas?cantidad=n": {
   "get": {
     "summary": "Obtener las marcas más vendidas",
     "tags": ["Reportes"],

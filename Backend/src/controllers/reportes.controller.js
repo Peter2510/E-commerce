@@ -461,52 +461,80 @@ const categoriasMasVendidas = async (req, res) => {
 
 
 /*
+  SELECT
+  DATE_TRUNC('day', c."fecha") AS "fecha",
+  SUM(dc."cantidadProducto" * dc."precioUnitario") AS "totalVentas"
+FROM
+  compras."detalleCompra" dc
+JOIN
+  compras."compra" c ON dc."idCompra" = c."id"
+GROUP BY
+  DATE_TRUNC('day', c."fecha")
+ORDER BY
+  "fecha" DESC;
+
+ 
+ 
+ SELECT
+  DATE_TRUNC('day', c."fecha") AS "fecha",
+  SUM(dc."cantidadProducto" * dc."precioUnitario") AS "totalVentas"
+FROM
+  compras."detalleCompra" dc
+JOIN
+  compras."compra" c ON dc."idCompra" = c."id"
+GROUP BY
+  DATE_TRUNC('day', c."fecha")
+ORDER BY
+  "fecha" DESC;
+ 
+ 
+ SELECT
+  DATE_TRUNC('month', c."fecha") AS "mes",
+  COUNT(DISTINCT c."idUsuario") AS "usuariosActivos"
+FROM
+  compras."compra" c
+GROUP BY
+  DATE_TRUNC('month', c."fecha")
+ORDER BY
+  "mes" DESC;
+
+ 
+ 
 SELECT
-    p."nombre" AS "nombreProducto",
-    SUM(dc."cantidadProducto") AS "cantidadVendida",
-    SUM(dc."cantidadProducto" * dc."precioUnitario") AS "dineroGenerado"
+  EXTRACT(hour FROM c."fecha") AS "hora",
+  SUM(dc."cantidadProducto" * dc."precioUnitario") AS "totalVentas"
 FROM
-    compras."detalleCompra" dc
+  compras."detalleCompra" dc
 JOIN
-    catalogo."producto" p ON dc."idProducto" = p."id"
+  compras."compra" c ON dc."idCompra" = c."id"
 GROUP BY
-    p."nombre"
+  EXTRACT(hour FROM c."fecha")
 ORDER BY
-    "cantidadVendida" DESC;
-    
-   
-   
-   
-   SELECT
-    m."nombreMarca" AS "nombreMarca",
-    SUM(dc."cantidadProducto") AS "cantidadVendida",
-    SUM(dc."cantidadProducto" * dc."precioUnitario") AS "dineroGenerado"
+  "hora";
+ 
+ 
+
+
+ 
+SELECT
+  dc."idCompra",
+  c."fecha",
+  u."nombreUsuario",
+  SUM(dc."cantidadProducto" * dc."precioUnitario") AS "totalCompra"
 FROM
-    compras."detalleCompra" dc
+  compras."detalleCompra" dc
 JOIN
-    catalogo."producto" p ON dc."idProducto" = p."id"
+  compras."compra" c ON dc."idCompra" = c."id"
 JOIN
-    catalogo."marca" m ON p."idMarca" = m."id"
+  usuarios."usuario" u ON c."idUsuario" = u."idPersona"  -- Ajustado aquí
+WHERE
+  u."idPersona" = :idPersona  -- Ajustado aquí
 GROUP BY
-    m."nombreMarca"
+  dc."idCompra", c."fecha", u."nombreUsuario"
 ORDER BY
-    "cantidadVendida" DESC;
-   
-   
-   SELECT
-    c."nombreCategoria" AS "nombreCategoria",
-    SUM(dc."cantidadProducto") AS "cantidadVendida",
-    SUM(dc."cantidadProducto" * dc."precioUnitario") AS "dineroGenerado"
-FROM
-    compras."detalleCompra" dc
-JOIN
-    catalogo."producto" p ON dc."idProducto" = p."id"
-JOIN
-    catalogo."categoria" c ON p."idCategoria" = c."id"
-GROUP BY
-    c."nombreCategoria"
-ORDER BY
-    "cantidadVendida" DESC;
+  c."fecha" DESC;
+
+
 * */
 
 module.exports = {
