@@ -16,6 +16,8 @@ import { EdicionProductosComponent } from '../productos/edicion-productos/edicio
 import { EditarCantidadComponent } from '../inventario/editar-cantidad/editar-cantidad.component';
 import { EliminarProductoComponent } from '../productos/eliminar-producto/eliminar-producto.component';
 import { GestorEnvioComponent } from '../Paquetes/gestor-envio/gestor-envio.component';
+import { EditarInformacionComponent } from '../empresa/editar-informacion/editar-informacion.component';
+import { EdicionEspecificaEmpresaComponent } from '../empresa/edicion-especifica-empresa/edicion-especifica-empresa.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { GestorEnvioComponent } from '../Paquetes/gestor-envio/gestor-envio.comp
     EdicionProductosComponent,
     EditarCantidadComponent,
     GestorEnvioComponent,
+    EditarInformacionComponent,
+    EdicionEspecificaEmpresaComponent,
   ],
   imports: [CommonModule, AdminRoutesModule, AdminheaderComponent, FormsModule],
 })

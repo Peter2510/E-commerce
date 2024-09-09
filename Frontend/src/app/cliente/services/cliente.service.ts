@@ -3,20 +3,21 @@ import { environment } from 'src/environments/environment.development';
 import { HttpClient} from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { User } from 'src/app/interfaces/user.interface';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
   private baseUrl = environment.baseUrlEnv;
-  constructor(private http: HttpClient,private cookie:CookieService) { }
+  constructor(private http: HttpClient,private cookie:CookieService,private servicio2:AuthService) { }
 
   cerrarSesion() {
     return this.http.post(`${this.baseUrl}/auth/logOut`,null,{withCredentials:true});
   }
 
   getCliente() {
-    const id_cliente = JSON.parse(this.cookie.get('token2')).id
+    const id_cliente = this.servicio2.getIdUsuario();
     return this.http.get(`${this.baseUrl}/cliente/obtenerClientePorId/${id_cliente}`, {
       withCredentials: true
     });

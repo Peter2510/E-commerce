@@ -1,7 +1,8 @@
-<app-adminheader />
+<app-adminheader></app-adminheader>
 <section class="text-gray-600 body-font overflow-hidden">
   <div class="container px-5 py-24 mx-auto">
     <div class="lg:w-4/5 mx-auto flex flex-wrap">
+      <!-- Contenido del producto -->
       <div class="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
         <h2 class="text-sm title-font text-gray-500 tracking-widest">
           {{ this.producto.nombre }}
@@ -36,8 +37,6 @@
             type="text"
             id="first_name"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Cantidad"
-            required
             [value]="this.producto.activo === true ? 'Activo' : 'Desactivado'"
             readonly
           />
@@ -50,10 +49,8 @@
             type="text"
             id="first_name"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Cantidad"
-            required
-            readonly
             [value]="this.producto.minimoInventario"
+            readonly
           />
         </div>
         <div class="flex">
@@ -62,13 +59,77 @@
           }}</span>
         </div>
       </div>
-      <img
-        alt="ecommerce"
-        class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded"
-        width="400"
-        height="400"
-        [src]="this.producto.url_imagenes[0].url"
-      />
+
+      <!-- Carrusel -->
+      <div class="lg:w-1/2 w-full relative">
+        <div class="relative overflow-hidden rounded-lg">
+          <!-- Carousel items -->
+          <div
+            *ngFor="let imagen of this.producto.url_imagenes; let i = index"
+            class="duration-700 ease-in-out"
+            [ngClass]="{ hidden: activeIndex !== i, block: activeIndex === i }"
+          >
+            <img
+              [src]="imagen.url"
+              alt="ecommerce"
+              class="lg:w-full w-full lg:h-auto h-64 object-cover object-center rounded"
+            />
+          </div>
+        </div>
+
+        <!-- Slider controls -->
+        <button
+          type="button"
+          class="absolute inset-y-1/2 left-2 transform -translate-y-1/2 z-30 flex items-center justify-center px-4 cursor-pointer group focus:outline-none"
+          (click)="previousSlide()"
+        >
+          <span
+            class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none"
+          >
+            <svg
+              class="w-4 h-4 text-white dark:text-gray-800"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 1 1 5l4 4"
+              />
+            </svg>
+            <span class="sr-only">Previous</span>
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="absolute inset-y-1/2 right-2 transform -translate-y-1/2 z-30 flex items-center justify-center px-4 cursor-pointer group focus:outline-none"
+          (click)="nextSlide()"
+        >
+          <span
+            class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none"
+          >
+            <svg
+              class="w-4 h-4 text-white dark:text-gray-800"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 9 4-4-4-4"
+              />
+            </svg>
+            <span class="sr-only">Next</span>
+          </span>
+        </button>
+      </div>
     </div>
   </div>
 </section>

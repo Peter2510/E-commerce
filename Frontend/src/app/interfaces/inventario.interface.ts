@@ -3,8 +3,8 @@ import { User } from './user.interface';
 
 export interface inventario {
   id?: number;
-  idestadoinventario: estadoinventario;
-  idproducto: Producto;
+  idestadoinventario: number;
+  idproducto: number;
   cantidadtotal: number;
 }
 

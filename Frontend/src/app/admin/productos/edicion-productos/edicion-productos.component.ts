@@ -6,6 +6,7 @@ import {
   categoria,
   Marca,
   Producto,
+  UrlImage,
 } from 'src/app/interfaces/producto.interface';
 
 @Component({
@@ -27,6 +28,8 @@ export class EdicionProductosComponent implements OnInit {
   categoria!: categoria;
   marca!: Marca;
   imagen!: File;
+  imagenesEliminar: UrlImage[] = [];
+  nombresImagenesEliminar: string[] = [];
 
   guardarEdicion() {
     let nuevoProducto: Producto = {
@@ -41,7 +44,7 @@ export class EdicionProductosComponent implements OnInit {
     };
 
     this.servicioProductos
-      .editarProducto(nuevoProducto, this.imagen)
+      .editarProducto(nuevoProducto, this.imagen, this.nombresImagenesEliminar)
       .subscribe();
 
     console.log(this.producto, nuevoProducto);
@@ -50,6 +53,19 @@ export class EdicionProductosComponent implements OnInit {
     const file: File = event.target.files[0];
     if (file) {
       this.imagen = file;
+    }
+  }
+
+  eliminarImagenes(nombreImagen: UrlImage | undefined) {
+    if (nombreImagen !== undefined && nombreImagen?.nombre !== undefined) {
+      console.log(nombreImagen);
+
+      this.imagenesEliminar.push(nombreImagen);
+      this.nombresImagenesEliminar.push(nombreImagen.nombre);
+      this.producto.url_imagenes = this.producto.url_imagenes.filter(
+        (valores) => valores.nombre !== nombreImagen.nombre
+      );
+      console.log(this.producto.url_imagenes);
     }
   }
 

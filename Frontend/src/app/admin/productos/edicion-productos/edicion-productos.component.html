@@ -2,7 +2,7 @@
 
 <div class="max-w-7xl mx-auto p-4 md:p-5">
   <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
-    Creacion de producto
+    Edicion de producto
   </h2>
   <!-- Campos de edición -->
   <div class="flex-col">
@@ -106,7 +106,7 @@
         <label
           for="message"
           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Your message</label
+          >Descripcion</label
         >
         <textarea
           id="message"
@@ -120,7 +120,7 @@
         <label
           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           for="file_input"
-          >selecciona una foto</label
+          >Agregar mas imagenes, selecciona una imagen</label
         >
         <input
           class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
@@ -128,6 +128,67 @@
           type="file"
           (change)="onFileSelected($event)"
         />
+      </div>
+      <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+      <div class="w-full md:w-1/1 pr-4">
+        <label
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          for="file_input"
+          >Eliminar imagenes, selecciona una foto</label
+        >
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div
+            class="relative"
+            *ngFor="let imagen of this.producto.url_imagenes; let i = index"
+          >
+            <img
+              class="h-auto max-w-full rounded-lg"
+              [src]="imagen.url"
+              alt="Imagen {{ i }}"
+            />
+            <!-- Icono de 'X' -->
+            <button
+              class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-700"
+              (click)="eliminarImagenes(imagen)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                class="w-5 h-5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="w-full md:w-1/1 pr-4">
+        <label
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          for="eliminar"
+          >Imagenes seleccionadas para eliminar</label
+        >
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div
+            class="relative"
+            *ngFor="let imagen of this.imagenesEliminar; let i = index"
+          >
+            <img
+              class="h-auto max-w-full rounded-lg"
+              [src]="imagen.url"
+              alt="Imagen {{ i }}"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -3,6 +3,7 @@ import { User } from 'src/app/interfaces/user.interface';
 import { ClienteService } from '../../services/cliente.service';
 import Swal from 'sweetalert2';
 import { formaPago } from 'src/app/interfaces/formaPago';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-perfil',
@@ -49,6 +50,7 @@ export class PerfilComponent {
           title: 'OK',
           text: 'Datos actualizados correctamente',
         });
+        this.usuario = this.usuario2
       },
       error: (err) => {
         console.log(err);

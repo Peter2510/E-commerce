@@ -1,65 +1,61 @@
 <header class="text-gray-600 body-font">
-  <div
-    class="container mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center"
-  >
-    <nav class="flex lg:w-2/5 flex-wrap items-center text-xs md:ml-auto">
-      <a class="mr-2 hover:text-gray-900" routerLink="/admin/gestionProductos">
-        Gestion de productos
-      </a>
-      <a class="mr-2 hover:text-gray-900" routerLink="/admin/gestionInventario">
-        Gestion de inventario
-      </a>
-      <a class="mr-2 hover:text-gray-900" routerLink="/admin/gestionRoles">
-        Gestion de usuarios
-      </a>
-      <a
-        class="mr-2 hover:text-gray-900"
-        routerLink="/admin/gestionMarcasCategorias"
-      >
-        Gestion de Marcas y categorias
-      </a>
-    </nav>
-    <a
-      class="flex order-first lg:order-none lg:w-1/5 title-font font-medium items-center text-gray-900 lg:items-center lg:justify-center mb-4 md:mb-0"
-      routerlink="/admin"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        class="w-8 h-8 text-white p-1 bg-blue-500 rounded-full"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-        ></path>
-      </svg>
-      <span class="ml-2 text-lg">Ecommerce</span>
+  <div class="container mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center">
+    <!-- Información de la empresa -->
+    <a [routerLink]="'/admin'" class="flex items-center lg:w-1/5 title-font font-medium text-gray-900 mb-4 md:mb-0">
+      <img [src]="this.servicioTienda.infoEmpresa().imagen.url" width="100" height="100" alt="comer" class="w-24 h-24 rounded-full shadow-lg border-2 border-gray-300 object-cover"/>
+      <span class="ml-4 text-lg">{{ this.servicioTienda.infoEmpresa() ? this.servicioTienda.infoEmpresa().nombre : "E-commerce" }}</span>
     </a>
 
-    <nav>
-      <a class="mr-2 hover:text-gray-900" routerLink="/admin/gestionEnvios">
-        Gestion de Envios
-      </a>
+    <!-- Menú de navegación -->
+    <nav class="flex lg:w-2/5 flex-wrap items-center text-xs md:ml-auto">
+      <div *ngFor="let item of this.servicioPermisos.permisosUsuarioIngresado()">
+        <div *ngIf="item.id == 1; else permiso2">
+          <a class="mr-4 hover:text-gray-900 text-sm font-medium" routerLink="/admin/gestionProductos">
+            Gestion de productos
+          </a>
+        </div>
+        <ng-template #permiso2>
+          <div *ngIf="item.id === 3; else permiso3">
+            <a class="mr-4 hover:text-gray-900 text-sm font-medium" routerLink="/admin/gestionInventario">
+              Gestion de inventario
+            </a>
+          </div>
+        </ng-template>
+        <ng-template #permiso3>
+          <div *ngIf="item.id === 2; else permiso4">
+            <a class="mr-4 hover:text-gray-900 text-sm font-medium" routerLink="/admin/gestionMarcasCategorias">
+              Gestion de Marcas y categorias
+            </a>
+          </div>
+        </ng-template>
+        <ng-template #permiso4>
+          <div *ngIf="item.id === 4">
+            <a class="mr-4 hover:text-gray-900 text-sm font-medium" routerLink="/admin/gestionEnvios">
+              Gestion de Envios
+            </a>
+          </div>
+        </ng-template>
+      </div>
     </nav>
-    <div class="md:w-1/6 inline-flex">
-      <button
-        class="inline-flex items-center bg-gray-100 border-0 py-1 px-2 focus:outline-none hover:bg-gray-200 rounded text-xs mt-4 md:mt-0"
-        (click)="this.cerrarSesion()"
-      >
-        Button
-        <svg
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          class="w-4 h-4 ml-1"
-          viewBox="0 0 24 24"
-        >
+
+    <div class="siEsUsuario" *ngIf="this.idTipoUsuario === 1">
+      <nav>
+        <a class="mr-4 hover:text-gray-900 text-sm font-medium" routerLink="/admin/gestionRoles">
+          Gestion de usuarios
+        </a>
+        <a class="mr-4 hover:text-gray-900 text-sm font-medium" routerLink="/admin/gestionEmpresa">
+          Gestion de Empresa
+        </a>
+        <a class="mr-4 hover:text-gray-900 text-sm font-medium" routerLink="/admin/reportes">
+          Reportes
+        </a>
+      </nav>
+    </div>
+
+    <div class="md:w-1/6 inline-flex lg:mt-4 md:mt-2">
+      <button (click)="cerrarSesion()" class="inline-flex items-center bg-gray-100 border-0 py-1 px-2 focus:outline-none hover:bg-gray-200 rounded text-xs mt-4 md:mt-0">
+        Cerrar Sesion
+        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
           <path d="M5 12h14M12 5l7 7-7 7"></path>
         </svg>
       </button>

@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, signal, Signal } from '@angular/core';
 import { map, tap } from 'rxjs';
-import { Producto } from 'src/app/interfaces/producto.interface';
+import { Producto, UrlImage } from 'src/app/interfaces/producto.interface';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({
@@ -71,7 +71,7 @@ export class ProductosServicioService {
     );
   }
 
-  editarProducto(producto: Producto, imagen: File) {
+  editarProducto(producto: Producto, imagen: File, imagenesEliminar: string[]) {
     const formData = new FormData();
     formData.append('id', producto?.id?.toString() || '');
     formData.append('nombre', producto.nombre);
@@ -82,6 +82,9 @@ export class ProductosServicioService {
 
     formData.append('idMarca', producto.marca?.id?.toString() || '');
     formData.append('imagenes', imagen);
+    imagenesEliminar.forEach((imagen) => {
+      formData.append('imagenesEliminar', imagen);
+    });
 
     return this.http.put(
       `${environment.baseUrlEnv}/${this.directiva}/editarProducto/`,
