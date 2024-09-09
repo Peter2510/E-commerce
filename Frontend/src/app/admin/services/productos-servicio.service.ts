@@ -31,23 +31,32 @@ export class ProductosServicioService {
       .subscribe();
   }
 
-  creacionProducto(producto: Producto, imagen: File) {
+  creacionProducto(producto: Producto, imagenes: File[], cantidadInventario: number) {
     const formData = new FormData();
     formData.append('nombre', producto.nombre);
     formData.append('precio', producto.precio.toString());
     formData.append('descripcion', producto.descripcion);
     formData.append('minimoInventario', producto.minimoInventario.toString());
     formData.append('idCategoria', producto.categoria?.id?.toString() || '');
-
+    
+    if (cantidadInventario > 0) {
+      formData.append('cantidadInventario', cantidadInventario.toString());
+    }
+    
     formData.append('idMarca', producto.marca?.id?.toString() || '');
-    formData.append('imagenes', imagen);
-
+    
+    // Agregar cada imagen al FormData
+    imagenes.forEach((imagen, index) => {
+      formData.append(`imagenes`, imagen);
+    });
+  
     return this.http.post(
       `${environment.baseUrlEnv}/${this.directiva}/crearProducto/`,
       formData,
       { withCredentials: true }
     );
   }
+  
 
   busquedaProductosFiltrado(tipo: string, nombre: string) {
     const params = { tipo, nombre };
