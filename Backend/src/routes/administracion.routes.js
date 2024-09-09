@@ -17,6 +17,7 @@ router.get(`${api}/obtenerAdminPorId/:id`, jwtValidacion, AdministracionControll
 router.get(`${api}/obtenerAyudantePorId/:id`, AdministracionController.obtenerAyudantePorId);
 router.get(`${api}/obtenerEmpleados`, jwtValidacion, AdministracionController.obtenerEmpleados);
 router.post(`${api}/crearAdmin`, jwtValidacion, validarCreacionAdmin, AdministracionController.crearAdmin);
+router.put(`${api}/darBaja/:id`,  AdministracionController.darBaja);
 
 router.get(`${api}/reporteGeneral`, jwtValidacion,AdministracionController.obtenerReporteEstadisticas);
 

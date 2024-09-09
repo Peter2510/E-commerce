@@ -8,6 +8,8 @@ const { sequelize } = require("../configs/database.configs");
 const { Op } = require('sequelize');
 const Producto = require('../models/producto');
 const inventario = require('../models/inventario');
+const Permisos= require('../models/permiso')
+const PermisosUsuario= require('../models/permisosUsuario');
 
 const getTipoUsuarios = async (req, res) => {
   try {
@@ -218,8 +220,9 @@ const crearAdmin = async (req, res) => {
   const t = await sequelize.transaction(); 
 
   try {
-    const { nombreUsuario, contrasenia, persona } = req.body;
+    const { nombreUsuario, contrasenia, persona, idTipoUsuario } = req.body;
 
+    // Check if the email is already registered
     const email = await Persona.findOne({
       where: { correoElectronico: persona.correoElectronico },
       transaction: t,
@@ -232,6 +235,7 @@ const crearAdmin = async (req, res) => {
         .json({ ok: false, mensaje: "Correo electronico ya registrado" });
     }
 
+    // Validate password
     if (!contrasenia) {
       await t.rollback();
       return res
@@ -249,28 +253,47 @@ const crearAdmin = async (req, res) => {
         });
     }
 
-    // Se crea la persona
+    // Create the person
     const newPersona = await Persona.create(persona, { transaction: t });
 
-    // Se crea el usuario
+    // Hash the password
     const hashedPassword = await bcrypt.hash(contrasenia, 10);
-    await Usuario.create({
+    
+    // Create the user and capture the result
+    const nuevoUsuario = await Usuario.create({
       nombreUsuario,
       contrasenia: hashedPassword,
       idPersona: newPersona.id,
       idTipoUsuario: idTipoUsuario,
     }, { transaction: t });
+    console.log('acaaaaa', idTipoUsuario);
 
+    // Check if the user type requires permissions setup
+    if (Number(idTipoUsuario) === 1) {
+    console.log('acaaaaa', idTipoUsuario);
+
+      const idUsuario = nuevoUsuario.id;
+      const permisos = await Permisos.findAll({ transaction: t });
+      console.log(idUsuario, permisos);
+      
+      // Create all new permissions for the user
+      for (const permiso of permisos) {
+        await PermisosUsuario.create({ id_empleado: idUsuario, id_permiso: permiso.id }, { transaction: t });
+      }
+    }
+
+    // Commit the transaction
     await t.commit(); 
     res.status(200).json({ ok: true, mensaje: "Registrado correctamente" });
 
   } catch (error) {  
+    // Rollback the transaction in case of error
     await t.rollback(); 
-    console.log(error)
+    console.log(error);
     await manejoErrores(error, res, "Admin");
-    
   }
 };
+
 
 const obtenerReporteEstadisticas = async (req, res) => {
   try {
@@ -306,7 +329,25 @@ const obtenerReporteEstadisticas = async (req, res) => {
     await manejoErrores(error, res, "Reporte");
   }
 };
+  
+const darBaja = async (req, res) => {
+    try {
+      const { id } = req.params;
+      console.log(id);
+      
 
+    await Usuario.update({ activo: false}, { where: {id: id}})
+
+    res.status(200).json({ok: true, mensaje: "Usuario dado de baja correctamente"})
+
+  } catch (error) {
+    await manejoErrores(error,res,'Usuario')
+  }
+}
+
+//funcion para activar
+
+// ver usuarios dados de baja y los que estan activos
 
 
 module.exports = {
@@ -320,5 +361,6 @@ module.exports = {
     obtenerEmpleados,
     crearAdmin,
   obtenerReporteEstadisticas,
-    obtenerAyudantePorId
+  obtenerAyudantePorId,
+    darBaja
 };
