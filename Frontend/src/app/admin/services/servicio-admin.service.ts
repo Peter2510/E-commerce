@@ -49,7 +49,7 @@ export class ServicioAdminService {
     );
   }
 
-  //funcion para obtener empelados por id
+  //funcion para obtener admins por id
   obtenerEmpleadosId(id: number): Observable<Person> {
     return this.http.get<Person>(
       `${environment.baseUrlEnv}/${this.directiva}/obtenerAdminPorId/` + id,
@@ -57,6 +57,13 @@ export class ServicioAdminService {
     );
   }
 
+  // ob obtenerAyudantePorId
+  obtenerAyudantePorId(id: number): Observable<Person> {
+    return this.http.get<Person>(
+      `${environment.baseUrlEnv}/${this.directiva}/obtenerAyudantePorId/` + id,
+      { withCredentials: true }
+    );
+  }
   //funcion para la creacion de mas tipos de roles
 
   crearRoles(tipo: string): Observable<tipoUsuario> {

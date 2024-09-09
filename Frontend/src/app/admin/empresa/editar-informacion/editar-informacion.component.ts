@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { TiendaServicioService } from '../../services/tienda-servicio.service';
+import { tienda } from 'src/app/interfaces/tienda.interface';
 
 @Component({
   selector: 'app-editar-informacion',
@@ -12,12 +13,20 @@ export class EditarInformacionComponent {
 
   imagen!: File;
   nombre!: string;
-  descripcion!: string;
+  direccion!: string;
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
       this.imagen = file;
     }
+  }
+
+  crearTienda() {
+    const tienda: tienda = {
+      nombre: this.nombre,
+      direccion: this.direccion,
+    };
+    this.servicioEmpresa.guardarInfoEmpresa(tienda, this.imagen).subscribe();
   }
 }

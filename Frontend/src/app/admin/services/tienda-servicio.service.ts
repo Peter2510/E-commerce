@@ -18,7 +18,11 @@ export class TiendaServicioService {
   public isLoading = signal<boolean>(true);
   productosActivos: any;
 
-  constructor(private http: HttpClient, private cookie: CookieService, private login: AuthService) {
+  constructor(
+    private http: HttpClient,
+    private cookie: CookieService,
+    private login: AuthService
+  ) {
     this.obtenerInfoEmpresa();
   }
 
@@ -46,12 +50,12 @@ export class TiendaServicioService {
     datos.append('tienda', JSON.stringify(tienda));
     datos.append('password', password);
 
-    const idUsuario = this.login.getIdUsuario()
+    const idUsuario = this.login.getIdUsuario();
 
-    if(idUsuario!=null){
+    if (idUsuario != null) {
       datos.append('idUsuario', idUsuario.toString());
     }
-    
+
     datos.append('imagenCambiar', imagen);
     datos.append('imagenActualCambiar', imagenActualCambiar);
     return this.http.put(
@@ -62,18 +66,16 @@ export class TiendaServicioService {
       }
     );
   }
-  guardarInfoEmpresa() {
-    this.http
-      .get(`${environment.baseUrlEnv}/${this.directiva}/obtenerElementos/`, {
+  guardarInfoEmpresa(tienda: tienda, imagen: File) {
+    const datos = new FormData();
+    datos.append('tienda', JSON.stringify(tienda));
+    datos.append('imagen', imagen);
+    return this.http.post(
+      `${environment.baseUrlEnv}/${this.directiva}/crearTienda/`,
+      datos,
+      {
         withCredentials: true,
-      })
-      .pipe(
-        tap((valores: any) => {
-          console.log(valores.tienda[0]),
-            this.infoEmpresa.set(valores.tienda[0]);
-          this.isLoading.set(false);
-        })
-      )
-      .subscribe();
+      }
+    );
   }
 }
