@@ -51,19 +51,22 @@ const obtenerTopUsuarios = async (req, res) => {
       // Ejecuta la consulta SQL
       const resultados = await sequelize.query(
           `
-            SELECT
-              c."idUsuario",
-              u."nombreUsuario",
-              COUNT(*) AS cantidadCompras
-            FROM
-              compras.compra c
-            JOIN
-              usuarios.usuario u ON c."idUsuario" = u.id
-            GROUP BY
-              c."idUsuario", u."nombreUsuario"
-            ORDER BY
-              cantidadCompras DESC
-            LIMIT :cantidad
+             SELECT
+                c."idUsuario",
+                u."nombreUsuario",
+                COUNT(c."id") AS "cantidadCompras",
+                SUM(dc."cantidadProducto") AS "cantidadProductosComprados"
+              FROM
+                compras."compra" c
+              JOIN
+                usuarios."usuario" u ON c."idUsuario" = u."id"
+              JOIN
+                compras."detalleCompra" dc ON c."id" = dc."idCompra"
+              GROUP BY
+                c."idUsuario", u."nombreUsuario"
+              ORDER BY
+                "cantidadCompras" DESC
+              LIMIT :cantidad;
           `,
           {
               replacements: { cantidad: cantidadFinal },
@@ -288,22 +291,254 @@ const comprasPorFormaDeEntrega = async (req, res) => {
       });
   } catch (error) {
       // Manejo de errores
-      console.error('Error obteniendo las compras por forma de entrega:', error);
       await manejoErrores(error, res, "ComprasPorFormaEntrega");
   }
 };
 
 const productosMasComprados = async (req, res) => {
-  /** */
+  try {
+    // Verifica que no haya parámetros adicionales en la solicitud
+    const queryParams = req.query;
+    if (Object.keys(queryParams).length > 0 && !queryParams.cantidad) {
+      return res.status(400).json({
+        ok: false,
+        mensaje: 'Parámetros no permitidos en la solicitud. Este endpoint solo acepta el parámetro "cantidad".',
+      });
+    }
+
+    // Valida el parámetro 'cantidad'
+    const cantidad = validarCantidad(req.query);
+
+    // Establece un valor por defecto si 'cantidad' no está presente o no es válido
+    const cantidadFinal = cantidad !== undefined ? cantidad : 5;
+
+    // Ejecuta la consulta SQL
+    const resultados = await sequelize.query(
+      `
+        SELECT
+          p."nombre" AS "nombreProducto",
+          SUM(dc."cantidadProducto") AS "cantidadVendida",
+          SUM(dc."cantidadProducto" * dc."precioUnitario") AS "dineroGenerado"
+        FROM
+          compras."detalleCompra" dc
+        JOIN
+          catalogo."producto" p ON dc."idProducto" = p."id"
+        GROUP BY
+          p."nombre"
+        ORDER BY
+          "cantidadVendida" DESC
+        LIMIT :cantidad
+      `,
+      {
+        replacements: { cantidad: cantidadFinal },
+        type: sequelize.QueryTypes.SELECT
+      }
+    );
+
+    // Devuelve los resultados en formato JSON
+    res.json({
+      ok: true,
+      mensaje: 'Productos más comprados obtenidos correctamente',
+      data: resultados
+    });
+  } catch (error) {
+    // Manejo de errores
+    console.error('Error obteniendo los productos más comprados:', error);
+    await manejoErrores(error, res, "ProductosMasComprados");
+  }
 };
+
 
 const marcasMasVendidas = async (req, res) => {
-  /* */
+  try {
+    // Verifica que no haya parámetros adicionales en la solicitud
+    const queryParams = req.query;
+    if (Object.keys(queryParams).length > 0 && !queryParams.cantidad) {
+      return res.status(400).json({
+        ok: false,
+        mensaje: 'Parámetros no permitidos en la solicitud. Este endpoint solo acepta el parámetro "cantidad".',
+      });
+    }
+
+    // Valida el parámetro 'cantidad'
+    const cantidad = validarCantidad(req.query);
+
+    // Establece un valor por defecto si 'cantidad' no está presente o no es válido
+    const cantidadFinal = cantidad !== undefined ? cantidad : 5;
+
+    // Ejecuta la consulta SQL
+    const resultados = await sequelize.query(
+      `
+        SELECT
+          m."nombreMarca" AS "nombreMarca",
+          SUM(dc."cantidadProducto") AS "cantidadVendida",
+          SUM(dc."cantidadProducto" * dc."precioUnitario") AS "dineroGenerado"
+        FROM
+          compras."detalleCompra" dc
+        JOIN
+          catalogo."producto" p ON dc."idProducto" = p."id"
+        JOIN
+          catalogo."marca" m ON p."idMarca" = m."id"
+        GROUP BY
+          m."nombreMarca"
+        ORDER BY
+          "cantidadVendida" DESC
+        LIMIT :cantidad
+      `,
+      {
+        replacements: { cantidad: cantidadFinal },
+        type: sequelize.QueryTypes.SELECT
+      }
+    );
+
+    // Devuelve los resultados en formato JSON
+    res.json({
+      ok: true,
+      mensaje: 'Marcas más vendidas obtenidas correctamente',
+      data: resultados
+    });
+  } catch (error) {
+    // Manejo de errores
+    console.error('Error obteniendo las marcas más vendidas:', error);
+    await manejoErrores(error, res, "MarcasMasVendidas");
+  }
 };
 
+
 const categoriasMasVendidas = async (req, res) => {
-/**/ 
+  try {
+    // Verifica que no haya parámetros adicionales en la solicitud
+    const queryParams = req.query;
+    if (Object.keys(queryParams).length > 0 && !queryParams.cantidad) {
+      return res.status(400).json({
+        ok: false,
+        mensaje: 'Parámetros no permitidos en la solicitud. Este endpoint solo acepta el parámetro "cantidad".',
+      });
+    }
+
+    // Valida el parámetro 'cantidad'
+    const cantidad = validarCantidad(req.query);
+
+    // Establece un valor por defecto si 'cantidad' no está presente o no es válido
+    const cantidadFinal = cantidad !== undefined ? cantidad : 5;
+
+    // Ejecuta la consulta SQL
+    const resultados = await sequelize.query(
+      `
+        SELECT
+          c."nombreCategoria" AS "nombreCategoria",
+          SUM(dc."cantidadProducto") AS "cantidadVendida",
+          SUM(dc."cantidadProducto" * dc."precioUnitario") AS "dineroGenerado"
+        FROM
+          compras."detalleCompra" dc
+        JOIN
+          catalogo."producto" p ON dc."idProducto" = p."id"
+        JOIN
+          catalogo."categoria" c ON p."idCategoria" = c."id"
+        GROUP BY
+          c."nombreCategoria"
+        ORDER BY
+          "cantidadVendida" DESC
+        LIMIT :cantidad
+      `,
+      {
+        replacements: { cantidad: cantidadFinal },
+        type: sequelize.QueryTypes.SELECT
+      }
+    );
+
+    // Devuelve los resultados en formato JSON
+    res.json({
+      ok: true,
+      mensaje: 'Categorías más vendidas obtenidas correctamente',
+      data: resultados
+    });
+  } catch (error) {
+    // Manejo de errores
+    console.error('Error obteniendo las categorías más vendidas:', error);
+    await manejoErrores(error, res, "CategoriasMasVendidas");
+  }
 };
+
+
+
+
+/*
+  SELECT
+  DATE_TRUNC('day', c."fecha") AS "fecha",
+  SUM(dc."cantidadProducto" * dc."precioUnitario") AS "totalVentas"
+FROM
+  compras."detalleCompra" dc
+JOIN
+  compras."compra" c ON dc."idCompra" = c."id"
+GROUP BY
+  DATE_TRUNC('day', c."fecha")
+ORDER BY
+  "fecha" DESC;
+
+ 
+ 
+ SELECT
+  DATE_TRUNC('day', c."fecha") AS "fecha",
+  SUM(dc."cantidadProducto" * dc."precioUnitario") AS "totalVentas"
+FROM
+  compras."detalleCompra" dc
+JOIN
+  compras."compra" c ON dc."idCompra" = c."id"
+GROUP BY
+  DATE_TRUNC('day', c."fecha")
+ORDER BY
+  "fecha" DESC;
+ 
+ 
+ SELECT
+  DATE_TRUNC('month', c."fecha") AS "mes",
+  COUNT(DISTINCT c."idUsuario") AS "usuariosActivos"
+FROM
+  compras."compra" c
+GROUP BY
+  DATE_TRUNC('month', c."fecha")
+ORDER BY
+  "mes" DESC;
+
+ 
+ 
+SELECT
+  EXTRACT(hour FROM c."fecha") AS "hora",
+  SUM(dc."cantidadProducto" * dc."precioUnitario") AS "totalVentas"
+FROM
+  compras."detalleCompra" dc
+JOIN
+  compras."compra" c ON dc."idCompra" = c."id"
+GROUP BY
+  EXTRACT(hour FROM c."fecha")
+ORDER BY
+  "hora";
+ 
+ 
+
+
+ 
+SELECT
+  dc."idCompra",
+  c."fecha",
+  u."nombreUsuario",
+  SUM(dc."cantidadProducto" * dc."precioUnitario") AS "totalCompra"
+FROM
+  compras."detalleCompra" dc
+JOIN
+  compras."compra" c ON dc."idCompra" = c."id"
+JOIN
+  usuarios."usuario" u ON c."idUsuario" = u."idPersona"  -- Ajustado aquí
+WHERE
+  u."idPersona" = :idPersona  -- Ajustado aquí
+GROUP BY
+  dc."idCompra", c."fecha", u."nombreUsuario"
+ORDER BY
+  c."fecha" DESC;
+
+
+* */
 
 module.exports = {
     obtenerTopUsuarios,
@@ -312,6 +547,8 @@ module.exports = {
     compraMasAltaYbaja,
     comprasPorFormaDeEntrega,
     productosMasComprados,
+    marcasMasVendidas,
+    categoriasMasVendidas
 
 
 
