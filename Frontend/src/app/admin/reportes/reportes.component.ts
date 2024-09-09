@@ -13,51 +13,85 @@ import { PageOrientation, PageSize, Style } from 'pdfmake/interfaces';
 export class ReportesComponent {
   tipo: String = "";
   fecha!: String;
-  idUsuario: number = 0;
-  estado!:number;
+  cantidad: number = 5;
+  estado!: number;
 
-  estadoCompras:any[] = [];
+  estadoCompras: any[] = [];
   cabeceras: string[] = [];
   valores: any[] = [];
-  ObjectPdf:any;
+  ObjectPdf: any;
   constructor(private service: ReportesService) {
-    
+
   }
 
   generarReporte() {
-
-    console.log("tipo", this.tipo);
-    switch (this.tipo) {
-      case "fecha":
-        this.reportexFecha()
-        break;
-      case "usuario":
-        this.reportexUsuario()
-        break;
-      case "estado":
-        this.reportexEstadoCompra()
-        break;
-      case "topUsuarios":
-        this.topUsuarios()
-        break;
+    if (this.cantidad > 0) {
+      switch (this.tipo) {
+        case "fecha":
+          this.reportexFecha()
+          break;
+        case "estado":
+          this.reportexEstadoCompra()
+          break;
+        case "topUsuarios":
+          this.topUsuarios()
+          break;
+        case "totalUsuarios":
+          this.totalCompraUsuario()
+          break;
+        case "masAlta":
+          this.compraMasAlta();
+          break;
+        case "masBaja":
+          this.compraMasBaja();
+          break;
+        case "promedio":
+          this.promedio();
+          break;
+        case "producto":
+          this.productosMasVendidos();
+          break;
+        case "marcas":
+          this.marcasMasVendidos();
+          break;
+        case "categorias":
+          this.categoriasMasVendidos();
+          break;
+      }
     }
   }
 
-  topUsuarios(){
-    this.service.topUsuariosCompras().subscribe({
-      next:(response:any)=>{
+  topUsuarios() {
+    this.service.topUsuariosCompras(this.cantidad).subscribe({
+      next: (response: any) => {
         console.log(response);
-        let arreglo: any[] = response.data
-        let primero = arreglo[0]
-        this.cabeceras = Object.keys(primero)
-        this.valores = arreglo.map(item => ({
-          cantidadCompras: item.cantidadcompras,
-          idUsuario: item.idUsuario,
-          nombreUsuario: item.nombreUsuario
-        }));
+        this.llenarArreglos2(response, ["idUsuario", "nombreUsuario", "cantidadProductosComprados", "cantidadCompras"])
       },
-      error :(err)=>{
+      error: (err) => {
         console.log(err);
+      }
+    })
+  }
+
+  productosMasVendidos() {
+    this.service.productoMasVendido(this.cantidad).subscribe({
+      next: (response: any) => {
+        this.llenarArreglos2(response, ["cantidadVendida", "dineroGenerado", "nombreProducto"])
+      }
+    })
+  }
+  categoriasMasVendidos() {
+    this.service.categoriasMasVendido(this.cantidad).subscribe({
+      next: (response: any) => {
+        this.llenarArreglos2(response, ["cantidadVendida", "dineroGenerado", "nombreCategoria"])
+      }
+    })
+  }
+  marcasMasVendidos() {
+    this.service.marcasMasVendido(this.cantidad).subscribe({
+      next: (response: any) => {
+        this.llenarArreglos2(response, ["cantidadVendida", "dineroGenerado", "nombreMarca"])
+
       }
     })
   }
@@ -69,13 +103,29 @@ export class ReportesComponent {
       },
       error: (err) => {
         console.log(err);
-        
+
       }
     })
   }
 
-  reportexUsuario() {
-    this.service.getComprasxUsuario(this.idUsuario).subscribe({
+  totalCompraUsuario() {
+    this.service.totalCompraUsuario(this.cantidad).subscribe({
+      next: (response: any) => {
+        this.llenarArreglos2(response, ["idUsuario", "nombreUsuario", "numeroCompras", "totalCompras"])
+      }
+    })
+  }
+
+  promedio() {
+    this.service.promedioCompraUsuario(this.cantidad).subscribe({
+      next: (response: any) => {
+        this.llenarArreglos2(response, ["idUsuario", "nombreUsuario", "promedioCompra"])
+      }
+    })
+  }
+
+  reportexUsuario(opciones: any) {
+    this.service.getComprasxUsuario(opciones.idUsuario).subscribe({
       next: (response: any) => {
         this.llenarArreglos(response)
       },
@@ -86,7 +136,7 @@ export class ReportesComponent {
     })
   }
 
-  reportexEstadoCompra(){
+  reportexEstadoCompra() {
     this.service.getComprasxEstado(this.estado).subscribe({
       next: (response: any) => {
         this.llenarArreglos(response)
@@ -98,41 +148,78 @@ export class ReportesComponent {
     })
   }
 
-  getEstadoCompras(){
+  compraMasAlta() {
+    this.service.compraMasAltayBaja().subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.llenarArreglos2(response, ["compraMasAlta", "fechaCompraMasAlta", "usuarioCompraMasAlta"])
+      }
+    })
+  }
+  compraMasBaja() {
+    this.service.compraMasAltayBaja().subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.llenarArreglos2(response, ["compraMasBaja", "fechaCompraMasBaja", "usuarioCompraMasBaja"])
+      }
+    })
+  }
+
+
+  getEstadoCompras() {
 
   }
 
   llenarArreglos(response: any) {
     let arreglo: any[] = response.compras
-    if(response.compras > 1){
-    let primero = arreglo[0]
-    this.cabeceras = Object.keys(primero)
-    this.valores = arreglo.map(item => ({
-      id: item.id,
-      nit: item.nit,
-      precioTotal: item.precioTotal,
-      fecha: item.fecha,
-      recargo: item.recargo,
-      direccionEntrega: item.direccionEntrega,
-      usuario: item.usuario.nombreUsuario,
-      estadoCompra: item.estadoCompra.estado,
-      formaEntrega: item.formaEntrega.tipo
-    }));
+    if (response.compras && response.compras.length > 0) {
+      let primero = arreglo[0]
+      this.cabeceras = Object.keys(primero)
+      this.valores = arreglo.map(item => ({
+        id: item.id,
+        nit: item.nit,
+        precioTotal: item.precioTotal,
+        fecha: item.fecha,
+        recargo: item.recargo,
+        direccionEntrega: item.direccionEntrega,
+        usuario: item.usuario.nombreUsuario,
+        estadoCompra: item.estadoCompra.estado,
+        formaEntrega: item.formaEntrega.tipo,
+        idUsuario: item.usuario.id
+      }))
+    }
   }
+
+  llenarArreglos2(response: any, principal: string[]) {
+    let arreglo: any[] = response.data
+    if (response.data && response.data.length > 0) {
+      let primero = arreglo[0]
+      this.cabeceras = principal.filter(key => Object.keys(primero).includes(key));
+      this.valores = arreglo.map(item => {
+        let mappedItem: any = {};
+        principal.forEach(key => {
+          mappedItem[key] = item[key] || ''; // Si no existe, asigna una cadena vacía
+        });
+        return mappedItem;
+      });
+    }
   }
 
   objectValues(obj: any): any[] {
     return Object.values(obj);
   }
 
-  descargarPdf(){
+  objectKeys(obj: any): string[] {
+    return Object.keys(obj);
+  }
+  descargarPdf() {
     console.log(this.valores);
     const documentDefinition = {
       pageSize: 'A4' as PageSize,
-      pageOrientation: 'landscape' as PageOrientation, 
+      pageOrientation: 'landscape' as PageOrientation,
       content: [
         {
-          text: 'Reporte',
+          text: "REPORTE GENERADO",
           style: 'header'
         },
         {

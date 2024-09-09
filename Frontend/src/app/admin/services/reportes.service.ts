@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { CookieOptions, CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment.development';
 import { ReporteGeneral } from 'src/app/interfaces/reporteGeneral.interface';
@@ -30,16 +30,40 @@ export class ReportesService {
     return this.http.get(`${this.url}/compras/comprasPorEstadoCompra/${idEstadoCompra}`,{withCredentials:true})  
   }
 
-  public topUsuariosCompras(){
-    return this.http.get<ReporteGeneral[]>(`${this.url}/reportes/topUsuariosCompras`, { withCredentials: true });
+  public topUsuariosCompras(cantidad:number){
+    let parametros = new HttpParams()
+      .set("cantidad",cantidad)
+    return this.http.get<ReporteGeneral[]>(`${this.url}/reportes/topUsuariosCompras`, {params:parametros, withCredentials: true });
   }
 
-  public totalCompraUsuario(){
-    return this.http.get<ReporteGeneral[]>(`${this.url}/reportes/totalCompraUsuario`, { withCredentials: true });
+  public totalCompraUsuario(cantidad:number){
+    let parametros = new HttpParams()
+      .set("cantidad",cantidad)
+    return this.http.get<ReporteGeneral[]>(`${this.url}/reportes/totalCompraUsuario`, {params:parametros, withCredentials: true });
   }
 
   public compraMasAltayBaja(){
     return this.http.get<ReporteGeneral[]>(`${this.url}/reportes/compraMasAltaYBaja`, { withCredentials: true });
   }
 
+  public promedioCompraUsuario(cantidad:number){
+    let parametros = new HttpParams()
+      .set("cantidad",cantidad)
+    return this.http.get<ReporteGeneral[]>(`${this.url}/reportes/promedioCompraUsuario`, { params:parametros,withCredentials: true });  
+  }
+  public productoMasVendido(cantidad:number){
+    let parametros = new HttpParams()
+      .set("cantidad",cantidad)
+    return this.http.get<ReporteGeneral[]>(`${this.url}/reportes/productosMasComprados`, {params:parametros, withCredentials: true });  
+  }
+  public marcasMasVendido(cantidad:number){
+    let parametros = new HttpParams()
+      .set("cantidad",cantidad)
+    return this.http.get<ReporteGeneral[]>(`${this.url}/reportes/marcasMasVendidas`, {params:parametros, withCredentials: true });  
+  }
+  public categoriasMasVendido(cantidad:number){
+    let parametros = new HttpParams()
+      .set("cantidad",cantidad)
+    return this.http.get<ReporteGeneral[]>(`${this.url}/reportes/CategoriasMasVendidas`,{params:parametros, withCredentials: true});  
+  }
 }
