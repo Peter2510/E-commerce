@@ -10,6 +10,7 @@ const { manejoErrores } = require("../utils/manejoErrores.utils");
 const { where } = require("sequelize");
 const { Op } = require('sequelize');
 const { now } = require("sequelize/lib/utils");
+const Usuario = require("../models/usuario");
 
 
 
@@ -19,11 +20,25 @@ const ingresoMayorCantidadProducto = async (req, res) => {
         const { id } = req.params;
         const { cantidad } = req.body;
 
+        const minimoInventario = await Producto.findOne({ where: { id: id } });
+        let valor = 0;
+        console.log(minimoInventario.dataValues.minimoInventario);
+        
+        if (minimoInventario.dataValues.minimoInventario < cantidad) {
+            valor = 1;
+        } else if (minimoInventario.dataValues.minimoInventario >= cantidad && cantidad > 0) {
+            valor = 3;
+            
+        } else {
+            valor = 2;
 
+        }
+        console.log(valor);
+        
         // aca se obtiene el elemento y se le agrega mas, verifica si no tiene nada lo crea
         const [inventarioRegistrado, created] = await Inventario.findOrCreate({
             where: { idproducto: id },  
-            defaults: { cantidadtotal: cantidad, idestadoinventario: 1, idproducto: id }     
+            defaults: { cantidadtotal: cantidad, idestadoinventario: Number(valor), idproducto: id }     
         });
         
         //aca si no estaba creco lo actualiza con el incremento
