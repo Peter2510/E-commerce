@@ -15,15 +15,14 @@ const {
 
 const creacionEmpresa = async (req, res) => {
     const t = await sequelize.transaction();
-
   try {
     const {tienda} = req.body;
     const { imagen } = req.files; 
     const elementoTienda = JSON.parse(tienda)
-    console.log(elementoTienda, imagen, "----------------------------", elementoTienda.tienda.nombre);
+    console.log(elementoTienda, imagen, "----------------------------", elementoTienda.nombre);
     
              //validamos el nombre de la cat 
-        if(!elementoTienda.tienda){
+        if(!elementoTienda){
             await t.rollback();
             return res
                 .status(400)
@@ -48,13 +47,17 @@ const creacionEmpresa = async (req, res) => {
             .json({ ok: false, mensaje: "Error al subir imagen"})
         }
 
-        const nombreImagen = imagen.name;
+    const nombreImagen = imagen.name;
+    console.log(nombreImagen);
+    
         //Se crea 
-        await Tienda.create({nombre: elementoTienda.tienda.nombre, urlLogo: nombreImagen, direccion: elementoTienda.tienda.direccion}, {transaction:t});
+        await Tienda.create({nombre: elementoTienda.nombre, urlLogo: nombreImagen, direccion: elementoTienda.direccion}, {transaction:t});
         await t.commit();
         res.status(201.).json({ok:true, mensaje: "informacion de tienda ingresado correctamente"})
   } catch (error) {
-            await t.rollback();
+    await t.rollback();
+    console.log(error);
+    
         await manejoErrores(error, res, "Tienda");
    }
 }

@@ -11,6 +11,7 @@ router.get(`${api}/obtenerPermisos`, jwtValidacion, permisosContoller.obtenerPer
 router.get(`${api}/obtenerPermisos`, permisosContoller.obtenerPermisos);
 router.post(`${api}/guardarPermisos/:id`, permisosContoller.guardarPermisos);
 router.get(`${api}/obtenerPermisosUsuario/:id`, permisosContoller.obtenerPermisosUsuario);
+router.post(`${api}/creacionPermisos`, permisosContoller.creacionPermisos);
 
 
 

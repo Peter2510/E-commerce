@@ -68,7 +68,7 @@ const obtenerPermisosUsuario = async (req, res) => {
         const permisosUsuario = await PermisosUsuario.findAll(
             {
                 where: { id_empleado: id },
-        attributes: ['id', 'id_empleado', 'id_permiso']    }
+        attributes: [ 'id_empleado', 'id_permiso']    }
         )
 
         console.log(permisosUsuario);
@@ -93,10 +93,40 @@ const obtenerPermisosUsuario = async (req, res) => {
 }
 
 
+const creacionPermisos = async (req, res) => {
+      const t = await sequelize.transaction();
 
+    try {
+
+        const { tipos, tipoarea } = req.body
+        
+
+
+        //crear una tupla en la tabla 
+        const nuevoIngreso = await Permisos.create({
+            tipo: tipos, tipoarea:tipoarea
+        }, { transaction: t });
+
+        if (nuevoIngreso) {
+            
+              await t.commit();
+            return res.json({ ok: true });
+            
+        }
+        return res.json({ ok: false });
+
+        
+    } catch (error) {
+        await t.rollback();
+
+           await manejoErrores(error, res, "permisos");
+        
+    }
+}
 
 module.exports = {
     obtenerPermisos: obtenerPermisos,
     guardarPermisos: guardarPermisos,
     obtenerPermisosUsuario: obtenerPermisosUsuario,
+    creacionPermisos
 }

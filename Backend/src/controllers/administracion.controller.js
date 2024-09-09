@@ -143,6 +143,40 @@ const obtenerAdminPorId = async (req, res) =>{
 
 }
 
+
+const obtenerAyudantePorId = async (req, res) =>{
+
+  try {
+
+    const {id} = req.params;
+
+      const usuario = await Usuario.findOne({
+      where: {id: id, idTipoUsuario: 2},
+      attributes: ['id', 'nombreUsuario', 'a2fActivo', 'idPersona', 'idTipoUsuario', 'activo']
+    });
+
+    if(!usuario){
+      return res.status(404).json({ok: false, mensaje: 'Usuario no encontrado'});
+    }
+
+    const persona = await Persona.findOne({
+      where: {id: usuario.idPersona},
+      attributes: ['id', 'nombre', 'correoElectronico', 'fechaCreacion',"direccion"]
+    });
+
+    if(!usuario){
+      return res.status(404).json({ok: false, mensaje: 'Usuario no encontrado'});
+    }
+
+    res.status(200).json({ok: true , usuario: usuario, persona: persona});
+
+    
+  } catch (error) {
+    await manejoErrores(error, res, 'Usuario')
+  }
+
+}
+
 const obtenerEmpleados = async (req, res) => {
   try {
 
@@ -285,5 +319,6 @@ module.exports = {
     obtenerAdminPorId,
     obtenerEmpleados,
     crearAdmin,
-    obtenerReporteEstadisticas
+  obtenerReporteEstadisticas,
+    obtenerAyudantePorId
 };
