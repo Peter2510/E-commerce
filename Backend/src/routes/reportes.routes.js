@@ -12,7 +12,9 @@ router.get(`${api}/totalCompraUsuario`, reportesController.totalComprasPorUsuari
 router.get(`${api}/promedioCompraUsuario`, reportesController.promedioCompraPorUsuario)
 router.get(`${api}/compraMasAltaYBaja`, reportesController.compraMasAltaYbaja)
 router.get(`${api}/formasDeEntrega`, reportesController.comprasPorFormaDeEntrega)
-//router.get(`${api}/formasDeEntrega`, reportesController.comprasPorFormaDeEntrega)
+router.get(`${api}/productosMasComprados`, reportesController.productosMasComprados)
+router.get(`${api}/marcasMasVendidas`, reportesController.marcasMasVendidas)
+router.get(`${api}/CategoriasMasVendidas`, reportesController.categoriasMasVendidas)
 
 
 module.exports = router;

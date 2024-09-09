@@ -6441,7 +6441,599 @@ const swaggerOptions = {
             }
           }
         }
+      },
+      "/api/v1/reportes/topUsuariosCompras": {
+  "get": {
+    "summary": "Obtener el top de usuarios por cantidad de compras",
+    "tags": ["Reportes"],
+    "description": "Obtiene una lista de los usuarios con mayor cantidad de compras. Puedes especificar un límite con el parámetro 'cantidad'.",
+    "parameters": [
+      {
+        "name": "cantidad",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "example": 5
+        }
       }
+    ],
+    "responses": {
+      "200": {
+        "description": "Top usuarios por compras obtenido correctamente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Top usuarios por compras obtenido correctamente"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idUsuario": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "nombreUsuario": {
+                        "type": "string",
+                        "example": "usuario123"
+                      },
+                      "cantidadCompras": {
+                        "type": "integer",
+                        "example": 10
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Parámetros no permitidos en la solicitud",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Parámetros no permitidos en la solicitud. Este endpoint solo acepta el parámetro 'cantidad'."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+"/api/v1/reportes/totalCompraUsuario": {
+  "get": {
+    "summary": "Obtener el total de compras por usuario",
+    "tags": ["Reportes"],
+    "description": "Obtiene una lista del total de compras realizadas por cada usuario. Puedes especificar un límite con el parámetro 'cantidad'.",
+    "parameters": [
+      {
+        "name": "cantidad",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "example": 10
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Total de compras por usuario obtenido correctamente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Total de compras por usuario obtenido correctamente"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idUsuario": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "nombreUsuario": {
+                        "type": "string",
+                        "example": "usuario123"
+                      },
+                      "numeroCompras": {
+                        "type": "integer",
+                        "example": 20
+                      },
+                      "totalCompras": {
+                        "type": "string",
+                        "example": "1500.00"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Parámetros no permitidos en la solicitud",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Parámetros no permitidos en la solicitud. Este endpoint solo acepta el parámetro 'cantidad'."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+"/api/v1/reportes/promedioCompraUsuario": {
+  "get": {
+    "summary": "Obtener el promedio de compra por usuario",
+    "tags": ["Reportes"],
+    "description": "Obtiene una lista del promedio de compra por usuario. Puedes especificar un límite con el parámetro 'cantidad'.",
+    "parameters": [
+      {
+        "name": "cantidad",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "example": 5
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Promedio de compra por usuario obtenido correctamente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Promedio de compra por usuario obtenido correctamente"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idUsuario": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "nombreUsuario": {
+                        "type": "string",
+                        "example": "usuario123"
+                      },
+                      "promedioCompra": {
+                        "type": "string",
+                        "example": "75.00"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Parámetros no permitidos en la solicitud",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Parámetros no permitidos en la solicitud. Este endpoint solo acepta el parámetro 'cantidad'."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+"/api/v1/reportes/compraMasAltaYBaja": {
+  "get": {
+    "summary": "Obtener la compra más alta y más baja",
+    "tags": ["Reportes"],
+    "description": "Obtiene la compra más alta y la más baja, junto con la fecha y el usuario correspondiente.",
+    "parameters": [],
+    "responses": {
+      "200": {
+        "description": "Compra más alta y más baja obtenidas correctamente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Compra más alta y más baja obtenidas correctamente, junto con el usuario correspondiente"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "compraMasBaja": {
+                      "type": "string",
+                      "example": "100.00"
+                    },
+                    "fechaCompraMasBaja": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-09-01T10:00:00Z"
+                    },
+                    "compraMasAlta": {
+                      "type": "string",
+                      "example": "1000.00"
+                    },
+                    "fechaCompraMasAlta": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-09-01T12:00:00Z"
+                    },
+                    "usuarioCompraMasBaja": {
+                      "type": "string",
+                      "example": "usuario456"
+                    },
+                    "usuarioCompraMasAlta": {
+                      "type": "string",
+                      "example": "usuario789"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+"/api/v1/reportes/formasDeEntrega": {
+  "get": {
+    "summary": "Obtener compras por forma de entrega",
+    "tags": ["Reportes"],
+    "description": "Obtiene una lista de las formas de entrega y el número de compras para cada una. ",
+    "parameters": [],
+    "responses": {
+      "200": {
+        "description": "Compras por forma de entrega obtenidas correctamente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Compras por forma de entrega obtenidas correctamente"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "formaDeEntrega": {
+                        "type": "string",
+                        "example": "Envío a domicilio"
+                      },
+                      "cantidadCompras": {
+                        "type": "integer",
+                        "example": 100
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+"/api/v1/productosMasComprados": {
+  "get": {
+    "summary": "Obtener los productos más comprados",
+    "tags": ["Reportes"],
+    "description": "Obtiene una lista de los productos más comprados. Puedes especificar un límite con el parámetro 'cantidad'.",
+    "parameters": [
+      {
+        "name": "cantidad",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "example": 5
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Productos más comprados obtenidos correctamente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Productos más comprados obtenidos correctamente"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "nombreProducto": {
+                        "type": "string",
+                        "example": "Producto X"
+                      },
+                      "cantidadVendida": {
+                        "type": "integer",
+                        "example": 50
+                      },
+                      "dineroGenerado": {
+                        "type": "string",
+                        "example": "1500.00"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Parámetros no permitidos en la solicitud",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Parámetros no permitidos en la solicitud. Este endpoint solo acepta el parámetro 'cantidad'."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+"/api/v1/marcasMasVendidas": {
+  "get": {
+    "summary": "Obtener las marcas más vendidas",
+    "tags": ["Reportes"],
+    "description": "Obtiene una lista de las marcas más vendidas. Puedes especificar un límite con el parámetro 'cantidad'.",
+    "parameters": [
+      {
+        "name": "cantidad",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "example": 5
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Marcas más vendidas obtenidas correctamente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Marcas más vendidas obtenidas correctamente"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "nombreMarca": {
+                        "type": "string",
+                        "example": "Marca Y"
+                      },
+                      "cantidadVendida": {
+                        "type": "integer",
+                        "example": 100
+                      },
+                      "dineroGenerado": {
+                        "type": "string",
+                        "example": "5000.00"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Parámetros no permitidos en la solicitud",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Parámetros no permitidos en la solicitud. Este endpoint solo acepta el parámetro 'cantidad'."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+"/api/v1/categoriasMasVendidas?cantidad=n": {
+  "get": {
+    "summary": "Obtener las categorías más vendidas",
+    "tags": ["Reportes"],
+    "description": "Obtiene una lista de las categorías más vendidas. Puedes especificar un límite con el parámetro 'cantidad'.",
+    "parameters": [
+      {
+        "name": "cantidad",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "example": 5
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Categorías más vendidas obtenidas correctamente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Categorías más vendidas obtenidas correctamente"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "nombreCategoria": {
+                        "type": "string",
+                        "example": "Categoría Z"
+                      },
+                      "cantidadVendida": {
+                        "type": "integer",
+                        "example": 30
+                      },
+                      "dineroGenerado": {
+                        "type": "string",
+                        "example": "2000.00"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Parámetros no permitidos en la solicitud",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Parámetros no permitidos en la solicitud. Este endpoint solo acepta el parámetro 'cantidad'."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+
     }
   },
   apis: ["./routes/*.js"],
