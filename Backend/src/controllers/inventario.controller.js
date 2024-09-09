@@ -98,8 +98,41 @@ const obtenerEstadosInventario = async (req, res) => {
 }
 
 
+const creacionTipoEstadoInventario = async (req, res) => {
+      const t = await sequelize.transaction();
+
+    try {
+
+        const { estado } = req.body
+        
+
+
+        //crear una tupla en la tabla 
+        const nuevoIngreso = await EstadoInventario.create({
+            estado: estado,
+        }, { transaction: t });
+
+        if (nuevoIngreso) {
+            
+              await t.commit();
+            return res.json({ ok: true });
+            
+        }
+        return res.json({ ok: false });
+
+        
+    } catch (error) {
+        await t.rollback();
+
+           await manejoErrores(error, res, "estadoinventario");
+        
+    }
+}
+
+
 module.exports = {
     ingresoMayorCantidadProducto,
     ingresoModificacionCantidesUsuarioProducto,
-    obtenerEstadosInventario
+    obtenerEstadosInventario,
+    creacionTipoEstadoInventario
 }

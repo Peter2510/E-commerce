@@ -28,6 +28,7 @@ router.delete(`${api}/eliminarProducto/:id`, ProductosController.eliminarProduct
 router.put(`${api}/ingresoMayorCantidadProducto/:id`,InventarioController.ingresoMayorCantidadProducto);
 router.get(`${api}/obtenerEstadosInventario/`, InventarioController.obtenerEstadosInventario);
 router.post(`${api}/ingresoModificacionCantidesUsuarioProducto/`, InventarioController.ingresoModificacionCantidesUsuarioProducto);
+router.post(`${api}/creacionTipoEstadoInventario/`, InventarioController.creacionTipoEstadoInventario);
 
 
 

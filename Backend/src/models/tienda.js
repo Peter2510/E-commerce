@@ -4,7 +4,7 @@ const Producto = require('./producto');
 const Usuario = require('./usuario');
 
 const tienda = sequelize.define(
-  'tienda',
+  "Tienda",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -52,8 +52,8 @@ const tienda = sequelize.define(
       },
   },
   {
-    schema: 'empresa',
-      tableName: 'tienda',
+    schema: "empresa",
+      tableName: "tienda",
     timestamps: false, 
     
   }
