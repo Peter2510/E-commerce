@@ -26,10 +26,13 @@ export class GestionRolesComponent implements OnInit {
   correo!: string;
   direccion!: string;
   idTipoFormaPago!: number;
+  idTipoUsuario!: number;
   nombreUsuario!: string;
   contrasenia!: string;
   contraseniaRepeticion!: string;
 
+  isModalVisible: boolean = false;
+  seleccionado: any;
   obtenerRoles() {
     this.servicio.obtenerRoles().subscribe({
       next: (r_success: any) => {
@@ -59,8 +62,10 @@ export class GestionRolesComponent implements OnInit {
       next: (r_success: any) => {
         console.log(r_success.empleados);
         r_success.empleados.forEach((element: any) => {
-          this.empleados.push(element.usuario);
-          this.personas.push(element.persona);
+          if (element.usuario.idTipoUsuario !== 1) {
+            this.empleados.push(element.usuario);
+            this.personas.push(element.persona);
+          }
         });
       },
       error: (err) => {
@@ -114,9 +119,25 @@ export class GestionRolesComponent implements OnInit {
 
     if (this.contrasenia === this.contraseniaRepeticion) {
       this.servicio
-        .crearUsuario(this.nombreUsuario, this.contrasenia, nuevaPersona)
+        .crearUsuario(
+          this.nombreUsuario,
+          this.contrasenia,
+          nuevaPersona,
+          this.idTipoUsuario
+        )
         .subscribe();
     }
+  }
+
+  //abre los modals
+  openModal(elemento?: User) {
+    this.isModalVisible = true;
+    this.seleccionado = elemento;
+  }
+
+  closeModal() {
+    this.isModalVisible = false;
+    console.log(this.isModalVisible);
   }
 
   ngOnInit(): void {
