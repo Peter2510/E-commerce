@@ -1,5 +1,5 @@
 <div fxLayout="column" class="buscador-container">
-    <div>
+    <div fxLayout="column">
         <h1 class="title">Buscador</h1>
     </div>
     <div class="search-bar">
@@ -14,7 +14,7 @@
         </mat-form-field>
     </div>
 </div>
-
+    
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
     <div *ngFor="let product of productosSug" class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform transform hover:scale-105">
       <app-producto-card [product]="product"></app-producto-card>
