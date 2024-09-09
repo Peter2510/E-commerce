@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal, Signal } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { tap } from 'rxjs';
+import { AuthService } from 'src/app/auth/services/auth.service';
 import { tienda } from 'src/app/interfaces/tienda.interface';
 import { environment } from 'src/environments/environment';
 
@@ -17,7 +18,7 @@ export class TiendaServicioService {
   public isLoading = signal<boolean>(true);
   productosActivos: any;
 
-  constructor(private http: HttpClient, private cookie: CookieService) {
+  constructor(private http: HttpClient, private cookie: CookieService, private login: AuthService) {
     this.obtenerInfoEmpresa();
   }
 
@@ -45,7 +46,12 @@ export class TiendaServicioService {
     datos.append('tienda', JSON.stringify(tienda));
     datos.append('password', password);
 
-    datos.append('idUsuario', JSON.parse(this.cookie.get('token2')).id);
+    const idUsuario = this.login.getIdUsuario()
+
+    if(idUsuario!=null){
+      datos.append('idUsuario', idUsuario.toString());
+    }
+    
     datos.append('imagenCambiar', imagen);
     datos.append('imagenActualCambiar', imagenActualCambiar);
     return this.http.put(
