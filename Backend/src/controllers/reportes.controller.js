@@ -51,19 +51,22 @@ const obtenerTopUsuarios = async (req, res) => {
       // Ejecuta la consulta SQL
       const resultados = await sequelize.query(
           `
-            SELECT
-              c."idUsuario",
-              u."nombreUsuario",
-              COUNT(*) AS cantidadCompras
-            FROM
-              compras.compra c
-            JOIN
-              usuarios.usuario u ON c."idUsuario" = u.id
-            GROUP BY
-              c."idUsuario", u."nombreUsuario"
-            ORDER BY
-              cantidadCompras DESC
-            LIMIT :cantidad
+             SELECT
+                c."idUsuario",
+                u."nombreUsuario",
+                COUNT(c."id") AS "cantidadCompras",
+                SUM(dc."cantidadProducto") AS "cantidadProductosComprados"
+              FROM
+                compras."compra" c
+              JOIN
+                usuarios."usuario" u ON c."idUsuario" = u."id"
+              JOIN
+                compras."detalleCompra" dc ON c."id" = dc."idCompra"
+              GROUP BY
+                c."idUsuario", u."nombreUsuario"
+              ORDER BY
+                "cantidadCompras" DESC
+              LIMIT :cantidad;
           `,
           {
               replacements: { cantidad: cantidadFinal },
