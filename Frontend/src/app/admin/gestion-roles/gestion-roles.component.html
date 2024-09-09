@@ -356,7 +356,7 @@
               <label
                 for="countries"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Seleccione un tipo de pago</label
+                >Seleccione un tipo de usuario</label
               >
               <select
                 id="tipoPagoModal"
@@ -366,7 +366,7 @@
               >
                 <option selected>Tipo</option>
                 <option
-                  *ngFor="let item of this.tiposPago; index as i"
+                  *ngFor="let item of this.tiposRoles; index as i"
                   value="{{ item.id }}"
                 >
                   {{ item.tipo }}
