@@ -63,7 +63,7 @@ const obtenerPermisosUsuario = async (req, res) => {
     try {
         //valores
         const { id } = req.params
-        todosPermisos = []
+        const todosPermisos = []
         
         const permisosUsuario = await PermisosUsuario.findAll(
             {

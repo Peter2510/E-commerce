@@ -1,8 +1,9 @@
 const { sequelize } = require("../configs/database.configs");
 const Producto = require("../models/producto");
-const Marca = require("../models/marca");
+const Usuario = require("../models/usuario");
 const Tienda = require("../models/tienda");
-const UrlImangen = require("../models/imagenProducto");
+const bcrypt = require("bcrypt");
+
 const { manejoErrores } = require("../utils/manejoErrores.utils");
 const {
   subirArchivo,
@@ -10,10 +11,7 @@ const {
   eliminarArchivo,
   generarNombreArchivo,
 } = require("../utils/manejoArchivos.utils");
-const { where } = require("sequelize");
-const { Op } = require("sequelize");
-const inventario = require("../models/inventario");
-const estadoInventario = require("../models/estadoInventario");
+
 
 const creacionEmpresa = async (req, res) => {
     const t = await sequelize.transaction();
@@ -88,7 +86,81 @@ const obtenerElementos = async (req, res) => {
     }
 }
 
+
+const editarEmpresa = async (req, res) => {
+  const t = await sequelize.transaction(); 
+  try {
+      const {tienda, password, idUsuario, imagenActualCambiar} = req.body;
+    const { imagenCambiar } = req.files || '';
+    const elementoTienda = JSON.parse(tienda)
+
+    console.log(elementoTienda, password, idUsuario, imagenCambiar);
+    
+    //no viene la info de tienda
+    if (!elementoTienda) {
+      t.rollback();
+                return res
+            .status(400)
+            .json({ok:false, mensaje:"La informacion de la tienda es requerida"})
+    }
+    
+    const buscarExistencia = await Usuario.findOne(
+      {where: {id: idUsuario}}
+    )
+    console.log(buscarExistencia);
+    
+    const contraseniaValida  = await bcrypt.compare(password, buscarExistencia.contrasenia);
+    console.log(contraseniaValida);
+
+
+    if (!contraseniaValida) {
+      t.rollback();
+
+      return res.status(401).json({ ok: false, mensaje: "Credenciales incorrectas" });
+    }
+    
+    if (imagenCambiar) {
+            const eliminarImagen = await eliminarArchivo(imagenActualCambiar);
+
+            if (eliminarImagen.$metadata.httpStatusCode !== 204) {
+                await t.rollback();
+                return res
+                    .status(500)
+                    .json({ ok: false, mensaje: "Error al eliminar la imagen" });
+            }
+        
+            imagenCambiar.name = generarNombreArchivo(imagenCambiar);
+
+            const respuesta = await subirArchivo(imagenCambiar);
+
+            if (respuesta.$metadata.httpStatusCode !== 200) {
+                await t.rollback();
+                return res
+                    .status(500)
+                    .json({ ok: false, mensaje: "Error al subir la imagen" });
+            }
+        
+        //si todo esta bien
+        console.log('cambio aca');
+        
+            await Tienda.update({nombre: elementoTienda.nombre, urlLogo:  imagenCambiar.name, direccion: elementoTienda.direccion},{where: {id: elementoTienda.id}} ,{transaction:t});
+    } else {
+        console.log('cambio aca2');
+
+            await Tienda.update({nombre: elementoTienda.nombre, direccion: elementoTienda.direccion},{where: {id: elementoTienda.id}} , {transaction:t});
+
+    }
+       await t.commit(); 
+        return res.status(200).json({ ok: true, mensaje: "empresa actualizada correctamente" });
+
+    } catch (error) {  
+        await t.rollback(); 
+        await manejoErrores(error, res, "Tienda");
+    }
+}
+
 module.exports = {
     creacionEmpresa,
-    obtenerElementos
+  obtenerElementos,
+    editarEmpresa
 }

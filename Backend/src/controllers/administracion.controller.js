@@ -127,7 +127,7 @@ const obtenerAdminPorId = async (req, res) =>{
 
     const persona = await Persona.findOne({
       where: {id: usuario.idPersona},
-      attributes: ['id', 'nombre', 'correoElectronico', 'fechaCreacion']
+      attributes: ['id', 'nombre', 'correoElectronico', 'fechaCreacion',"direccion"]
     });
 
     if(!usuario){
