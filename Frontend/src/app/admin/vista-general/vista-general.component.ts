@@ -13,8 +13,14 @@ import { AuthService } from 'src/app/auth/services/auth.service';
   styleUrls: ['./vista-general.component.css'],
 })
 export class VistaGeneralComponent {
-  usuario!: any;
+  
   reportes: ReporteGeneral[] = [];
+  nombreUsuario =this.servicio.getNombreUsuario();
+  a2fActivo = this.servicio.getA2f();
+  idTipoUsuario=this.servicio.getIdTipoUsuario();
+  nombre=this.servicio.getNombre();
+  direccion= this.servicio.getDirecccion()
+  fechaCreacion = this.servicio.getFechaCreacion()
   constructor(
     private cookie: CookieService,
     private service: ServicioAdminService,
@@ -23,6 +29,7 @@ export class VistaGeneralComponent {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.a2fActivo);
     const id_cliente = this.servicio.getIdTipoUsuario();
     if (id_cliente != null) {
       this.service.obtenerEmpleadosId(id_cliente).subscribe({
@@ -31,9 +38,6 @@ export class VistaGeneralComponent {
 
           const persona = response.persona;
           const usuario = response.usuario;
-          this.usuario = usuario;
-          this.usuario.persona = persona;
-          console.log(this.usuario.persona);
         },
         error: (error) => { },
       });

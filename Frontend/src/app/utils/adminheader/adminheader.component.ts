@@ -60,11 +60,9 @@ export class AdminheaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     const id_cliente = this.loginService.getIdUsuario();
 
     if (id_cliente != null) {
-
       this.idUsuario = id_cliente;
 
       this.service.obtenerEmpleadosId(this.idUsuario).subscribe({
@@ -77,12 +75,10 @@ export class AdminheaderComponent implements OnInit {
           this.usuario.persona = persona;
           console.log(this.usuario.id);
         },
-        error: (error) => { },
+        error: (error) => {},
       });
 
       console.log(this.servicioTienda.infoEmpresa(), this.empresa);
     }
-
-
   }
 }

@@ -25,6 +25,7 @@ export class Carrito {
 
   export class ItemCarrito {
     producto?: Producto;
+    id?: number
     cantidad: number;
   
     constructor(
@@ -33,6 +34,7 @@ export class Carrito {
       ) {
         this.producto = producto ;
         this.cantidad = cantidad || 0;
+        this.id= producto?.id;
       }
   }
 

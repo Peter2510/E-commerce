@@ -56,6 +56,16 @@ export class CarritoComprasService {
     return this.carrito;
   }
 
+  getProductosPedido(){
+    //const productos = this.carrito.itemsCarrito!.map(item => item.producto?.id, item.cantidad);
+    const productos = this.carrito.itemsCarrito!.map(item => ({
+      id: item.producto?.id,
+      cantidad: item.cantidad
+    }));
+    return productos;
+    
+  }
+
   getCantidadItems():number{
     return this.carrito.itemsCarrito!.length
   }

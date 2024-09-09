@@ -51,7 +51,6 @@ export class AuthService {
     return null;
   }
 
-  
   //cerrar sesion -> eliminar la cookie
   logout(): void {
     this.cookieService.delete(this.cookieName);
@@ -65,9 +64,11 @@ export class AuthService {
     return null;
   }
 
-  getIdTipoUsuario(): number | null {
+  public getIdTipoUsuario(): number | null {
     const decodedToken = this.decodeToken();
     if (decodedToken && decodedToken.idTipoUsuario) {
+      console.log(decodedToken.idTipoUsuario, '---------');
+
       return decodedToken.idTipoUsuario;
     }
     return null;
@@ -96,6 +97,36 @@ export class AuthService {
     }
     return null;
   }
+  getA2f(): boolean | null {
+    const decodedToken = this.decodeToken();
+    if (decodedToken && decodedToken.a2fActivo) {
+      return decodedToken.a2fActivo;
+    }
+    console.log(decodedToken.a2fActivo);
+    return null;
+  }
 
+  getNombre(): boolean | null {
+    const decodedToken = this.decodeToken();
+    if (decodedToken && decodedToken.nombre) {
+      return decodedToken.nombre;
+    }
+    return null;
+  }
 
+  getDirecccion(): boolean | null {
+    const decodedToken = this.decodeToken();
+    if (decodedToken && decodedToken.direccion) {
+      return decodedToken.direccion;
+    }
+    return null;
+  }
+
+  getFechaCreacion(): boolean | null {
+    const decodedToken = this.decodeToken();
+    if (decodedToken && decodedToken.fechaCreacion) {
+      return decodedToken.fechaCreacion;
+    }
+    return null;
+  }
 }
