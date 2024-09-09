@@ -98,6 +98,7 @@ const verificar = async (req, res) => {
         idUsuario: usuario.id,
         idTipoUsuario: usuario.idTipoUsuario,
         nombreUsuario: usuario.nombreUsuario,
+        a2fActivo: usuario.a2fActivo
       },
       process.env.JWT_KEY,
       { expiresIn: "1h" }
