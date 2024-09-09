@@ -4,13 +4,15 @@ const jwtValidacion = require("../middlewares/jwtValidacion");
 const validarCompra = require("../middlewares/validarCompra");
 const {validarExistenciaUsuarioGet} = require("../middlewares/validacionUsuario");
 const {validarFormaEntregaGet} = require("../middlewares/validarFormaEntrega");
-const {validarEstadoCompraGet, validarEstadoCompraPost} = require("../middlewares/validarEstadoCompra");
+const {validarEstadoCompraGet, validarEstadoCompraPost, validarCreacionEstadoCompra} = require("../middlewares/validarEstadoCompra");
 const {validarExistenciaCompraGet, validarExistenciaCompraPost} = require("../middlewares/validarExistenciaCompra");
 
 const router = express.Router();
 const api = "/api/v1/compras";
 
 router.post(`${api}/registrarCompra`,jwtValidacion,validarCompra,comprasController.registrarCompra);
+
+router.post(`${api}/crearEstadoCompra`, jwtValidacion, validarCreacionEstadoCompra, comprasController.crearEstadoCompra);
 
 router.get(`${api}/compras`, jwtValidacion, comprasController.obtenerCompras);
 router.get(`${api}/Compra/:idCompra`, jwtValidacion, validarExistenciaCompraGet, comprasController.obtenerCompra);

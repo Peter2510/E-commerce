@@ -481,6 +481,28 @@ const actualizarEstadoCompra = async (req, res) => {
   }
 }
 
+const crearEstadoCompra = async (req, res) => {
+  const { estado } = req.body;
+  const t = await sequelize.transaction();
+
+  try {
+    const estadoCompra = await EstadoCompra.create(
+      { estado },
+      { transaction: t }
+    );
+
+    await t.commit();
+
+    res.json({ ok: true, mensaje: "Estado de compra creado" });
+  } catch (error) {
+    await t.rollback();
+    console.log(error);
+    await manejoErrores(error, res, "Estado de compra");
+  }
+}
+
+
+
 module.exports = {
   registrarCompra,
   obtenerCompras,
@@ -498,7 +520,8 @@ module.exports = {
   obtenerComprasPorFechaYEstadoCompraYFormaEntrega,
   obtenerDetalleCompra,
   obtenerCompraYDetalleCompra,
-  actualizarEstadoCompra
+  actualizarEstadoCompra, 
+  crearEstadoCompra
 };
 
 /**
