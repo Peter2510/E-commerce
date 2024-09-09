@@ -151,7 +151,7 @@ const obtenerAyudantePorId = async (req, res) =>{
     const {id} = req.params;
 
       const usuario = await Usuario.findOne({
-      where: {id: id, idTipoUsuario: 2},
+      where: {id: id, idTipoUsuario: 3},
       attributes: ['id', 'nombreUsuario', 'a2fActivo', 'idPersona', 'idTipoUsuario', 'activo']
     });
 
@@ -258,7 +258,7 @@ const crearAdmin = async (req, res) => {
       nombreUsuario,
       contrasenia: hashedPassword,
       idPersona: newPersona.id,
-      idTipoUsuario: 1,
+      idTipoUsuario: idTipoUsuario,
     }, { transaction: t });
 
     await t.commit(); 
