@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment.development';
 import { HttpClient} from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { User } from 'src/app/interfaces/user.interface';
+import { Pedido } from 'src/app/interfaces/pedido.interface';
 import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Injectable({
@@ -42,6 +43,10 @@ export class ClienteService {
     return this.http.get(`${this.baseUrl}/productos/productosRandom/10`);
   }
 
+  listarProductosTodos(){
+    return this.http.get(`${this.baseUrl}/productos/productos`);
+  }
+
   listarProductosCategoria(id:number){
     return this.http.get(`${this.baseUrl}/productos/filtrar/?idCategoria=${id}`);
   }
@@ -62,6 +67,9 @@ export class ClienteService {
     return this.http.get(`${this.baseUrl}/marcas/obtenerMarcas`);
   }
 
+  registrarCompra(pedido: Pedido){
+    return this.http.post(`${this.baseUrl}/compras/registrarCompra`,pedido,{withCredentials:true})
+  }
 
 
 }

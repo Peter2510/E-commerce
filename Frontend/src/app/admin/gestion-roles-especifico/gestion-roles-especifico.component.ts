@@ -11,6 +11,7 @@ import { Person } from 'src/app/interfaces/person.interface';
 import { User } from 'src/app/interfaces/user.interface';
 import { PermisosServiciosService } from '../services/permisos-servicios.service';
 import { tipopermiso } from 'src/app/interfaces/permisos.interface';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-gestion-roles-especifico',
@@ -108,6 +109,12 @@ export class GestionRolesEspecificoComponent
 
   guardarRoles() {
     this.servicioPermisos.guardarRoles(this.permisosNuevos(), this.id);
+    Swal.fire({
+      icon: 'success',
+      title: 'Listo',
+      text:  'Se guardaron cambios en los permisos.',
+    }).then(()=>{window.location.reload()});
+    
   }
 
   ngAfterContentInit(): void {

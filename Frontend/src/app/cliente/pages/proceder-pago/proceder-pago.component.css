@@ -1,0 +1,29 @@
+input[type="text"], input[type="radio"] {
+    margin-bottom: 1rem;
+  }
+  
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: #6b46c1; /* Cambiar el color del borde al hacer foco */
+  }
+  
+  input:focus-visible {
+    border-color: #6b46c1;
+  }
+  
+  button:hover {
+    background-color: #5a3eb0;
+  }
+  
+  button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.5);
+  }
+  

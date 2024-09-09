@@ -13,6 +13,10 @@ import { DetalleProductoComponent } from './pages/detalle-producto/detalle-produ
 import { FormsModule } from '@angular/forms';
 import { ProductoCardComponent } from './pages/producto-card/producto-card.component';
 import { ListadoProductoFiltroComponent } from './pages/listado-producto-filtro/listado-producto-filtro.component';
+import { ProcederPagoComponent } from './pages/proceder-pago/proceder-pago.component';
+
+import { BuscarComponent } from './pages/buscar/buscar.component';
+import { MaterialModule } from '../material/material.module';
 
 @NgModule({
   declarations: [
@@ -24,8 +28,10 @@ import { ListadoProductoFiltroComponent } from './pages/listado-producto-filtro/
     DetalleProductoComponent,
     ProductoCardComponent,
     ListadoProductoFiltroComponent,
+    ProcederPagoComponent,
+    BuscarComponent,
   ],
-  imports: [CommonModule, ClienteRoutingModule, FormsModule],
+  imports: [CommonModule, ClienteRoutingModule, FormsModule, MaterialModule],
   providers: [CookieService],
 })
 export class ClienteModule {}

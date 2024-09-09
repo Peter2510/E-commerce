@@ -14,7 +14,7 @@ export class ListadoProductosComponent {
   marcas!: Marca[];
 
   constructor(private clienteServices: ClienteService){
-    this.obtenerProductos();
+    //this.obtenerProductos();
   }
 
 
