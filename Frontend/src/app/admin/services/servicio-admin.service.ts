@@ -81,7 +81,8 @@ export class ServicioAdminService {
   crearUsuario(
     nombreUsuario: string,
     contrasenia: string,
-    persona: Person
+    persona: Person,
+    idTipoUsuario: number
   ): Observable<tipoUsuario> {
     let forma = {
       nombreUsuario: nombreUsuario,
@@ -93,6 +94,7 @@ export class ServicioAdminService {
       {
         nombreUsuario: nombreUsuario,
         contrasenia: contrasenia,
+        idTipoUsuario: idTipoUsuario,
         persona: persona,
       },
       { withCredentials: true }
@@ -184,6 +186,14 @@ export class ServicioAdminService {
   eliminarMarca(id: number | undefined) {
     return this.http.delete(
       `${environment.baseUrlEnv}/${this.directivaMarcas}/eliminarMarca/${id}`,
+      { withCredentials: true }
+    );
+  }
+
+  //para dar baja
+  darBaja(id: number | undefined) {
+    return this.http.put(
+      `${environment.baseUrlEnv}/${this.directiva}/darBaja/${id}`,
       { withCredentials: true }
     );
   }

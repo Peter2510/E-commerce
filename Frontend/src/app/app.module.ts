@@ -21,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { EliminarProductoComponent } from './admin/productos/eliminar-producto/eliminar-producto.component';
 import { ReportesComponent } from './admin/reportes/reportes.component';
 import { CommonModule } from '@angular/common';
+import { DarBajaComponent } from './admin/dar-baja/dar-baja.component';
 @NgModule({
   declarations: [
     AppComponent,
