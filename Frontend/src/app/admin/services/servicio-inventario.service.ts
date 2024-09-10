@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 import { tap } from 'rxjs';
 import { estadoinventario } from 'src/app/interfaces/inventario.interface';
 import { Producto } from 'src/app/interfaces/producto.interface';
@@ -15,8 +16,8 @@ export class ServicioInventarioService {
   public productosActivos = signal<Producto[]>([]);
   public productosDesactivos = signal<Producto[]>([]);
   public estadosInventario = signal<estadoinventario[]>([]);
-
-  constructor(private http: HttpClient) {
+  token = this.cookieService.get('token');
+  constructor(private http: HttpClient, private cookieService: CookieService) {
     this.obtenerProductosActivos();
     this.obtenerProductosDesactivos();
     this.obtenerEstadosInventario();
@@ -25,7 +26,7 @@ export class ServicioInventarioService {
   obtenerProductosActivos() {
     this.http
       .get(`${environment.baseUrlEnv}/${this.directiva}/productos-activos/`, {
-        withCredentials: true,
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
       })
       .pipe(
         tap((valores: any) => {
@@ -40,7 +41,10 @@ export class ServicioInventarioService {
       .get(
         `${environment.baseUrlEnv}/${this.directiva}/productos-desactivados/`,
         {
-          withCredentials: true,
+          headers: new HttpHeaders().set(
+            'Authorization',
+            `Bearer ${this.token}`
+          ),
         }
       )
       .pipe(
@@ -59,7 +63,7 @@ export class ServicioInventarioService {
       `${environment.baseUrlEnv}/${this.directiva}/cambiarEstadoProducto/` + id,
       { estado: estado },
       {
-        withCredentials: true,
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
       }
     );
   }
@@ -68,10 +72,7 @@ export class ServicioInventarioService {
     return this.http.put(
       `${environment.baseUrlEnv}/${this.directiva}/ingresoMayorCantidadProducto/` +
         id,
-      { cantidad: cantidad },
-      {
-        withCredentials: true,
-      }
+      { cantidad: cantidad }
     );
   }
 
@@ -79,10 +80,7 @@ export class ServicioInventarioService {
   obtenerEstadosInventario() {
     this.http
       .get(
-        `${environment.baseUrlEnv}/${this.directiva}/obtenerEstadosInventario/`,
-        {
-          withCredentials: true,
-        }
+        `${environment.baseUrlEnv}/${this.directiva}/obtenerEstadosInventario/`
       )
       .pipe(
         tap((valores: any) => {

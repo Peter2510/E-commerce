@@ -19,9 +19,7 @@ export class ProductosServicioService {
 
   ObtenerProductos() {
     this.http
-      .get(`${environment.baseUrlEnv}/${this.directiva}/productos/`, {
-        withCredentials: true,
-      })
+      .get(`${environment.baseUrlEnv}/${this.directiva}/productos/`, {})
       .pipe(
         tap((valores: any) => {
           console.log(valores, valores.productos),
@@ -31,39 +29,40 @@ export class ProductosServicioService {
       .subscribe();
   }
 
-  creacionProducto(producto: Producto, imagenes: File[], cantidadInventario: number) {
+  creacionProducto(
+    producto: Producto,
+    imagenes: File[],
+    cantidadInventario: number
+  ) {
     const formData = new FormData();
     formData.append('nombre', producto.nombre);
     formData.append('precio', producto.precio.toString());
     formData.append('descripcion', producto.descripcion);
     formData.append('minimoInventario', producto.minimoInventario.toString());
     formData.append('idCategoria', producto.categoria?.id?.toString() || '');
-    
+
     if (cantidadInventario > 0) {
       formData.append('cantidadInventario', cantidadInventario.toString());
     }
-    
+
     formData.append('idMarca', producto.marca?.id?.toString() || '');
-    
+
     // Agregar cada imagen al FormData
     imagenes.forEach((imagen, index) => {
       formData.append(`imagenes`, imagen);
     });
-  
+
     return this.http.post(
       `${environment.baseUrlEnv}/${this.directiva}/crearProducto/`,
-      formData,
-      { withCredentials: true }
+      formData
     );
   }
-  
 
   busquedaProductosFiltrado(tipo: string, nombre: string) {
     const params = { tipo, nombre };
     this.http
       .get(`${environment.baseUrlEnv}/${this.directiva}/filtrarRegex/`, {
         params,
-        withCredentials: true,
       })
       .pipe(
         tap((valores: any) => {
@@ -75,8 +74,7 @@ export class ProductosServicioService {
 
   obtenerProductoId(id: number) {
     return this.http.get(
-      `${environment.baseUrlEnv}/${this.directiva}/producto/` + id,
-      { withCredentials: true }
+      `${environment.baseUrlEnv}/${this.directiva}/producto/` + id
     );
   }
 
@@ -97,15 +95,13 @@ export class ProductosServicioService {
 
     return this.http.put(
       `${environment.baseUrlEnv}/${this.directiva}/editarProducto/`,
-      formData,
-      { withCredentials: true }
+      formData
     );
   }
 
   eliminarProducto(id: number | undefined) {
     return this.http.delete(
-      `${environment.baseUrlEnv}/${this.directiva}/eliminarProducto/` + id,
-      { withCredentials: true }
+      `${environment.baseUrlEnv}/${this.directiva}/eliminarProducto/` + id
     );
   }
 }

@@ -28,9 +28,7 @@ export class TiendaServicioService {
 
   obtenerInfoEmpresa() {
     this.http
-      .get(`${environment.baseUrlEnv}/${this.directiva}/obtenerElementos/`, {
-        withCredentials: true,
-      })
+      .get(`${environment.baseUrlEnv}/${this.directiva}/obtenerElementos/`)
       .pipe(
         tap((valores: any) => {
           console.log(valores.tienda[0]),
@@ -60,10 +58,7 @@ export class TiendaServicioService {
     datos.append('imagenActualCambiar', imagenActualCambiar);
     return this.http.put(
       `${environment.baseUrlEnv}/${this.directiva}/editarEmpresa/`,
-      datos,
-      {
-        withCredentials: true,
-      }
+      datos
     );
   }
   guardarInfoEmpresa(tienda: tienda, imagen: File) {
@@ -72,10 +67,7 @@ export class TiendaServicioService {
     datos.append('imagen', imagen);
     return this.http.post(
       `${environment.baseUrlEnv}/${this.directiva}/crearTienda/`,
-      datos,
-      {
-        withCredentials: true,
-      }
+      datos
     );
   }
 }
