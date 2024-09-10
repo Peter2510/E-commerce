@@ -1,6 +1,6 @@
 <div class="container mx-auto p-6">
-  <div *ngIf="producto" class="bg-white p-6 rounded-lg shadow-lg">
-    <h1 class="text-3xl font-bold mb-4 text-gray-900">{{ producto.nombre }}</h1>
+  <div *ngIf="producto" class="bg-gray-200	 p-6 rounded-lg shadow-lg">
+    <h1 class="text-3xl font-bold mb-4 text-gray-900 text-center">{{ producto.nombre }}</h1>
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <!-- Galería de Imágenes -->
@@ -17,7 +17,7 @@
       <div class="flex flex-col justify-between">
         <!-- Categoría y Descripción -->
         <div>
-          <p class="text-lg font-medium text-purple-600 mb-2">{{ producto.categoria }}</p>
+          <p class="text-lg font-medium text-blue-600 mb-2">{{ producto.categoria }}</p>
           <p class="text-md text-gray-600 mb-4">{{ producto.descripcion }}</p>
           <p class="text-md text-gray-600 mb-4">
             <span class="font-bold">Disponibilidad:</span>
@@ -29,10 +29,10 @@
 
         <!-- Precio -->
         <div>
-          <p class="text-3xl font-semibold text-gray-900 mb-6">{{ producto.precio | currency }}</p>
+          <p class="text-2xl font-semibold text-gray-900 mb-6">Q.{{ producto.precio }}</p>
           <button (click)="agregarCarrito()" 
                   [disabled]="producto.minimoInventario === 0" 
-                  class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-500 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                  class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-500 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
             Agregar al carrito
           </button>
         </div>
