@@ -3,14 +3,14 @@ require('dotenv').config();
 
 const validacionJWTAdmin = (req, res, next) => {  
 
-    if (!req.headers.authorization) return res.status(401).json({ ok: false, mensaje: 'Token no proporcionado 1' });
+    if (!req.headers.authorization) return res.status(401).json({ ok: false, mensaje: 'Token no proporcionado' });
 
     //Bearer token
     const token = req.headers.authorization.split(' ')[1];
 
     //console.log("llego a descomprimir", token);
 
-    if(!token || token === '') return res.status(401).json({ ok: false, mensaje: 'Token no  proporcionado por vacio' });
+    if(!token || token === '') return res.status(401).json({ ok: false, mensaje: 'Token no  proporcionado' });
 
     jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
         if(err) return res.status(403).json({ ok: false, mensaje: 'Token no válido' });
@@ -31,7 +31,7 @@ const validacionJWTCliente = (req, res, next) => {
     //Bearer token
     const token = req.headers.authorization.split(' ')[1];
 
-    if(!token || token === '') return res.status(401).json({ ok: false, mensaje: 'Token no  proporcionado' });
+    if(!token || token === '') return res.status(401).json({ ok: false, mensaje: 'Token no proporcionado' });
 
     jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
         if(err) return res.status(403).json({ ok: false, mensaje: 'Token no válido' });
