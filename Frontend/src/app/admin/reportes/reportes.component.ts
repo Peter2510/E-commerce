@@ -1,16 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ReportesService } from '../services/reportes.service';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { PageOrientation, PageSize, Style } from 'pdfmake/interfaces';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+import { Chart, ChartType } from 'chart.js/auto';
 
 @Component({
   selector: 'app-reportes',
   templateUrl: './reportes.component.html',
   styleUrls: ['./reportes.component.css']
 })
-export class ReportesComponent {
+export class ReportesComponent implements OnInit{
   tipo: String = "";
   fecha!: String;
   cantidad: number = 5;
@@ -20,10 +21,15 @@ export class ReportesComponent {
   cabeceras: string[] = [];
   valores: any[] = [];
   ObjectPdf: any;
+
+  public chart!:Chart
+  @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
   constructor(private service: ReportesService) {
-
+    
   }
-
+  ngOnInit(): void {
+    
+  }
   generarReporte() {
     if (this.cantidad > 0) {
       switch (this.tipo) {
@@ -238,6 +244,25 @@ export class ReportesComponent {
     };
     pdfMake.createPdf(documentDefinition).open();
     //this.ObjectPdf.download("reporte.pdf");
+  }
+
+
+  generarGrafica() {
+    const data = {
+      labels: ["enero","febrero"],
+      datasets: [{
+        label:'my first dataset',
+        data: [10,20],
+        fill:false,
+        backgroundColor: 'rgba(255, 255, 255, 0.2)', // Color de fondo de las barras
+        borderColor: 'rgba(255, 255, 255, 1)', 
+        tension: 0.1
+      }]
+    }
+    this.chart = new Chart("chart",{
+      type: 'bar' as ChartType,
+      data
+    })
   }
 
 }
