@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, signal, Signal } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { tap } from 'rxjs';
@@ -17,6 +17,7 @@ export class TiendaServicioService {
 
   public isLoading = signal<boolean>(true);
   productosActivos: any;
+  token = this.cookie.get('token');
 
   constructor(
     private http: HttpClient,
@@ -28,7 +29,9 @@ export class TiendaServicioService {
 
   obtenerInfoEmpresa() {
     this.http
-      .get(`${environment.baseUrlEnv}/${this.directiva}/obtenerElementos/`)
+      .get(`${environment.baseUrlEnv}/${this.directiva}/obtenerElementos/`, {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      })
       .pipe(
         tap((valores: any) => {
           console.log(valores.tienda[0]),
@@ -58,7 +61,10 @@ export class TiendaServicioService {
     datos.append('imagenActualCambiar', imagenActualCambiar);
     return this.http.put(
       `${environment.baseUrlEnv}/${this.directiva}/editarEmpresa/`,
-      datos
+      datos,
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
   guardarInfoEmpresa(tienda: tienda, imagen: File) {
@@ -67,7 +73,10 @@ export class TiendaServicioService {
     datos.append('imagen', imagen);
     return this.http.post(
       `${environment.baseUrlEnv}/${this.directiva}/crearTienda/`,
-      datos
+      datos,
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
 }

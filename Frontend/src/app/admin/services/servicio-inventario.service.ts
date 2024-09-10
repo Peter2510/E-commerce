@@ -72,7 +72,10 @@ export class ServicioInventarioService {
     return this.http.put(
       `${environment.baseUrlEnv}/${this.directiva}/ingresoMayorCantidadProducto/` +
         id,
-      { cantidad: cantidad }
+      { cantidad: cantidad },
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
 
@@ -80,7 +83,13 @@ export class ServicioInventarioService {
   obtenerEstadosInventario() {
     this.http
       .get(
-        `${environment.baseUrlEnv}/${this.directiva}/obtenerEstadosInventario/`
+        `${environment.baseUrlEnv}/${this.directiva}/obtenerEstadosInventario/`,
+        {
+          headers: new HttpHeaders().set(
+            'Authorization',
+            `Bearer ${this.token}`
+          ),
+        }
       )
       .pipe(
         tap((valores: any) => {
