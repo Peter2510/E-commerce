@@ -15,6 +15,7 @@ export class ServicioAdminService {
   readonly directiva = 'administracion';
   readonly directivaCategoria = 'categorias';
   readonly directivaMarcas = 'marcas';
+  token = this.cookieService.get('token');
 
   //elementos basico - signals
   public categorias = signal<any[]>([]);
@@ -29,7 +30,9 @@ export class ServicioAdminService {
   obtenerRoles(): Observable<tipoUsuario[]> {
     return this.http.get<tipoUsuario[]>(
       `${environment.baseUrlEnv}/${this.directiva}/getTipoUsuarios`,
-      { withCredentials: true }
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
 
@@ -37,7 +40,9 @@ export class ServicioAdminService {
   obtenerFormasPago(): Observable<formaPago[]> {
     return this.http.get<formaPago[]>(
       `${environment.baseUrlEnv}/${this.directiva}/getFormasPago`,
-      { withCredentials: true }
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
 
@@ -45,7 +50,9 @@ export class ServicioAdminService {
   obtenerEmpleados(): Observable<tipoUsuario[]> {
     return this.http.get<tipoUsuario[]>(
       `${environment.baseUrlEnv}/${this.directiva}/obtenerEmpleados`,
-      { withCredentials: true }
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
 
@@ -53,7 +60,9 @@ export class ServicioAdminService {
   obtenerEmpleadosId(id: number): Observable<Person> {
     return this.http.get<Person>(
       `${environment.baseUrlEnv}/${this.directiva}/obtenerAdminPorId/` + id,
-      { withCredentials: true }
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
 
@@ -61,7 +70,9 @@ export class ServicioAdminService {
   obtenerAyudantePorId(id: number): Observable<Person> {
     return this.http.get<Person>(
       `${environment.baseUrlEnv}/${this.directiva}/obtenerAyudantePorId/` + id,
-      { withCredentials: true }
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
   //funcion para la creacion de mas tipos de roles
@@ -72,7 +83,9 @@ export class ServicioAdminService {
     return this.http.post<tipoUsuario>(
       `${environment.baseUrlEnv}/${this.directiva}/crearTipoUsuario`,
       { tipo: tipo },
-      { withCredentials: true }
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
 
@@ -97,7 +110,9 @@ export class ServicioAdminService {
         idTipoUsuario: idTipoUsuario,
         persona: persona,
       },
-      { withCredentials: true }
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
 
@@ -107,7 +122,12 @@ export class ServicioAdminService {
     this.http
       .get<Marca[]>(
         `${environment.baseUrlEnv}/${this.directivaMarcas}/obtenerMarcas`,
-        { withCredentials: true }
+        {
+          headers: new HttpHeaders().set(
+            'Authorization',
+            `Bearer ${this.token}`
+          ),
+        }
       )
       .pipe(
         tap((elementos: any) => {
@@ -121,7 +141,12 @@ export class ServicioAdminService {
     this.http
       .get<any[]>(
         `${environment.baseUrlEnv}/${this.directivaCategoria}/obtenerCategorias`,
-        { withCredentials: true }
+        {
+          headers: new HttpHeaders().set(
+            'Authorization',
+            `Bearer ${this.token}`
+          ),
+        }
       )
       .pipe(
         tap((response: any) => {
@@ -137,7 +162,9 @@ export class ServicioAdminService {
     return this.http.post<categoria>(
       `${environment.baseUrlEnv}/${this.directivaCategoria}/crearCategoria/`,
       { nombreCategoria: nombreCategoria },
-      { withCredentials: true }
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
 
@@ -145,7 +172,9 @@ export class ServicioAdminService {
     return this.http.post<categoria>(
       `${environment.baseUrlEnv}/${this.directivaMarcas}/crearMarca/`,
       { nombreMarca: nombreMarca },
-      { withCredentials: true }
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
   //funcion para actualizar las categorias actualizarCategoria
@@ -157,7 +186,12 @@ export class ServicioAdminService {
       .put(
         `${environment.baseUrlEnv}/${this.directivaCategoria}/actualizarCategoria/${id}`,
         formData,
-        { withCredentials: true }
+        {
+          headers: new HttpHeaders().set(
+            'Authorization',
+            `Bearer ${this.token}`
+          ),
+        }
       )
       .subscribe();
   }
@@ -170,7 +204,9 @@ export class ServicioAdminService {
     return this.http.put(
       `${environment.baseUrlEnv}/${this.directivaMarcas}/actualizarMarca/${id}`,
       formData,
-      { withCredentials: true }
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
 
@@ -178,7 +214,9 @@ export class ServicioAdminService {
   eliminarCategoria(id: number | undefined) {
     return this.http.delete(
       `${environment.baseUrlEnv}/${this.directivaCategoria}/eliminarCategoria/${id}`,
-      { withCredentials: true }
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
 
@@ -186,7 +224,9 @@ export class ServicioAdminService {
   eliminarMarca(id: number | undefined) {
     return this.http.delete(
       `${environment.baseUrlEnv}/${this.directivaMarcas}/eliminarMarca/${id}`,
-      { withCredentials: true }
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
 
@@ -194,7 +234,10 @@ export class ServicioAdminService {
   darBaja(id: number | undefined) {
     return this.http.put(
       `${environment.baseUrlEnv}/${this.directiva}/darBaja/${id}`,
-      { withCredentials: true }
+      { withCredentials: true },
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
 }
