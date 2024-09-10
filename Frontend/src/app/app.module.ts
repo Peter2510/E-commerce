@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,6 +22,7 @@ import { EliminarProductoComponent } from './admin/productos/eliminar-producto/e
 import { ReportesComponent } from './admin/reportes/reportes.component';
 import { CommonModule } from '@angular/common';
 import { DarBajaComponent } from './admin/dar-baja/dar-baja.component';
+import { TokenInterceptorService } from './auth/services/token-interceptor.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +47,9 @@ import { DarBajaComponent } from './admin/dar-baja/dar-baja.component';
     ReactiveFormsModule,
     CommonModule,
   ],
-  providers: [CookieService],
+  providers: [CookieService, 
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
