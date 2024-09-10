@@ -60,12 +60,16 @@ export class GestionMarcasCategoriasComponent implements OnInit {
 
   // funcion para la creacion
   crearCategoria() {
-    this.servicio.creacionCategoria(this.nuevoNombreCategoria).subscribe();
+    this.servicio
+      .creacionCategoria(this.nuevoNombreCategoria, this.imagen)
+      .subscribe();
   }
 
   // funcion para la maraca
   crearMarca() {
-    this.servicio.creacionMarca(this.nuevoNombreMarca).subscribe();
+    console.log(this.imagen);
+
+    this.servicio.creacionMarca(this.nuevoNombreMarca, this.imagen).subscribe();
   }
   onFileSelected(event: any) {
     const file: File = event.target.files[0];

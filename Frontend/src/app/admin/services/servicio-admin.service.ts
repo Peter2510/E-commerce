@@ -158,20 +158,26 @@ export class ServicioAdminService {
 
   // CRUD DE ELEMENTOS DE CATEGORIAS Y MARCAS
 
-  creacionCategoria(nombreCategoria: string) {
+  creacionCategoria(nombreCategoria: string, imagen: File) {
+    const formData = new FormData();
+    formData.append('nombreCategoria', nombreCategoria);
+    formData.append('imagen', imagen);
     return this.http.post<categoria>(
       `${environment.baseUrlEnv}/${this.directivaCategoria}/crearCategoria/`,
-      { nombreCategoria: nombreCategoria },
+      formData,
       {
         headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
       }
     );
   }
 
-  creacionMarca(nombreMarca: string) {
+  creacionMarca(nombreMarca: string, imagen: File) {
+    const formData = new FormData();
+    formData.append('nombreMarca', nombreMarca);
+    formData.append('imagen', imagen);
     return this.http.post<categoria>(
       `${environment.baseUrlEnv}/${this.directivaMarcas}/crearMarca/`,
-      { nombreMarca: nombreMarca },
+      formData,
       {
         headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
       }
