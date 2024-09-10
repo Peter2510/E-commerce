@@ -52,7 +52,7 @@
     <div class="mb-5">
       <label for="correo" class="block text-gray-700 font-semibold mb-2">Correo Electrónico</label>
       <ng-container *ngIf="usuario2.persona">
-        <input type="email" id="correo" name="correo" [(ngModel)]="usuario2.persona.correoElectronico" #correoElectronico="ngModel"
+        <input readonly type="email" id="correo" name="correo" [(ngModel)]="usuario2.persona.correoElectronico" #correoElectronico="ngModel"
           class="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Tu correo electrónico" required  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
           <div *ngIf="correoElectronico.invalid && (correoElectronico.dirty || correoElectronico.touched)" class="text-red-500 mt-2">

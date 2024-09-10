@@ -38,7 +38,7 @@ export class AuthService {
   }
 
   //obtengo todo el token jwt
-  private getToken(): string | null {
+  public getToken(): string | null {
     return this.cookieService.get(this.cookieName);
   }
 
