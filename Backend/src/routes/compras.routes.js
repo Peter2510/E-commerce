@@ -1,6 +1,6 @@
 const express = require("express");
 const comprasController = require("../controllers/compras.controller");
-const jwtValidacion = require("../middlewares/jwtValidacion");
+const {validacionJWTGeneral, validacionJWTAdmin, validacionJWTCliente} = require('../middlewares/validacionJWT');
 const validarCompra = require("../middlewares/validarCompra");
 const {validarExistenciaUsuarioGet} = require("../middlewares/validacionUsuario");
 const {validarFormaEntregaGet} = require("../middlewares/validarFormaEntrega");
@@ -10,30 +10,30 @@ const {validarExistenciaCompraGet, validarExistenciaCompraPost} = require("../mi
 const router = express.Router();
 const api = "/api/v1/compras";
 
-router.post(`${api}/registrarCompra`,jwtValidacion,validarCompra,comprasController.registrarCompra);
+router.post(`${api}/registrarCompra`,validacionJWTCliente,validarCompra,comprasController.registrarCompra);
 
-router.post(`${api}/crearEstadoCompra`, jwtValidacion, validarCreacionEstadoCompra, comprasController.crearEstadoCompra);
+router.post(`${api}/crearEstadoCompra`, validacionJWTAdmin, validarCreacionEstadoCompra, comprasController.crearEstadoCompra);
 
-router.get(`${api}/compras`, jwtValidacion, comprasController.obtenerCompras);
-router.get(`${api}/Compra/:idCompra`, jwtValidacion, validarExistenciaCompraGet, comprasController.obtenerCompra);
+router.get(`${api}/compras`, validacionJWTAdmin, comprasController.obtenerCompras);
+router.get(`${api}/Compra/:idCompra`, validacionJWTGeneral, validarExistenciaCompraGet, comprasController.obtenerCompra);
 
 router.get(
   `${api}/comprasPorEstadoCompra/:idEstadoCompra`,
-  jwtValidacion,
+  validacionJWTAdmin,
   validarEstadoCompraGet,
   comprasController.obtenerComprasPorEstado
 );
 
 router.get(
   `${api}/comprasPorFormaEntrega/:idFormaEntrega`,
-  jwtValidacion,
+  validacionJWTAdmin,
   validarFormaEntregaGet,
   comprasController.obtenerComprasPorFormaEntrega
 );
 
 router.get(
   `${api}/comprasPorEstadoCompraYFormaEntrega/:idEstadoCompra/:idFormaEntrega`,
-  jwtValidacion,
+  validacionJWTAdmin,
   validarEstadoCompraGet,
   validarFormaEntregaGet,
   comprasController.obtenerComprasPorEstadoCompraYFormaEntrega
@@ -41,27 +41,27 @@ router.get(
 
 router.get(
   `${api}/comprasPorFecha/:fecha`,
-  jwtValidacion,
+  validacionJWTAdmin,
   comprasController.obtenerComprasPorFecha
 );
 
 router.get(
   `${api}/comprasPorFechaYEstadoCompra/:fecha/:idEstadoCompra`,
-  jwtValidacion,
+  validacionJWTAdmin,
   validarEstadoCompraGet,
   comprasController.obtenerComprasPorFechaYEstado,
 );
 
 router.get(
   `${api}/comprasPorFechaYFormaEntrega/:fecha/:idFormaEntrega`,
-  jwtValidacion,
+  validacionJWTAdmin,
   validarFormaEntregaGet,
   comprasController.obtenerComprasPorFechaYFormaEntrega
 );
 
 router.get(
   `${api}/comprasPorFechaYEstadoCompraYFormaEntrega/:fecha/:idEstadoCompra/:idFormaEntrega`,
-  jwtValidacion,
+  validacionJWTAdmin,
   validarFormaEntregaGet,
   validarEstadoCompraGet,
   comprasController.obtenerComprasPorFechaYEstadoCompraYFormaEntrega
@@ -69,14 +69,14 @@ router.get(
 
 router.get(
   `${api}/comprasPorUsuario/:idUsuario`,
-  jwtValidacion,
+  validacionJWTGeneral,
   validarExistenciaUsuarioGet,
   comprasController.obtenerComprasPorUsuario
 );
 
 router.get(
   `${api}/comprasPorUsuarioYEstadoCompra/:idUsuario/:idEstadoCompra`,
-  jwtValidacion,
+  validacionJWTGeneral,
   validarExistenciaUsuarioGet,
   validarEstadoCompraGet,
   comprasController.obtenerComprasPorUsuarioYEstado
@@ -84,14 +84,14 @@ router.get(
 
 router.get(
   `${api}/comprasPorUsuarioYFecha/:idUsuario/:fecha`,
-  jwtValidacion,
+  validacionJWTGeneral,
   validarExistenciaUsuarioGet,
   comprasController.obtenerComprasPorUsuarioYFecha
 );
 
 router.get(
   `${api}/comprasPorUsuarioYFormaEntrega/:idUsuario/:idFormaEntrega`,
-  jwtValidacion,
+  validacionJWTGeneral,
   validarExistenciaUsuarioGet,
   validarFormaEntregaGet,
   comprasController.obtenerComprasPorUsuarioYFormaEntrega
@@ -99,21 +99,21 @@ router.get(
 
 router.get(
   `${api}/detalleCompra/:idCompra`,
-  jwtValidacion,
+  validacionJWTGeneral,
   validarExistenciaCompraGet,
   comprasController.obtenerDetalleCompra
 )
 
 router.get(
   `${api}/compraYDetalleCompra/:idCompra`,
-  jwtValidacion,
+  validacionJWTGeneral,
   validarExistenciaCompraGet,
   comprasController.obtenerCompraYDetalleCompra
 )
 
 router.patch(
   `${api}/actualizarEstadoCompra`,
-  jwtValidacion,
+  validacionJWTAdmin,
   validarExistenciaCompraPost,
   validarEstadoCompraPost,
   comprasController.actualizarEstadoCompra

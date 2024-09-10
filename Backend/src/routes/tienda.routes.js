@@ -1,9 +1,6 @@
 const express = require('express');
 const TiendaController = require('../controllers/tienda.controller');
 
-const jwtValidacion = require('../middlewares/jwtValidacion');
-
-
 const router = express.Router();
 const api = '/api/v1/tienda';
 
@@ -11,7 +8,5 @@ const api = '/api/v1/tienda';
 router.post(`${api}/crearTienda`, TiendaController.creacionEmpresa);
 router.get(`${api}/obtenerElementos`, TiendaController.obtenerElementos);
 router.put(`${api}/editarEmpresa`, TiendaController.editarEmpresa);
-
-
 
 module.exports = router;

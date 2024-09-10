@@ -100,8 +100,11 @@ const editarCliente = async (req, res) => {
         await t.rollback();
         return res.status(404).json({ok: false, mensaje: 'Usuario no encontrado'});
       }
+
+      //elimino el correo electronico para que no se actualice
+      delete persona.correoElectronico;
   
-      // Se actualiza la persona
+      //se actualiza la persona
       await Persona.update(persona, { where: { id: id }, transaction: t });
         
       //se actualiza el usuario
