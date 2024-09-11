@@ -65,6 +65,10 @@ export class ComprasServicioService {
     // Fetch data and set comprasPendientes
     this.paginar();
     this.actualizarTotalPages();
+    this.comprasPorEstadoCompra(1);
+    this.comprasPorEstadoCompra(2);
+    this.comprasPorEstadoCompra(3);
+    this.comprasPorEstadoCompra(4);
   }
 
   paginar() {

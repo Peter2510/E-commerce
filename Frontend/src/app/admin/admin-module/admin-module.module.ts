@@ -20,6 +20,7 @@ import { EditarInformacionComponent } from '../empresa/editar-informacion/editar
 import { EdicionEspecificaEmpresaComponent } from '../empresa/edicion-especifica-empresa/edicion-especifica-empresa.component';
 import { DarBajaComponent } from '../dar-baja/dar-baja.component';
 import { CompraEspecificaComponent } from '../Paquetes/compra-especifica/compra-especifica.component';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,12 @@ import { CompraEspecificaComponent } from '../Paquetes/compra-especifica/compra-
     DarBajaComponent,
     CompraEspecificaComponent,
   ],
-  imports: [CommonModule, AdminRoutesModule, AdminheaderComponent, FormsModule],
+  imports: [
+    CommonModule,
+    AdminRoutesModule,
+    AdminheaderComponent,
+    FormsModule,
+    MaterialModule,
+  ],
 })
 export class AdminModuleModule {}
