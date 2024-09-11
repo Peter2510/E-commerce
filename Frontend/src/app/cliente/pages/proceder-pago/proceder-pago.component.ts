@@ -9,6 +9,7 @@ import { ItemCarrito } from 'src/app/interfaces/cliente.interface';
 import { CarritoComprasService } from '../../services/carrito-compras.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-proceder-pago',
@@ -128,7 +129,13 @@ export class ProcederPagoComponent implements OnInit {
     this.carritoService.limpiarCarrito();
 
     // Mostrar mensaje de éxito
-    //this.toastr.success('Compra realizada con éxito!');
+    //debemos redirigir a la ventana pedidos
+    Swal.fire({
+      icon: 'success',
+      title: 'Compra exitos ',
+      text: "Puede ver el estado de su pedido, el el apartado pedidos ",
+    });
+    this.router.navigate(['/cliente'])
     alert('Su compra ha sido procesada. Total de productos: ' + this.cantProd + '. Total: ' + this.total);
   }
 }

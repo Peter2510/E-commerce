@@ -35,7 +35,7 @@ export class AuthService {
 
   //guardo Token en cookie
   saveToken(token: string): void {
-    this.cookieService.set(this.cookieName, token);
+    this.cookieService.set(this.cookieName, token, undefined ,'/');
   }
 
   //obtengo todo el token jwt

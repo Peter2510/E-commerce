@@ -19,7 +19,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
+    loadChildren: () => import('./cliente/cliente.module').then((m) => m.ClienteModule),
   },
 ];
 
