@@ -41,8 +41,25 @@ export class GestorEnvioComponent implements OnInit, AfterViewInit {
       return data.usuario.persona.nombre.toLowerCase().includes(filter);
     };
     //tabla 3
+    this.dataSourceEntregado = new MatTableDataSource(
+      this.comprasServicio.comprasEntregadas()
+    );
 
+    this.dataSourceEntregado.paginator = this.paginatorEntregado;
+    this.dataSourceEntregado.sort = this.sortEntregado;
+    this.dataSourceEntregado.filterPredicate = (data: any, filter: any) => {
+      return data.usuario.persona.nombre.toLowerCase().includes(filter);
+    };
     //tabla 4
+    this.dataSourceCancelado = new MatTableDataSource(
+      this.comprasServicio.comprasCanceladas()
+    );
+
+    this.dataSourceCancelado.paginator = this.paginatorCancelado;
+    this.dataSourceCancelado.sort = this.sortCancelado;
+    this.dataSourceCancelado.filterPredicate = (data: any, filter: any) => {
+      return data.usuario.persona.nombre.toLowerCase().includes(filter);
+    };
   }
   searchTerm: string = ''; // Almacena el término de búsqueda
   filteredUsers: any[] = []; // Almacena los usuarios filtrados
@@ -169,6 +186,22 @@ export class GestorEnvioComponent implements OnInit, AfterViewInit {
 
     if (this.dataSourceEmpacado.paginator) {
       this.dataSourceEmpacado.paginator.firstPage(); // Resetea la paginación al buscar
+    }
+  }
+  filtadoEntregado(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSourceEntregado.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSourceEntregado.paginator) {
+      this.dataSourceEntregado.paginator.firstPage(); // Resetea la paginación al buscar
+    }
+  }
+  filtadoCancelado(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSourceCancelado.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSourceCancelado.paginator) {
+      this.dataSourceCancelado.paginator.firstPage(); // Resetea la paginación al buscar
     }
   }
   ponerValorEmpacado(valor: Event | null) {
