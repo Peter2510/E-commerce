@@ -15,12 +15,12 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    canActivate: [clienteGuardGuard],
+    //canActivate: [clienteGuardGuard],
     children: [
       {
         path: 'listado',
         component: ListadoProductosComponent,
-        canActivate: [clienteGuardGuard],
+        //canActivate: [clienteGuardGuard],
       },
       {
         path: 'perfil',
@@ -30,17 +30,17 @@ const routes: Routes = [
       {
         path: 'carrito-compras',
         component: CarritoDeComprasComponent,
-        canActivate: [clienteGuardGuard],
+        //canActivate: [clienteGuardGuard],
       },
       {
         path: 'producto/:id',
         component: DetalleProductoComponent,
-        canActivate: [clienteGuardGuard],
+        //canActivate: [clienteGuardGuard],
       },
       {
         path: 'producto-categoria/:id',
         component: ListadoProductoFiltroComponent,
-        canActivate: [clienteGuardGuard],
+        //canActivate: [clienteGuardGuard],
       },
       {
         path: 'proceder-pago',
@@ -55,7 +55,7 @@ const routes: Routes = [
       {
         path: '**',
         component: WelcomeComponent,
-        canActivate: [clienteGuardGuard],
+        //canActivate: [clienteGuardGuard],
       },
     ],
   },

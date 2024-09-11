@@ -7,6 +7,8 @@ import { ComprasService } from '../../services/compras.service';
 import { Pedido } from '../../../interfaces/pedido.interface';
 import { ItemCarrito } from 'src/app/interfaces/cliente.interface';
 import { CarritoComprasService } from '../../services/carrito-compras.service';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-proceder-pago',
@@ -28,15 +30,24 @@ export class ProcederPagoComponent implements OnInit {
   total = this.carritoService.getTotal();
   mostrarModal: boolean = false;
   recargo: number=0.0;
+  toastr: any;
 
   constructor(
     private clienteService: ClienteService,
     private comprasService: ComprasService,
-    private carritoService: CarritoComprasService
+    private carritoService: CarritoComprasService,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.getUser();
+    if (this.authService.getIdUsuario()!=null) {
+      this.getUser();
+    }else{
+      this.router.navigate(['/auth/login'])
+      return;
+    }
+    
   }
 
   procederAlPago() {
@@ -117,6 +128,7 @@ export class ProcederPagoComponent implements OnInit {
     this.carritoService.limpiarCarrito();
 
     // Mostrar mensaje de éxito
+    //this.toastr.success('Compra realizada con éxito!');
     alert('Su compra ha sido procesada. Total de productos: ' + this.cantProd + '. Total: ' + this.total);
   }
 }

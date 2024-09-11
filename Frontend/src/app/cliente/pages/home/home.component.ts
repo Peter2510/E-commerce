@@ -6,6 +6,7 @@ import { User } from 'src/app/interfaces/user.interface';
 import { Carrito } from '../../../interfaces/cliente.interface';
 import { CarritoComprasService } from '../../services/carrito-compras.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { TiendaServicioService } from 'src/app/admin/services/tienda-servicio.service';
 
 @Component({
   selector: 'app-home',
@@ -16,11 +17,13 @@ export class HomeComponent {
   
   mostrarPerfil:boolean=false
   usuario:User = new User();
+  idUser = this.servicio.getIdUsuario() || null;
   
   constructor(private service:ClienteService,
               private cookie:CookieService,
               private carritoService: CarritoComprasService,
               private router:Router,
+              public servicioTienda: TiendaServicioService,
               private servicio:AuthService){
     service.getCliente().subscribe(
     {
@@ -42,6 +45,7 @@ export class HomeComponent {
       next:(response:any)=>{
       console.log('cerrando sesion');
         this.servicio.logout()
+        this.carritoService.limpiarCarrito();
         this.router.navigate(['/'])
       },
       error: (error) => {

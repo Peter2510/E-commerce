@@ -1,0 +1,28 @@
+/* Asegura que el body y el contenedor tengan el 100% de altura */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.content-color {
+  background-color: #232E4D;
+  color: #F3F4F6;
+}
+
+/* Para el sidebar */
+#default-sidebar {
+  background-color: #232E4D;
+}
+
+#default-sidebar ul li a {
+  color: #F3F4F6;
+  padding: 10px;
+}
+
+#default-sidebar ul li a:hover {
+  background-color: #3B4B70;
+}
+
+
+
+

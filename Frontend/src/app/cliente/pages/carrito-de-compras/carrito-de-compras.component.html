@@ -34,10 +34,27 @@
         </div>
         <button 
         [disabled] = "cartItems.length <= 0"
-        routerLink="/cliente/proceder-pago" class="mt-4 w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-500 transition">
+        (click)="procederCompra()" class="mt-4 w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-500 transition">
           Proceder al Pago
         </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de inicio de sesión o registro -->
+<div *ngIf="mostrarModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-md mx-4">
+    <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+      <h5 class="text-xl font-semibold">Iniciar sesión o Registrarse</h5>
+      <button class="text-gray-500 hover:text-red-500 text-2xl" (click)="cerrarModal()">&times;</button>
+    </div>
+    <div class="px-6 py-4">
+      <p class="text-gray-700">Debe iniciar sesión o registrarse para realizar una compra.</p>
+    </div>
+    <div class="flex justify-end px-6 py-4 space-x-3 border-t border-gray-200">
+      <button class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600" (click)="irAlLogin()">Iniciar sesión</button>
+      <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" (click)="irAlRegistro()">Registrarse</button>
     </div>
   </div>
 </div>
