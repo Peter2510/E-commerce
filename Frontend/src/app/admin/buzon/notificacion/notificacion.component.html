@@ -1,0 +1,27 @@
+<app-adminheader></app-adminheader>
+
+<div class="max-w-lg mx-auto p-6 bg-gray-800 dark:bg-gray-900 rounded-lg shadow-lg border border-gray-700 dark:border-gray-600">
+    <ng-container *ngIf="notificacion">
+      <h1 class="text-2xl font-bold mb-4 text-gray-100 text-center">Detalles de la Notificación</h1>
+      <div class="mb-4">
+        <p class="text-gray-300 text-base">
+            Mensaje: {{ notificacion.mensaje }}
+        </p>
+      </div>
+      <div class="mb-4">
+        <p class="text-gray-300 text-base">
+          Fecha: {{ notificacion.createdAt | date:'dd-MM-yyyy HH:mm' }} horas
+        </p>
+      </div>
+      <div class="mb-4">
+        <p class="text-gray-300 text-base">
+          <a [routerLink]="['/admin/gestionInventario']" class="text-blue-400 hover:underline dark:text-blue-300">
+            Producto: {{ notificacion.producto.nombre }}
+        </a>
+        </p>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!notificacion">
+      <p class="text-center text-gray-400 text-base">No se encontró la notificación.</p>
+    </ng-container>
+</div>

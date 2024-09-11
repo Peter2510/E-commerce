@@ -14,6 +14,8 @@ import { GestorEnvioComponent } from '../Paquetes/gestor-envio/gestor-envio.comp
 import { ReportesComponent } from '../reportes/reportes.component';
 import { EditarInformacionComponent } from '../empresa/editar-informacion/editar-informacion.component';
 import { EdicionEspecificaEmpresaComponent } from '../empresa/edicion-especifica-empresa/edicion-especifica-empresa.component';
+import { BuzonGeneralComponent } from '../buzon/buzon-general/buzon-general.component';
+import { NotificacionComponent } from '../buzon/notificacion/notificacion.component';
 
 const routes: Routes = [
   {
@@ -66,6 +68,14 @@ const routes: Routes = [
       {
         path: 'edicionEmpresa',
         component: EdicionEspecificaEmpresaComponent,
+      },
+      {
+        path: 'buzon',
+        component: BuzonGeneralComponent
+      },
+      {
+        path: 'notificacion/:id',
+        component: NotificacionComponent
       },
 
       {
