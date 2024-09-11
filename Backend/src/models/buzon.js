@@ -35,13 +35,13 @@ const Buzon = sequelize.define(
     fecha: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW, // Valor por defecto para fecha
+      defaultValue: DataTypes.NOW, 
     },
   },
   {
     schema: 'notificaciones',
     tableName: 'buzon',
-    timestamps: true, // Agrega esto si quieres que Sequelize maneje createdAt y updatedAt automáticamente
+    timestamps: true, 
   }
 );
 

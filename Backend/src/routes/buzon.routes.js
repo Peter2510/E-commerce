@@ -1,5 +1,3 @@
-// routes/buzon.routes.js
-
 const express = require('express');
 const router = express.Router();
 const jwtValidacion = require('../middlewares/jwtValidacion');

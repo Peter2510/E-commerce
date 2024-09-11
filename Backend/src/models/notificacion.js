@@ -1,4 +1,3 @@
-// models/notificacion.js
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../configs/database.configs');
 const Producto = require('./producto');
@@ -31,7 +30,7 @@ const Notificacion = sequelize.define(
   {
     schema: 'notificaciones',
     tableName: 'notificacion',
-    timestamps: true, // Agrega esto si quieres que Sequelize maneje createdAt y updatedAt automáticamente
+    timestamps: true,
   }
 );
 
