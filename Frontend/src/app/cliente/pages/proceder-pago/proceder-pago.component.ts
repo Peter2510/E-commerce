@@ -153,7 +153,7 @@ export class ProcederPagoComponent implements OnInit {
     // Mostrar mensaje de éxito
     //debemos redirigir a la ventana pedidos
     
-    this.router.navigate(['/cliente'])
+    this.router.navigate(['/cliente/historial'])
     alert('Su compra ha sido procesada. Total de productos: ' + this.cantProd + '. Total: ' + this.total);
   }
 }
