@@ -8,50 +8,56 @@ import { ComprasServicioService } from '../../services/compras-servicio.service'
   styleUrls: ['./gestor-envio.component.css'],
 })
 export class GestorEnvioComponent implements OnInit {
-  users: any[] = [];
-  paginatedUsers: any[] = [];
-  filteredUsers: Array<{ id: number; name: string; email: string }> = [];
+  searchTerm: string = ''; // Almacena el término de búsqueda
+  filteredUsers: any[] = []; // Almacena los usuarios filtrados
+  compras: any[] = [];
+  paginatedUsers!: any[];
 
-  searchTerm: string = '';
   currentPage: number = 1;
-  pageSize: number = 5; // Número de elementos por página
+  pageSize: number = 1; // Número de elementos por página
   totalPages: number = 1;
 
+  // para el modal
+  elementoSeleccionado!: string;
+  isModalVisible = false;
+  enProceso!: boolean;
   //servicio
   comprasServicio = inject(ComprasServicioService);
 
-  ngOnInit() {
-    // Simulación de datos (puedes obtener estos datos de un servicio API)
-    this.users = [
-      { id: 1, name: 'Juan Pérez', email: 'juan@example.com' },
-      { id: 2, name: 'María Gómez', email: 'maria@example.com' },
-      { id: 3, name: 'Carlos Sánchez', email: 'carlos@example.com' },
-      { id: 4, name: 'Laura Díaz', email: 'laura@example.com' },
-      { id: 5, name: 'Pedro Fernández', email: 'pedro@example.com' },
-      { id: 6, name: 'Ana García', email: 'ana@example.com' },
-      { id: 7, name: 'Luis Torres', email: 'luis@example.com' },
-      { id: 8, name: 'Eva Ramírez', email: 'eva@example.com' },
-      { id: 9, name: 'Sofía Martínez', email: 'sofia@example.com' },
-      { id: 10, name: 'David Rojas', email: 'david@example.com' },
-    ];
+  openModal(tipo: boolean, elemento: any) {
+    this.enProceso = tipo;
+    this.isModalVisible = true;
+    this.elementoSeleccionado = elemento;
+  }
 
+  closeModal() {
+    this.isModalVisible = false;
+    console.log(this.isModalVisible);
+  }
+
+  ngOnInit() {
+    this.compras.push(this.comprasServicio.comprasPorEstadoCompra(1));
+    this.comprasServicio.comprasPorEstadoCompra(2);
+    this.comprasServicio.comprasPorEstadoCompra(3);
+    this.comprasServicio.comprasPorEstadoCompra(4);
     this.applyFilter(); // Inicializar tabla
   }
 
   applyFilter() {
-    // Filtrar usuarios por nombre
-    this.filteredUsers = this.users.filter((user) =>
-      user.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-
-    this.totalPages = Math.ceil(this.filteredUsers.length / this.pageSize);
+    this.currentPage = 1;
     this.paginate();
   }
 
   paginate() {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.paginatedUsers = this.filteredUsers.slice(start, end);
+    this.paginatedUsers = this.comprasServicio
+      .filteredCompras()
+      .slice(start, end);
+
+    this.totalPages = Math.ceil(
+      this.comprasServicio.filteredCompras().length / this.pageSize
+    );
   }
 
   previousPage() {
@@ -66,5 +72,28 @@ export class GestorEnvioComponent implements OnInit {
       this.currentPage++;
       this.paginate();
     }
+  }
+
+  // Función para actualizar el término de búsqueda
+  setSearchTerm(valor: Event | null) {
+    this.paginar();
+
+    const inputElement = valor?.target as HTMLInputElement;
+    this.comprasServicio.searchTerm.set(inputElement.value);
+  }
+  ponerValorEmpacado(valor: Event | null) {
+    const inputElement = valor?.target as HTMLInputElement;
+    this.comprasServicio.textoEmpacado.set(inputElement.value);
+  }
+  ponerValorEntregado(valor: Event | null) {
+    const inputElement = valor?.target as HTMLInputElement;
+    this.comprasServicio.textoEntregado.set(inputElement.value);
+  }
+  ponerValorCancelado(valor: Event | null) {
+    const inputElement = valor?.target as HTMLInputElement;
+    this.comprasServicio.textoCancelar.set(inputElement.value);
+  }
+  paginar() {
+    this.comprasServicio.currentPage.set(1);
   }
 }

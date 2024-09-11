@@ -19,6 +19,7 @@ import { GestorEnvioComponent } from '../Paquetes/gestor-envio/gestor-envio.comp
 import { EditarInformacionComponent } from '../empresa/editar-informacion/editar-informacion.component';
 import { EdicionEspecificaEmpresaComponent } from '../empresa/edicion-especifica-empresa/edicion-especifica-empresa.component';
 import { DarBajaComponent } from '../dar-baja/dar-baja.component';
+import { CompraEspecificaComponent } from '../Paquetes/compra-especifica/compra-especifica.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { DarBajaComponent } from '../dar-baja/dar-baja.component';
     EditarInformacionComponent,
     EdicionEspecificaEmpresaComponent,
     DarBajaComponent,
+    CompraEspecificaComponent,
   ],
   imports: [CommonModule, AdminRoutesModule, AdminheaderComponent, FormsModule],
 })
