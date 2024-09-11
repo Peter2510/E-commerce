@@ -12,6 +12,11 @@ const Categoria = require("../models/categoria");
 const EstadoCompra = require("../models/estadoCompra");
 const FormaPago = require("../models/formaPago");
 
+/*Randy */
+const Notificacion = require("../models/notificacion");
+const Buzon = require("../models/buzon");
+/** */
+
 const registrarCompra = async (req, res) => {
   const { idUsuario, nit, direccionEntrega, idFormaEntrega, productos } =
     req.body;
@@ -47,6 +52,21 @@ const registrarCompra = async (req, res) => {
       );
 
       // Dar de baja del inventario
+
+      /**
+       * 
+       */
+
+      const inventarioProducto = await inventario.findOne({
+        where: { idproducto: producto.id },
+        transaction: t
+      });
+
+      const nuevaCantidad = inventarioProducto.cantidadtotal - producto.cantidad;
+
+      /**
+       * 
+       */
       await inventario.update(
         {
           cantidadtotal: sequelize.literal(
@@ -60,6 +80,43 @@ const registrarCompra = async (req, res) => {
           transaction: t,
         }
       );
+
+      /**Funcion de Notificación */
+      if (nuevaCantidad < 10) {
+        const notificacion = await Notificacion.create(
+          {
+            mensaje: `El producto ${productoComprar.nombre} tiene pocas unidades disponibles.`,
+            productoId: producto.id,
+          },
+          { transaction: t }
+        );
+
+        // Obtener usuarios de tipo administrador y ayudante
+        const usuarios = await Usuario.findAll({
+          where: {
+            idTipoUsuario: [1, 3], // Administrador (1) y Ayudante (3)
+          },
+          transaction: t,
+        });
+
+        // Crear registros en el buzón para cada usuario
+        for (const usuario of usuarios) {
+          await Buzon.create(
+            {
+              notificacionId: notificacion.id,
+              usuarioId: usuario.id,
+              leido: false,
+              fecha: new Date() // Fecha actual
+            },
+            { transaction: t }
+          );
+        }
+      }
+
+
+
+
+
 
       precioTotal += parseFloat(detalleRegistrado.precioTotal);
     }
