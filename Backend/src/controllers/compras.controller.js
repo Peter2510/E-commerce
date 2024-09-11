@@ -85,8 +85,8 @@ const registrarCompra = async (req, res) => {
       if (nuevaCantidad < 10) {
         const notificacion = await Notificacion.create(
           {
-            mensaje: `El producto ${productoComprar.nombre} tiene pocas unidades disponibles.`,
-            productoId: producto.id,
+            mensaje: `El producto ${productoComprar.nombre} tiene pocas unidades disponibles. Cantidad restante: ${nuevaCantidad} unidades`,
+            productoId: producto.id
           },
           { transaction: t }
         );

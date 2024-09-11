@@ -7811,7 +7811,118 @@ const swaggerOptions = {
     }
   }
 },
-      
+"/api/v1/buzon/obtenerNotificacionPorId/{idUsuario}/{idNotificacion}": {
+  "get": {
+    "summary": "Obtener una notificación por ID",
+    "tags": ["Buzón"],
+    "description": "Devuelve una notificación específica asociada a un usuario dado.",
+    "parameters": [
+      {
+        "name": "idUsuario",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "21"
+        }
+      },
+      {
+        "name": "idNotificacion",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "4"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Notificación obtenida exitosamente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "notificacion": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 6
+                    },
+                    "mensaje": {
+                      "type": "string",
+                      "example": "El producto Telefono tiene pocas unidades disponibles. Cantidad restante: 1 unidades"
+                    },
+                    "productoId": {
+                      "type": "integer",
+                      "example": 6
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-09-11T20:27:05.427Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-09-11T20:27:05.427Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "ID del usuario o de la notificación no definido",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "ID del usuario o de la notificación no definido"
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Notificación no encontrada o no asociada a este usuario",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Notificación no encontrada o no asociada a este usuario"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},      
     },
   },
   apis: ["./routes/*.js"],

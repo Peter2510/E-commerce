@@ -69,7 +69,7 @@ const obtenerPrimeros = async (req, res) => {
         as: 'notificacion',
       },
       order: [['fecha', 'DESC']],
-      limit: 2,
+      limit: 5,
     });
 
     res.status(200).json({ ok: true, buzones });
@@ -125,11 +125,47 @@ const obtenerNoLeidos = async (req, res) => {
 };
 
 
+const obtenerNotificacionPorId = async (req, res) => {
+  try {
+    const { idUsuario, idNotificacion } = req.params;
+
+    if (!idUsuario || !idNotificacion) {
+      return res.status(400).json({ 
+        ok: false, 
+        mensaje: 'ID del usuario o de la notificación no definido' });
+    }
+
+    // Buscar la notificación en el buzón del usuario autenticado
+    const buzon = await Buzon.findOne({
+      where: { usuarioId: idUsuario, notificacionId: idNotificacion },
+      include: {
+        model: Notificacion,
+        as: 'notificacion',
+      },
+    });
+
+    if (!buzon) {
+      return res.status(404).json({ 
+        ok: false, 
+        mensaje: 'Notificación no encontrada o no asociada a este usuario' });
+    }
+
+    res.status(200).json({ 
+      ok: true, 
+      notificacion: buzon.notificacion });
+  } catch (error) {
+    await manejoErrores(error, res, 'Notificación');
+  }
+};
+
+
+
 
 module.exports = {
   obtenerBuzon,
   marcarComoLeido,
   obtenerPrimeros,
   obtenerLeidos,
-  obtenerNoLeidos
+  obtenerNoLeidos,
+  obtenerNotificacionPorId
 }

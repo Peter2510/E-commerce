@@ -11,5 +11,5 @@ router.post(`${api}/marcarLeido/:idUsuario/:idNotificacion`, validacionJWTAdmin,
 router.get(`${api}/primeros/:idUsuario`, validacionJWTAdmin, buzonController.obtenerPrimeros);
 router.get(`${api}/obtenerLeidos/:idUsuario`, validacionJWTAdmin, buzonController.obtenerLeidos);
 router.get(`${api}/obtenerNoLeidos/:idUsuario`, validacionJWTAdmin, buzonController.obtenerNoLeidos);
-
+router.get(`${api}/obtenerNotificacionPorId/:idUsuario/:idNotificacion`, validacionJWTAdmin, buzonController.obtenerNotificacionPorId)
 module.exports = router;
