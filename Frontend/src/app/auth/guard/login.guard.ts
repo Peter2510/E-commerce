@@ -14,7 +14,7 @@ export class Guardia {
       if (idTipoUsuario == 1 || idTipoUsuario == 3) {
         this.router.navigate(['/admin']);
       } else if (idTipoUsuario == 2) {
-        this.router.navigate(['/']);
+        this.router.navigate(['/cliente']);
       } else {
         this.router.navigate(['/admin']);
       }

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CookieOptions, CookieService } from 'ngx-cookie-service';
@@ -15,6 +15,7 @@ import { environment } from 'src/environments/environment.development';
 })
 export class PermisosServiciosService {
   readonly directiva = 'permisos';
+  token = this.cookie.get('token');
 
   //signlas
   public permisos = signal<tipopermiso[]>([]);
@@ -40,7 +41,12 @@ export class PermisosServiciosService {
     this.http
       .get<tipopermiso[]>(
         `${environment.baseUrlEnv}/${this.directiva}/obtenerPermisos`,
-        { withCredentials: true }
+        {
+          headers: new HttpHeaders().set(
+            'Authorization',
+            `Bearer ${this.token}`
+          ),
+        }
       )
       .pipe(
         map((elemento: any) => {
@@ -53,7 +59,9 @@ export class PermisosServiciosService {
   obtenerPermisosUsuario(id: number | undefined): Observable<tipopermiso[]> {
     return this.http.get<tipopermiso[]>(
       `${environment.baseUrlEnv}/${this.directiva}/obtenerPermisosUsuario/${id}`,
-      { withCredentials: true }
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
     );
   }
 
@@ -67,16 +75,18 @@ export class PermisosServiciosService {
     return arr1Str !== arr2Str;
   }
   obtenerPermisosUsuarioIngreado() {
-
     let idUsuario = this.loginservice.getIdUsuario();
     console.log('idUsuario', idUsuario);
 
     this.http
       .get<tipopermiso[]>(
-        `${environment.baseUrlEnv}/${this.directiva}/obtenerPermisosUsuario/${
-          idUsuario
-        }`,
-        { withCredentials: true }
+        `${environment.baseUrlEnv}/${this.directiva}/obtenerPermisosUsuario/${idUsuario}`,
+        {
+          headers: new HttpHeaders().set(
+            'Authorization',
+            `Bearer ${this.token}`
+          ),
+        }
       )
       .pipe(
         map((elemento: any) => {
@@ -107,7 +117,12 @@ export class PermisosServiciosService {
       .post(
         `${environment.baseUrlEnv}/${this.directiva}/guardarPermisos/${id}`,
         { permisosUsuarioArray: roles },
-        { withCredentials: true }
+        {
+          headers: new HttpHeaders().set(
+            'Authorization',
+            `Bearer ${this.token}`
+          ),
+        }
       )
       .subscribe();
   }

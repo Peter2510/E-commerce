@@ -3,111 +3,80 @@
 <section class="text-gray-600 body-font">
   <div class="container px-5 py-24 mx-auto">
     <div class="flex flex-wrap -m-4">
-      <!-- Contenedor del buscador y botón de creación -->
-      <div
-        class="container flex w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end"
-      >
-        <div class="relative flex-grow w-full">
-          <div class="flex">
-            <label
-              for="search-dropdown"
-              class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-              >Nombre de empleado</label
-            >
-            <button
-              id="dropdown-button"
-              data-dropdown-toggle="dropdown"
-              class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-e-0 border-gray-300 dark:border-gray-700 dark:text-white rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
-              type="button"
-            >
-              Buscar por
-              <svg
-                class="w-2.5 h-2.5 ms-2.5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 10 6"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="m1 1 4 4 4-4"
-                />
-              </svg>
-            </button>
-            <div
-              id="dropdown"
-              class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-            >
-              <ul
-                class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                aria-labelledby="dropdown-button"
-              >
-                <!-- ciclo de tipos-->
-                <li>
-                  <a
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >Producto</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >Marca</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >Precio</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >Categoria</a
-                  >
-                </li>
-              </ul>
-            </div>
-            <div class="relative w-full">
-              <input
-                type="search"
-                id="search-dropdown"
-                class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                placeholder="Buscar"
-                required
-              />
-              <button
-                type="submit"
-                class="absolute top-0 end-0 p-2.5 h-full text-sm font-medium text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                <svg
-                  class="w-4 h-4"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- Productos Activos -->
-      <div class="w-full py-6">
-        <h1 class="text-2xl font-semibold mb-8">Productos Activos</h1>
+      <div class="container mx-auto">
+        <!-- Buscador -->
+        <div class="flex justify-between mb-4">
+          <input
+            type="text"
+            class="border border-gray-300 px-4 py-2 rounded-lg w-1/3"
+            placeholder="Buscar por nombre..."
+            [(ngModel)]="searchTerm"
+            (input)="applyFilter()"
+          />
+        </div>
+
+        <!-- Tabla -->
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table
+            class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+          >
+            <thead
+              class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+            >
+              <tr>
+                <th scope="col" class="px-6 py-3">ID</th>
+                <th scope="col" class="px-6 py-3">Nombre</th>
+                <th scope="col" class="px-6 py-3">Email</th>
+                <th scope="col" class="px-6 py-3">Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let user of this.comprasServicio.compras()"
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              >
+                <td class="px-6 py-4">{{ user.id }}</td>
+                <td class="px-6 py-4">{{ user.usuario.persona.nombre }}</td>
+                <td class="px-6 py-4">{{ user.direccionEntrega }}</td>
+                <td class="px-6 py-4">{{ user.precioTotal }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginación -->
+        <nav
+          class="flex justify-between items-center pt-4"
+          aria-label="Table navigation"
+        >
+          <span class="text-sm font-normal text-gray-500 dark:text-gray-400"
+            >Mostrando {{ currentPage * pageSize - pageSize + 1 }}–{{
+              currentPage * pageSize
+            }}
+            de {{ filteredUsers.length }} resultados</span
+          >
+          <ul class="inline-flex items-center -space-x-px">
+            <li>
+              <button
+                (click)="previousPage()"
+                [disabled]="currentPage === 1"
+                class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
+              >
+                Anterior
+              </button>
+            </li>
+            <li>
+              <button
+                (click)="nextPage()"
+                [disabled]="currentPage === totalPages"
+                class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
+              >
+                Siguiente
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
 
       <!-- Separador con espacio adicional -->
@@ -117,9 +86,18 @@
 
       <!-- Contenedor del título de Productos Desactivados -->
       <div class="w-full">
-        <h1 class="text-2xl font-semibold mb-8">Productos Desactivados</h1>
+        <h1 class="text-2xl font-semibold mb-8">Productos Empaquetados</h1>
       </div>
 
+      <!-- Contenedor del título de Productos Desactivados -->
+      <div class="w-full">
+        <h1 class="text-2xl font-semibold mb-8">Productos Entragados</h1>
+      </div>
+
+      <!-- Contenedor del título de Productos Desactivados -->
+      <div class="w-full">
+        <h1 class="text-2xl font-semibold mb-8">Productos Cancelados</h1>
+      </div>
       <!-- Productos Desactivados -->
     </div>
   </div>

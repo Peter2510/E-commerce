@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, signal, Signal } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { tap } from 'rxjs';
@@ -17,6 +17,7 @@ export class TiendaServicioService {
 
   public isLoading = signal<boolean>(true);
   productosActivos: any;
+  token = this.cookie.get('token');
 
   constructor(
     private http: HttpClient,
@@ -29,7 +30,7 @@ export class TiendaServicioService {
   obtenerInfoEmpresa() {
     this.http
       .get(`${environment.baseUrlEnv}/${this.directiva}/obtenerElementos/`, {
-        withCredentials: true,
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
       })
       .pipe(
         tap((valores: any) => {
@@ -62,7 +63,7 @@ export class TiendaServicioService {
       `${environment.baseUrlEnv}/${this.directiva}/editarEmpresa/`,
       datos,
       {
-        withCredentials: true,
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
       }
     );
   }
@@ -74,7 +75,7 @@ export class TiendaServicioService {
       `${environment.baseUrlEnv}/${this.directiva}/crearTienda/`,
       datos,
       {
-        withCredentials: true,
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
       }
     );
   }

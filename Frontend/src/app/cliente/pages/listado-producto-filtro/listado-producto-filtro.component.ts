@@ -42,6 +42,8 @@ export class ListadoProductoFiltroComponent {
       next: (response: any) => {
         if (response.ok && Array.isArray(response.productos)) {
           this.products = response.productos as Producto[];
+          console.log(this.products);
+
         } else {
           console.error("Estructura inesperada en la respuesta:", response);
         }
@@ -59,6 +61,7 @@ export class ListadoProductoFiltroComponent {
       next: (response: any) => {
         if (response.ok && Array.isArray(response.productos)) {
           this.products = response.productos as Producto[];
+          
         } else {
           console.error("Estructura inesperada en la respuesta:", response);
         }

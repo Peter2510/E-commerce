@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment.development';
 import { User } from 'src/app/interfaces/user.interface';
 import { CookieService } from 'ngx-cookie-service';
 import { jwtDecode } from 'jwt-decode';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ import { jwtDecode } from 'jwt-decode';
 export class AuthService {
   private baseUrl = environment.baseUrlEnv;
 
-  constructor(private http: HttpClient, private cookieService: CookieService) {}
+  constructor(private http: HttpClient, private cookieService: CookieService, private router:Router) {}
 
   private cookieName = 'token';
 
@@ -34,7 +35,7 @@ export class AuthService {
 
   //guardo Token en cookie
   saveToken(token: string): void {
-    this.cookieService.set(this.cookieName, token);
+    this.cookieService.set(this.cookieName, token, undefined ,'/');
   }
 
   //obtengo todo el token jwt
@@ -54,6 +55,7 @@ export class AuthService {
   //cerrar sesion -> eliminar la cookie
   logout(): void {
     this.cookieService.delete(this.cookieName);
+    this.router.navigate(['/']);
   }
 
   getIdUsuario(): number | null {

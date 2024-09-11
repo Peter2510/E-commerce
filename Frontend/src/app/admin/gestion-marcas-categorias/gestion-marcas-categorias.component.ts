@@ -21,6 +21,7 @@ export class GestionMarcasCategoriasComponent implements OnInit {
   // para la creacion
   nuevoNombreCategoria!: string;
   nuevoNombreMarca!: string;
+  imagen!: File;
 
   //abre los modals
   openModal(tipoElemento: string, elemento?: categoria | Marca) {
@@ -59,12 +60,22 @@ export class GestionMarcasCategoriasComponent implements OnInit {
 
   // funcion para la creacion
   crearCategoria() {
-    this.servicio.creacionCategoria(this.nuevoNombreCategoria).subscribe();
+    this.servicio
+      .creacionCategoria(this.nuevoNombreCategoria, this.imagen)
+      .subscribe();
   }
 
   // funcion para la maraca
   crearMarca() {
-    this.servicio.creacionMarca(this.nuevoNombreMarca).subscribe();
+    console.log(this.imagen);
+
+    this.servicio.creacionMarca(this.nuevoNombreMarca, this.imagen).subscribe();
+  }
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.imagen = file;
+    }
   }
 
   ngOnInit() {

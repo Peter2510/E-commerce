@@ -22,7 +22,8 @@
           <p class="text-md text-gray-600 mb-4">
             <span class="font-bold">Disponibilidad:</span>
             <span [ngClass]="producto.minimoInventario > 0 ? 'text-green-600' : 'text-red-600'">
-              {{ producto.minimoInventario > 0 ? producto.minimoInventario + ' en stock' : 'Agotado' }}
+              {{ producto.inventario && producto.inventario.cantidadtotal > 0 ? producto.inventario.cantidadtotal + ' en stock' : 'Agotado' }}
+
             </span>
           </p>
         </div>
@@ -31,7 +32,7 @@
         <div>
           <p class="text-2xl font-semibold text-gray-900 mb-6">Q.{{ producto.precio }}</p>
           <button (click)="agregarCarrito()" 
-                  [disabled]="producto.minimoInventario === 0" 
+                  [disabled]="producto.inventario === null || producto.inventario?.cantidadtotal== 0 " 
                   class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-500 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
             Agregar al carrito
           </button>

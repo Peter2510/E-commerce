@@ -1,33 +1,43 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { CookieOptions, CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment.development';
 import { ReporteGeneral } from 'src/app/interfaces/reporteGeneral.interface';
 @Injectable({
   providedIn: 'root',
-})  
+})
 export class ReportesService {
   private url = environment.baseUrlEnv;
-  constructor(private http: HttpClient) {}
+  token = this.cookie.get('token');
 
-  public obtenerReporteGeneral = ()=>{
-  
-    return this.http.get<ReporteGeneral[]>(`${environment.baseUrlEnv}/administracion/reporteGeneral`, { withCredentials: true });
+  constructor(private http: HttpClient, private cookie: CookieService) {}
 
+  public obtenerReporteGeneral = () => {
+    return this.http.get<ReporteGeneral[]>(
+      `${environment.baseUrlEnv}/administracion/reporteGeneral`,
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
+    );
+  };
+
+  public getCompraxFecha(fecha: String) {
+    return this.http.get(`${this.url}/compras/comprasPorFecha/${fecha}`);
   }
 
-  public getCompraxFecha(fecha:String){
-    return this.http.get(`${this.url}/compras/comprasPorFecha/${fecha}`,{withCredentials:true})
-  }
-
-  public getComprasxUsuario(idUsuario:number){
+  public getComprasxUsuario(idUsuario: number) {
     console.log(idUsuario);
-    
-    return this.http.get(`${this.url}/compras/comprasPorUsuario/${idUsuario}`,{withCredentials:true})  
+
+    return this.http.get(
+      `${this.url}/compras/comprasPorUsuario/${idUsuario}`,
+      {}
+    );
   }
 
-  public getComprasxEstado(idEstadoCompra:number){
-    return this.http.get(`${this.url}/compras/comprasPorEstadoCompra/${idEstadoCompra}`,{withCredentials:true})  
+  public getComprasxEstado(idEstadoCompra: number) {
+    return this.http.get(
+      `${this.url}/compras/comprasPorEstadoCompra/${idEstadoCompra}`
+    );
   }
 
   public topUsuariosCompras(cantidad:number){
