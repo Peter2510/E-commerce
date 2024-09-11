@@ -9,6 +9,7 @@ import {
   UrlImage,
 } from 'src/app/interfaces/producto.interface';
 import Swal from 'sweetalert2';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-edicion-productos',
@@ -38,25 +39,31 @@ export class EdicionProductosComponent implements OnInit {
       id: this.producto.id,
       nombre: this.producto.nombre,
       precio: this.producto.precio,
-      idCategoria: this.categoria.id,
-      idMarca: this.marca.id,
+      idCategoria: this.idCategoria,
+      idMarca: this.idMarca,
       url_imagenes: [],
       descripcion: this.producto.descripcion,
       minimoInventario: this.producto.minimoInventario,
     };
 
+    console.log("nuevo ",nuevoProducto);
     this.servicioProductos
       .editarProducto(nuevoProducto, this.imagen, this.nombresImagenesEliminar)
       .subscribe({
-        next: (data) => {
+        next: (data:any) => {         
+            Swal.fire({
+              title: 'Producto editado',
+              text: 'El producto se ha editado correctamente',
+              icon: 'success',
+              confirmButtonText: 'Aceptar',
+            });
+        },error: (error:HttpErrorResponse) => {
           Swal.fire({
-            title: 'Producto editado',
-            text: 'El producto se ha editado correctamente',
-            icon: 'success',
+            title: 'Error',
+            text: error.error.mensaje,
+            icon: 'error',
             confirmButtonText: 'Aceptar',
           });
-        },error: (error) => {
-          alert('Error al editar el producto');
         }
       });
 
@@ -88,6 +95,9 @@ export class EdicionProductosComponent implements OnInit {
       .subscribe((elemento: any) => {
         console.log(elemento);
         this.producto = elemento.producto;
+        this.idCategoria = elemento.idCategoria;
+        this.idMarca = elemento.idMarca;
+        console.log(this.idCategoria)
       });
   }
 }

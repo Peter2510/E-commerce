@@ -96,12 +96,16 @@ export class ProductosServicioService {
     formData.append('precio', producto.precio.toString());
     formData.append('descripcion', producto.descripcion);
     formData.append('minimoInventario', producto.minimoInventario.toString());
-    formData.append('idCategoria', producto.categoria?.id?.toString() || '');
+    formData.append('idCategoria', producto.idCategoria);
 
-    formData.append('idMarca', producto.marca?.id?.toString() || '');
+    formData.append('idMarca', producto.idMarca);
     formData.append('imagenes', imagen);
     imagenesEliminar.forEach((imagen) => {
       formData.append('imagenesEliminar', imagen);
+    });
+
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
     });
 
     return this.http.put(
