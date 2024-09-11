@@ -9,7 +9,9 @@ const crearCategoria = async (req, res) => {
 
     try{
         const {nombreCategoria} = req.body;
-        const {imagen} = req.files; //obtenemos la imagen
+        const { imagen } = req.files|| {}; //obtenemos la imagen
+        console.log(imagen);
+        
 
         //validamos el nombre de la cat
         if(!nombreCategoria){

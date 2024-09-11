@@ -124,7 +124,8 @@ const verificar = async (req, res) => {
   }
 };
 
+
+
 module.exports = {
   iniciar: iniciar,
-  verificar: verificar,
-};
+  verificar: verificar};

@@ -14,7 +14,7 @@ router.get(`${api}/getFormasPago`, AdministracionController.getFormasPago);
 router.post(`${api}/editarTipoUsuario`, validacionJWTAdmin, AdministracionController.editarTipoUsuario);
 router.post(`${api}/editarFormaPago`, validacionJWTAdmin, AdministracionController.editarFormaPago);
 router.get(`${api}/obtenerAdminPorId/:id`, validacionJWTAdmin, AdministracionController.obtenerAdminPorId);
-router.get(`${api}/obtenerAyudantePorId/:id`, AdministracionController.obtenerAyudantePorId);
+router.get(`${api}/obtenerAyudantePorId/:id`,validacionJWTAdmin, AdministracionController.obtenerAyudantePorId);
 router.get(`${api}/obtenerEmpleados`, validacionJWTAdmin, AdministracionController.obtenerEmpleados);
 router.post(`${api}/crearAdmin`, validacionJWTAdmin, validarCreacionAdmin, AdministracionController.crearAdmin);
 router.put(`${api}/darBaja/:id`,  AdministracionController.darBaja);
