@@ -56,7 +56,12 @@ export class EdicionProductosComponent implements OnInit {
               text: 'El producto se ha editado correctamente',
               icon: 'success',
               confirmButtonText: 'Aceptar',
-            });
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            }
+          );
         },error: (error:HttpErrorResponse) => {
           Swal.fire({
             title: 'Error',

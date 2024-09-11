@@ -53,6 +53,5 @@ export class HomeComponent {
 
   cantidadCarrito():number{
     return this.carritoService.getCantidadItems();
-
   }
 }
