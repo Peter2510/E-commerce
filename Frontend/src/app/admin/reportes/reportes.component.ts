@@ -68,6 +68,9 @@ export class ReportesComponent implements OnInit{
         case "categorias":
           this.categoriasMasVendidos();
           break;
+        case "entrega":
+          this.formaEntrega()
+          break;
       }
     }
   }
@@ -88,15 +91,25 @@ export class ReportesComponent implements OnInit{
     this.service.productoMasVendido(this.cantidad).subscribe({
       next: (response: any) => {
         this.llenarArreglos2(response, ["cantidadVendida", "dineroGenerado", "nombreProducto"])
-        this.generarGrafica("nombreProducto")
+        this.generarGrafica("nombreProducto","cantidadVendida")
       }
     })
   }
+
+  formaEntrega(){
+    this.service.getFormaEntrega().subscribe({
+      next:(response:any)=>{
+        this.llenarArreglos2(response,["formaEntrega","numeroCompras"])
+        this.generarGrafica("formaEntrega","numeroCompras")
+      }
+    })
+  }
+
   categoriasMasVendidos() {
     this.service.categoriasMasVendido(this.cantidad).subscribe({
       next: (response: any) => {
         this.llenarArreglos2(response, ["cantidadVendida", "dineroGenerado", "nombreCategoria"])
-        this.generarGrafica("nombreCategoria")
+        this.generarGrafica("nombreCategoria","cantidadVendida")
       }
     })
   }
@@ -104,7 +117,7 @@ export class ReportesComponent implements OnInit{
     this.service.marcasMasVendido(this.cantidad).subscribe({
       next: (response: any) => {
         this.llenarArreglos2(response, ["cantidadVendida", "dineroGenerado", "nombreMarca"])
-        this.generarGrafica("nombreMarca")
+        this.generarGrafica("nombreMarca","cantidadVendida")
       }
     })
   }
@@ -232,7 +245,8 @@ export class ReportesComponent implements OnInit{
     return Object.keys(obj);
   }
   descargarPdf() {
-    console.log(this.valores);
+    const canvas = document.getElementById('chart') as HTMLCanvasElement;
+    const chartImage = canvas.toDataURL('image/png');
     const documentDefinition = {
       pageSize: 'A4' as PageSize,
       pageOrientation: 'landscape' as PageOrientation,
@@ -274,6 +288,10 @@ export class ReportesComponent implements OnInit{
             ]
           },
           layout: 'lightHorizontalLines'
+        },
+        {
+          image:chartImage,
+          width: 500
         }
       ]
     };
@@ -282,25 +300,49 @@ export class ReportesComponent implements OnInit{
   }
 
 
-  generarGrafica(nombre:string) {
+  generarGrafica(nombre:string,parametro:string) {
     const labels = this.valores.map(item => item[nombre]);
-    const dataValues = this.valores.map(item => parseInt(item.cantidadVendida, 10));
+    const dataValues = this.valores.map(item => parseInt(item[parametro], 10));
+    const backgroundColors = dataValues.map(() => this.getRandomColor());
     const data = {
       labels,
       datasets: [{
         label:'Grafica',
         data: dataValues,
         fill:false,
-        backgroundColor: 'rgba(255, 255, 255)', // Color de fondo de las barras
-        borderColor: 'rgba(255, 255, 255, 1)', 
+        backgroundColor: backgroundColors, // Color de fondo de las barras
+        borderColor: backgroundColors, 
         tension: 0.1
       }]
     }
+    const options = {
+      scales: {
+        x: {
+          ticks: {
+            color: 'white' // Cambia el color de las etiquetas en el eje X
+          }
+        },
+        y: {
+          ticks: {
+            color: 'white' // Cambia el color de las etiquetas en el eje Y (opcional)
+          }
+        }
+      }
+    };
     
     this.chart = new Chart("chart",{
       type: 'bar' as ChartType,
-      data
+      data,
+      options
     })
   }
+
+  getRandomColor(): string {
+    const r = Math.floor(Math.random() * 255);
+    const g = Math.floor(Math.random() * 255);
+    const b = Math.floor(Math.random() * 255);
+    return `rgba(${r}, ${g}, ${b}, 0.8)`; // Color aleatorio con opacidad
+  }
+  
 
 }

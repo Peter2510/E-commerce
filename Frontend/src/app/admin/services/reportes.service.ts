@@ -76,4 +76,9 @@ export class ReportesService {
       .set("cantidad",cantidad)
     return this.http.get<ReporteGeneral[]>(`${this.url}/reportes/CategoriasMasVendidas`,{params:parametros, withCredentials: true});  
   }
+
+  public getFormaEntrega(){
+    return this.http.get<ReporteGeneral[]>(`${this.url}/reportes/formasDeEntrega`, { withCredentials: true });
+  }
+
 }
