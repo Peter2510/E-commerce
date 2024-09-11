@@ -2,9 +2,10 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ReportesService } from '../services/reportes.service';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-import { PageOrientation, PageSize, Style } from 'pdfmake/interfaces';
+import { Alignment, PageOrientation, PageSize, Style } from 'pdfmake/interfaces';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 import { Chart, ChartType } from 'chart.js/auto';
+import { ClienteService } from 'src/app/cliente/services/cliente.service';
 
 @Component({
   selector: 'app-reportes',
@@ -21,17 +22,21 @@ export class ReportesComponent implements OnInit{
   cabeceras: string[] = [];
   valores: any[] = [];
   ObjectPdf: any;
-
+  infoEmpresa!:any
+  base64Image!:string
   public chart!:Chart
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
-  constructor(private service: ReportesService) {
+  constructor(private service: ReportesService,private service2:ClienteService) {
     
   }
   ngOnInit(): void {
-    
+    this.iniciar()
   }
   generarReporte() {
     if (this.cantidad > 0) {
+      if (this.chart) {
+        this.chart.destroy();
+      }
       switch (this.tipo) {
         case "fecha":
           this.reportexFecha()
@@ -174,8 +179,14 @@ export class ReportesComponent implements OnInit{
   }
 
 
-  getEstadoCompras() {
-
+  async iniciar():Promise<void>{
+    const info = await this.service2.obtenerInfoEmpresa()
+    this.infoEmpresa = info[0]
+    this.service2.getUrl(this.infoEmpresa.nombre).subscribe({
+      next:(response:any)=>{
+        this.base64Image = response.base64
+      }
+    })
   }
 
   llenarArreglos(response: any) {
@@ -228,7 +239,29 @@ export class ReportesComponent implements OnInit{
       content: [
         {
           text: "REPORTE GENERADO",
-          style: 'header'
+          style: 'header',
+          alignment: 'center' as Alignment
+        },
+        {
+          columns: [
+            [
+              { text: `${this.infoEmpresa.nombre}`, bold: true },
+              { text: `${this.infoEmpresa.direccion}` },
+              {image: `${this.base64Image}`,
+                width: 50
+              }
+            ],
+            [
+              {
+                text: `Fecha: ${new Date().toLocaleDateString()}`,
+                alignment: 'right' as Alignment
+              },
+              {
+                text: `Reporte`,
+                alignment: 'right' as Alignment
+              }
+            ]
+          ]
         },
         {
           table: {
@@ -255,17 +288,15 @@ export class ReportesComponent implements OnInit{
     const data = {
       labels,
       datasets: [{
-        label:'my first dataset',
+        label:'Grafica',
         data: dataValues,
         fill:false,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)', // Color de fondo de las barras
+        backgroundColor: 'rgba(255, 255, 255)', // Color de fondo de las barras
         borderColor: 'rgba(255, 255, 255, 1)', 
         tension: 0.1
       }]
     }
-    if (this.chart) {
-      this.chart.destroy();
-    }
+    
     this.chart = new Chart("chart",{
       type: 'bar' as ChartType,
       data
