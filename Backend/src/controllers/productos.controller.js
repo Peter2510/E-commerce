@@ -182,6 +182,34 @@ const editarProducto = async (req, res) => {
       }
     );
 
+    //contar cuantas imagenes tiene el producto
+    //contar cuantas imagenes quiere eliminar
+    //contar cuantas imagenes quiere agregar
+    //EL PRODUCTO NO PUEDE QUEDAR SIN IMAGENES
+    const cantidadImagenes = await UrlImangen.count({
+      where: {
+        idProducto: producto.id,
+      },
+    });
+
+    if(imagenesEliminar){
+
+      if(imagenes){
+        if(imagenes.length + cantidadImagenes - imagenesEliminar.length <= 0){
+          return res.status(400).json({
+            ok: false,
+            mensaje: "El producto no puede quedar sin imágenes",
+          });
+        }
+      }
+
+      if(imagenesEliminar.length >= cantidadImagenes){
+        return res.status(400).json({
+          ok: false,
+          mensaje: "El producto no puede quedar sin imágenes",
+        });
+    }}
+
     // //Para eliminar imagenes
     if (imagenesEliminar) {
       //array con el nombre de las imagenes a eliminar
