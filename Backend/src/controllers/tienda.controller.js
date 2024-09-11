@@ -3,6 +3,10 @@ const Producto = require("../models/producto");
 const Usuario = require("../models/usuario");
 const Tienda = require("../models/tienda");
 const bcrypt = require("bcrypt");
+const fs = require('fs');
+const path = require('path');
+const http = require('http');
+const https = require('https');
 
 const { manejoErrores } = require("../utils/manejoErrores.utils");
 const {
@@ -162,8 +166,82 @@ const editarEmpresa = async (req, res) => {
     }
 }
 
+const descargarLogoBase64 = async (req, res) => {
+  try {
+    const { nombreTienda } = req.params;
+
+    //nombre imagen base de dats
+    const nombreImagen = await Tienda.findOne({
+      where: { nombre: nombreTienda },
+      attributes: ["urlLogo"]
+    });
+
+    if (!nombreImagen || !nombreImagen.urlLogo) {
+      return res.status(404).json({ ok: false, mensaje: "No se encontró la imagen" });
+    }
+
+    //url firmada
+    const urlImagen = await obtenerUrlFirmada(nombreImagen.urlLogo);
+
+    //determinar el protocolo y el cliente HTTP adecuado
+    const url = new URL(urlImagen);
+    const client = url.protocol === 'https:' ? https : http;
+
+    //construir la ruta del archivo en el sistema
+    const tempDir = path.join(__dirname, '../../temp');
+    const filePath = path.join(tempDir, path.basename(nombreImagen.urlLogo));
+
+    //si no existe la carpeta se debe crear xd
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true });
+    }
+
+    //descago el logo
+    client.get(url.href, (response) => {
+      const fileStream = fs.createWriteStream(filePath);
+      response.pipe(fileStream);
+
+      fileStream.on('finish', () => {
+        fileStream.close(() => {
+          //leer el logo recién guardado
+          fs.readFile(filePath, (err, data) => {
+            if (err) {
+              console.error('Error al leer el archivo:', err);
+              return res.status(500).json({ ok: false, mensaje: "Error al leer el archivo" });
+            }
+
+            //convertir la imagen a Base64
+            const base64 = Buffer.from(data).toString('base64');
+
+            //extraer la extensión del archivo
+            const extension = path.extname(filePath).slice(1);
+
+            res.status(200).json({ ok: true, base64: `data:image/${extension};base64,${base64}`, base64Simple: base64, tipo: `image/${extension}`, extension: extension });
+          });
+        });
+      });
+
+      fileStream.on('error', (err) => {
+        console.error('Error al guardar el archivo:', err);
+        res.status(500).json({ ok: false, mensaje: "Error al guardar el archivo" });
+      });
+
+    }).on('error', (err) => {
+      console.error('Error al descargar el archivo:', err);
+      res.status(500).json({ ok: false, mensaje: "Error al descargar el archivo" });
+    });
+
+  } catch (error) {
+    console.error('Error en la función descargarLogoBase64:', error);
+    await manejoErrores(error, res, "Tienda");
+  }
+};
+
+
+
 module.exports = {
     creacionEmpresa,
   obtenerElementos,
-    editarEmpresa
+    editarEmpresa,
+    descargarLogoBase64
 }
