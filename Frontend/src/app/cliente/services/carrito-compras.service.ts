@@ -7,6 +7,7 @@ import { Producto } from 'src/app/interfaces/producto.interface';
 })
 export class CarritoComprasService {
   carrito: CarritoCompras;
+  total: number = 0;
 
   constructor() {
     // Recupera el carrito desde localStorage o inicialízalo si no existe
@@ -16,6 +17,12 @@ export class CarritoComprasService {
 
   private guardarCarrito() {
     localStorage.setItem('miCarrito', JSON.stringify(this.carrito));
+  }
+
+  limpiarCarrito(){
+    this.carrito.itemsCarrito = [];
+  
+    this.guardarCarrito();
   }
 
   agregarItem(producto: Producto, cantidad: number): void {
@@ -39,6 +46,15 @@ export class CarritoComprasService {
     this.guardarCarrito();
   }
 
+  getTotal(): number {
+    console.log('hola que hace')
+
+    this.total= this.carrito.itemsCarrito!.reduce((total, item) => 
+      total + ((item.producto?.precio ?? 0) * item.cantidad), 
+      0);
+    return this.total;
+  }
+
   existeEnCarrito(producto: Producto): boolean{
     if (!this.carrito.itemsCarrito) {
       this.carrito.itemsCarrito = [];
@@ -55,6 +71,12 @@ export class CarritoComprasService {
   getCarrito(): CarritoCompras {
     return this.carrito;
   }
+
+  tieneItems(): boolean {
+    // Verifica si el array de itemsCarrito está definido y si tiene elementos
+    return !!(this.carrito.itemsCarrito && this.carrito.itemsCarrito.length > 0);
+  }
+  
 
   getProductosPedido(){
     //const productos = this.carrito.itemsCarrito!.map(item => item.producto?.id, item.cantidad);

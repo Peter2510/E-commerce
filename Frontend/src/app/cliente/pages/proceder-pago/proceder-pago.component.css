@@ -26,4 +26,15 @@ input[type="text"], input[type="radio"] {
     outline: none;
     box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.5);
   }
+
+  /* Estilo general para los inputs */
+input[type="text"], input[type="number"], input[type="email"], textarea {
+  color: black; /* Color del texto */
+  background-color: white; /* Color de fondo */
+  border: 1px solid #ccc; /* Borde gris claro */
+  
+}
+
+
+
   

@@ -24,10 +24,15 @@ export class ProcederPagoComponent implements OnInit {
   direccionFacturacionOption: string = 'registrada';
   direccionFacturacionRegistrada: string = ''; // Inicializar vacía por defecto
   nuevaDireccionFacturacion: string = '';
+  cantProd = this.carritoService.getCantidadItems();
+  total = this.carritoService.getTotal();
+  mostrarModal: boolean = false;
+  recargo: number=0.0;
 
-  constructor(private clienteService: ClienteService,
-              private comprasService: ComprasService,
-              private carritoService: CarritoComprasService
+  constructor(
+    private clienteService: ClienteService,
+    private comprasService: ComprasService,
+    private carritoService: CarritoComprasService
   ) {}
 
   ngOnInit() {
@@ -35,6 +40,14 @@ export class ProcederPagoComponent implements OnInit {
   }
 
   procederAlPago() {
+    // Validar si es servicio a domicilio y si la dirección es obligatoria
+    if (this.metodoEntrega === 'domicilio' && !this.direccionEnvio) {
+      alert('La dirección de envío es obligatoria para el servicio a domicilio.');
+      return;
+    }
+
+    
+
     const datos = {
       metodoEntrega: this.metodoEntrega,
       direccionEnvio: this.metodoEntrega === 'domicilio' ? this.direccionEnvio : null,
@@ -42,24 +55,25 @@ export class ProcederPagoComponent implements OnInit {
       direccionFacturacion: this.direccionFacturacionOption === 'registrada' ? this.direccionFacturacionRegistrada : this.nuevaDireccionFacturacion,
     };
 
-    console.log('Datos de facturación y entrega:', datos);
+    // Asignar idFormaEntrega según el método de entrega
+    const idFormaEntrega = this.metodoEntrega === 'domicilio' ? 2 : 1;
+
     const pedido: Pedido = {
       idUsuario: this.user.id!,
       nit: datos.nit,
       direccionEntrega: datos.direccionEnvio!,
-      idFormaEntrega: 2,
+      idFormaEntrega: idFormaEntrega,
       productos: this.carritoService.getProductosPedido(),
-      
-    }
+    };
+
     console.log('Pedido:', pedido);
 
-    // Aquí llamarías al servicio para proceder al pago, enviando los datos
+    // Llamar al servicio para proceder al pago
     this.clienteService.registrarCompra(pedido).subscribe({
       next: (response: any) => {
         console.log('Respuesta del servicio:', response);
       }
-    })
-    
+    });
   }
 
   getUser() {
@@ -69,8 +83,8 @@ export class ProcederPagoComponent implements OnInit {
         this.user.persona = response.persona as Person;
 
         // Inicializa las propiedades dependientes de `this.user` después de recibir los datos
-        this.nitRegistrado = this.user?.nombreUsuario || '';
-        this.direccionFacturacionRegistrada = this.user.persona.direccion; // Ajustar según sea necesario
+        this.nitRegistrado = this.user?.persona.nit || 'C/F';
+        this.direccionFacturacionRegistrada = this.user.persona.direccion || 'ciudad'; // Ajustar según sea necesario
 
         console.log('user is ', this.user);
         console.log('persona is ', this.user.persona);
@@ -79,5 +93,30 @@ export class ProcederPagoComponent implements OnInit {
         console.error('Error al obtener el cliente:', error);
       }
     });
+  }
+
+  abrirConfirmacion() {
+    // Aplicar recargo del 10% si el servicio es a domicilio
+    if (this.metodoEntrega === 'domicilio') {
+      this.recargo = this.carritoService.getTotal() * 0.10; // Agregar 10% al total
+      this.total = this.carritoService.getTotal() * 1.10; // Agregar 10% al total
+    }
+    this.mostrarModal = true;
+  }
+
+  cerrarModal() {
+    this.mostrarModal = false;
+  }
+
+  confirmarCompra() {
+    // Lógica para procesar la compra
+    this.procederAlPago();
+
+    // Cerrar el modal
+    this.mostrarModal = false;
+    this.carritoService.limpiarCarrito();
+
+    // Mostrar mensaje de éxito
+    alert('Su compra ha sido procesada. Total de productos: ' + this.cantProd + '. Total: ' + this.total);
   }
 }
