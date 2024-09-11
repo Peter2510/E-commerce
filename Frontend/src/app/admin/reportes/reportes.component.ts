@@ -319,12 +319,12 @@ export class ReportesComponent implements OnInit{
       scales: {
         x: {
           ticks: {
-            color: 'white' // Cambia el color de las etiquetas en el eje X
+            color: 'red' // Cambia el color de las etiquetas en el eje X
           }
         },
         y: {
           ticks: {
-            color: 'white' // Cambia el color de las etiquetas en el eje Y (opcional)
+            color: 'red' // Cambia el color de las etiquetas en el eje Y (opcional)
           }
         }
       }
