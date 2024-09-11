@@ -406,6 +406,56 @@ const swaggerOptions = {
             },
           },
         },
+        Buzon: {
+          type: "object",
+          properties: {
+            id: {
+              type: "integer",
+              example: 1
+            },
+            notificacionId: {
+              type: "integer",
+              example: 4
+            },
+            usuarioId: {
+              type: "integer",
+              example: 21
+            },
+            leido: {
+              type: "boolean",
+              example: false
+            },
+            fecha: {
+              type: "string",
+              format: "date-time",
+              example: "2024-09-11T08:03:33.602Z"
+            },
+            notificacion: {
+              $ref: "#/components/schemas/Notificacion"
+            }
+          }
+            },
+            Notificacion: {
+              type: "object",
+              properties: {
+                id: {
+                  type: "integer",
+                  example: 1
+                },
+                mensaje: {
+                  type: "string",
+                  example: "Su pedido ha sido enviado"
+                },
+                productoId: {
+                  type: "integer",
+                  example: 10
+                },
+                producto: {
+                  $ref: "#/components/schemas/Producto"
+                }
+              }
+            }            
+
       },
     },
     paths: {
@@ -7183,7 +7233,585 @@ const swaggerOptions = {
             }
           }
         }
+      },
+      "/api/v1/buzon/todosMensajes/{idUsuario}": {
+  "get": {
+    "summary": "Obtener todas las notificaciones del buzón del usuario especificado",
+    "tags": ["Buzón"],
+    "description": "Obtiene todas las notificaciones del buzón del usuario especificado, ordenadas por fecha en orden descendente.",
+    "parameters": [
+      {
+        "name": "idUsuario",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "21"
+        }
       }
+    ],
+    "responses": {
+      "200": {
+        "description": "Notificaciones obtenidas correctamente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "buzones": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 50
+                      },
+                      "notificacionId": {
+                        "type": "integer",
+                        "example": 4
+                      },
+                      "usuarioId": {
+                        "type": "integer",
+                        "example": 21
+                      },
+                      "leido": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "fecha": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-09-11T08:03:33.602Z"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-09-11T08:03:33.602Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-09-11T08:03:33.602Z"
+                      },
+                      "notificacion": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 4
+                          },
+                          "mensaje": {
+                            "type": "string",
+                            "example": "El producto asdf tiene pocas unidades disponibles."
+                          },
+                          "productoId": {
+                            "type": "integer",
+                            "example": 18
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-09-11T08:03:33.315Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-09-11T08:03:33.315Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "ID del usuario no definido",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "ID del usuario no definido"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+"/api/v1/buzon/primeros/{idUsuario}": {
+  "get": {
+    "summary": "Obtener las primeras notificaciones del buzón del usuario especificado",
+    "tags": ["Buzón"],
+    "description": "Obtiene las primeras 2 notificaciones del buzón del usuario especificado, ordenadas por fecha en orden descendente.",
+    "parameters": [
+      {
+        "name": "idUsuario",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "21"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Primeras notificaciones obtenidas correctamente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "buzones": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 50
+                      },
+                      "notificacionId": {
+                        "type": "integer",
+                        "example": 4
+                      },
+                      "usuarioId": {
+                        "type": "integer",
+                        "example": 21
+                      },
+                      "leido": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "fecha": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-09-11T08:03:33.602Z"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-09-11T08:03:33.602Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-09-11T08:03:33.602Z"
+                      },
+                      "notificacion": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 4
+                          },
+                          "mensaje": {
+                            "type": "string",
+                            "example": "El producto asdf tiene pocas unidades disponibles."
+                          },
+                          "productoId": {
+                            "type": "integer",
+                            "example": 18
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-09-11T08:03:33.315Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-09-11T08:03:33.315Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "ID del usuario no definido",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "ID del usuario no definido"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+"/api/v1/buzon/obtenerLeidos/{idUsuario}": {
+  "get": {
+    "summary": "Obtener las notificaciones leídas del buzón del usuario especificado",
+    "tags": ["Buzón"],
+    "description": "Obtiene todas las notificaciones leídas del buzón del usuario especificado, ordenadas por fecha en orden descendente.",
+    "parameters": [
+      {
+        "name": "idUsuario",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "21"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Notificaciones leídas obtenidas correctamente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "buzones": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 2
+                      },
+                      "notificacionId": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "usuarioId": {
+                        "type": "integer",
+                        "example": 21
+                      },
+                      "leido": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "fecha": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-09-11T07:00:30.417Z"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-09-11T07:00:30.417Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-09-11T08:32:00.823Z"
+                      },
+                      "notificacion": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "mensaje": {
+                            "type": "string",
+                            "example": "El producto prueb tiene pocas unidades disponibles."
+                          },
+                          "productoId": {
+                            "type": "integer",
+                            "example": 11
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-09-11T07:00:30.086Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-09-11T07:00:30.086Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "ID del usuario no definido",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "ID del usuario no definido"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+"/api/v1/buzon/obtenerNoLeidos/{idUsuario}": {
+  "get": {
+    "summary": "Obtener las notificaciones no leídas del buzón del usuario especificado",
+    "tags": ["Buzón"],
+    "description": "Obtiene todas las notificaciones no leídas del buzón del usuario especificado, ordenadas por fecha en orden descendente.",
+    "parameters": [
+      {
+        "name": "idUsuario",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "21"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Notificaciones no leídas obtenidas correctamente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "buzones": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 50
+                      },
+                      "notificacionId": {
+                        "type": "integer",
+                        "example": 4
+                      },
+                      "usuarioId": {
+                        "type": "integer",
+                        "example": 21
+                      },
+                      "leido": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "fecha": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-09-11T08:03:33.602Z"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-09-11T08:03:33.602Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-09-11T08:03:33.602Z"
+                      },
+                      "notificacion": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 4
+                          },
+                          "mensaje": {
+                            "type": "string",
+                            "example": "El producto asdf tiene pocas unidades disponibles."
+                          },
+                          "productoId": {
+                            "type": "integer",
+                            "example": 18
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-09-11T08:03:33.315Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-09-11T08:03:33.315Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "ID del usuario no definido",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "ID del usuario no definido"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+"/api/v1/buzon/marcarComoLeido/{idUsuario}/{idNotificacion}": {
+  "patch": {
+    "summary": "Marcar una notificación como leída",
+    "tags": ["Buzón"],
+    "description": "Marca una notificación específica como leída para un usuario dado. Solo se marcará si la notificación aún no ha sido leída.",
+    "parameters": [
+      {
+        "name": "idUsuario",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "21"
+        }
+      },
+      {
+        "name": "idNotificacion",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "4"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Notificación marcada como leída exitosamente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Notificación marcada como leída"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "ID del usuario o de la notificación no definido",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "ID del usuario o de la notificación no definido"
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Notificación no encontrada o ya ha sido leída",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "Notificación no encontrada o ya ha sido leída"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
+      
     },
   },
   apis: ["./routes/*.js"],
