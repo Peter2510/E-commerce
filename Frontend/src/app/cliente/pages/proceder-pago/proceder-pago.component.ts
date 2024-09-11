@@ -31,6 +31,7 @@ export class ProcederPagoComponent implements OnInit {
   total = this.carritoService.getTotal();
   mostrarModal: boolean = false;
   recargo: number=0.0;
+  idFormaEntrega!: number;
   toastr: any;
 
   constructor(
@@ -68,13 +69,21 @@ export class ProcederPagoComponent implements OnInit {
     };
 
     // Asignar idFormaEntrega según el método de entrega
-    const idFormaEntrega = this.metodoEntrega === 'domicilio' ? 2 : 1;
+    
+    if (this.metodoEntrega === 'domicilio') {
+      this.idFormaEntrega = 2;
+  
+    }else{
+      this.idFormaEntrega = 1;
+      datos.direccionEnvio='Recoger tienda'
+    }
+    
 
     const pedido: Pedido = {
       idUsuario: this.user.id!,
       nit: datos.nit,
-      direccionEntrega: datos.direccionEnvio!,
-      idFormaEntrega: idFormaEntrega,
+      direccionEntrega: datos.direccionEnvio! || 'Recoger tienda',
+      idFormaEntrega: this.idFormaEntrega,
       productos: this.carritoService.getProductosPedido(),
     };
 
@@ -84,6 +93,19 @@ export class ProcederPagoComponent implements OnInit {
     this.clienteService.registrarCompra(pedido).subscribe({
       next: (response: any) => {
         console.log('Respuesta del servicio:', response);
+        Swal.fire({
+          icon: 'success',
+          title: 'Compra exitos ',
+          text: "Puede ver el estado de su pedido, el el apartado pedidos ",
+        });
+      },
+      error: (error: any) => {
+        console.error('Error al registrar la compra:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al realizar la compra ',
+          text: error ,
+        });
       }
     });
   }
@@ -130,11 +152,7 @@ export class ProcederPagoComponent implements OnInit {
 
     // Mostrar mensaje de éxito
     //debemos redirigir a la ventana pedidos
-    Swal.fire({
-      icon: 'success',
-      title: 'Compra exitos ',
-      text: "Puede ver el estado de su pedido, el el apartado pedidos ",
-    });
+    
     this.router.navigate(['/cliente'])
     alert('Su compra ha sido procesada. Total de productos: ' + this.cantProd + '. Total: ' + this.total);
   }
