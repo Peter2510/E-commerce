@@ -83,6 +83,7 @@ export class ReportesComponent implements OnInit{
     this.service.productoMasVendido(this.cantidad).subscribe({
       next: (response: any) => {
         this.llenarArreglos2(response, ["cantidadVendida", "dineroGenerado", "nombreProducto"])
+        this.generarGrafica("nombreProducto")
       }
     })
   }
@@ -90,6 +91,7 @@ export class ReportesComponent implements OnInit{
     this.service.categoriasMasVendido(this.cantidad).subscribe({
       next: (response: any) => {
         this.llenarArreglos2(response, ["cantidadVendida", "dineroGenerado", "nombreCategoria"])
+        this.generarGrafica("nombreCategoria")
       }
     })
   }
@@ -97,7 +99,7 @@ export class ReportesComponent implements OnInit{
     this.service.marcasMasVendido(this.cantidad).subscribe({
       next: (response: any) => {
         this.llenarArreglos2(response, ["cantidadVendida", "dineroGenerado", "nombreMarca"])
-
+        this.generarGrafica("nombreMarca")
       }
     })
   }
@@ -247,17 +249,22 @@ export class ReportesComponent implements OnInit{
   }
 
 
-  generarGrafica() {
+  generarGrafica(nombre:string) {
+    const labels = this.valores.map(item => item[nombre]);
+    const dataValues = this.valores.map(item => parseInt(item.cantidadVendida, 10));
     const data = {
-      labels: ["enero","febrero"],
+      labels,
       datasets: [{
         label:'my first dataset',
-        data: [10,20],
+        data: dataValues,
         fill:false,
         backgroundColor: 'rgba(255, 255, 255, 0.2)', // Color de fondo de las barras
         borderColor: 'rgba(255, 255, 255, 1)', 
         tension: 0.1
       }]
+    }
+    if (this.chart) {
+      this.chart.destroy();
     }
     this.chart = new Chart("chart",{
       type: 'bar' as ChartType,
