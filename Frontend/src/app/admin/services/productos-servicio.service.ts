@@ -89,7 +89,7 @@ export class ProductosServicioService {
     );
   }
 
-  editarProducto(producto: Producto, imagen: File, imagenesEliminar: string[]) {
+  editarProducto(producto: any, imagen: File, imagenesEliminar: string[]) {
     const formData = new FormData();
     formData.append('id', producto?.id?.toString() || '');
     formData.append('nombre', producto.nombre);
