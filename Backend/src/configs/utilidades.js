@@ -46,7 +46,7 @@ const iniciar = async (req, res) => {
     });
 
     console.log("Email enviado ", token);
-    res
+    return res
       .status(200)
       .json({
         ok: true, 
@@ -54,7 +54,7 @@ const iniciar = async (req, res) => {
         mensaje: "Código enviado al correo electrónico" });
   } catch (err) {
     console.error("Error al enviar el código de verificación", err);
-    res
+    return res
       .status(500)
       .json({
         ok: false,
