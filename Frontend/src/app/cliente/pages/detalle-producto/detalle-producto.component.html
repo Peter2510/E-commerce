@@ -21,10 +21,9 @@
           <p class="text-lg font-medium text-gray-300 mb-2">{{ producto.marca }}</p>
           <p class="text-md text-gray-100 mb-4">{{ producto.descripcion }}</p>
           <p class="text-md text-gray-100 mb-4">
-            <span class="font-bold">Disponibilidad:</span>
-            <span [ngClass]="producto.minimoInventario > 0 ? 'text-lime-500' : 'text-red-600'">
-              {{ producto.inventario && producto.inventario.cantidadtotal > 0 ? producto.inventario.cantidadtotal + ' en stock' : 'Agotado' }}
-
+            <span class="font-bold text-md">Disponibilidad:</span>
+            <span [ngClass]="(producto.inventario?.cantidadtotal ?? 0) > 0 ? 'text-lime-500' : 'text-red-600 font-medium'">
+              {{ producto.inventario && producto.inventario.cantidadtotal > 0 ? producto.inventario.cantidadtotal + ' unidades en stock' : 'Agotado, proximamente' }}
             </span>
           </p>
         </div>

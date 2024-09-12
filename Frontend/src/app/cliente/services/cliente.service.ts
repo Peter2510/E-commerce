@@ -41,7 +41,7 @@ export class ClienteService {
   }
 
   listarProductos(){
-    return this.http.get(`${this.baseUrl}/productos/productosRandom/10`);
+    return this.http.get(`${this.baseUrl}/productos/productosRandom/12`);
   }
 
   listarProductosTodos(){

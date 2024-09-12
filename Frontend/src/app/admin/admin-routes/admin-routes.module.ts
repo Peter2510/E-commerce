@@ -17,6 +17,7 @@ import { EdicionEspecificaEmpresaComponent } from '../empresa/edicion-especifica
 import { adminGuard } from '../guard/admin.guard';
 import { BuzonGeneralComponent } from '../buzon/buzon-general/buzon-general.component';
 import { NotificacionComponent } from '../buzon/notificacion/notificacion.component';
+import { PerfilComponent } from '../perfil/perfil.component';
 
 const routes: Routes = [
   {
@@ -84,11 +85,18 @@ const routes: Routes = [
       },
       {
         path: 'buzon',
-        component: BuzonGeneralComponent
+        component: BuzonGeneralComponent,
+        canActivate: [adminGuard]
       },
       {
         path: 'notificacion/:id',
-        component: NotificacionComponent
+        component: NotificacionComponent,
+        canActivate: [adminGuard]
+      },
+      {
+        path: 'perfil',
+        component: PerfilComponent,
+        canActivate: [adminGuard]
       },
 
       {

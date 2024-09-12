@@ -26,6 +26,7 @@ import { TokenInterceptorService } from './auth/services/token-interceptor.servi
 import { CompraEspecificaComponent } from './admin/Paquetes/compra-especifica/compra-especifica.component';
 import { BuzonGeneralComponent } from './admin/buzon/buzon-general/buzon-general.component';
 import { NotificacionComponent } from './admin/buzon/notificacion/notificacion.component';
+import { PerfilComponent } from './admin/perfil/perfil.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,6 +36,7 @@ import { NotificacionComponent } from './admin/buzon/notificacion/notificacion.c
     ReportesComponent,
     BuzonGeneralComponent,
     NotificacionComponent,
+    PerfilComponent,
   ],
   imports: [
     BrowserModule,
