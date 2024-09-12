@@ -268,5 +268,13 @@ export class ServicioAdminService {
     {headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`)})
   }
 
+  //get a2f activo state
+  getA2fActivo(){
+    const id = this.authService.getIdUsuario();
+    return this.http.get(`${environment.baseUrlEnv}/${this.directiva}/obtenerA2F/${id}`,{
+      headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`)
+    })
+  }
+
 
 }
