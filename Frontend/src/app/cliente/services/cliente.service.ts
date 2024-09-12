@@ -41,7 +41,7 @@ export class ClienteService {
   }
 
   listarProductos(){
-    return this.http.get(`${this.baseUrl}/productos/productosRandom/10`);
+    return this.http.get(`${this.baseUrl}/productos/productosRandom/12`);
   }
 
   listarProductosTodos(){
@@ -100,6 +100,11 @@ export class ClienteService {
     } catch (error) {
       console.error('Error al obtener la información de la empresa:', error);
     }
+  }
+
+  actualizarEstadoCompra(idCompra:number,idEstadoCompra:number){
+    const body = {idCompra,idEstadoCompra}
+    return this.http.patch(`${this.baseUrl}/compras/actualizarEstadoCompra`,body)   
   }
 
 }

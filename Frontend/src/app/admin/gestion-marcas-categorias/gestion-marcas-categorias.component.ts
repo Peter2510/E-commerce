@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ServicioAdminService } from '../services/servicio-admin.service';
 import { categoria, Marca } from 'src/app/interfaces/producto.interface';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-gestion-marcas-categorias',
@@ -60,16 +61,52 @@ export class GestionMarcasCategoriasComponent implements OnInit {
 
   // funcion para la creacion
   crearCategoria() {
-    this.servicio
-      .creacionCategoria(this.nuevoNombreCategoria, this.imagen)
-      .subscribe();
+    this.servicio.creacionCategoria(this.nuevoNombreCategoria, this.imagen).subscribe({
+      next: (response) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Categoría creada exitosamente',
+          confirmButtonText: 'OK'
+        });
+      },
+      error: (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un problema al crear la categoría',
+          confirmButtonText: 'OK'
+        });
+        console.error('Error al crear la categoría:', error); // Imprimir el error en la consola
+      }
+    });
   }
 
   // funcion para la maraca
   crearMarca() {
     console.log(this.imagen);
 
-    this.servicio.creacionMarca(this.nuevoNombreMarca, this.imagen).subscribe();
+    this.servicio.creacionMarca(this.nuevoNombreMarca, this.imagen).subscribe({
+      next: (response) => {
+        // Manejar la respuesta en caso de éxito
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Marca creada exitosamente',
+          confirmButtonText: 'OK'
+        });
+      },
+      error: (error) => {
+        // Manejar el error
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un problema al crear la marca',
+          confirmButtonText: 'OK'
+        });
+        console.error('Error al crear la marca:', error); // Imprimir el error en la consola
+      }
+    });
   }
   onFileSelected(event: any) {
     const file: File = event.target.files[0];

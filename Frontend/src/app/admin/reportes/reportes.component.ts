@@ -71,6 +71,9 @@ export class ReportesComponent implements OnInit{
         case "entrega":
           this.formaEntrega()
           break;
+        case "todas":
+            this.todasCompras()
+            break;
       }
     }
   }
@@ -96,6 +99,13 @@ export class ReportesComponent implements OnInit{
     })
   }
 
+  todasCompras(){
+    this.service.obtenerTodasLasCompras().subscribe({
+      next:(response:any)=>{
+        this.llenarArreglos(response)
+      }
+    })
+  } 
   formaEntrega(){
     this.service.getFormaEntrega().subscribe({
       next:(response:any)=>{
@@ -207,6 +217,7 @@ export class ReportesComponent implements OnInit{
     if (response.compras && response.compras.length > 0) {
       let primero = arreglo[0]
       this.cabeceras = Object.keys(primero)
+      this.cabeceras.push("idUsuario")
       this.valores = arreglo.map(item => ({
         id: item.id,
         nit: item.nit,
@@ -291,7 +302,7 @@ export class ReportesComponent implements OnInit{
         },
         {
           image:chartImage,
-          width: 500
+          width: 800
         }
       ]
     };

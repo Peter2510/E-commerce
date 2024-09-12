@@ -81,4 +81,7 @@ export class ReportesService {
     return this.http.get<ReporteGeneral[]>(`${this.url}/reportes/formasDeEntrega`, { withCredentials: true });
   }
 
+  public obtenerTodasLasCompras(){
+    return this.http.get<ReporteGeneral[]>(`${this.url}/compras/compras`);  
+  }
 }

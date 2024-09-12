@@ -25,11 +25,20 @@ export class VistaGeneralComponent {
     private cookie: CookieService,
     private service: ServicioAdminService,
     private reportesService: ReportesService,
-    private servicio: AuthService
+    private servicio: AuthService,
   ) { }
 
   ngOnInit(): void {
-    console.log(this.a2fActivo);
+    
+    this.service.getA2fActivo().subscribe({
+      next: (response: any) => {
+        this.a2fActivo = response.a2fActivo;
+      },
+      error: (error:any) => {
+        console.error(error);
+      },
+    });
+
     const id_cliente = this.servicio.getIdTipoUsuario();
     if (id_cliente != null) {
       this.service.obtenerEmpleadosId(id_cliente).subscribe({

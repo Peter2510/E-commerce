@@ -4,6 +4,7 @@ import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Alignment, Margins,PageSize} from 'pdfmake/interfaces';
 import { firstValueFrom, Observable } from 'rxjs';
+import Swal from 'sweetalert2';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 @Component({
   selector: 'app-historial',
@@ -37,6 +38,26 @@ export class HistorialComponent implements OnInit {
     })
   }
 
+  recibirCompra(opciones:any){
+    this.servicio2.actualizarEstadoCompra(opciones.id,3).subscribe({
+      next:(response:any)=>{
+        Swal.fire({
+          icon: 'success',
+          title: 'OK',
+          text: 'Pedido recibido :)',
+        });
+        this.ngOnInit()
+      },
+      error:(err)=>{
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.mensaje || "error",
+        });
+      }
+    })
+  }
+
   generar() {
     this.servicio2.getCompras().subscribe({
       next: (response: any) => {
@@ -53,6 +74,7 @@ export class HistorialComponent implements OnInit {
             direccionEntrega: item.direccionEntrega,
             usuario: item.usuario.nombreUsuario,
             estadoCompra: item.estadoCompra.estado,
+            idEstadoCompra: item.estadoCompra.id,
             formaEntrega: item.formaEntrega.tipo,
           }))
         }
@@ -132,8 +154,8 @@ export class HistorialComponent implements OnInit {
               ...this.detalleCompra.map(item => [
                 item.descripcion,
                 item.cantidadProducto,
-                `$${item.precioUnitario}`,
-                `$${item.precioTotal}`
+                `Q${item.precioUnitario}`,
+                `Q${item.precioTotal}`
               ])
             ]
           },
@@ -149,9 +171,9 @@ export class HistorialComponent implements OnInit {
                   table: {
                     widths: ['*', 'auto'],
                     body: [
-                      ['Subtotal', `$${opciones.precioTotal}`],
-                      ['Recargo (10%)', `$${opciones.recargo}`],
-                      ['Total', { text: `$${(parseFloat(opciones.precioTotal) + parseFloat(opciones.recargo)).toFixed(2)}`, bold: true }]
+                      ['Subtotal', `Q${opciones.precioTotal}`],
+                      ['Recargo (10%)', `Q${opciones.recargo}`],
+                      ['Total', { text: `Q${(parseFloat(opciones.precioTotal) + parseFloat(opciones.recargo)).toFixed(2)}`, bold: true }]
                     ]
                   },
                   layout: 'noBorders'

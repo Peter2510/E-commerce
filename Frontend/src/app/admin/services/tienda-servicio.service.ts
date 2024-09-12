@@ -79,4 +79,11 @@ export class TiendaServicioService {
       }
     );
   }
+
+  getInfoTienda() {
+    return this.http.get(`${environment.baseUrlEnv}/tienda/obtenerElementos/`, {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      })
+  }
+
 }

@@ -150,4 +150,13 @@ export class AuthService {
     }
     return null;
   }
+
+  getCorreoElectronico(): string | null {
+    const decodedToken = this.decodeToken();
+    if (decodedToken && decodedToken.correoElectronico) {
+      return decodedToken.correoElectronico;
+    }
+    return null;
+  }
+
 }
