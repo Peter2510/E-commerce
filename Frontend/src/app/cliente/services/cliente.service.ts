@@ -98,4 +98,9 @@ export class ClienteService {
     }
   }
 
+  actualizarEstadoCompra(idCompra:number,idEstadoCompra:number){
+    const body = {idCompra,idEstadoCompra}
+    return this.http.patch(`${this.baseUrl}/compras/actualizarEstadoCompra`,body)   
+  }
+
 }

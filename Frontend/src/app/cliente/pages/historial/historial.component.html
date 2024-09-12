@@ -1,26 +1,43 @@
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th *ngFor="let opciones of cabeceras " scope="col" class="px-6 py-3">
-                    {{opciones}}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let opciones of valores"
-              class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-              <td *ngFor="let key of objectKeys(opciones)" class="px-6 py-4">
-                <ng-container *ngIf="key === 'id'; else defaultCell">
-                  <a (click)="generarFactura(opciones)" class="text-blue-500 hover:underline">
-                    Factura
-                  </a>
-                </ng-container>
-                <ng-template #defaultCell>
-                  {{ opciones[key] }}
-                </ng-template>
-              </td>
-            </tr>
-          </tbody>
-    </table>
+  <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        <th *ngFor="let opciones of cabeceras " scope="col" class="px-6 py-3">
+          {{opciones}}
+        </th>
+        <th>
+          Recibir
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let opciones of valores"
+        class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+        <ng-container *ngFor="let key of objectKeys(opciones)">
+          <td *ngIf="key != 'idEstadoCompra'" class="px-6 py-4">
+            <ng-container *ngIf="key === 'id'; else defaultCell">
+              <a (click)="generarFactura(opciones)" class="text-blue-500 hover:underline">
+                Factura
+              </a>
+            </ng-container>
+            <ng-template #defaultCell>
+              {{ opciones[key] }}
+            </ng-template>
+          </td>
+        </ng-container>
+        <td>
+          <ng-container *ngIf="opciones.idEstadoCompra === 3 ">
+            <button (click)="recibirCompra(opciones)" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded flex items-center">
+              <!-- Icono de check -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </button>
+          </ng-container>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

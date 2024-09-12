@@ -4,6 +4,7 @@ import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Alignment, Margins,PageSize} from 'pdfmake/interfaces';
 import { firstValueFrom, Observable } from 'rxjs';
+import Swal from 'sweetalert2';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 @Component({
   selector: 'app-historial',
@@ -37,6 +38,26 @@ export class HistorialComponent implements OnInit {
     })
   }
 
+  recibirCompra(opciones:any){
+    this.servicio2.actualizarEstadoCompra(opciones.id,4).subscribe({
+      next:(response:any)=>{
+        Swal.fire({
+          icon: 'success',
+          title: 'OK',
+          text: 'Pedido recibido :)',
+        });
+        this.ngOnInit()
+      },
+      error:(err)=>{
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.mensaje || "error",
+        });
+      }
+    })
+  }
+
   generar() {
     this.servicio2.getCompras().subscribe({
       next: (response: any) => {
@@ -53,6 +74,7 @@ export class HistorialComponent implements OnInit {
             direccionEntrega: item.direccionEntrega,
             usuario: item.usuario.nombreUsuario,
             estadoCompra: item.estadoCompra.estado,
+            idEstadoCompra: item.estadoCompra.id,
             formaEntrega: item.formaEntrega.tipo,
           }))
         }
