@@ -96,7 +96,7 @@ const obtenerMarcas = async (req, res) => {
 
 
 const obtenerMarcasRegex = async (req, res) => {
-  const { nombre } = req.query;
+  const { nombre } = req.body;
 
   try {
       const marcas = await Marca.findAll({      where: {

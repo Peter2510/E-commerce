@@ -96,10 +96,11 @@ const obtenerCategorias = async (req, res) => {
 };
 
 const obtenerCategoriasRegex = async (req, res) => {
-  const { nombre } = req.query;
 
     try {
-      console.log(nombre, req.query);
+  const { nombre } = req.body;
+
+      console.log(nombre, req.body);
       
       const categorias = await Categoria.findAll({      where: {
               nombreCategoria: {
