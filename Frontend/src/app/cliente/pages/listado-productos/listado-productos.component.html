@@ -6,7 +6,7 @@
     <!-- Sección de Categorías -->
 <h2 class="text-3xl font-semibold mb-6 text-center text-gray-50">Categorías</h2>
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
-  <div *ngFor="let categoria of categorias" class="relative bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform transform hover:scale-105">
+  <div *ngFor="let categoria of categorias" class="relative  rounded-lg shadow-md overflow-hidden flex flex-col transition-transform transform hover:scale-105 bg-[#0F4368] text-gray-50">
     <a [routerLink]="['/cliente/producto-categoria', categoria.id]"  [queryParams]="{ tipo: 'Categoria', name: categoria.nombreCategoria}" class="flex flex-col h-full">
       <div class="relative w-full h-48">
         <img [src]="categoria.imagen[0].url" alt="{{ categoria.nombreCategoria }}" class="w-full h-full object-cover" />
