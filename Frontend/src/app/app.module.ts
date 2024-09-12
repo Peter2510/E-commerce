@@ -23,6 +23,10 @@ import { ReportesComponent } from './admin/reportes/reportes.component';
 import { CommonModule } from '@angular/common';
 import { DarBajaComponent } from './admin/dar-baja/dar-baja.component';
 import { TokenInterceptorService } from './auth/services/token-interceptor.service';
+import { CompraEspecificaComponent } from './admin/Paquetes/compra-especifica/compra-especifica.component';
+import { BuzonGeneralComponent } from './admin/buzon/buzon-general/buzon-general.component';
+import { NotificacionComponent } from './admin/buzon/notificacion/notificacion.component';
+import { PerfilComponent } from './admin/perfil/perfil.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +34,9 @@ import { TokenInterceptorService } from './auth/services/token-interceptor.servi
     GestionProductosEspecificaComponent,
     EliminarProductoComponent,
     ReportesComponent,
+    BuzonGeneralComponent,
+    NotificacionComponent,
+    PerfilComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,8 +54,13 @@ import { TokenInterceptorService } from './auth/services/token-interceptor.servi
     ReactiveFormsModule,
     CommonModule,
   ],
-  providers: [CookieService, 
-    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}
+  providers: [
+    CookieService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

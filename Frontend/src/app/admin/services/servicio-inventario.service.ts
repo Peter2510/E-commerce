@@ -99,6 +99,34 @@ export class ServicioInventarioService {
       .subscribe();
   }
 
-  //funcion para dar de baja a un usuario
-  darBaja() {}
+  ///funcion de log de ingreso de inventario
+  /**
+   * 
+       idproducto: registroInventario.idProducto,
+            cantidad: registroInventario.cantidad,
+            fechaingreso: new Date(),
+            id_empleado: registroInventario.id_empleado
+   */
+  agregarLogProducto(
+    idproducto: number | undefined,
+    cantidad: number,
+    id_empleado: number | null
+  ) {
+    const registroInventario = new FormData();
+    console.log(idproducto, cantidad, id_empleado);
+
+    if (idproducto !== undefined && id_empleado !== null) {
+      registroInventario.append('idproducto', idproducto?.toString());
+      registroInventario.append('cantidad', cantidad?.toString());
+      registroInventario.append('id_empleado', id_empleado?.toString());
+    }
+
+    return this.http.post(
+      `${environment.baseUrlEnv}/${this.directiva}/ingresoModificacionCantidesUsuarioProducto/`,
+      registroInventario,
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
+    );
+  }
 }

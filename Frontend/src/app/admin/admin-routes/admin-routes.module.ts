@@ -14,6 +14,10 @@ import { GestorEnvioComponent } from '../Paquetes/gestor-envio/gestor-envio.comp
 import { ReportesComponent } from '../reportes/reportes.component';
 import { EditarInformacionComponent } from '../empresa/editar-informacion/editar-informacion.component';
 import { EdicionEspecificaEmpresaComponent } from '../empresa/edicion-especifica-empresa/edicion-especifica-empresa.component';
+import { adminGuard } from '../guard/admin.guard';
+import { BuzonGeneralComponent } from '../buzon/buzon-general/buzon-general.component';
+import { NotificacionComponent } from '../buzon/notificacion/notificacion.component';
+import { PerfilComponent } from '../perfil/perfil.component';
 
 const routes: Routes = [
   {
@@ -22,55 +26,83 @@ const routes: Routes = [
       {
         path: 'gestionRoles',
         component: GestionRolesComponent,
+        canActivate: [adminGuard]
       },
       {
         path: 'gestionRolesEspecifico/:id',
         component: GestionRolesEspecificoComponent,
+        canActivate: [adminGuard]
       },
       {
         path: 'gestionInventario',
         component: GestionInventarioComponent,
+        canActivate: [adminGuard]
       },
       {
         path: 'gestionProductos',
         component: GestionProductosComponent,
+        canActivate: [adminGuard]
       },
       {
         path: 'gestionMarcasCategorias',
         component: GestionMarcasCategoriasComponent,
+        canActivate: [adminGuard]
       },
       {
         path: 'gestionProductosEspecifico/:id',
         component: GestionProductosEspecificaComponent,
+        canActivate: [adminGuard]
       },
 
       {
         path: 'crearProducto',
         component: CreacionProductosComponent,
+        canActivate: [adminGuard]
       },
       {
         path: 'editarProducto/:id',
         component: EdicionProductosComponent,
+        canActivate: [adminGuard]
       },
       {
         path: 'gestionEnvios',
         component: GestorEnvioComponent,
+        canActivate: [adminGuard]
       },
       {
         path: 'reportes',
         component: ReportesComponent,
+        canActivate: [adminGuard]
       },      {
         path: 'gestionEmpresa',
         component: EditarInformacionComponent,
+        canActivate: [adminGuard]
       },
       {
         path: 'edicionEmpresa',
         component: EdicionEspecificaEmpresaComponent,
+        canActivate: [adminGuard]
+      },
+      {
+        path: 'buzon',
+        component: BuzonGeneralComponent,
+        canActivate: [adminGuard]
+      },
+      {
+        path: 'notificacion/:id',
+        component: NotificacionComponent,
+        canActivate: [adminGuard]
+      },
+      {
+        path: 'perfil',
+        component: PerfilComponent,
+        canActivate: [adminGuard]
       },
 
       {
         path: '',
         component: VistaGeneralComponent,
+        canActivate: [adminGuard]
       },
 
       {

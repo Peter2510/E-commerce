@@ -17,6 +17,7 @@ import { ProcederPagoComponent } from './pages/proceder-pago/proceder-pago.compo
 
 import { BuscarComponent } from './pages/buscar/buscar.component';
 import { MaterialModule } from '../material/material.module';
+import { HistorialComponent } from './pages/historial/historial.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { MaterialModule } from '../material/material.module';
     ListadoProductoFiltroComponent,
     ProcederPagoComponent,
     BuscarComponent,
+    HistorialComponent,
   ],
   imports: [CommonModule, ClienteRoutingModule, FormsModule, MaterialModule],
   providers: [CookieService],

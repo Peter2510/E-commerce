@@ -66,7 +66,7 @@ export class CarritoComprasService {
     this.carrito.itemsCarrito!.forEach(element => {
       if(element.producto?.inventario?.cantidadtotal!<=element.cantidad){
         element.cantidad=element.producto?.inventario?.cantidadtotal!;
-        alert('Cantidad insuficiente')
+        //alert('Cantidad insuficiente')
         Swal.fire({
           title: 'Producto insuficiente',
           text: `${element.producto} solo hay en existencias ${element.producto?.inventario?.cantidadtotal!}`,

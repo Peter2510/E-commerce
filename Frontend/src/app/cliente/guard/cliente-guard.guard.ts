@@ -12,15 +12,14 @@ export class Guardia{
     const cookie = this.cookie.get('token')
     if(cookie) {
       const idTipoUsuario = this.servicio.getIdTipoUsuario()
-      if(idTipoUsuario == 2)
-        return true
-      else{
-        this.router.navigate(['/'])
+      if(idTipoUsuario == 1 || idTipoUsuario == 3){
+        this.router.navigate(['/admin'])
         return false
+      }else{
+        return true
       }
     } else{
-      this.router.navigate(['/'])
-      return false
+      return true
     }
   }
 }

@@ -10,17 +10,17 @@ import { DetalleProductoComponent } from './pages/detalle-producto/detalle-produ
 import { ListadoProductoFiltroComponent } from './pages/listado-producto-filtro/listado-producto-filtro.component';
 import { ProcederPagoComponent } from './pages/proceder-pago/proceder-pago.component';
 import { BuscarComponent } from './pages/buscar/buscar.component';
+import { HistorialComponent } from './pages/historial/historial.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    //canActivate: [clienteGuardGuard],
     children: [
       {
         path: 'listado',
         component: ListadoProductosComponent,
-        //canActivate: [clienteGuardGuard],
+        canActivate: [clienteGuardGuard],
       },
       {
         path: 'perfil',
@@ -30,17 +30,17 @@ const routes: Routes = [
       {
         path: 'carrito-compras',
         component: CarritoDeComprasComponent,
-        //canActivate: [clienteGuardGuard],
+        canActivate: [clienteGuardGuard],
       },
       {
         path: 'producto/:id',
         component: DetalleProductoComponent,
-        //canActivate: [clienteGuardGuard],
+        canActivate: [clienteGuardGuard],
       },
       {
         path: 'producto-categoria/:id',
         component: ListadoProductoFiltroComponent,
-        //canActivate: [clienteGuardGuard],
+        canActivate: [clienteGuardGuard],
       },
       {
         path: 'proceder-pago',
@@ -50,12 +50,17 @@ const routes: Routes = [
       {
         path: 'buscar',
         component: BuscarComponent,
-        //canActivate: [clienteGuardGuard],
+        canActivate: [clienteGuardGuard],
+      },
+      {
+        path: 'historial',
+        component: HistorialComponent,
+        canActivate: [clienteGuardGuard],
       },
       {
         path: '**',
         component: ListadoProductosComponent,
-        //canActivate: [clienteGuardGuard],
+        canActivate: [clienteGuardGuard],
       },
     ],
   },

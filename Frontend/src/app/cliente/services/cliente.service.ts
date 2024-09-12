@@ -5,6 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { User } from 'src/app/interfaces/user.interface';
 import { Pedido } from 'src/app/interfaces/pedido.interface';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,7 @@ export class ClienteService {
   }
 
   listarProductos(){
-    return this.http.get(`${this.baseUrl}/productos/productosRandom/10`);
+    return this.http.get(`${this.baseUrl}/productos/productosRandom/12`);
   }
 
   listarProductosTodos(){
@@ -75,5 +76,30 @@ export class ClienteService {
     return this.http.post(`${this.baseUrl}/compras/registrarCompra`,pedido,{withCredentials:true})
   }
 
+  getCompras(){
+    const idUsuario = this.servicio2.getIdUsuario();
+    return this.http.get(`${this.baseUrl}/compras/comprasPorUsuario/${idUsuario}`,{withCredentials:true}) 
+  }
+
+  getDetalleCompras(idCompra:number){
+    return this.http.get(`${this.baseUrl}/compras/detalleCompra/${idCompra}`,{withCredentials:true}) 
+  }
+
+  getUrl(nombreTienda:string){
+    return this.http.get(`${this.baseUrl}/tienda/logo/${nombreTienda}`,{withCredentials:true})   
+  }
+
+  async obtenerInfoEmpresa(): Promise<any> {
+    try {
+      const response:any = await firstValueFrom(
+        this.http.get(`${environment.baseUrlEnv}/tienda/obtenerElementos/`, {
+          withCredentials: true,
+        })
+      );
+      return response.tienda
+    } catch (error) {
+      console.error('Error al obtener la información de la empresa:', error);
+    }
+  }
 
 }

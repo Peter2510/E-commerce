@@ -56,6 +56,11 @@ export class ProcederPagoComponent implements OnInit {
     // Validar si es servicio a domicilio y si la dirección es obligatoria
     if (this.metodoEntrega === 'domicilio' && !this.direccionEnvio) {
       alert('La dirección de envío es obligatoria para el servicio a domicilio.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al realizar la compra ',
+        text: 'La dirección de envío es obligatoria para el servicio a domicilio.',
+      })
       return;
     }
 
@@ -72,11 +77,10 @@ export class ProcederPagoComponent implements OnInit {
     
     if (this.metodoEntrega === 'domicilio') {
       this.idFormaEntrega = 2;
-      this.direccionFacturacionOption = this.direccionEnvio!; 
-      this.nuevaDireccionFacturacion=this.direccionEnvio!;
+  
     }else{
       this.idFormaEntrega = 1;
-      datos.direccionEnvio=this.direccionFacturacionOption
+      datos.direccionEnvio='Recoger tienda'
     }
     
 
@@ -155,7 +159,12 @@ export class ProcederPagoComponent implements OnInit {
     // Mostrar mensaje de éxito
     //debemos redirigir a la ventana pedidos
     
-    this.router.navigate(['/cliente'])
-    alert('Su compra ha sido procesada. Total de productos: ' + this.cantProd + '. Total: ' + this.total);
+    this.router.navigate(['/cliente/historial'])
+    //alert('Su compra ha sido procesada. Total de productos: ' + this.cantProd + '. Total: ' + this.total);
+    Swal.fire({
+      icon: 'success',
+      title: 'Compra exitosa',
+      text: 'Su compra ha sido procesada con éxito. Total de productos: ' + this.cantProd + '. Total: ' + this.total,
+    })
   }
 }
