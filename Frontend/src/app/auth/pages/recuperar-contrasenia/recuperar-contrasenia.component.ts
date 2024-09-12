@@ -30,15 +30,18 @@ export class RecuperarContraseniaComponent {
     ]),
   });
   obtener2FA() {
-    (this.correoElectronico = this.formulario.get('correo')?.value || ''),
-      this.servicioAuth
-        .generarCodigo(this.correoElectronico)
-        .subscribe((codigo: any) => {
-          if (codigo.ok) {
-            this.sinCodigo = false;
-            console.log(codigo);
-          }
-        });
+    console.log('hola');
+
+    this.correoElectronico = this.formulario.get('correo')?.value || '';
+    this.servicioAuth.generarCodigo(this.correoElectronico).subscribe({
+      next: (response: any) => {
+        console.log(response);
+
+        if (response.ok) {
+          this.sinCodigo = false;
+        }
+      },
+    });
   }
 
   verificar2FA() {
