@@ -121,7 +121,8 @@ export class GestorEnvioComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.applyFilter(); // Inicializar tabla
+    this.applyFilter(); 
+    
   }
 
   applyFilter() {

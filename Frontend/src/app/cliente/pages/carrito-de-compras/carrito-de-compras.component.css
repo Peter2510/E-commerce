@@ -1,0 +1,6 @@
+input[type="text"], input[type="number"], input[type="email"], textarea {
+    color: black; /* Color del texto */
+    background-color: white; /* Color de fondo */
+    border: 1px solid #ccc; /* Borde gris claro */
+    
+  }

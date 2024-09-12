@@ -21,7 +21,7 @@
               <div class="block">
                 <i class="fas fa-home text-purple-600 mb-2"></i>
                 <div class="w-full text-lg font-semibold">Servicio a Domicilio</div>
-                <div class="w-full text-sm">Recibe el producto directamente en tu hogar.</div>
+                <div class="w-full text-sm">Recibe el producto directamente en tu hogar. (Recargo del 10%)</div>
               </div>
             </label>
           </li>
@@ -47,9 +47,12 @@
         <h2 class="text-lg font-medium mb-2 text-gray-800">Dirección de Envío</h2>
         <div class="relative">
           <i class="fas fa-map-marker-alt absolute left-3 top-3 text-purple-600"></i>
-          <input [(ngModel)]="direccionEnvio"
+          <input required="true" [(ngModel)]="direccionEnvio"
             class="border rounded-lg w-full p-3 pl-10 mb-4 focus:outline-none focus:ring-2 focus:ring-purple-500"
             type="text" placeholder="Ingrese su dirección de envío">
+        </div>
+        <div *ngIf="metodoEntrega === 'domicilio' && !direccionEnvio">
+          <span style="color: red;">La dirección de envío es obligatoria.</span>
         </div>
       </div>
     </div>
@@ -113,9 +116,41 @@
     </div>
 
     <!-- Botón para proceder al pago -->
-    <button (click)="procederAlPago()"
+    <button 
+    [disabled]="metodoEntrega === 'domicilio' && !direccionEnvio"
+    (click)="abrirConfirmacion()"
       class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-500 transition flex items-center justify-center w-full">
       <i class="fas fa-shopping-cart mr-2"></i> Continuar con el pago
     </button>
+  </div>
+</div>
+
+<!-- Modal de confirmación -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" *ngIf="mostrarModal">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+    
+    <!-- Cabecera del modal -->
+    <div class="flex justify-between items-center border-b pb-3">
+      <h5 class="text-xl font-semibold text-gray-800">Confirmar Compra</h5>
+      <button type="button" class="text-gray-500 hover:text-gray-700 focus:outline-none" (click)="cerrarModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Cuerpo del modal -->
+    <div class="mt-4 text-gray-600">
+      <p>¿Está seguro de que desea confirmar la compra?</p>
+      <p class="mt-2">Total de productos: <span class="font-semibold text-gray-800">{{ cantProd }}</span></p>
+      <p class="mt-2">Recargo a domicilio: <span class="font-semibold text-gray-800">{{ recargo }}</span></p>
+      <p class="mt-2">Total: <span class="font-semibold text-gray-800">{{ total | currency }}</span></p>
+    </div>
+
+    <!-- Pie del modal -->
+    <div class="mt-6 flex justify-end space-x-2">
+      <button type="button" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400" (click)="cerrarModal()">Cancelar</button>
+      <button type="button" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500" (click)="confirmarCompra()">Confirmar</button>
+    </div>
   </div>
 </div>

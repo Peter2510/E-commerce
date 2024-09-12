@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ReportesService } from '../services/reportes.service';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-import { PageOrientation, PageSize, Style } from 'pdfmake/interfaces';
+import { Alignment, PageOrientation, PageSize, Style } from 'pdfmake/interfaces';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+import { Chart, ChartType } from 'chart.js/auto';
+import { ClienteService } from 'src/app/cliente/services/cliente.service';
 
 @Component({
   selector: 'app-reportes',
   templateUrl: './reportes.component.html',
   styleUrls: ['./reportes.component.css']
 })
-export class ReportesComponent {
+export class ReportesComponent implements OnInit{
   tipo: String = "";
   fecha!: String;
   cantidad: number = 5;
@@ -20,12 +22,21 @@ export class ReportesComponent {
   cabeceras: string[] = [];
   valores: any[] = [];
   ObjectPdf: any;
-  constructor(private service: ReportesService) {
-
+  infoEmpresa!:any
+  base64Image!:string
+  public chart!:Chart
+  @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
+  constructor(private service: ReportesService,private service2:ClienteService) {
+    
   }
-
+  ngOnInit(): void {
+    this.iniciar()
+  }
   generarReporte() {
     if (this.cantidad > 0) {
+      if (this.chart) {
+        this.chart.destroy();
+      }
       switch (this.tipo) {
         case "fecha":
           this.reportexFecha()
@@ -57,6 +68,9 @@ export class ReportesComponent {
         case "categorias":
           this.categoriasMasVendidos();
           break;
+        case "entrega":
+          this.formaEntrega()
+          break;
       }
     }
   }
@@ -77,13 +91,25 @@ export class ReportesComponent {
     this.service.productoMasVendido(this.cantidad).subscribe({
       next: (response: any) => {
         this.llenarArreglos2(response, ["cantidadVendida", "dineroGenerado", "nombreProducto"])
+        this.generarGrafica("nombreProducto","cantidadVendida")
       }
     })
   }
+
+  formaEntrega(){
+    this.service.getFormaEntrega().subscribe({
+      next:(response:any)=>{
+        this.llenarArreglos2(response,["formaEntrega","numeroCompras"])
+        this.generarGrafica("formaEntrega","numeroCompras")
+      }
+    })
+  }
+
   categoriasMasVendidos() {
     this.service.categoriasMasVendido(this.cantidad).subscribe({
       next: (response: any) => {
         this.llenarArreglos2(response, ["cantidadVendida", "dineroGenerado", "nombreCategoria"])
+        this.generarGrafica("nombreCategoria","cantidadVendida")
       }
     })
   }
@@ -91,7 +117,7 @@ export class ReportesComponent {
     this.service.marcasMasVendido(this.cantidad).subscribe({
       next: (response: any) => {
         this.llenarArreglos2(response, ["cantidadVendida", "dineroGenerado", "nombreMarca"])
-
+        this.generarGrafica("nombreMarca","cantidadVendida")
       }
     })
   }
@@ -166,8 +192,14 @@ export class ReportesComponent {
   }
 
 
-  getEstadoCompras() {
-
+  async iniciar():Promise<void>{
+    const info = await this.service2.obtenerInfoEmpresa()
+    this.infoEmpresa = info[0]
+    this.service2.getUrl(this.infoEmpresa.nombre).subscribe({
+      next:(response:any)=>{
+        this.base64Image = response.base64
+      }
+    })
   }
 
   llenarArreglos(response: any) {
@@ -213,14 +245,37 @@ export class ReportesComponent {
     return Object.keys(obj);
   }
   descargarPdf() {
-    console.log(this.valores);
+    const canvas = document.getElementById('chart') as HTMLCanvasElement;
+    const chartImage = canvas.toDataURL('image/png');
     const documentDefinition = {
       pageSize: 'A4' as PageSize,
       pageOrientation: 'landscape' as PageOrientation,
       content: [
         {
           text: "REPORTE GENERADO",
-          style: 'header'
+          style: 'header',
+          alignment: 'center' as Alignment
+        },
+        {
+          columns: [
+            [
+              { text: `${this.infoEmpresa.nombre}`, bold: true },
+              { text: `${this.infoEmpresa.direccion}` },
+              {image: `${this.base64Image}`,
+                width: 50
+              }
+            ],
+            [
+              {
+                text: `Fecha: ${new Date().toLocaleDateString()}`,
+                alignment: 'right' as Alignment
+              },
+              {
+                text: `Reporte`,
+                alignment: 'right' as Alignment
+              }
+            ]
+          ]
         },
         {
           table: {
@@ -233,11 +288,61 @@ export class ReportesComponent {
             ]
           },
           layout: 'lightHorizontalLines'
+        },
+        {
+          image:chartImage,
+          width: 500
         }
       ]
     };
     pdfMake.createPdf(documentDefinition).open();
     //this.ObjectPdf.download("reporte.pdf");
   }
+
+
+  generarGrafica(nombre:string,parametro:string) {
+    const labels = this.valores.map(item => item[nombre]);
+    const dataValues = this.valores.map(item => parseInt(item[parametro], 10));
+    const backgroundColors = dataValues.map(() => this.getRandomColor());
+    const data = {
+      labels,
+      datasets: [{
+        label:'Grafica',
+        data: dataValues,
+        fill:false,
+        backgroundColor: backgroundColors, // Color de fondo de las barras
+        borderColor: backgroundColors, 
+        tension: 0.1
+      }]
+    }
+    const options = {
+      scales: {
+        x: {
+          ticks: {
+            color: 'red' // Cambia el color de las etiquetas en el eje X
+          }
+        },
+        y: {
+          ticks: {
+            color: 'red' // Cambia el color de las etiquetas en el eje Y (opcional)
+          }
+        }
+      }
+    };
+    
+    this.chart = new Chart("chart",{
+      type: 'bar' as ChartType,
+      data,
+      options
+    })
+  }
+
+  getRandomColor(): string {
+    const r = Math.floor(Math.random() * 255);
+    const g = Math.floor(Math.random() * 255);
+    const b = Math.floor(Math.random() * 255);
+    return `rgba(${r}, ${g}, ${b}, 0.8)`; // Color aleatorio con opacidad
+  }
+  
 
 }

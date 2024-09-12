@@ -1,0 +1,26 @@
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th *ngFor="let opciones of cabeceras " scope="col" class="px-6 py-3">
+                    {{opciones}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let opciones of valores"
+              class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+              <td *ngFor="let key of objectKeys(opciones)" class="px-6 py-4">
+                <ng-container *ngIf="key === 'id'; else defaultCell">
+                  <a (click)="generarFactura(opciones)" class="text-blue-500 hover:underline">
+                    Factura
+                  </a>
+                </ng-container>
+                <ng-template #defaultCell>
+                  {{ opciones[key] }}
+                </ng-template>
+              </td>
+            </tr>
+          </tbody>
+    </table>
+</div>
