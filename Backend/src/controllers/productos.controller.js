@@ -490,7 +490,7 @@ const filtrarRegex = async (req, res) => {
   const { tipo, nombre } = req.query;
 
   try {
-    console.log("aaaa", tipo, nombre);
+    //console.log("aaaa", tipo, nombre);
 
     if (tipo && nombre) {
       switch (tipo) {

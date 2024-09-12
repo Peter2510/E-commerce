@@ -20,6 +20,7 @@ router.post(`${api}/crearAdmin`, validacionJWTAdmin, validarCreacionAdmin, Admin
 router.put(`${api}/darBaja/:id`,  AdministracionController.darBaja);
 
 router.get(`${api}/reporteGeneral`, validacionJWTAdmin,AdministracionController.obtenerReporteEstadisticas);
-
+router.post(`${api}/editarAdmin`, validacionJWTAdmin, AdministracionController.editarAdmin);
+router.post(`${api}/actualizarContrasenia-admin`, validacionJWTAdmin, AdministracionController.actualizarContrasenia);
 
 module.exports = router;

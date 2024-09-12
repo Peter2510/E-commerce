@@ -140,7 +140,7 @@ const registrarCompra = async (req, res) => {
     res.json({ ok: true, mensaje: "Pedido registrado correctamente" });
   } catch (error) {
     await t.rollback();
-    console.log(error);
+    //console.log(error);
     await manejoErrores(error, res, "Producto");
   }
 };
@@ -533,7 +533,7 @@ const actualizarEstadoCompra = async (req, res) => {
     res.json({ ok: true, mensaje: "Estado de compra actualizado" });
   } catch (error) {
     await t.rollback();
-    console.log(error);
+    //console.log(error);
     await manejoErrores(error, res, "Compra");
   }
 }
@@ -553,7 +553,7 @@ const crearEstadoCompra = async (req, res) => {
     res.json({ ok: true, mensaje: "Estado de compra creado" });
   } catch (error) {
     await t.rollback();
-    console.log(error);
+    //console.log(error);
     await manejoErrores(error, res, "Estado de compra");
   }
 }
