@@ -21,6 +21,7 @@ import { EdicionEspecificaEmpresaComponent } from '../empresa/edicion-especifica
 import { DarBajaComponent } from '../dar-baja/dar-baja.component';
 import { CompraEspecificaComponent } from '../Paquetes/compra-especifica/compra-especifica.component';
 import { MaterialModule } from 'src/app/material/material.module';
+import { MostarRegistroLogsComponent } from '../inventario/mostar-registro-logs/mostar-registro-logs.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { MaterialModule } from 'src/app/material/material.module';
     EdicionEspecificaEmpresaComponent,
     DarBajaComponent,
     CompraEspecificaComponent,
+    MostarRegistroLogsComponent,
   ],
   imports: [
     CommonModule,

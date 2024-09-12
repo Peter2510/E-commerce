@@ -129,4 +129,31 @@ export class ServicioInventarioService {
       }
     );
   }
+
+  obtenerModificacionesporUsuario(id: number | undefined) {
+    return this.http.post(
+      `${environment.baseUrlEnv}/${this.directiva}/obtenerModificacionesporUsuario/`,
+      {
+        id: id,
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
+    );
+  }
+
+  //
+
+  busquedaProductosFiltrarRegexActivo(tipo: string, nombre: string) {
+    const params = { tipo, nombre };
+    this.http
+      .get(`${environment.baseUrlEnv}/${this.directiva}/filtrarRegexActivo/`, {
+        params,
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      })
+      .pipe(
+        tap((valores: any) => {
+          console.log(valores), this.productosActivos.set(valores.productos);
+        })
+      )
+      .subscribe();
+  }
 }

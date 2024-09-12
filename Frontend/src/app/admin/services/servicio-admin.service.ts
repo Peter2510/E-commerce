@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, tap } from 'rxjs';
@@ -245,5 +245,46 @@ export class ServicioAdminService {
         headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
       }
     );
+  }
+
+  obtenerCategoriasRegex(nombre: string) {
+    this.http
+      .get<any[]>(
+        `${environment.baseUrlEnv}/${this.directivaCategoria}/obtenerCategoriasRegex`,
+        {
+          params: new HttpParams().set('nombre', nombre),
+
+          headers: new HttpHeaders().set(
+            'Authorization',
+            `Bearer ${this.token}`
+          ),
+        }
+      )
+      .pipe(
+        tap((response: any) => {
+          this.categorias.set(response.categorias);
+        })
+      )
+      .subscribe();
+  }
+
+  obtenerMarcasRegex(nombre: string) {
+    this.http
+      .get<Marca[]>(
+        `${environment.baseUrlEnv}/${this.directivaMarcas}/obtenerMarcasRegex`,
+        {
+          params: new HttpParams().set('nombre', nombre),
+          headers: new HttpHeaders().set(
+            'Authorization',
+            `Bearer ${this.token}`
+          ),
+        }
+      )
+      .pipe(
+        tap((elementos: any) => {
+          console.log('a', elementos.marcas), this.marcas.set(elementos.marcas);
+        })
+      )
+      .subscribe();
   }
 }

@@ -22,6 +22,7 @@ export class GestionMarcasCategoriasComponent implements OnInit {
   nuevoNombreCategoria!: string;
   nuevoNombreMarca!: string;
   imagen!: File;
+  busqueda!: string;
 
   //abre los modals
   openModal(tipoElemento: string, elemento?: categoria | Marca) {
@@ -75,6 +76,13 @@ export class GestionMarcasCategoriasComponent implements OnInit {
     const file: File = event.target.files[0];
     if (file) {
       this.imagen = file;
+    }
+  }
+  tipoBusqueda() {
+    if ((this.elementoSeleccionado = 'Marca')) {
+      this.servicio.obtenerMarcasRegex(this.busqueda);
+    } else if ((this.elementoSeleccionado = 'Categoria')) {
+      this.servicio.obtenerCategoriasRegex(this.busqueda);
     }
   }
 

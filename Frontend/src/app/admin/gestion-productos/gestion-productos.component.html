@@ -7,9 +7,11 @@
         class="container mb-4 flex w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end"
       >
         <div class="relative flex-grow w-full">
-          <h1 class="text-4xl font-extrabold  mb-5 md:text-5xl lg:text-6xl dark:text-white text-gray-50 text-center">
+          <h1
+            class="text-4xl font-extrabold mb-5 md:text-5xl lg:text-6xl dark:text-white text-gray-50 text-center"
+          >
             Productos registrados
-            </h1>
+          </h1>
           <div class="flex">
             <label
               for="search-dropdown"
@@ -78,6 +80,13 @@
                     >Categoria</a
                   >
                 </li>
+                <li>
+                  <a
+                    (click)="this.selectItem('Disponibilidad')"
+                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >Disponibilidad</a
+                  >
+                </li>
               </ul>
             </div>
             <div class="relative w-full">
@@ -121,7 +130,7 @@
           Creacion
         </button>
       </div>
-      
+
       <div
         class="lg:w-1/4 md:w-1/2 p-4 w-full"
         *ngFor="
@@ -130,7 +139,9 @@
           first as isFirst
         "
       >
-        <div class="h-full p-4 border border-gray-200 rounded-lg bg-[#0F4368] text-gray-50">
+        <div
+          class="h-full p-4 border border-gray-200 rounded-lg bg-[#0F4368] text-gray-50"
+        >
           <a
             class="block relative h-48 rounded overflow-hidden"
             routerLink="/admin/gestionProductosEspecifico/{{ producto.id }}"

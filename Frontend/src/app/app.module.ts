@@ -26,6 +26,7 @@ import { TokenInterceptorService } from './auth/services/token-interceptor.servi
 import { CompraEspecificaComponent } from './admin/Paquetes/compra-especifica/compra-especifica.component';
 import { BuzonGeneralComponent } from './admin/buzon/buzon-general/buzon-general.component';
 import { NotificacionComponent } from './admin/buzon/notificacion/notificacion.component';
+import { MostarRegistroLogsComponent } from './admin/inventario/mostar-registro-logs/mostar-registro-logs.component';
 @NgModule({
   declarations: [
     AppComponent,

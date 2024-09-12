@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-recuperar-contrasenia',
@@ -39,6 +40,17 @@ export class RecuperarContraseniaComponent {
 
         if (response.ok) {
           this.sinCodigo = false;
+          Swal.fire({
+            icon: 'success',
+            title: 'Listo',
+            text: 'Se envio codigo de doble factor, ingreselo a continuacion.',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Fallo',
+            text: 'Error en el proceso',
+          });
         }
       },
     });
@@ -46,14 +58,32 @@ export class RecuperarContraseniaComponent {
 
   verificar2FA() {
     this.codigo = this.formulario.get('codigo')?.value || '';
-    this.servicioAuth
-      .verificar(this.correoElectronico, this.codigo)
-      .subscribe((codigo: any) => {
+    this.servicioAuth.verificar(this.correoElectronico, this.codigo).subscribe(
+      (codigo: any) => {
         console.log(codigo);
         if (codigo.ok) {
           this.generarContrasenia = true;
+          Swal.fire({
+            icon: 'success',
+            title: 'Listo',
+            text: 'Coincide el codigo, ingrese su nueva contrasenia',
+          });
         }
-      });
+      },
+      (error) => {
+        // Manejo del error
+        if (error.status === 401) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Fallo',
+            text: 'Error en el codigo, no coincide',
+          });
+        } else {
+          // Manejo genérico de errores
+          console.log('Mensaje de error:', error.message);
+        }
+      }
+    );
   }
 
   cambioCredencial() {
@@ -63,8 +93,36 @@ export class RecuperarContraseniaComponent {
 
     this.servicioAuth
       .cambioCredenciales(password, repitePassword, this.correoElectronico)
-      .subscribe((valor) => {
-        console.log(valor);
-      });
+      .subscribe(
+        (valor: any) => {
+          console.log(valor);
+          if (valor.ok) {
+            this.generarContrasenia = true;
+            Swal.fire({
+              icon: 'success',
+              title: 'Listo',
+              text: 'Cambio generado',
+            });
+          }
+        },
+        (error) => {
+          // Manejo del error
+          if (error.status === 401) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Fallo',
+              text: 'contrasenias no coinciden',
+            });
+          } else if (error.status === 400) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Fallo',
+              text: 'contrasenias no coinciden',
+            }).then(() => {
+              window.location.reload();
+            });
+          }
+        }
+      );
   }
 }

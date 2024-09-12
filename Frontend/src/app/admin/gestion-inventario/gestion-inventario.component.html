@@ -4,110 +4,123 @@
   <div class="container px-5 py-24 mx-auto">
     <div class="flex flex-wrap -m-4">
       <!-- Contenedor del buscador y botón de creación -->
-      <div
-        class="container flex w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end"
-      >
-        <div class="relative flex-grow w-full">
-          <div class="flex">
-            <label
-              for="search-dropdown"
-              class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-              >Nombre de empleado</label
+      <div class="relative flex-grow w-full">
+        <div class="flex">
+          <label
+            for="search-dropdown"
+            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+            >Nombre de empleado</label
+          >
+          <button
+            id="dropdown-button"
+            data-dropdown-toggle="dropdown"
+            (click)="toggleDropdown()"
+            class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-e-0 border-gray-300 dark:border-gray-700 dark:text-white rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+            type="button"
+          >
+            Buscar por
+            <svg
+              class="w-2.5 h-2.5 ms-2.5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 10 6"
             >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 1 4 4 4-4"
+              />
+            </svg>
+          </button>
+          <div
+            id="dropdown"
+            [ngClass]="{ block: isDropdownOpen, hidden: !isDropdownOpen }"
+            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+          >
+            <ul
+              class="py-2 text-sm text-gray-700 dark:text-gray-200"
+              aria-labelledby="dropdown-button"
+            >
+              <!-- ciclo de tipos-->
+              <li>
+                <a
+                  (click)="this.selectItem('Producto')"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >Producto</a
+                >
+              </li>
+              <li>
+                <a
+                  (click)="this.selectItem('Marca')"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >Marca</a
+                >
+              </li>
+              <li>
+                <a
+                  (click)="this.selectItem('Precio')"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >Precio</a
+                >
+              </li>
+              <li>
+                <a
+                  (click)="this.selectItem('Categoria')"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >Categoria</a
+                >
+              </li>
+              <li>
+                <a
+                  (click)="this.selectItem('Disponibilidad')"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >Disponibilidad</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="relative w-full">
+            <input
+              type="search"
+              id="search-dropdown"
+              class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+              placeholder="Buscar"
+              required
+              [(ngModel)]="this.nombre"
+            />
             <button
-              id="dropdown-button"
-              data-dropdown-toggle="dropdown"
-              class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-e-0 border-gray-300 dark:border-gray-700 dark:text-white rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
-              type="button"
+              type="submit"
+              class="absolute top-0 end-0 p-2.5 h-full text-sm font-medium text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              (click)="this.buscarElemento()"
             >
-              Buscar por
               <svg
-                class="w-2.5 h-2.5 ms-2.5"
+                class="w-4 h-4"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
-                viewBox="0 0 10 6"
+                viewBox="0 0 20 20"
               >
                 <path
                   stroke="currentColor"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="m1 1 4 4 4-4"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                 />
               </svg>
             </button>
-            <div
-              id="dropdown"
-              class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-            >
-              <ul
-                class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                aria-labelledby="dropdown-button"
-              >
-                <!-- ciclo de tipos-->
-                <li>
-                  <a
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >Producto</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >Marca</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >Precio</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >Categoria</a
-                  >
-                </li>
-              </ul>
-            </div>
-            <div class="relative w-full">
-              <input
-                type="search"
-                id="search-dropdown"
-                class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                placeholder="Buscar"
-                required
-              />
-              <button
-                type="submit"
-                class="absolute top-0 end-0 p-2.5 h-full text-sm font-medium text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                <svg
-                  class="w-4 h-4"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                  />
-                </svg>
-              </button>
-            </div>
           </div>
         </div>
       </div>
 
       <!-- Productos Activos -->
       <div class="w-full py-6">
-        <h1 class="text-2xl font-semibold mb-8 text-gray-50 text-center">Productos Activos</h1>
+        <h1 class="text-2xl font-semibold mb-8 text-gray-50 text-center">
+          Productos Activos
+        </h1>
       </div>
       <div
         class="lg:w-1/4 md:w-1/2 p-4 w-full"
@@ -117,7 +130,9 @@
           first as isFirst
         "
       >
-        <div class="h-full p-4 border border-gray-200 rounded-lg bg-[#0F4368] text-gray-50">
+        <div
+          class="h-full p-4 border border-gray-200 rounded-lg bg-[#0F4368] text-gray-50"
+        >
           <a
             class="block relative h-48 rounded overflow-hidden"
             routerLink="/admin/gestionProductosEspecifico/{{ producto.id }}"
@@ -216,7 +231,9 @@
 
       <!-- Contenedor del título de Productos Desactivados -->
       <div class="w-full">
-        <h1 class="text-2xl font-semibold mb-8 text-gray-50 text-center">Productos Desactivados</h1>
+        <h1 class="text-2xl font-semibold mb-8 text-gray-50 text-center">
+          Productos Desactivados
+        </h1>
       </div>
 
       <!-- Productos Desactivados -->
@@ -228,7 +245,9 @@
           first as isFirst
         "
       >
-        <div class="h-full p-4 border border-gray-200 rounded-lg bg-[#0F4368] text-gray-50">
+        <div
+          class="h-full p-4 border border-gray-200 rounded-lg bg-[#0F4368] text-gray-50"
+        >
           <a
             class="block relative h-48 rounded overflow-hidden"
             routerLink="/admin/gestionProductosEspecifico/{{ producto.id }}"
@@ -272,6 +291,161 @@
           </div>
         </div>
       </div>
+
+      <div class="w-full my-16">
+        <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+      </div>
+
+      <!-- Contenedor del título de Productos Desactivados -->
+      <div class="w-full">
+        <h1 class="text-2xl font-semibold mb-8 text-gray-50 text-center">
+          Registro de cambios en el inventario
+        </h1>
+      </div>
+      <div class="container mx-auto">
+        <!-- Buscador -->
+
+        <div class="relative overflow-x-auto">
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            matSort
+            class="w-full text-sm text-left text-gray-800 bg-white"
+          >
+            <!-- Número de Orden -->
+            <ng-container matColumnDef="index">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-xs text-white-700 uppercase bg-white-50 dark:bg-white-700 dark:text-white-400"
+              >
+                No.
+              </th>
+              <td
+                mat-row
+                *matCellDef="let row; let i = index"
+                class="px-4 py-2 text-sm text-white-700"
+              >
+                {{ i + 1 }}
+              </td>
+            </ng-container>
+
+            <!-- Nombre -->
+            <ng-container matColumnDef="nombre de real del empleado">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+              >
+                Nombre real del empleado
+              </th>
+              <td
+                mat-row
+                *matCellDef="let user"
+                class="px-4 py-2 text-sm text-white-700"
+              >
+                {{ user.nombre }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nombre de Usuario">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+              >
+                Nombre de usuario
+              </th>
+              <td
+                mat-row
+                *matCellDef="let user"
+                class="px-4 py-2 text-sm text-white-700"
+              >
+                {{ user.nombreUsuario }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="correo Electronico">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+              >
+                Correo Electronico
+              </th>
+              <td
+                mat-row
+                *matCellDef="let user"
+                class="px-4 py-2 text-sm text-white-700"
+              >
+                {{ user.correoElectronico }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Tipo de Usuario">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+              >
+                Tipo de usuario
+              </th>
+              <td
+                mat-row
+                *matCellDef="let user"
+                class="px-4 py-2 text-sm text-white-700"
+              >
+                {{ user.idTipoUsuario === 1 ? "Administrador" : "Ayudante" }}
+              </td>
+            </ng-container>
+            <!-- Ver Compra -->
+            <ng-container matColumnDef="ver cambios en inventario">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+              >
+                Ver Historial
+              </th>
+              <td mat-row *matCellDef="let user" class="px-4 py-2">
+                <button
+                  class="px-6 py-2 text-white font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 rounded-full shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                  (click)="this.openModalHistorial(user)"
+                >
+                  Ver historial
+                </button>
+              </td>
+            </ng-container>
+
+            <!-- Header Row -->
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedColumns"
+              class="bg-white border-b border-gray-200"
+            ></tr>
+            <!-- Data Row -->
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns"
+              class="hover:bg-gray-800"
+            ></tr>
+          </table>
+
+          <!-- Paginación -->
+          <mat-paginator
+            [length]="dataSource.data.length"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="[5, 10, 20]"
+          >
+          </mat-paginator>
+        </div>
+
+        <!-- Tabla -->
+      </div>
     </div>
     <div *ngIf="this.isModalVisible">
       <app-editar-cantidad
@@ -279,6 +453,13 @@
         [isVisible]="this.isModalVisible"
         (closeModal)="closeModal()"
       ></app-editar-cantidad>
+    </div>
+    <div *ngIf="this.modalHistorial">
+      <app-mostar-registro-logs
+        [id]="this.seleccionadoUsuario"
+        [isVisible]="this.modalHistorial"
+        (closeModal)="closeModalHistorial()"
+      ></app-mostar-registro-logs>
     </div>
   </div>
 </section>
