@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, tap } from 'rxjs';
+import { AuthService } from 'src/app/auth/services/auth.service';
 import { formaPago, Person } from 'src/app/interfaces/person.interface';
 import { categoria, Marca } from 'src/app/interfaces/producto.interface';
 import { tipoUsuario } from 'src/app/interfaces/user.interface';
@@ -21,7 +22,7 @@ export class ServicioAdminService {
   public categorias = signal<any[]>([]);
   public marcas = signal<Marca[]>([]);
 
-  constructor(private http: HttpClient, private cookieService: CookieService) {
+  constructor(private http: HttpClient, private cookieService: CookieService, private authService: AuthService) {
     this.obtenerCategorias();
     this.obtenerMarcas();
   }
@@ -246,4 +247,34 @@ export class ServicioAdminService {
       }
     );
   }
+
+  //editar usuario
+  editarAdmin(a2fActivo:any){
+    const idUsuario = this.authService.getIdUsuario();
+    const body = {idUsuario, a2fActivo}
+    return this.http.post(
+      `${environment.baseUrlEnv}/${this.directiva}/editarAdmin`, body,
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
+    )
+  }
+
+  //editarContresenia
+  actualizarContrasenia(contraseniaActual:string,nuevaContrasenia:string){
+    const id = this.authService.getIdUsuario();
+    const body = {id,contraseniaActual,nuevaContrasenia}
+    return this.http.post(`${environment.baseUrlEnv}/${this.directiva}/actualizarContrasenia-admin`,body,
+    {headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`)})
+  }
+
+  //get a2f activo state
+  getA2fActivo(){
+    const id = this.authService.getIdUsuario();
+    return this.http.get(`${environment.baseUrlEnv}/${this.directiva}/obtenerA2F/${id}`,{
+      headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`)
+    })
+  }
+
+
 }
