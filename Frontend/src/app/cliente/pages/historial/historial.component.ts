@@ -89,7 +89,6 @@ export class HistorialComponent implements OnInit {
             [
               { text: `${this.infoEmpresa.nombre}`, bold: true },
               { text: `${this.infoEmpresa.direccion}` },
-              { text: `${this.infoEmpresa.nombre}` },
               {image: `${this.base64Image}`,
                 width: 50
               }
