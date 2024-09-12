@@ -28,7 +28,7 @@
       >
         <div *ngIf="item.id == 1; else permiso2">
           <a
-            class="mr-4 hover:text-gray-900 text-sm font-medium"
+            class="mr-4 hover:text-gray-300 text-sm font-medium"
             routerLink="/admin/gestionProductos"
           >
             Gestion de productos
@@ -37,7 +37,7 @@
         <ng-template #permiso2>
           <div *ngIf="item.id === 3; else permiso3">
             <a
-              class="mr-4 hover:text-gray-900 text-sm font-medium"
+              class="mr-4 hover:text-gray-300 text-sm font-medium"
               routerLink="/admin/gestionInventario"
             >
               Gestion de inventario
@@ -47,7 +47,7 @@
         <ng-template #permiso3>
           <div *ngIf="item.id === 2; else permiso4">
             <a
-              class="mr-4 hover:text-gray-900 text-sm font-medium"
+              class="mr-4 hover:text-gray-300 text-sm font-medium"
               routerLink="/admin/gestionMarcasCategorias"
             >
               Gestion de Marcas y categorias
@@ -57,7 +57,7 @@
         <ng-template #permiso4>
           <div *ngIf="item.id === 4">
             <a
-              class="mr-4 hover:text-gray-900 text-sm font-medium"
+              class="mr-4 hover:text-gray-300 text-sm font-medium"
               routerLink="/admin/gestionEnvios"
             >
               Gestion de Envios
@@ -70,19 +70,19 @@
     <div class="siEsUsuario" *ngIf="this.idTipoUsuario === 1">
       <nav>
         <a
-          class="mr-4 hover:text-gray-900 text-sm font-medium"
+          class="mr-4 hover:text-gray-300 text-sm font-medium"
           routerLink="/admin/gestionRoles"
         >
           Gestion de usuarios
         </a>
         <a
-          class="mr-4 hover:text-gray-900 text-sm font-medium"
+          class="mr-4 hover:text-gray-300 text-sm font-medium"
           routerLink="/admin/gestionEmpresa"
         >
           Gestion de Empresa
         </a>
         <a
-          class="mr-4 hover:text-gray-900 text-sm font-medium"
+          class="mr-4 hover:text-gray-300 text-sm font-medium"
           routerLink="/admin/reportes"
         >
           Reportes
@@ -144,10 +144,10 @@
       </div>
       <ul class="py-1 text-gray-500 dark:text-gray-400" aria-labelledby="dropdown">
           <li>
-              <a href="#" class="block text-gray-50 py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Mi perfil</a>
+              <a href="/admin/perfil" class="block text-gray-50 py-2 px-4 text-sm hover:bg-gray-300 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Mi perfil</a>
           </li>
           <li>
-            <a href="#" class="block py-2  text-gray-50 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" (click)="cerrarSesion()">Cerrar sesión</a>
+            <a href="#" class="block py-2  text-gray-50 px-4 text-sm hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" (click)="cerrarSesion()">Cerrar sesión</a>
         </li>
       </ul>
     </div>
