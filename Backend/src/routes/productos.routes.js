@@ -17,6 +17,7 @@ router.put(`${api}/cambiarEstadoProducto/:id`,validacionJWTAdmin, ProductosContr
 router.get(`${api}/productosRandom/:cantidad`, ProductosController.obtenerProductosRandom);
 router.get(`${api}/filtrar`, ProductosController.filtrarProductos);
 router.get(`${api}/filtrarRegex`, ProductosController.filtrarRegex);
+router.get(`${api}/filtrarRegexActivo`, ProductosController.filtrarRegexActivo);
 router.get(`${api}/productos`,  ProductosController.obtenerTodosProductos);
 router.get(`${api}/productos-activos`, validacionJWTAdmin, ProductosController.productosActivos);
 router.get(`${api}/productos-desactivados`, validacionJWTAdmin, ProductosController.productosDesactivados);
@@ -29,6 +30,7 @@ router.put(`${api}/ingresoMayorCantidadProducto/:id`,InventarioController.ingres
 router.get(`${api}/obtenerEstadosInventario/`, InventarioController.obtenerEstadosInventario);
 router.post(`${api}/ingresoModificacionCantidesUsuarioProducto/`, InventarioController.ingresoModificacionCantidesUsuarioProducto);
 router.post(`${api}/creacionTipoEstadoInventario/`, InventarioController.creacionTipoEstadoInventario);
+router.post(`${api}/obtenerModificacionesporUsuario/`, InventarioController.obtenerModificacionesporUsuario);
 
 
 

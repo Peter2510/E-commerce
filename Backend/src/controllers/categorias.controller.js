@@ -95,6 +95,43 @@ const obtenerCategorias = async (req, res) => {
   }
 };
 
+const obtenerCategoriasRegex = async (req, res) => {
+  const { nombre } = req.query;
+
+    try {
+      console.log(nombre, req.query);
+      
+      const categorias = await Categoria.findAll({      where: {
+              nombreCategoria: {
+                [Op.iRegexp]: nombre,
+              },
+            },});
+
+      // Crear un array para almacenar las categorias con sus URLs de imágenes firmadas
+      const categoriasConImagenes = await Promise.all(
+          categorias.map(async (categoria) => {
+              // Verificar si la propiedad 'imagen' existe y no está vacía
+              if (categoria.imagen) {
+                  // Obtener la URL firmada para la imagen de la categoria
+                  const url = await obtenerUrlFirmada(categoria.imagen);
+
+                  // Asignar la URL firmada a la propiedad de imagen de la categoria
+                  categoria.setDataValue("imagen", [{ "nombre": categoria.imagen, "url": url }]);
+              } else {
+                  // Si no hay imagen, asignar un valor predeterminado o vacío
+                  categoria.setDataValue("imagen", []);
+              }
+
+              return categoria;
+          })
+      );
+
+      res.status(200).json({ ok: true, categorias: categoriasConImagenes });
+  } catch (error) {
+      await manejoErrores(error, res, "Categoria");
+  }
+};
+
 
 
 const obtenerCategoriaPorId = async (req, res) => {
@@ -203,7 +240,8 @@ module.exports = {
     obtenerCategorias,
     obtenerCategoriaPorId,
     actualizarCategoria,
-    eliminarCategoria
+    eliminarCategoria,
+    obtenerCategoriasRegex
 }
 
 
