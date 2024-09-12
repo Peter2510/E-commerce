@@ -56,6 +56,10 @@ export class ClienteService {
     return this.http.get(`${this.baseUrl}/productos/filtrar/?idMarca=${id}`);
   }
 
+  listarProductosMarcaCategoria(idMarca:number,  idCategoria:number){
+    return this.http.get(`${this.baseUrl}/productos/filtrar/?idMarca=${idMarca}&idCategoria=${idCategoria}`);
+  }
+
   getProducto(id: number){
     return this.http.get(`${this.baseUrl}/productos/producto/${id}`);
   }

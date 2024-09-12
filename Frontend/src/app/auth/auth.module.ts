@@ -7,9 +7,14 @@ import { HeaderComponent } from '../utils/header/header.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminheaderComponent } from '../utils/adminheader/adminheader.component';
+import { RecuperarContraseniaComponent } from './pages/recuperar-contrasenia/recuperar-contrasenia.component';
 
 @NgModule({
-  declarations: [LoginComponent, RegisterComponent],
+  declarations: [
+    LoginComponent,
+    RegisterComponent,
+    RecuperarContraseniaComponent,
+  ],
   imports: [CommonModule, AuthRoutingModule, FormsModule, ReactiveFormsModule],
 })
 export class AuthModule {}

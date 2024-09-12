@@ -1,0 +1,42 @@
+<app-adminheader></app-adminheader>
+
+<div class="relative overflow-x-auto p-12">
+    <table class="w-full border-separate border border-gray-800 dark:border-gray-500">
+        <thead class="text-xs text-gray-200 uppercase bg-gray-800 dark:bg-gray-900">
+            <tr>
+                <th scope="col" class="border border-gray-700 dark:border-gray-600 px-6 py-3">
+                    Fecha
+                </th>
+                <th scope="col" class="border border-gray-700 dark:border-gray-600 px-6 py-3">
+                    Mensaje
+                </th>
+                <th scope="col" class="border border-gray-700 dark:border-gray-600 px-6 py-3">
+                    Producto
+                </th>
+                <th scope="col" class="border border-gray-700 dark:border-gray-600 px-6 py-3">
+                    Acciones
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let buzon of buzones" class="bg-gray-900 dark:bg-gray-800">
+                <td class="border border-gray-700 dark:border-gray-600 px-6 py-4 font-medium text-gray-300 whitespace-nowrap dark:text-gray-100">
+                    {{ buzon.fecha | date:'dd-MM-yyyy HH:mm'}} horas
+                </td>
+                <td class="border border-gray-700 dark:border-gray-600 px-6 py-4 text-gray-300 dark:text-gray-100">
+                    {{ buzon.notificacion.mensaje}}
+                </td>
+                <td class="border border-gray-700 dark:border-gray-600 px-6 py-4">
+                    <a [routerLink]="['/admin/gestionProductosEspecifico', buzon.notificacion.producto.id]" class="text-blue-400 hover:underline dark:text-blue-300">
+                        {{ buzon.notificacion.producto.nombre }}
+                    </a>
+                </td>
+                <td class="border border-gray-700 dark:border-gray-600 px-6 py-4">
+                    <button (click)="marcarLeido(buzon.notificacion.id)" *ngIf="!buzon.leido" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition duration-150 ease-in-out">
+                        Marcar como leído
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

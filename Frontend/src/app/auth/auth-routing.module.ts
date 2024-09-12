@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { loginGuard } from './guard/login.guard';
+import { RecuperarContraseniaComponent } from './pages/recuperar-contrasenia/recuperar-contrasenia.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,11 @@ const routes: Routes = [
       {
         path: 'register',
         component: RegisterComponent,
+        //canActivate: [loginGuard],
+      },
+      {
+        path: 'recuperarContrasenia',
+        component: RecuperarContraseniaComponent,
         //canActivate: [loginGuard]
       },
       {

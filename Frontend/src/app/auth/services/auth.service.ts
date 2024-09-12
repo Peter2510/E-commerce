@@ -12,7 +12,11 @@ import { Router } from '@angular/router';
 export class AuthService {
   private baseUrl = environment.baseUrlEnv;
 
-  constructor(private http: HttpClient, private cookieService: CookieService, private router:Router) {}
+  constructor(
+    private http: HttpClient,
+    private cookieService: CookieService,
+    private router: Router
+  ) {}
 
   private cookieName = 'token';
 
@@ -21,6 +25,21 @@ export class AuthService {
     console.log(body);
 
     return this.http.post(`${this.baseUrl}/auth/login`, body);
+  }
+
+  generarCodigo(correoElectronico: string) {
+    const body = { correoElectronico };
+    return this.http.post(`${this.baseUrl}/auth/enable-2fa`, body);
+  }
+
+  cambioCredenciales(
+    contrasenia: string,
+    mismaContrasenia: string,
+    correoElectronico: string
+  ) {
+    const body = { contrasenia, mismaContrasenia, correoElectronico };
+
+    return this.http.post(`${this.baseUrl}/auth/cambioCredenciales`, body);
   }
 
   verificar(correoElectronico: string, token: string) {

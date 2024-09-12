@@ -14,6 +14,7 @@ import { User } from 'src/app/interfaces/user.interface';
 import { TiendaServicioService } from 'src/app/admin/services/tienda-servicio.service';
 import { tienda } from 'src/app/interfaces/tienda.interface';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { BuzonService } from 'src/app/admin/services/buzon.service';
 
 @Component({
   selector: 'app-adminheader',
@@ -24,10 +25,13 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 })
 export class AdminheaderComponent implements OnInit {
   router = inject(Router);
+  notificaciones: any[] = [];
 
   usuario!: User;
   idUsuario = this.loginService.getIdUsuario();
   idTipoUsuario = this.loginService.getIdTipoUsuario();
+  nombreUsuario = this.loginService.getNombreUsuario();
+  correoElectronico = '';
   mostrarPerfil: boolean = false;
   tipoPermisos: tipopermiso[] = [];
   empresa!: tienda;
@@ -37,10 +41,10 @@ export class AdminheaderComponent implements OnInit {
     private cookie: CookieService,
     public servicioPermisos: PermisosServiciosService,
     public servicioTienda: TiendaServicioService,
-    private loginService: AuthService
+    private loginService: AuthService,
+    private buzonService: BuzonService
   ) {
     this.empresa = this.servicioTienda.infoEmpresa();
-    console.log(this.empresa);
   }
 
   irGestionRoles() {
@@ -67,18 +71,34 @@ export class AdminheaderComponent implements OnInit {
 
       this.service.obtenerEmpleadosId(this.idUsuario).subscribe({
         next: (response: any) => {
-          console.log(response);
 
           const persona = response.persona;
           const usuario = response.usuario;
           this.usuario = usuario;
           this.usuario.persona = persona;
-          console.log(this.usuario.id);
+          this.correoElectronico = response.persona.correoElectronico;
+          this.obtenerBuzonPrincipal();
+
         },
         error: (error) => {},
       });
-
-      console.log(this.servicioTienda.infoEmpresa(), this.empresa);
+      this.obtenerBuzonPrincipal();
     }
   }
+
+  obtenerBuzonPrincipal(){
+    this.buzonService.obtenerBuzonPrincipal().subscribe({
+      next: (response: any) => {
+        this.notificaciones = response.buzones;
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+  }
+
+  verNotificacion(id: number) {
+    this.router.navigate(['/admin/notificacion', id]);
+  }
+
 }

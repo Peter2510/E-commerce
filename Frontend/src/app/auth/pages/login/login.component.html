@@ -1,43 +1,70 @@
 <div class="min-h-screen flex items-center justify-center bg-gray-900">
-  <div *ngIf="verificacion==false" class="form-container">
+  <div *ngIf="verificacion == false" class="form-container">
     <p class="title">Iniciar sesión</p>
     <form class="form">
       <div class="input-group p-1">
         <label for="username">Correo electronico</label>
-        <input type="text" name="username" [(ngModel)]="correoElectronico" id="username" placeholder="Ingrese su correo electronico">
+        <input
+          type="text"
+          name="username"
+          [(ngModel)]="correoElectronico"
+          id="username"
+          placeholder="Ingrese su correo electronico"
+        />
       </div>
       <div class="input-group p-1">
         <label for="password">Contraseña</label>
-        <input type="password" name="password" [(ngModel)]="contrasenia" id="password" placeholder="Ingrese su contraseña">
+        <input
+          type="password"
+          name="password"
+          [(ngModel)]="contrasenia"
+          id="password"
+          placeholder="Ingrese su contraseña"
+        />
         <div class="forgot p-1">
-          <a rel="noopener noreferrer" href="#">¿Olvido su contraseña?</a>
+          <a rel="noopener noreferrer" href="/auth/recuperarContrasenia"
+            >¿Olvido su contraseña?</a
+          >
         </div>
       </div>
       <button (click)="login()" class="sign">Iniciar sesion</button>
     </form>
-    <p class="signup p-4">¿No tienes una cuenta?
+    <p class="signup p-4">
+      ¿No tienes una cuenta?
       <a rel="noopener noreferrer" href="/auth/register" class="">Registrate</a>
     </p>
     <p class="signup p-4">
       <a rel="noopener noreferrer" href="/cliente" class="">Ingresar sin resigistrarse</a>
     </p>
   </div>
-  <div *ngIf="verificacion" class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-sm">
-    <h2 class="text-3xl font-bold text-center text-white mb-8">Verificacion en dos pasos</h2>
+  <div
+    *ngIf="verificacion"
+    class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-sm"
+  >
+    <h2 class="text-3xl font-bold text-center text-white mb-8">
+      Verificacion en dos pasos
+    </h2>
     <form (ngSubmit)="verificar()">
       <div class="mb-6">
-        <label class="block text-gray-300 text-sm font-medium mb-2" for="email">Ingrese token de validadcion:</label>
-        <input type="text" name="token" [(ngModel)]="token" id="username" placeholder="Ingrese su token" required
-          class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-      </div>
-      <button type="submit"
-        class="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+        <label class="block text-gray-300 text-sm font-medium mb-2" for="email"
+          >Ingrese token de validadcion:</label
         >
-        Verificar
-      </button >
+        <input
+          type="text"
+          name="token"
+          [(ngModel)]="token"
+          id="username"
+          placeholder="Ingrese su token"
+          required
+          class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+      </div>
+      <button
+        type="submit"
+        class="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+      >
+        Login
+      </button>
     </form>
   </div>
 </div>
-
-
-
