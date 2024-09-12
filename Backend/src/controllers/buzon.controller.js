@@ -1,6 +1,7 @@
 const { sequelize } = require('../configs/database.configs');
 const Buzon = require('../models/buzon');
 const Notificacion = require('../models/notificacion');
+const Producto = require('../models/producto');
 const { manejoErrores } = require('../utils/manejoErrores.utils');
 
 
@@ -18,6 +19,10 @@ const obtenerBuzon = async (req, res) => {
       include: {
         model: Notificacion,
         as: 'notificacion',
+        include: {
+          model: Producto,
+          as: 'producto',
+        },
       },
       order: [['fecha', 'DESC']],
     });
@@ -141,6 +146,10 @@ const obtenerNotificacionPorId = async (req, res) => {
       include: {
         model: Notificacion,
         as: 'notificacion',
+        include: {
+          model: Producto,
+          as: 'producto',
+        },
       },
     });
 

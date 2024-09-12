@@ -7,6 +7,7 @@ const Usuario = require("./usuario");
 const FormaPago = require("./formaPago");
 const EstadoCompra = require("./estadoCompra");
 const Persona = require("./persona");
+const Notificacion = require("./notificacion");
 
 Marca.hasMany(Producto, {
   foreignKey: "idMarca",
@@ -90,6 +91,13 @@ Compra.belongsTo(FormaPago, {
   as: "formaEntrega",
 });
 
+Notificacion.belongsTo(Producto, { 
+  foreignKey: 'productoId',
+  as : 'producto'
+});
 
-
+Producto.hasMany(Notificacion, {
+   foreignKey: 'productoId',
+    as: 'notificaciones'
+});
 
