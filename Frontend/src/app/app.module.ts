@@ -24,6 +24,8 @@ import { CommonModule } from '@angular/common';
 import { DarBajaComponent } from './admin/dar-baja/dar-baja.component';
 import { TokenInterceptorService } from './auth/services/token-interceptor.service';
 import { CompraEspecificaComponent } from './admin/Paquetes/compra-especifica/compra-especifica.component';
+import { BuzonGeneralComponent } from './admin/buzon/buzon-general/buzon-general.component';
+import { NotificacionComponent } from './admin/buzon/notificacion/notificacion.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +33,8 @@ import { CompraEspecificaComponent } from './admin/Paquetes/compra-especifica/co
     GestionProductosEspecificaComponent,
     EliminarProductoComponent,
     ReportesComponent,
+    BuzonGeneralComponent,
+    NotificacionComponent,
   ],
   imports: [
     BrowserModule,

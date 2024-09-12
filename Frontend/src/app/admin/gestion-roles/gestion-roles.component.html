@@ -18,7 +18,7 @@
             class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-e-0 border-gray-300 dark:border-gray-700 dark:text-white rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
             type="button"
           >
-            Tipos de empelados
+            Tipos de empleados
             <svg
               class="w-2.5 h-2.5 ms-2.5"
               aria-hidden="true"
@@ -111,15 +111,15 @@
         class="lg:w-1/4 md:w-1/2 p-4 w-full"
         *ngFor="let item of this.personas; index as j"
       >
-        <div class="h-full p-4 border border-gray-200 rounded-lg bg-white">
+        <div class="h-full p-4 border border-gray-200 rounded-lg bg-[#0F4368] text-gray-50">
           <div class="mt-4">
-            <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
+            <h3 class=" text-xs tracking-widest title-font mb-1">
               {{ item.nombre }}
             </h3>
-            <h2 class="text-gray-900 title-font text-lg font-medium">
+            <h2 class="bg-[#0F4368] text-gray-50 title-font text-lg font-medium">
               {{ this.empleados[j].nombreUsuario }}
             </h2>
-            <p class="mt-1">
+            <p class="mt-1 text-gray-300">
               Tipo de usuario:
               {{ this.tiposUsuario(this.empleados[j].idTipoUsuario) }}
             </p>

@@ -16,7 +16,7 @@
 
           <div class="flex flex-col sm:flex-row items-center mt-4 sm:mt-0">
             <p class="text-base sm:text-lg font-bold text-gray-800">{{ producto.producto?.precio | currency }}</p>
-            <input type="number" (input)="getTotal($event)" [(ngModel)]="producto.cantidad" class="ml-4 w-20 sm:w-16 text-center border-gray-300 rounded p-1" />
+            <input type="number" (input)="getTotal($event)" [(ngModel)]="producto.cantidad" class="ml-4 w-20 sm:w-16 text-center text-black border-gray-300 rounded p-1" />
             <button (click)="removeItem(producto.producto?.id!)" class="ml-4 text-red-600 hover:text-red-800">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -34,7 +34,7 @@
         </div>
         <button 
         [disabled] = "cartItems.length <= 0"
-        (click)="procederCompra()" class="mt-4 w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-500 transition">
+        (click)="procederCompra()" class="mt-4 w-full bg-lime-700 text-white py-2 rounded-lg hover:bg-lime-600 transition">
           Proceder al Pago
         </button>
       </div>

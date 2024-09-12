@@ -39,7 +39,7 @@
     <!-- Sección de Productos -->
     <h2 class="text-3xl font-semibold mb-6 text-center text-gray-50">Productos</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      <div *ngFor="let product of products" class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform transform hover:scale-105">
+      <div *ngFor="let product of products" class="bg-[#0F4368] text-gray-50 rounded-lg shadow-md overflow-hidden flex flex-col transition-transform transform hover:scale-105">
         <app-producto-card [product]="product"></app-producto-card>
       </div>
     </div>

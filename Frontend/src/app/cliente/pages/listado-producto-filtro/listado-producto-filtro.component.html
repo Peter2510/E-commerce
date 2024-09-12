@@ -1,5 +1,5 @@
-<h2 class="text-3xl font-semibold mb-6 text-center text-gray-700">Productos</h2>
-<h2 class="text-3xl font-semibold mb-6 text-center text-gray-700">{{tipo+': '+nombre}}</h2>
+<h2 class="text-3xl font-semibold mb-6 text-center text-gray-100">Productos</h2>
+<h2 class="text-3xl font-semibold mb-6 text-center text-gray-100">{{tipo+': '+nombre}}</h2>
 <div class="p-4 bg-gray-100 rounded-lg shadow-md mb-4">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       
@@ -9,7 +9,7 @@
       <div>
         <select
           id="categoryFilter"
-          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
+          class="w-full p-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
         >
           <option value="">Todas las categorías</option>
           <!-- Las opciones se agregarán dinámicamente desde el backend -->
@@ -20,7 +20,7 @@
       <div>
         <select
           id="brandFilter"
-          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
+          class="w-full p-2 border text-black  border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
         >
           <option value="">Todas las marcas</option>
           <!-- Agrega más marcas según tu necesidad -->
@@ -33,13 +33,13 @@
           type="number"
           id="minPrice"
           placeholder="Min"
-          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
+          class="w-full p-2 border text-black  border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
         />
         <input
           type="number"
           id="maxPrice"
           placeholder="Max"
-          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
+          class="w-full p-2 border text-black  border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
         />
       </div>
   
@@ -49,7 +49,7 @@
 
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      <div *ngFor="let product of products" class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform transform hover:scale-105">
+      <div *ngFor="let product of products" class="bg-[#0F4368] text-gray-50 rounded-lg shadow-md overflow-hidden flex flex-col transition-transform transform hover:scale-105">
         <app-producto-card [product]="product"></app-producto-card>
         
       </div>
