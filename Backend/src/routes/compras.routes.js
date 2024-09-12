@@ -113,7 +113,7 @@ router.get(
 
 router.patch(
   `${api}/actualizarEstadoCompra`,
-  validacionJWTAdmin,
+  validacionJWTCliente,
   validarExistenciaCompraPost,
   validarEstadoCompraPost,
   comprasController.actualizarEstadoCompra

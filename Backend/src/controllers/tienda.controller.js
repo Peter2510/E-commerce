@@ -23,7 +23,7 @@ const creacionEmpresa = async (req, res) => {
     const {tienda} = req.body;
     const { imagen } = req.files; 
     const elementoTienda = JSON.parse(tienda)
-    console.log(elementoTienda, imagen, "----------------------------", elementoTienda.nombre);
+    //console.log(elementoTienda, imagen, "----------------------------", elementoTienda.nombre);
     
              //validamos el nombre de la cat 
         if(!elementoTienda){
@@ -52,7 +52,7 @@ const creacionEmpresa = async (req, res) => {
         }
 
     const nombreImagen = imagen.name;
-    console.log(nombreImagen);
+    //console.log(nombreImagen);
     
         //Se crea 
         await Tienda.create({nombre: elementoTienda.nombre, urlLogo: nombreImagen, direccion: elementoTienda.direccion}, {transaction:t});
@@ -60,7 +60,7 @@ const creacionEmpresa = async (req, res) => {
         res.status(201.).json({ok:true, mensaje: "informacion de tienda ingresado correctamente"})
   } catch (error) {
     await t.rollback();
-    console.log(error);
+    //console.log(error);
     
         await manejoErrores(error, res, "Tienda");
    }
@@ -101,7 +101,7 @@ const editarEmpresa = async (req, res) => {
     const { imagenCambiar } = req.files || '';
     const elementoTienda = JSON.parse(tienda)
 
-    console.log(elementoTienda, password, idUsuario, imagenCambiar);
+    //console.log(elementoTienda, password, idUsuario, imagenCambiar);
     
     //no viene la info de tienda
     if (!elementoTienda) {
@@ -114,10 +114,10 @@ const editarEmpresa = async (req, res) => {
     const buscarExistencia = await Usuario.findOne(
       {where: {id: idUsuario}}
     )
-    console.log(buscarExistencia);
+    //console.log(buscarExistencia);
     
     const contraseniaValida  = await bcrypt.compare(password, buscarExistencia.contrasenia);
-    console.log(contraseniaValida);
+   // console.log(contraseniaValida);
 
 
     if (!contraseniaValida) {
@@ -148,11 +148,11 @@ const editarEmpresa = async (req, res) => {
             }
         
         //si todo esta bien
-        console.log('cambio aca');
+       // console.log('cambio aca');
         
             await Tienda.update({nombre: elementoTienda.nombre, urlLogo:  imagenCambiar.name, direccion: elementoTienda.direccion},{where: {id: elementoTienda.id}} ,{transaction:t});
     } else {
-        console.log('cambio aca2');
+        //console.log('cambio aca2');
 
             await Tienda.update({nombre: elementoTienda.nombre, direccion: elementoTienda.direccion},{where: {id: elementoTienda.id}} , {transaction:t});
 

@@ -490,7 +490,7 @@ const filtrarRegex = async (req, res) => {
   const { tipo, nombre } = req.query;
 
   try {
-    console.log("aaaa", tipo, nombre);
+    //console.log("aaaa", tipo, nombre);
 
     if (tipo && nombre) {
       switch (tipo) {
@@ -633,6 +633,7 @@ const filtrarRegex = async (req, res) => {
             where: {
               nombre: {
                 [Op.iRegexp]: nombre,
+                 activo: true,
               },
             },
           });
@@ -667,7 +668,407 @@ const filtrarRegex = async (req, res) => {
           return res.json({ productos: productosConDetalles });
 
         case "Disponibilidad":
-          // Aquí puedes agregar la lógica para la disponibilidad
+           const Disponibilidad = await estadoInventario.findAll({
+            where: {
+              estado: {
+                [Op.iRegexp]: nombre,
+              },
+            },
+          });
+
+          const productosPorDisponibilidad = await Promise.all(
+            Disponibilidad.map((Disponibilidades) =>
+              inventario.findAll({
+                where: { idestadoinventario: Disponibilidades.id },
+              })
+            )
+          );
+
+          //array con elemenetos concatenados
+          const productosDispnibiliodad = productosPorDisponibilidad.flat();
+
+                const productosPorDisponibilidadFinal = await Promise.all(
+            productosDispnibiliodad.map((Disponibilidades) =>
+              Producto.findAll({
+                where: { id: Disponibilidades.idproducto },
+              })
+            )
+                );
+          const productosDispnibiliodadSoloProductos = productosPorDisponibilidadFinal.flat();
+          
+          const productosConDetallesDispobilidad = await Promise.all(
+            productosDispnibiliodadSoloProductos.map(async (producto) => {
+              // Obtener la marca y la categoría
+              const [marca, categoria, imagenes] = await Promise.all([
+                Marca.findByPk(producto.idMarca),
+                Categoria.findByPk(producto.idCategoria),
+                UrlImangen.findAll({
+                  where: { idProducto: producto.id },
+                }),
+              ]);
+
+              let imagenesFirmadas = [];
+              for (const imagen of imagenes) {
+                const url = await obtenerUrlFirmada(imagen.nombre);
+                imagenesFirmadas.push({ nombre: imagen.nombre, url: url });
+              }
+
+              return {
+                id: producto.id,
+                nombre: producto.nombre,
+                precio: producto.precio,
+                marca: marca ? marca : null,
+                categoria: categoria ? categoria : null,
+                url_imagenes: imagenesFirmadas,
+              };
+            })
+          );
+
+          return res.json({ productos: productosConDetallesDispobilidad });
+          break;
+
+        default:
+          return res.status(400).json({ error: "Tipo de búsqueda no válido" });
+      }
+    } else {
+      return res.status(400).json({ error: "Faltan parámetros de búsqueda" });
+    }
+  } catch (error) {
+    await manejoErrores(error, res, "Producto");
+  }
+};
+
+const filtrarRegexActivo = async (req, res) => {
+  const { tipo, nombre } = req.query;
+
+  try {
+    console.log("aaaa", tipo, nombre);
+
+    if (tipo && nombre) {
+      switch (tipo) {
+        case "Precio":
+          const productosPorPrecio = await Producto.findAll({
+            where: {
+              precio: nombre, 
+            activo: true,
+            },
+          });
+          const productosConDetallesPrecio = await Promise.all(
+            productosPorPrecio.map(async (producto) => {
+              // Obtener la marca y la categoría
+              const [marca, categoria, imagenes] = await Promise.all([
+                Marca.findByPk(producto.idMarca),
+                Categoria.findByPk(producto.idCategoria),
+                UrlImangen.findAll({
+                  where: { idProducto: producto.id },
+                }),
+              ]);
+
+              let imagenesFirmadas = [];
+              for (const imagen of imagenes) {
+                const url = await obtenerUrlFirmada(imagen.nombre);
+                imagenesFirmadas.push({ nombre: imagen.nombre, url: url });
+              }
+
+
+                            const stock = await inventario.findOne({
+              where: {
+                idproducto: producto.id,
+              },
+            });
+
+              
+                      if (stock) {
+              await estadoInventario.findOne({
+                where: {
+                  id: stock.idestadoinventario,
+                },
+              });
+              producto.setDataValue("inventario", stock);
+            } else {
+              producto.setDataValue("inventario", null);
+            }
+              return {
+                id: producto.id,
+                nombre: producto.nombre,
+                precio: producto.precio,
+                marca: marca ? marca : null,
+                categoria: categoria ? categoria : null,
+                url_imagenes: imagenesFirmadas,
+                inventario: stock
+              };
+            })
+          );
+
+          return res.json({ productos: productosConDetallesPrecio });
+
+        case "Marca":
+          const marcas = await Marca.findAll({
+            where: {
+              nombreMarca: {
+                [Op.iRegexp]: nombre,
+              },
+            },
+          });
+
+          const productosPorMarcas = await Promise.all(
+            marcas.map((marca) =>
+              Producto.findAll({
+                where: { idMarca: marca.id, activo: true, },
+              })
+            )
+          );
+
+          //array con elemenetos concatenados
+          const productos = productosPorMarcas.flat();
+          const productosConDetallesMarca = await Promise.all(
+            productos.map(async (producto) => {
+              // Obtener la marca y la categoría
+              const [marca, categoria, imagenes] = await Promise.all([
+                Marca.findByPk(producto.idMarca),
+                Categoria.findByPk(producto.idCategoria),
+                UrlImangen.findAll({
+                  where: { idProducto: producto.id },
+                }),
+              ]);
+
+              let imagenesFirmadas = [];
+              for (const imagen of imagenes) {
+                const url = await obtenerUrlFirmada(imagen.nombre);
+                imagenesFirmadas.push({ nombre: imagen.nombre, url: url });
+              }
+
+                const stock = await inventario.findOne({
+              where: {
+                idproducto: producto.id,
+              },
+            });
+
+              
+                      if (stock) {
+              await estadoInventario.findOne({
+                where: {
+                  id: stock.idestadoinventario,
+                },
+              });
+              producto.setDataValue("inventario", stock);
+            } else {
+              producto.setDataValue("inventario", null);
+            }
+
+
+              return {
+                id: producto.id,
+                nombre: producto.nombre,
+                precio: producto.precio,
+                marca: marca ? marca : null,
+                categoria: categoria ? categoria : null,
+                url_imagenes: imagenesFirmadas,
+                inventario: stock
+              };
+            })
+          );
+
+          return res.json({ productos: productosConDetallesMarca });
+
+        case "Categoria":
+          const categorias = await Categoria.findAll({
+            where: {
+              nombreCategoria: {
+                [Op.iRegexp]: nombre,
+              },
+            },
+          });
+
+          const productosPorCategorias = await Promise.all(
+            categorias.map((categoria) =>
+              Producto.findAll({
+                where: { idCategoria: categoria.id, activo: true, },
+              })
+            )
+          );
+
+          //array con elemenetos concatenados
+          const productosCategoria = productosPorCategorias.flat();
+          const productosConDetallesCategoria = await Promise.all(
+            productosCategoria.map(async (producto) => {
+              // Obtener la marca y la categoría
+              const [marca, categoria, imagenes] = await Promise.all([
+                Marca.findByPk(producto.idMarca),
+                Categoria.findByPk(producto.idCategoria),
+                UrlImangen.findAll({
+                  where: { idProducto: producto.id },
+                }),
+              ]);
+
+              let imagenesFirmadas = [];
+              for (const imagen of imagenes) {
+                const url = await obtenerUrlFirmada(imagen.nombre);
+                imagenesFirmadas.push({ nombre: imagen.nombre, url: url });
+              }
+    const stock = await inventario.findOne({
+              where: {
+                idproducto: producto.id,
+              },
+            });
+
+              
+                      if (stock) {
+              await estadoInventario.findOne({
+                where: {
+                  id: stock.idestadoinventario,
+                },
+              });
+              producto.setDataValue("inventario", stock);
+            } else {
+              producto.setDataValue("inventario", null);
+            }
+
+              return {
+                id: producto.id,
+                nombre: producto.nombre,
+                precio: producto.precio,
+                marca: marca ? marca : null,
+                categoria: categoria ? categoria : null,
+                url_imagenes: imagenesFirmadas,
+                inventario: stock
+              };
+            })
+          );
+
+          return res.json({ productos: productosConDetallesCategoria });
+
+        case "Producto":
+          const productosPorNombre = await Producto.findAll({
+            where: {
+              nombre: {
+                [Op.iRegexp]: nombre,
+              } ,activo: true,
+            },
+          });
+          const productosConDetalles = await Promise.all(
+            productosPorNombre.map(async (producto) => {
+              // Obtener la marca y la categoría
+              const [marca, categoria, imagenes] = await Promise.all([
+                Marca.findByPk(producto.idMarca),
+                Categoria.findByPk(producto.idCategoria),
+                UrlImangen.findAll({
+                  where: { idProducto: producto.id },
+                }),
+              ]);
+
+              let imagenesFirmadas = [];
+              for (const imagen of imagenes) {
+                const url = await obtenerUrlFirmada(imagen.nombre);
+                imagenesFirmadas.push({ nombre: imagen.nombre, url: url });
+              }
+
+              const stock = await inventario.findOne({
+              where: {
+                idproducto: producto.id,
+              },
+            });
+
+            if (stock) {
+              await estadoInventario.findOne({
+                where: {
+                  id: stock.idestadoinventario,
+                },
+              });
+              producto.setDataValue("inventario", stock);
+            } else {
+              producto.setDataValue("inventario", null);
+            }
+              return {
+                id: producto.id,
+                nombre: producto.nombre,
+                precio: producto.precio,
+                marca: marca ? marca : null,
+                categoria: categoria ? categoria : null,
+                url_imagenes: imagenesFirmadas,
+                inventario: stock
+              };
+            })
+          );
+
+          return res.json({ productos: productosConDetalles });
+
+        case "Disponibilidad":
+           const Disponibilidad = await estadoInventario.findAll({
+            where: {
+              estado: {
+                [Op.iRegexp]: nombre,
+              },
+            },
+          });
+
+          const productosPorDisponibilidad = await Promise.all(
+            Disponibilidad.map((Disponibilidades) =>
+              inventario.findAll({
+                where: { idestadoinventario: Disponibilidades.id },
+              })
+            )
+          );
+
+          //array con elemenetos concatenados
+          const productosDispnibiliodad = productosPorDisponibilidad.flat();
+
+                const productosPorDisponibilidadFinal = await Promise.all(
+            productosDispnibiliodad.map((Disponibilidades) =>
+              Producto.findAll({
+                where: { id: Disponibilidades.idproducto , activo: true,},
+              })
+            )
+                );
+          const productosDispnibiliodadSoloProductos = productosPorDisponibilidadFinal.flat();
+          
+          const productosConDetallesDispobilidad = await Promise.all(
+            productosDispnibiliodadSoloProductos.map(async (producto) => {
+              // Obtener la marca y la categoría
+              const [marca, categoria, imagenes] = await Promise.all([
+                Marca.findByPk(producto.idMarca),
+                Categoria.findByPk(producto.idCategoria),
+                UrlImangen.findAll({
+                  where: { idProducto: producto.id },
+                }),
+              ]);
+
+              let imagenesFirmadas = [];
+              for (const imagen of imagenes) {
+                const url = await obtenerUrlFirmada(imagen.nombre);
+                imagenesFirmadas.push({ nombre: imagen.nombre, url: url });
+              }
+
+                     const stock = await inventario.findOne({
+              where: {
+                idproducto: producto.id,
+              },
+            });
+                 if (stock) {
+              await estadoInventario.findOne({
+                where: {
+                  id: stock.idestadoinventario,
+                },
+              });
+              producto.setDataValue("inventario", stock);
+            } else {
+              producto.setDataValue("inventario", null);
+            }
+
+              return {
+                id: producto.id,
+                nombre: producto.nombre,
+                precio: producto.precio,
+                marca: marca ? marca : null,
+                categoria: categoria ? categoria : null,
+                url_imagenes: imagenesFirmadas,
+                inventario: stock
+
+              };
+            })
+          );
+
+          return res.json({ productos: productosConDetallesDispobilidad });
           break;
 
         default:
@@ -847,4 +1248,5 @@ module.exports = {
   productosActivos,
   productosDesactivados,
   eliminarProducto,
+  filtrarRegexActivo
 };
