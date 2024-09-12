@@ -72,10 +72,11 @@ export class ProcederPagoComponent implements OnInit {
     
     if (this.metodoEntrega === 'domicilio') {
       this.idFormaEntrega = 2;
-  
+      this.direccionFacturacionOption = this.direccionEnvio!; 
+      this.nuevaDireccionFacturacion=this.direccionEnvio!;
     }else{
       this.idFormaEntrega = 1;
-      datos.direccionEnvio='Recoger tienda'
+      datos.direccionEnvio=this.direccionFacturacionOption
     }
     
 
