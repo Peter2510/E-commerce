@@ -16,6 +16,11 @@ import { EdicionProductosComponent } from '../productos/edicion-productos/edicio
 import { EditarCantidadComponent } from '../inventario/editar-cantidad/editar-cantidad.component';
 import { EliminarProductoComponent } from '../productos/eliminar-producto/eliminar-producto.component';
 import { GestorEnvioComponent } from '../Paquetes/gestor-envio/gestor-envio.component';
+import { EditarInformacionComponent } from '../empresa/editar-informacion/editar-informacion.component';
+import { EdicionEspecificaEmpresaComponent } from '../empresa/edicion-especifica-empresa/edicion-especifica-empresa.component';
+import { DarBajaComponent } from '../dar-baja/dar-baja.component';
+import { CompraEspecificaComponent } from '../Paquetes/compra-especifica/compra-especifica.component';
+import { MaterialModule } from 'src/app/material/material.module';
 
 @NgModule({
   declarations: [
@@ -30,7 +35,17 @@ import { GestorEnvioComponent } from '../Paquetes/gestor-envio/gestor-envio.comp
     EdicionProductosComponent,
     EditarCantidadComponent,
     GestorEnvioComponent,
+    EditarInformacionComponent,
+    EdicionEspecificaEmpresaComponent,
+    DarBajaComponent,
+    CompraEspecificaComponent,
   ],
-  imports: [CommonModule, AdminRoutesModule, AdminheaderComponent, FormsModule],
+  imports: [
+    CommonModule,
+    AdminRoutesModule,
+    AdminheaderComponent,
+    FormsModule,
+    MaterialModule,
+  ],
 })
 export class AdminModuleModule {}

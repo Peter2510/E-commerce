@@ -7,6 +7,8 @@ import {
   Producto,
   UrlImage,
 } from 'src/app/interfaces/producto.interface';
+import Swal from 'sweetalert2';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-creacion-productos',
@@ -23,7 +25,7 @@ export class CreacionProductosComponent {
   nombre!: string;
   categoria!: categoria;
   marca!: Marca;
-  imagen!: File;
+  imagen: File[] = [];
   descripcion!: string;
   minimoInventario!: number;
   precio!: number;
@@ -41,13 +43,23 @@ export class CreacionProductosComponent {
   }
 
   onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.imagen = file;
-    }
+    const files: FileList = event.target.files;
+    this.imagen = Array.from(files);
   }
 
   creacionProductos() {
+    //verificar que todos los campos estan completos
+    if (!this.nombre || !this.precio || !this.categoria || !this.marca || !this.descripcion || !this.minimoInventario) {
+      Swal.fire({
+        title: 'Campos incompletos',
+        text: 'Por favor, complete todos los campos antes de guardar el producto.',
+        icon: 'warning',
+        confirmButtonText: 'Aceptar',
+      });
+      return; // Detener la ejecución si hay campos incompletos
+    }
+  
+    //rear el objeto del nuevo producto
     let nuevoProducto: Producto = {
       nombre: this.nombre,
       precio: this.precio,
@@ -57,14 +69,60 @@ export class CreacionProductosComponent {
       descripcion: this.descripcion,
       minimoInventario: this.minimoInventario,
     };
-
-    this.servicioProducto
-      .creacionProducto(nuevoProducto, this.imagen)
-      .subscribe();
-
-    this.nombre = '';
-    this.precio = 0;
-    this.descripcion = '';
-    this.minimoInventario = 1;
+  
+    //llamar al servicio para crear el producto
+    if (this.ingresoInventario) {
+      this.servicioProducto
+        .creacionProducto(nuevoProducto, this.imagen, this.cantidadInventario)
+        .subscribe({
+          next: (r_success) => {
+            Swal.fire({
+              title: 'Producto creado',
+              text: 'El producto ha sido creado con éxito y agregado al inventario',
+              icon: 'success',
+              confirmButtonText: 'Aceptar',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+          },
+          error: (error: HttpErrorResponse) => {
+            Swal.fire({
+              title: 'Error',
+              text: 'Ha ocurrido un error al crear el producto',
+              icon: 'error',
+              confirmButtonText: 'Aceptar',
+            });
+          }
+        });
+    } else {
+      this.servicioProducto
+        .creacionProducto(nuevoProducto, this.imagen, 0)
+        .subscribe({
+          next: (r_success) => {
+            Swal.fire({
+              title: 'Producto creado',
+              text: 'El producto ha sido creado con éxito',
+              icon: 'success',
+              confirmButtonText: 'Aceptar',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+          },
+          error: (error: HttpErrorResponse) => {
+            Swal.fire({
+              title: 'Error',
+              text: 'Ha ocurrido un error al crear el producto',
+              icon: 'error',
+              confirmButtonText: 'Aceptar',
+            });
+          }
+        });
+    }
   }
+  
+  
 }

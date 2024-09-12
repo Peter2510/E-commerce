@@ -11,6 +11,7 @@ import { Person } from 'src/app/interfaces/person.interface';
 import { User } from 'src/app/interfaces/user.interface';
 import { PermisosServiciosService } from '../services/permisos-servicios.service';
 import { tipopermiso } from 'src/app/interfaces/permisos.interface';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-gestion-roles-especifico',
@@ -39,7 +40,7 @@ export class GestionRolesEspecificoComponent
   permisosNuevos = this.servicioPermisos.permisosNuevos;
 
   obtenerPersona(id: number) {
-    this.servicio.obtenerEmpleadosId(id).subscribe((personaFinal: any) => {
+    this.servicio.obtenerAyudantePorId(id).subscribe((personaFinal: any) => {
       console.log(personaFinal);
 
       this.persona = personaFinal.persona;
@@ -73,6 +74,8 @@ export class GestionRolesEspecificoComponent
   }
 
   obtenerRolesUsuario(id: number) {
+    console.log(this.servicioPermisos.permisosUsuario(), 'permisos');
+
     this.servicioPermisos
       .obtenerPermisosUsuario(id)
       .subscribe((elementos: any) => {
@@ -106,14 +109,21 @@ export class GestionRolesEspecificoComponent
 
   guardarRoles() {
     this.servicioPermisos.guardarRoles(this.permisosNuevos(), this.id);
+    Swal.fire({
+      icon: 'success',
+      title: 'Listo',
+      text: 'Se guardaron cambios en los permisos.',
+    }).then(() => {
+      window.location.reload();
+    });
   }
 
   ngAfterContentInit(): void {
-    console.log(
-      this.permisosObtenidos(),
-      'aaaaaaaaaaaaaaa',
-      this.tipoRol2,
-      this.servicioPermisos.permisosUsuario()
-    );
+    // console.log(
+    //   this.permisosObtenidos(),
+    //   'aaaaaaaaaaaaaaa',
+    //   this.tipoRol2,
+    //   this.servicioPermisos.permisosUsuario()
+    // );
   }
 }

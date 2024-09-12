@@ -1,0 +1,83 @@
+<app-adminheader />
+<form class="max-w-sm mx-auto">
+  <label for="reportType" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una
+    opcion</label>
+  <select id="reportType" [(ngModel)]="tipo" name="reporteType"
+    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <option value="" selected>Tipo de reporte</option>
+    <option value="producto">Producto mas vendido</option>
+    <option value="marcas">Marcas mas vendido</option>
+    <option value="categorias">Categorias mas vendido</option>
+    <option value="fecha">Compras por fecha</option>
+    <option value="estado">Compras por estado de compra</option>
+    <option value="entrega">Compras por forma de entrega</option>
+    <option value="topUsuarios">Top Usuarios Compras</option>
+    <option value="totalUsuarios">Total Compras Usuario</option>
+    <option value="promedio">Promedio Compra Usuarios</option>
+    <option value="masAlta">Compras mas alta</option>
+    <option value="masBaja">Compras mas baja</option>
+  </select>
+
+  <!-- Mostrar el campo de fecha solo si se selecciona 'general' -->
+  <div *ngIf="tipo === 'fecha'" class="mt-4">
+    <label for="fecha" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selecciona una fecha</label>
+    <input type="date" id="fecha" [(ngModel)]="fecha" name="fecha"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+  </div>
+
+  <div *ngIf="tipo != ''" class="mt-4">
+    <label for="numeroUsuario" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cantidad</label>
+    <input type="number" id="cantidad" [(ngModel)]="cantidad" name="cantidad"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      min="1">
+  </div>
+  <div *ngIf="cantidad <= 0 && cantidad !== null" class="text-red-500 text-sm mt-2">
+    La cantidad debe ser mayor a 0.
+  </div>
+  <div *ngIf="tipo === 'estado'" class="mt-4">
+    <select id="reportType" [(ngModel)]="estado" name="estado"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+      <option value="1" selected>Pendiente de entregar</option>
+      <option value="2">Entregado</option>
+      <option value="3">Cancelado</option>
+      <option value="4">Empacado</option>
+    </select>
+  </div>
+
+
+  <br>
+  <button type="button" (click)="generarReporte()"
+    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Generar</button>
+  <button type="button" (click)="descargarPdf()"
+    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">descargarPdf</button>
+
+</form>
+
+<div class="p-7 relative overflow-x-auto shadow-md sm:rounded-lg">
+  <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        <th *ngFor="let opciones of cabeceras " scope="col" class="px-6 py-3">
+          {{opciones}}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let opciones of valores"
+        class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+        <td *ngFor="let key of objectKeys(opciones)" class="px-6 py-4">
+          <ng-container *ngIf="key === 'nombreUsuario' ||  key === 'usuario'; else defaultCell">
+            <a (click)="reportexUsuario(opciones)" class="text-blue-500 hover:underline">
+              {{ opciones[key] }}
+            </a>
+          </ng-container>
+          <ng-template #defaultCell>
+            {{ opciones[key] }}
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <canvas id="chart">{{chart}}</canvas>
+
+</div>

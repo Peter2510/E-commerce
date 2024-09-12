@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/interfaces/user.interface';
 import { Carrito } from '../../../interfaces/cliente.interface';
 import { CarritoComprasService } from '../../services/carrito-compras.service';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { TiendaServicioService } from 'src/app/admin/services/tienda-servicio.service';
 
 @Component({
   selector: 'app-home',
@@ -13,14 +15,16 @@ import { CarritoComprasService } from '../../services/carrito-compras.service';
 })
 export class HomeComponent {
   
-  usuario:User = new User();
   mostrarPerfil:boolean=false
-
-
+  usuario:User = new User();
+  idUser = this.servicio.getIdUsuario() || null;
+  
   constructor(private service:ClienteService,
               private cookie:CookieService,
               private carritoService: CarritoComprasService,
-              private router:Router){
+              private router:Router,
+              public servicioTienda: TiendaServicioService,
+              private servicio:AuthService){
     service.getCliente().subscribe(
     {
       next: (response: any) => {
@@ -40,8 +44,8 @@ export class HomeComponent {
     this.service.cerrarSesion().subscribe({
       next:(response:any)=>{
       console.log('cerrando sesion');
-        this.cookie.delete('token')
-        this.cookie.delete('token2')
+        this.servicio.logout()
+        this.carritoService.limpiarCarrito();
         this.router.navigate(['/'])
       },
       error: (error) => {
@@ -53,6 +57,5 @@ export class HomeComponent {
 
   cantidadCarrito():number{
     return this.carritoService.getCantidadItems();
-
   }
 }

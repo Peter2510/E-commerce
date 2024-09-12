@@ -1,6 +1,6 @@
 <app-adminheader />
 
-<section class="text-gray-600 body-font">
+<section class="body-font text-gray-100">
   <div
     class="container flex w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end"
   >
@@ -9,7 +9,7 @@
         <div class="flex">
           <label
             for="search-dropdown"
-            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+            class="mb-2 text-sm font-medium sr-only dark:text-white"
             >Nombre de empleado</label
           >
           <button
@@ -39,10 +39,10 @@
           <div
             id="dropdown"
             [ngClass]="{ block: isDropdownOpen, hidden: !isDropdownOpen }"
-            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 text-black"
           >
             <ul
-              class="py-2 text-sm text-gray-700 dark:text-gray-200"
+              class="py-2 text-sm text-black dark:text-gray-200"
               aria-labelledby="dropdown-button"
             >
               <!-- ciclo de tipos-->
@@ -112,19 +112,19 @@
     </button>
   </div>
   <!--todos los elementos-->
-  <div class="container px-5 py-24 mx-auto">
+  <div class="container px-5 py-24 mx-auto text-gray-50">
     <div *ngIf="this.elementoSeleccionado == 'Marca'; else otraOpcion">
       <h1
-        class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+        class="mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-5xl lg:text-6xl dark:text-white"
       >
         Marcas registradas
       </h1>
       <div class="flex flex-wrap -m-4">
         <div
-          class="lg:w-1/4 md:w-1/2 p-4 w-full"
+          class="lg:w-1/4 md:w-1/2 p-4 w-full text-black"
           *ngFor="let item of this.marcastotal(); index as j"
         >
-          <div class="h-full p-4 border border-gray-200 rounded-lg">
+          <div class="h-full p-4 border border-gray-200 rounded-lg bg-[#0F4368] text-gray-50">
             <a class="block relative h-48 rounded overflow-hidden">
               <img
                 alt="ecommerce"
@@ -135,7 +135,7 @@
               />
             </a>
             <div class="mt-4">
-              <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
+              <h3 class="text-black text-xs tracking-widest title-font mb-1">
                 {{ item.nombreMarca }}
               </h3>
               <h2 class="text-gray-900 title-font text-lg font-medium"></h2>
@@ -183,7 +183,7 @@
           class="lg:w-1/4 md:w-1/2 p-4 w-full"
           *ngFor="let item of this.categoria(); index as j"
         >
-          <div class="h-full p-4 border border-gray-200 rounded-lg">
+          <div class="h-full p-4 border border-gray-200 rounded-lg bg-white">
             <a class="block relative h-48 rounded overflow-hidden">
               <img
                 alt="ecommerce"
@@ -194,10 +194,10 @@
               />
             </a>
             <div class="mt-4">
-              <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
+              <h3 class="text-black text-xs tracking-widest title-font mb-1">
                 {{ item.nombreCategoria }}
               </h3>
-              <h2 class="text-gray-900 title-font text-lg font-medium"></h2>
+              <h2 class="text-gray-100 title-font text-lg font-medium"></h2>
             </div>
 
             <div class="mt-2">
@@ -304,6 +304,19 @@
               Ingrese este es obligatorio
             </span>
           </div>
+          <div class="w-full md:w-1/1 pr-4">
+            <label
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              for="file_input"
+              >selecciona una foto</label
+            >
+            <input
+              class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+              id="file_input"
+              type="file"
+              (change)="onFileSelected($event)"
+            />
+          </div>
         </div>
         <!-- Modal footer -->
         <div
@@ -393,6 +406,19 @@
             >
               Ingrese este es obligatorio
             </span>
+          </div>
+          <div class="w-full md:w-1/1 pr-4">
+            <label
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              for="file_input"
+              >selecciona una foto</label
+            >
+            <input
+              class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+              id="file_input"
+              type="file"
+              (change)="onFileSelected($event)"
+            />
           </div>
         </div>
         <!-- Modal footer -->

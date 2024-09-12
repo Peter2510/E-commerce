@@ -13,10 +13,10 @@ import Swal from 'sweetalert2';
 })
 export class LoginComponent {
 
-  token!:string;
-  verificacion:boolean=false;
-  correoElectronico!:string;
-  contrasenia!:string;
+  token!: string;
+  verificacion: boolean = false;
+  correoElectronico!: string;
+  contrasenia!: string;
   user: User = new User();
   constructor(private authService: AuthService, private router: Router, private cookie: CookieService) {
 
@@ -30,19 +30,19 @@ export class LoginComponent {
     }
     //se debe solicitar el servicio para autenticar xd
     this.authService.login(this.correoElectronico, this.contrasenia).subscribe({
-      next:(response:any)=>{
+      next: (response: any) => {
 
         console.log(response.token);
-        if(response.token==undefined){
+        if (response.token == undefined) {
           console.log('holas que hace');
-          this.verificacion=true;
+          this.verificacion = true;
           return;
         }
-        
+
         this.inicioSesion(response.token);
       },
       error: (error) => {
-        
+
         Swal.fire({
           icon: 'error',
           title: 'Error al iniciar sesión',
@@ -54,58 +54,51 @@ export class LoginComponent {
 
   }
 
-  verificar(){
+  verificar() {
     this.authService.verificar(this.correoElectronico, this.token).subscribe({
       next: (response: any) => {
         this.inicioSesion(response.token);
-  
+
 
       },
       error: (error) => {
-        
+
         Swal.fire({
           icon: 'error',
           title: 'Error token incorecto',
           text: error.error.error || 'Ha ocurrido un error inesperado.',
         });
       }
-    })      
+    })
   }
 
-  inicioSesion(token:string){
-        this.parseJwt(token)
-    this.cookie.set('token2',JSON.stringify(this.user));
-    this.cookie.set('token',token);
-        //guardar user en cookies o localstorage xd
-        const message = `Bienvenido, ${this.user.nombreUsuario}`;
-        
-        Swal.fire({
-          icon: 'success',
-          title: 'Inicio de sesión exitoso ',
-          text: message,
-        });
-        if (this.user.idTipoUsuario == 1) {
-          this.router.navigate(['/admin']);
-        } else if (this.user.idTipoUsuario == 2) {
-          this.router.navigate(['/cliente']);
-        } else {
-          this.router.navigate(['/ayudante']);
-        }
+  inicioSesion(token: string) {
 
-  }
-  parseJwt(token:String) {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
+    this.authService.saveToken(token);
 
-    const usuario = JSON.parse(jsonPayload);
-    this.user.nombreUsuario = usuario.nombreUsuario;
-    this.user.idTipoUsuario = usuario.idTipoUsuario;
-    this.user.id = usuario.idUsuario
-    console.log(this.user);
-    
+    const message = `Bienvenido, ${this.authService.getNombre()}!`;
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Inicio de sesión exitoso ',
+      text: message,
+    });
+
+    const idTipoUsuario = this.authService.getIdTipoUsuario();
+
+    if (idTipoUsuario !== null) {
+      const id = idTipoUsuario;
+
+      if (id === 1) {
+        this.router.navigate(['/admin']);
+      } else if (id === 2) {
+        this.router.navigate(['/cliente']);
+      } else {
+        this.router.navigate(['/ayudante']);
+      }
+
+    }
+
   }
 
 }
