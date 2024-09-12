@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../configs/database.configs');
+const Estadoinventario = require('./estadoInventario');
+const Producto = require('./producto');
 
 const inventario = sequelize.define(
   'inventario',
@@ -12,26 +14,18 @@ const inventario = sequelize.define(
     idestadoinventario: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        notNull: {
-          msg: 'El idestadoinventario no puede ser nulo'
-        },
-        notEmpty: {
-          msg: 'El idestadoinventario no puede ser vacio'
-        }
-      }
+       references: {
+        model: Estadoinventario,
+        key: 'id'
+      }    
       },
         idproducto: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        notNull: {
-          msg: 'El idproducto no puede ser nulo'
-        },
-        notEmpty: {
-          msg: 'El idproducto no puede ser vacio'
-        }
-      }
+       references: {
+        model: Producto,
+        key: 'id'
+      }    
       },
             cantidadtotal: {
       type: DataTypes.INTEGER,

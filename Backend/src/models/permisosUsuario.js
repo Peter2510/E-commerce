@@ -17,7 +17,7 @@ const PermisoUsuario = sequelize.define(
       
     },
     id_permiso: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
        references: {

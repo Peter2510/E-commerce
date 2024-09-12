@@ -46,7 +46,7 @@ const iniciar = async (req, res) => {
     });
 
     console.log("Email enviado ", token);
-    res
+    return res
       .status(200)
       .json({
         ok: true, 
@@ -54,7 +54,7 @@ const iniciar = async (req, res) => {
         mensaje: "Código enviado al correo electrónico" });
   } catch (err) {
     console.error("Error al enviar el código de verificación", err);
-    res
+    return res
       .status(500)
       .json({
         ok: false,
@@ -98,6 +98,10 @@ const verificar = async (req, res) => {
         idUsuario: usuario.id,
         idTipoUsuario: usuario.idTipoUsuario,
         nombreUsuario: usuario.nombreUsuario,
+        a2fActivo: usuario.a2fActivo,
+        nombre: user.nombre,
+        direccion: user.direccion,
+        fechaCreacion: user.fechaCreacion
       },
       process.env.JWT_KEY,
       { expiresIn: "1h" }
@@ -120,7 +124,8 @@ const verificar = async (req, res) => {
   }
 };
 
+
+
 module.exports = {
   iniciar: iniciar,
-  verificar: verificar,
-};
+  verificar: verificar};

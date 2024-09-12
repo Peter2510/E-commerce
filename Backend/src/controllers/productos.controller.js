@@ -80,6 +80,7 @@ const crearProducto = async (req, res) => {
     return res.json({ ok: true, mensaje: "Producto creado con éxito" });
   } catch (error) {
     await t.rollback();
+    console.error(error);
     await manejoErrores(error, res, "Producto");
   }
 };
@@ -159,81 +160,73 @@ const editarProducto = async (req, res) => {
     const producto = await Producto.findByPk(id);
 
     if (!producto) {
-      return res
-        .status(404)
-        .json({ ok: false, mensaje: "Producto no encontrado" });
+      return res.status(404).json({ ok: false, mensaje: "Producto no encontrado" });
     }
 
+    // Actualizar producto
     await Producto.update(
-      {
-        nombre,
-        precio,
-        descripcion,
-        minimoInventario,
-        idCategoria,
-        idMarca,
-      },
-      {
-        where: {
-          id,
-        },
-        transaction: t,
-      }
+      { nombre, precio, descripcion, minimoInventario, idCategoria, idMarca },
+      { where: { id }, transaction: t }
     );
 
-    // //Para eliminar imagenes
+    // Contar imágenes actuales
+    const cantidadImagenesActuales = await UrlImangen.count({
+      where: { idProducto: producto.id },
+    });
+  
     if (imagenesEliminar) {
-      //array con el nombre de las imagenes a eliminar
-      const arrayImagenesEliminar = Array.isArray(imagenesEliminar)
-        ? imagenesEliminar
-        : [imagenesEliminar];
-      for (const nombreImagen of arrayImagenesEliminar) {
-        //eliminar imagen de la base de datos
-        await UrlImangen.destroy(
-          { where: { nombre: nombreImagen } },
-          { transaction: t }
-        );
-        //eliminar imagen del bucket
+      const imagenesEliminarArray = Array.isArray(imagenesEliminar) ? imagenesEliminar : [imagenesEliminar];
+
+      //si vienen imagenes a agregar
+      if(!imagenes){
+
+      // Verificar que no se eliminen todas las imágenes
+      if (cantidadImagenesActuales <= imagenesEliminarArray.length) {
+        await t.rollback();
+        return res.status(400).json({ ok: false, mensaje: "El producto no puede quedar sin imágenes" });
+      }
+
+      // Eliminar imágenes
+      for (const nombreImagen of imagenesEliminarArray) {
+        await UrlImangen.destroy({ where: { nombre: nombreImagen }, transaction: t });
         const respuesta = await eliminarArchivo(nombreImagen);
         if (respuesta.$metadata.httpStatusCode !== 204) {
           await t.rollback();
-          return res(400).json({
-            ok: false,
-            mensaje: "Error al eliminar imagen",
-          });
+          return res.status(400).json({ ok: false, mensaje: "Error al eliminar imagen" });
+        }
+      }
+    }else{
+      for (const nombreImagen of imagenesEliminarArray) {
+        await UrlImangen.destroy({ where: { nombre: nombreImagen }, transaction: t });
+        const respuesta = await eliminarArchivo(nombreImagen);
+        if (respuesta.$metadata.httpStatusCode !== 204) {
+          await t.rollback();
+          return res.status(400).json({ ok: false, mensaje: "Error al eliminar imagen" });
         }
       }
     }
+    }
 
-    //Para agregar nuevas imagenes
+    // Agregar nuevas imágenes
     if (imagenes) {
-      const arrayImagenes = Array.isArray(imagenes) ? imagenes : [imagenes];
+      const imagenesArray = Array.isArray(imagenes) ? imagenes : [imagenes];
 
-      for (const imagen of arrayImagenes) {
+      for (const imagen of imagenesArray) {
         imagen.name = generarNombreArchivo(imagen);
 
         const respuesta = await subirArchivo(imagen);
-
         if (respuesta.$metadata.httpStatusCode === 200) {
-          await UrlImangen.create(
-            {
-              nombre: imagen.name,
-              idProducto: producto.id,
-            },
-            { transaction: t }
-          );
+          await UrlImangen.create({ nombre: imagen.name, idProducto: producto.id }, { transaction: t });
         } else {
           await t.rollback();
-          return res(400).json({ ok: false, mensaje: "Error al subir imagen" });
+          return res.status(400).json({ ok: false, mensaje: "Error al subir imagen" });
         }
       }
+
     }
 
     await t.commit();
-
-    return res
-      .status(200)
-      .json({ ok: true, mensaje: "Producto editado con éxito" });
+    return res.status(200).json({ ok: true, mensaje: "Producto editado con éxito" });
   } catch (error) {
     await t.rollback();
     await manejoErrores(error, res, "Producto");

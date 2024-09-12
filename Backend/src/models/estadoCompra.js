@@ -1,31 +1,33 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../configs/database.configs');
 
-const PorcentajeRecargo = sequelize.define(
-    "PorcentajeRecargo",
+const EstadoCompra = sequelize.define(
+    "EstadoCompra",
     {
         id:{
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        porcentaje:{
-            type:DataTypes.DECIMAL(5,2),
+        estado:{
+            type:DataTypes.STRING,
             allowNull: false,
+            unique: true,
             validate:{
                 notNull:{
-                    msg: "El porcentaje no puede ser nulo",
+                    msg: "El nombre del estado no puede ser nulo",
                 },
                 notEmpty:{
-                    msg: "El porcentaje no puede estar vacio"
+                    msg: "El nombre del estado no puede estar vacio"
                 },
             },
         }
     },
     {
         schema: "compras",
-        tableName: "porcentajeRecargo"
+        tableName: "estadoCompra",
+        timestamps: false,
     }
 );
 
-module.exports = PorcentajeRecargo;
+module.exports = EstadoCompra;

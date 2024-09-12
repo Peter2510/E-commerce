@@ -26,7 +26,6 @@ const Permiso = sequelize.define(
     tipoarea:{
       type: DataTypes.STRING,
       allowNull: true,
-      unique: true,
       validate: {
   
         notEmpty: {

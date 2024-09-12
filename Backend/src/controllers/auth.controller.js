@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const utilidades = require("../configs/utilidades");
 const { manejoErrores } = require('../utils/manejoErrores.utils');
 const { sequelize } = require("../configs/database.configs");
+const { where } = require("sequelize");
 require('dotenv').config();
 
 
@@ -101,7 +102,11 @@ const login = async (req, res) => {
       {
         idUsuario: usuario.id,
         idTipoUsuario: usuario.idTipoUsuario,
-        nombreUsuario: usuario.nombreUsuario
+        nombreUsuario: usuario.nombreUsuario,
+        a2fActivo: usuario.a2fActivo,
+        nombre: user.nombre,
+        direccion: user.direccion,
+        fechaCreacion: user.fechaCreacion
       },
       process.env.JWT_KEY,
       { expiresIn: "1h" } 
@@ -144,9 +149,70 @@ const logOut = (req, res) => {
   }
 };
 
+const cambioCredenciales = async (req, res) => {
+  const t = await sequelize.transaction(); 
+
+  try {
+  const { contrasenia, mismaContrasenia, correoElectronico } = req.body;
+    if (contrasenia !== mismaContrasenia) {
+            await t.rollback();
+      return res
+        .status(400)
+        .json({ ok: false, mensaje: "La contraseña no es la misma" });
+      
+    }
+        if (!correoElectronico) {
+      await t.rollback();
+      return res
+        .status(400)
+        .json({ ok: false, mensaje: "Correo electronico no ingresado" });
+    }
+
+    if (!contrasenia) {
+      await t.rollback();
+      return res
+        .status(400)
+        .json({ ok: false, mensaje: "La contraseña es requerida" });
+    }
+
+    if (contrasenia.length < 8) {
+      await t.rollback();
+      return res
+        .status(400)
+        .json({
+          ok: false,
+          mensaje: "La contraseña debe tener al menos 8 caracteres",
+        });
+    }
+
+        const user = await Persona.findOne({
+      where: { correoElectronico },
+    });
+    
+    if (!user) {
+      return res.status(401).json({ ok: false, mensaje: "Credenciales incorrectas" });
+    }
+
+    const usuario = await Usuario.findOne({
+      where: { idPersona: user.id },
+    });
+
+    const hashedPassword = await bcrypt.hash(contrasenia, 10);
+    await Usuario.update({ contrasenia: hashedPassword }, 
+  { where: { id: usuario.id }, transaction: t });
+    await t.commit(); 
+    res.status(200).json({ ok: true, mensaje: "Registrado correctamente" });
+  } catch (error) {
+        await t.rollback(); 
+    await manejoErrores(error, res, "Usuario");
+  }
+}
+
 
 module.exports = {
   crearCliente, 
   login, 
-  logOut
+  logOut,
+  cambioCredenciales: cambioCredenciales
+
 };

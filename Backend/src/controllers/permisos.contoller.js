@@ -23,7 +23,9 @@ const guardarPermisos = async (req, res) => {
 
     try {
         const {id} = req.params
-        const {permisosUsuarioArray} = req.body
+        const { permisosUsuarioArray } = req.body
+        console.log(id, permisosUsuarioArray,"aaaaa");
+        
         //busqueda que exista el usuario 
         const existeUsuario = await Usuario.findOne({
             where:{id: id}, transaction: t
@@ -41,6 +43,8 @@ const guardarPermisos = async (req, res) => {
         });
         //  luego crear todos los nuevos elementos
         for (const elementosNuevos of permisosUsuarioArray) {
+            console.log(existeUsuario.id,elementosNuevos.id);
+            
             await PermisosUsuario.create({id_empleado: existeUsuario.id,id_permiso:elementosNuevos.id}, {transaction:t});
         }
             await t.commit();
@@ -59,12 +63,12 @@ const obtenerPermisosUsuario = async (req, res) => {
     try {
         //valores
         const { id } = req.params
-        todosPermisos = []
+        const todosPermisos = []
         
         const permisosUsuario = await PermisosUsuario.findAll(
             {
                 where: { id_empleado: id },
-        attributes: ['id', 'id_empleado', 'id_permiso']    }
+        attributes: [ 'id_empleado', 'id_permiso']    }
         )
 
         console.log(permisosUsuario);
@@ -89,10 +93,40 @@ const obtenerPermisosUsuario = async (req, res) => {
 }
 
 
+const creacionPermisos = async (req, res) => {
+      const t = await sequelize.transaction();
 
+    try {
+
+        const { tipos, tipoarea } = req.body
+        
+
+
+        //crear una tupla en la tabla 
+        const nuevoIngreso = await Permisos.create({
+            tipo: tipos, tipoarea:tipoarea
+        }, { transaction: t });
+
+        if (nuevoIngreso) {
+            
+              await t.commit();
+            return res.json({ ok: true });
+            
+        }
+        return res.json({ ok: false });
+
+        
+    } catch (error) {
+        await t.rollback();
+
+           await manejoErrores(error, res, "permisos");
+        
+    }
+}
 
 module.exports = {
     obtenerPermisos: obtenerPermisos,
     guardarPermisos: guardarPermisos,
     obtenerPermisosUsuario: obtenerPermisosUsuario,
+    creacionPermisos
 }
