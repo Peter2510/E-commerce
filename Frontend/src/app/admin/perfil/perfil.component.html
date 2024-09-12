@@ -1,1 +1,146 @@
-<p>perfil works!</p>
+<app-adminheader></app-adminheader>
+
+<div *ngIf="!vistaCambio" class=" min-h-screen p-8 flex items-center justify-center content-color">
+    <div class="bg-cyan-900 p-8 rounded-xl shadow-xl w-full max-w-lg">
+      <div class="flex flex-col items-center">
+        <img src="../../../../assets/img/programmer.png" class="mb-4">
+        <p class="text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-100 mb-3">
+          {{nombre}}
+        </p>      
+        <p class="text-xl md:text-sm sm:text-sm lg:text-base xl:text-xl text-gray-100 mb-6">{{nombreUsuario}}</p>
+        <button (click)="vistaCambio=true"
+          class="bg-sky-500/100 ... text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-transform transform hover:scale-105">
+          Editar perfil
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="vistaCambio" class="w-full max-w-lg bg-cyan-900 rounded-lg p-8 shadow-lg transition-shadow mx-auto">
+    <h2 class="text-3xl font-bold mb-6 text-gray-100">Editar Perfil</h2>
+  
+    <!-- Navegación -->
+    <nav class="mb-8">
+      <ul class="flex border-b items-center">
+        <li class="mr-6">
+          <a (click)="activarTab('infoPersonal')"
+            [ngClass]="{'border-b-2 border-blue-500 text-gray-100': tabActivo === 'infoPersonal', 'text-gray-300': tabActivo !== 'infoPersonal'}"
+            class="font-semibold py-2 px-4 inline-block">Información Personal</a>
+        </li>
+        <li class="mr-6">
+          <a (click)="activarTab('cambiarContrasena')"
+            [ngClass]="{'border-b-2 border-blue-500 text-gray-100': tabActivo === 'cambiarContrasena', 'text-gray-300': tabActivo !== 'cambiarContrasena'}"
+            class="font-semibold py-2 px-4 inline-block">Contraseña</a>
+        </li>
+        <li class="ml-auto">
+          <a (click)="vistaCambio = false"
+            class="font-semibold py-2 px-4 inline-block bg-red-500 text-white rounded hover:bg-red-600 transition">Cancelar</a>
+        </li>
+      </ul>
+    </nav>
+  
+  
+    <!-- Formulario Información Personal -->
+    <form *ngIf="tabActivo === 'infoPersonal'" (ngSubmit)="guardarInformacionPersonal()">
+      <div class="mb-5">
+        <ng-container>
+          <label for="nombre" class="block text-gray-100 font-semibold mb-2">Nombre</label>
+          <input type="text" id="nombre" name="nombre" value = "{{nombre}}" readonly
+            class="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
+            placeholder="Tu nombre" required pattern=".{10,}">
+        </ng-container>
+      </div>
+  
+      <div class="mb-5">
+        <label for="correo" class="block text-gray-100 font-semibold mb-2">Correo Electrónico</label>
+        <ng-container>
+          <input readonly type="email" id="correo" name="correo" value="{{correoElectronico}}"
+            class="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
+            placeholder="Tu correo electrónico" required  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+        </ng-container>
+      </div>
+  
+  
+      <div class="mb-6">
+        <label for="a2f" class="block text-gray-100 font-semibold mb-2">Verificación con correo</label>
+        <select id="a2f" name="a2f" [(ngModel)]="edicion.a2fActivo" 
+          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600">
+          <option value="true">Activado</option>
+          <option value="false">Desactivado</option>
+        </select>
+      </div>
+  
+      <div class="flex items-center justify-end">
+        <button type="submit"
+          class="px-6 py-3 bg-sky-500/100 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-transform transform hover:scale-105">Guardar
+          Cambios</button>
+      </div>
+    </form>
+  
+    <!-- Formulario Cambiar Contraseña -->
+    <form *ngIf="tabActivo === 'cambiarContrasena'" (ngSubmit)="cambiarContrasena()" #form="ngForm">
+      <div class="mb-5">
+        <label for="contrasenaActual" class="block text-gray-100 font-semibold mb-2">Contraseña Actual</label>
+        <input 
+          type="password" 
+          id="contrasenaActual" 
+          name="contrasenaActual" 
+          [(ngModel)]="edicion.contraseniaActual" 
+          #actual="ngModel"
+          class="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
+          placeholder="Tu contraseña actual" 
+          pattern=".{8,}" 
+          required>
+        <div *ngIf="edicion.contraseniaActual.length<8"class="text-red-500 mt-2">
+          <p>Contraseña requerida, mínimo 8 caracteres.</p>
+        </div>
+      </div>
+    
+      <div class="mb-5">
+        <label for="nuevaContrasena" class="block text-gray-100 font-semibold mb-2">Nueva Contraseña</label>
+        <input 
+          type="password" 
+          id="nuevaContrasena" 
+          name="nuevaContrasena" 
+          [(ngModel)]="edicion.nuevaContrasena" 
+          #nueva="ngModel"
+          class="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
+          placeholder="Tu nueva contraseña" 
+          pattern=".{8,}" 
+          required>
+        <div *ngIf="edicion.nuevaContrasena.length<8" class="text-red-500 mt-2">
+          <p>Contraseña requerida, mínimo 8 caracteres.</p>
+        </div>
+      </div>
+    
+      <div class="mb-5">
+        <label for="confirmarContrasena" class="block text-gray-100 font-semibold mb-2">Confirmar Nueva Contraseña</label>
+        <input 
+          type="password" 
+          id="confirmarContrasena" 
+          name="confirmarContrasena" 
+          [(ngModel)]="edicion.confirmarContrasenia" 
+          #confirmar="ngModel"
+          class="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
+          placeholder="Confirma tu nueva contraseña" 
+          pattern=".{8,}" 
+          required>
+        <div *ngIf="edicion.confirmarContrasenia.length<8"class="text-red-500 mt-2">
+          <p>Contraseña requerida, mínimo 8 caracteres.</p>
+        </div>
+      </div>
+    
+      <div class="flex items-center justify-end">
+        <button 
+          type="submit" 
+          [disabled]="form.invalid"
+          class="px-6 py-3 bg-sky-500/100 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-transform transform hover:scale-105">
+          Cambiar Contraseña
+        </button>
+      </div>
+    
+      <div *ngIf="form.invalid && form.submitted" class="text-red-500 mt-2">
+        <p>Por favor ingrese los datos correctamente.</p>
+      </div>
+    </form>
+  </div>
