@@ -354,7 +354,7 @@ const editarAdmin = async (req, res) => {
   const t = await sequelize.transaction(); 
 
   try {
-    const {idUsuario, nombreUsuario, a2fActivo } = req.body;
+    const {idUsuario, a2fActivo } = req.body;
 
     const usuario = await Usuario.findOne({where: {id: idUsuario}});
 
@@ -364,7 +364,6 @@ const editarAdmin = async (req, res) => {
 
     //se actualiza el usuario
     await Usuario.update({
-      nombreUsuario,
       a2fActivo: a2fActivo
     }, { where: { id: idUsuario }, transaction: t });
 
@@ -437,6 +436,23 @@ const actualizarContrasenia = async (req, res) => {
   }
 };
 
+const obtenerA2F = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const usuario = await Usuario.findOne({ where: { id: id } });
+
+    if (!usuario) {
+      return res.status(404).json({ ok: false, mensaje: 'Usuario no encontrado' });
+    }
+
+    return res.status(200).json({ ok: true, a2fActivo: usuario.a2fActivo });
+
+  } catch (error) {
+    await manejoErrores(error, res, 'Admin');
+  }
+}
+
 
 module.exports = {
     getTipoUsuarios,
@@ -452,5 +468,6 @@ module.exports = {
   obtenerAyudantePorId,
     darBaja,
     editarAdmin,
-    actualizarContrasenia
+    actualizarContrasenia,
+    obtenerA2F
 };

@@ -106,7 +106,8 @@ const login = async (req, res) => {
         a2fActivo: usuario.a2fActivo,
         nombre: user.nombre,
         direccion: user.direccion,
-        fechaCreacion: user.fechaCreacion
+        fechaCreacion: user.fechaCreacion,
+        correoElectronico: user.correoElectronico,
       },
       process.env.JWT_KEY,
       { expiresIn: "1h" } 
