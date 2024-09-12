@@ -144,9 +144,42 @@ const creacionTipoEstadoInventario = async (req, res) => {
 }
 
 
+const obtenerModificacionesporUsuario = async (req, res) => {
+    try {
+        const { id } = req.body
+        
+
+        //obtiene los elementos del log
+        const valores = await RegistroInventario.findAll(
+            {where: {id_empleado: id}}
+        )
+
+        //luego seria de obtener los productos y un poco de info de usuario 
+        const productosGenerales = []
+        for (valor of valores) {
+               const [producto] = await Promise.all([
+        Producto.findByPk(valor.idproducto),
+               ]);
+            productosGenerales.push(producto)
+        }
+     
+        
+          return res.json({
+      ok: true,productosGenerales, valores
+
+    });
+
+    } catch (error) {
+    await manejoErrores(error, res, "registroinventario");
+        
+    }
+}
+
+
 module.exports = {
     ingresoMayorCantidadProducto,
     ingresoModificacionCantidesUsuarioProducto,
     obtenerEstadosInventario,
-    creacionTipoEstadoInventario
+    creacionTipoEstadoInventario,
+    obtenerModificacionesporUsuario
 }

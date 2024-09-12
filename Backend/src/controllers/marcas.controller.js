@@ -95,6 +95,40 @@ const obtenerMarcas = async (req, res) => {
 };
 
 
+const obtenerMarcasRegex = async (req, res) => {
+  const { nombre } = req.query;
+
+  try {
+      const marcas = await Marca.findAll({      where: {
+              nombreMarca: {
+                [Op.iRegexp]: nombre,
+              },
+            },});
+    // Crear un array para almacenar las marcas con sus URLs de imágenes firmadas
+      const marcasConImagenes = await Promise.all(
+          marcas.map(async (marca) => {
+              // Verificar si la propiedad 'imagen' existe y no está vacía
+              if (marca.imagen) {
+                  // Obtener la URL firmada para la imagen de la marca
+                  const url = await obtenerUrlFirmada(marca.imagen);
+
+                  // Asignar la URL firmada a la propiedad de imagen de la marca
+                  marca.setDataValue("imagen", [{ "nombre": marca.imagen, "url": url }]);
+              } else {
+                  // Si no hay imagen, asignar un valor predeterminado o vacío
+                  marca.setDataValue("imagen", []);
+              }
+
+              return marca;
+          })
+      );
+
+      res.status(200).json({ ok: true, marcas: marcasConImagenes });
+  } catch (error) {
+      await manejoErrores(error, res, "Categoria");
+  }
+};
+
 const obtenerMarcaPorId = async (req, res) => {
     const { id } = req.params;
   
@@ -201,5 +235,6 @@ const eliminarMarca = async (req, res) => {
     obtenerMarcas,
     obtenerMarcaPorId,
     actualizarMarca,
-    eliminarMarca
+      eliminarMarca,
+    obtenerMarcasRegex
   };
