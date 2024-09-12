@@ -246,45 +246,27 @@ export class ServicioAdminService {
       }
     );
   }
-
   obtenerCategoriasRegex(nombre: string) {
-    this.http
-      .get<any[]>(
-        `${environment.baseUrlEnv}/${this.directivaCategoria}/obtenerCategoriasRegex`,
-        {
-          params: new HttpParams().set('nombre', nombre),
-
-          headers: new HttpHeaders().set(
-            'Authorization',
-            `Bearer ${this.token}`
-          ),
-        }
-      )
-      .pipe(
-        tap((response: any) => {
-          this.categorias.set(response.categorias);
-        })
-      )
-      .subscribe();
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    return this.http.post<any>(
+      `${environment.baseUrlEnv}/${this.directivaCategoria}/obtenerCategoriasRegex/`,
+      formData,
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
+    );
   }
 
   obtenerMarcasRegex(nombre: string) {
-    this.http
-      .get<Marca[]>(
-        `${environment.baseUrlEnv}/${this.directivaMarcas}/obtenerMarcasRegex`,
-        {
-          params: new HttpParams().set('nombre', nombre),
-          headers: new HttpHeaders().set(
-            'Authorization',
-            `Bearer ${this.token}`
-          ),
-        }
-      )
-      .pipe(
-        tap((elementos: any) => {
-          console.log('a', elementos.marcas), this.marcas.set(elementos.marcas);
-        })
-      )
-      .subscribe();
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    return this.http.post<Marca[]>(
+      `${environment.baseUrlEnv}/${this.directivaMarcas}/obtenerMarcasRegex`,
+      formData,
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`),
+      }
+    );
   }
 }

@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ServicioAdminService } from '../services/servicio-admin.service';
 import { categoria, Marca } from 'src/app/interfaces/producto.interface';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-gestion-marcas-categorias',
@@ -13,7 +14,7 @@ export class GestionMarcasCategoriasComponent implements OnInit {
   categoria = this.servicio.categorias;
   marcastotal = this.servicio.marcas;
   //elementos de pagina y moda;
-  elementoSeleccionado!: string;
+  elementoSeleccionado: string = 'Marca';
   isDropdownOpen = false;
   isModalVisible = false;
   editable: string = '';
@@ -79,16 +80,26 @@ export class GestionMarcasCategoriasComponent implements OnInit {
     }
   }
   tipoBusqueda() {
-    if ((this.elementoSeleccionado = 'Marca')) {
-      this.servicio.obtenerMarcasRegex(this.busqueda);
-    } else if ((this.elementoSeleccionado = 'Categoria')) {
-      this.servicio.obtenerCategoriasRegex(this.busqueda);
+    console.log(this.busqueda, this.elementoSeleccionado);
+
+    if (this.elementoSeleccionado === 'Marca') {
+      this.servicio
+        .obtenerMarcasRegex(this.busqueda)
+        .subscribe((evento: any) => {
+          console.log(evento.marcas);
+          this.servicio.marcas.set(evento.marcas);
+        });
+    } else if (this.elementoSeleccionado === 'Categoria') {
+      this.elementoSeleccionado = 'Categoria';
+      this.servicio
+        .obtenerCategoriasRegex(this.busqueda)
+        .subscribe((evento) => {
+          this.servicio.categorias.set(evento.categorias);
+        });
     }
   }
 
   ngOnInit() {
-    this.elementoSeleccionado = 'Marca';
-
     console.log(this.elementoSeleccionado, this.isModalVisible);
   }
 }
