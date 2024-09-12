@@ -39,7 +39,7 @@ export class HistorialComponent implements OnInit {
   }
 
   recibirCompra(opciones:any){
-    this.servicio2.actualizarEstadoCompra(opciones.id,4).subscribe({
+    this.servicio2.actualizarEstadoCompra(opciones.id,3).subscribe({
       next:(response:any)=>{
         Swal.fire({
           icon: 'success',
@@ -171,7 +171,7 @@ export class HistorialComponent implements OnInit {
                   table: {
                     widths: ['*', 'auto'],
                     body: [
-                      ['Subtotal', `$${opciones.precioTotal}`],
+                      ['Subtotal', `Q${opciones.precioTotal}`],
                       ['Recargo (10%)', `$${opciones.recargo}`],
                       ['Total', { text: `$${(parseFloat(opciones.precioTotal) + parseFloat(opciones.recargo)).toFixed(2)}`, bold: true }]
                     ]
