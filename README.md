@@ -22,3 +22,12 @@ Esta rama se enfoca exclusivamente en el frontend del proyecto. Contiene todas l
 Esta rama es una combinación de las ramas `Release/Backend` y `Release/Frontend`. Es donde se integran y prueban todas las nuevas características del backend y frontend antes de ser promovidas a la rama `main`. Aquí es donde se lleva a cabo la mayor parte del desarrollo y las pruebas iniciales.
 
 ![Branches](./branches.png)
+
+# Documentación final del proyecto
+[Documentación del proyecto](https://drive.google.com/drive/folders/19f-ZpzGDVgTHgxiMvphi39_RWRL_mzhO?usp=drive_link)
+
+## Manual técnico
+[Descargar Manual Técnico](./Manual%20T%C3%A9cnico.pdf)
+
+## Manual de usuario
+[Descargar Manual de usuario](./Manual%20De%20Usuario.pdf)
