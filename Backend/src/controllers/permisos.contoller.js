@@ -24,7 +24,7 @@ const guardarPermisos = async (req, res) => {
     try {
         const {id} = req.params
         const { permisosUsuarioArray } = req.body
-        console.log(id, permisosUsuarioArray,"aaaaa");
+        //console.log(id, permisosUsuarioArray,"aaaaa");
         
         //busqueda que exista el usuario 
         const existeUsuario = await Usuario.findOne({
@@ -43,7 +43,7 @@ const guardarPermisos = async (req, res) => {
         });
         //  luego crear todos los nuevos elementos
         for (const elementosNuevos of permisosUsuarioArray) {
-            console.log(existeUsuario.id,elementosNuevos.id);
+            //console.log(existeUsuario.id,elementosNuevos.id);
             
             await PermisosUsuario.create({id_empleado: existeUsuario.id,id_permiso:elementosNuevos.id}, {transaction:t});
         }
@@ -71,7 +71,7 @@ const obtenerPermisosUsuario = async (req, res) => {
         attributes: [ 'id_empleado', 'id_permiso']    }
         )
 
-        console.log(permisosUsuario);
+        //console.log(permisosUsuario);
         
 
         for (const tipoPermiso of permisosUsuario) {
@@ -80,7 +80,7 @@ const obtenerPermisosUsuario = async (req, res) => {
                     where: { id: tipoPermiso.id_permiso }
                 }
             );
-            console.log(permisos ,"-------------");
+            //console.log(permisos ,"-------------");
             
             todosPermisos.push(permisos);
         }

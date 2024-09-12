@@ -19,7 +19,7 @@ const getTipoUsuarios = async (req, res) => {
     });
     res.status(200).json({ ok: true, tipoUsuarios: users });
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     res
       .status(500)
       .json({ ok: false, mensaje: "Error al obtener tipo de usuario" });
@@ -60,7 +60,7 @@ const getFormasPago = async (req, res) => {
     });
     res.status(200).json({ ok: true, formaPagos: users });
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     res
       .status(500)
       .json({ ok: false, mensaje: "Error al obtener formas de pago" });
@@ -266,15 +266,15 @@ const crearAdmin = async (req, res) => {
       idPersona: newPersona.id,
       idTipoUsuario: idTipoUsuario,
     }, { transaction: t });
-    console.log('acaaaaa', idTipoUsuario);
+    //console.log('acaaaaa', idTipoUsuario);
 
     // Check if the user type requires permissions setup
     if (Number(idTipoUsuario) === 1) {
-    console.log('acaaaaa', idTipoUsuario);
+    //console.log('acaaaaa', idTipoUsuario);
 
       const idUsuario = nuevoUsuario.id;
       const permisos = await Permisos.findAll({ transaction: t });
-      console.log(idUsuario, permisos);
+      //console.log(idUsuario, permisos);
       
       // Create all new permissions for the user
       for (const permiso of permisos) {
@@ -289,7 +289,7 @@ const crearAdmin = async (req, res) => {
   } catch (error) {  
     // Rollback the transaction in case of error
     await t.rollback(); 
-    console.log(error);
+    //console.log(error);
     await manejoErrores(error, res, "Admin");
   }
 };
@@ -349,6 +349,94 @@ const darBaja = async (req, res) => {
 
 // ver usuarios dados de baja y los que estan activos
 
+const editarAdmin = async (req, res) => {
+
+  const t = await sequelize.transaction(); 
+
+  try {
+    const {idUsuario, nombreUsuario, a2fActivo } = req.body;
+
+    const usuario = await Usuario.findOne({where: {id: idUsuario}});
+
+    if(!usuario){
+      return res.status(404).json({ok: false, mensaje: 'Usuario no encontrado'});
+    }
+
+    //se actualiza el usuario
+    await Usuario.update({
+      nombreUsuario,
+      a2fActivo: a2fActivo
+    }, { where: { id: idUsuario }, transaction: t });
+
+    await t.commit(); 
+    res.status(200).json({ ok: true, mensaje: "Actualización realizada correctamente" });
+
+  } catch (error) {  
+    await t.rollback(); 
+    await manejoErrores(error, res, "Usuario");
+  }
+};
+
+const actualizarContrasenia = async (req, res) => {
+  const t = await sequelize.transaction();
+
+  try {
+    const { id, contraseniaActual, nuevaContrasenia } = req.body;
+
+    if (!id) {
+      await t.rollback();
+      return res.status(400).json({ ok: false, mensaje: "El id del usuario es requerido" });
+    }
+
+    if (!contraseniaActual) {
+      await t.rollback();
+      return res.status(400).json({ ok: false, mensaje: "La contraseña actual es requerida" });
+    }
+
+    if (!nuevaContrasenia) {
+      await t.rollback();
+      return res.status(400).json({ ok: false, mensaje: "La nueva contraseña es requerida" });
+    }
+
+    const usuario = await Usuario.findOne({ where: { id: id } });
+
+    if (!usuario) {
+      await t.rollback();
+      return res.status(404).json({ ok: false, mensaje: 'Usuario no encontrado' });
+    }
+
+    const contraseniaActualHash = await bcrypt.compare(contraseniaActual, usuario.contrasenia);
+
+    if (!contraseniaActualHash) {
+      await t.rollback();
+      return res.status(401).json({ ok: false, mensaje: "La contraseña actual es incorrecta" });
+    }
+   
+    if (nuevaContrasenia.length < 8) {
+      await t.rollback();
+      return res.status(400).json({
+        ok: false,
+        mensaje: "La contraseña debe tener al menos 8 caracteres",
+      });
+    }
+
+    const hashContrasenia = await bcrypt.hash(nuevaContrasenia, 10);
+    
+    const a = await Usuario.update(
+      { contrasenia: hashContrasenia }, 
+      { where: { id: id }, transaction: t }
+    );
+
+    await t.commit();
+
+    return res.status(200).json({ ok: true, mensaje: 'Contraseña actualizada correctamente' });
+
+  } catch (error) {
+    await t.rollback();
+    await manejoErrores(error, res, 'Admin');
+  }
+};
+
 
 module.exports = {
     getTipoUsuarios,
@@ -362,5 +450,7 @@ module.exports = {
     crearAdmin,
   obtenerReporteEstadisticas,
   obtenerAyudantePorId,
-    darBaja
+    darBaja,
+    editarAdmin,
+    actualizarContrasenia
 };

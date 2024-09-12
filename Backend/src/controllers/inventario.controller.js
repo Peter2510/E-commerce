@@ -22,7 +22,7 @@ const ingresoMayorCantidadProducto = async (req, res) => {
 
         const minimoInventario = await Producto.findOne({ where: { id: id } });
         let valor = 0;
-        console.log(minimoInventario.dataValues.minimoInventario);
+        //console.log(minimoInventario.dataValues.minimoInventario);
         
         if (minimoInventario.dataValues.minimoInventario < cantidad) {
             valor = 1;
@@ -33,7 +33,7 @@ const ingresoMayorCantidadProducto = async (req, res) => {
             valor = 2;
 
         }
-        console.log(valor);
+        //console.log(valor);
         
         // aca se obtiene el elemento y se le agrega mas, verifica si no tiene nada lo crea
         const [inventarioRegistrado, created] = await Inventario.findOrCreate({
@@ -75,10 +75,10 @@ const ingresoModificacionCantidesUsuarioProducto= async (req, res)  => {
             fechaingreso: new Date(),
             id_empleado: id_empleado
         }, { transaction: t });
-            console.log(nuevoIngreso);
+            //console.log(nuevoIngreso);
 
         if (nuevoIngreso) {
-            console.log(nuevoIngreso);
+            //console.log(nuevoIngreso);
             
               await t.commit();
             return res.json({ ok: true });
