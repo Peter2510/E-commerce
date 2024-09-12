@@ -64,17 +64,16 @@ const ingresoModificacionCantidesUsuarioProducto= async (req, res)  => {
 
     try {
 
-        const { registroInventario } = req.body
-        console.log(registroInventario, "--------", registroInventario.idProducto);
+        const { idproducto, cantidad , id_empleado} = req.body
         
 
 
         //crear una tupla en la tabla 
         const nuevoIngreso = await RegistroInventario.create({
-            idproducto: registroInventario.idProducto,
-            cantidad: registroInventario.cantidad,
+            idproducto: idproducto,
+            cantidad: cantidad,
             fechaingreso: new Date(),
-            id_empleado: registroInventario.id_empleado
+            id_empleado: id_empleado
         }, { transaction: t });
             console.log(nuevoIngreso);
 

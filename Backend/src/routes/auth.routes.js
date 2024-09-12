@@ -10,5 +10,6 @@ router.post(`${api}/login`,authController.login);
 router.post(`${api}/logOut`,authController.logOut);
 router.post(`${api}/enable-2fa`, utilidades.iniciar);
 router.post(`${api}/verify-2fa`, utilidades.verificar);
+router.post(`${api}/cambioCredenciales`, authController.cambioCredenciales);
 
 module.exports = router;
