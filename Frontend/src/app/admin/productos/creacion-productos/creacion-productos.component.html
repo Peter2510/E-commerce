@@ -1,0 +1,199 @@
+<app-adminheader />
+
+<div class="max-w-7xl mx-auto p-4 md:p-5">
+  <h2 class="text-xl font-semibold text-gray-50 dark:text-white mb-6">
+    Creación de producto
+  </h2>
+  <!-- Campos de edición -->
+  <div class="flex flex-col space-y-6">
+    <div class="flex flex-wrap gap-4">
+      <div class="w-full md:w-1/2 pr-4">
+        <label
+          for="nombre"
+          class="block mb-2 text-sm font-medium text-gray-50 dark:text-white"
+        >
+          Nombre
+        </label>
+        <input
+          type="text"
+          id="nombre"
+          name="nombre"
+          placeholder="Ingrea el nombre del producto"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+          required
+          [(ngModel)]="this.nombre"
+        />
+      </div>
+      <div class="w-full md:w-1/2 pr-4">
+        <label
+          for="marcas"
+          class="block mb-2 text-sm font-medium text-gray-50 dark:text-white"
+        >
+          Selecciona una marca
+        </label>
+        <select
+          id="marcas"
+          name="marcas"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          [(ngModel)]="this.marca"
+        >
+          <option *ngFor="let item of this.marcasTotales()" [ngValue]="item">
+            {{ item.nombreMarca }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Otros campos de edición aquí -->
+
+    <div class="relative flex flex-wrap gap-4">
+      <div class="w-full md:w-1/3 pr-4">
+        <label
+          for="categorias"
+          class="block mb-2 text-sm font-medium text-gray-50 dark:text-white"
+        >
+          Selecciona una categoría
+        </label>
+        <select
+          id="categorias"
+          name="categorias"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          [(ngModel)]="this.categoria"
+        >
+          <option *ngFor="let item of this.categoriasTotales()" [ngValue]="item">
+            {{ item.nombreCategoria }}
+          </option>
+        </select>
+      </div>
+
+      <div class="w-full md:w-1/3 pr-4">
+        <label
+          for="precio"
+          class="block mb-2 text-sm font-medium text-gray-50 dark:text-white"
+        >
+          Precio unitario del producto
+        </label>
+        <input
+          type="number"
+          id="precio"
+          placeholder="Ingresa el precio unitario del producto"
+          name="precio"
+          min="0"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+          required
+          [(ngModel)]="this.precio"
+        />
+      </div>
+
+      <div class="w-full md:w-1/3 pr-4">
+        <label
+          for="minimoInventario"
+          class="block mb-2 text-sm font-medium text-gray-50 dark:text-white"
+        >
+          Mínimo que debe de tener de inventario
+        </label>
+        <input
+          type="number"
+          id="minimoInventario"
+          name="minimoInventario"
+          placeholder="Ingresa el mínimo que debe de tener de inventario"
+          min="1"
+          class="bg-gray-50 border border-gray-300 text-gray-900   text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+          required
+          [(ngModel)]="this.minimoInventario"
+        />
+      </div>
+
+      <div class="w-full pr-4">
+        <label
+          for="descripcion"
+          class="block mb-2 text-sm font-medium text-gray-50 dark:text-white"
+        >
+          Descripción
+        </label>
+        <textarea
+          id="descripcion"
+          rows="4"
+          class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Escribe tu descripción aquí..."
+          [(ngModel)]="this.descripcion"
+        ></textarea>
+      </div>
+
+      <div class="w-full">
+        <label
+          for="file_input"
+          class="block mb-2 text-sm font-medium text-gray-50 dark:text-white"
+        >
+          Selecciona una o más fotos
+        </label>
+        <input
+          id="file_input"
+          type="file"
+          multiple
+          class="block w-full text-sm text-gray-50 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+          (change)="onFileSelected($event)"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Inventario -->
+  <div class="w-full pl-4 mt-6">
+    <label
+      for="cambio"
+      class="block mb-2 text-sm font-medium text-gray-50 dark:text-white"
+    >
+      ¿Desea ingresarlo al inventario?
+    </label>
+    <select
+      id="cambio"
+      name="cambio"
+      class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-900 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      [(ngModel)]="this.ingresoInventario"
+      (ngModelChange)="cambioInventario($event)"
+    >
+      <option *ngFor="let item of ['Si', 'No']" [value]="item">
+        {{ item }}
+      </option>
+    </select>
+  </div>
+  
+  <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+
+  <div class="mx-auto p-4" *ngIf="this.ingresoInventario">
+    <h2 class="text-xl font-semibold text-gray-50 dark:text-white mb-6">
+      Generación de ingreso en inventario
+    </h2>
+    <form class="space-y-4">
+      <div class="relative flex flex-wrap gap-4">
+        <div class="w-full md:w-1/2 pr-4">
+          <label
+            for="cantidadInventario"
+            class="block mb-2 text-sm font-medium text-gray-50 dark:text-white"
+          >
+            Cantidad
+          </label>
+          <input
+            type="number"
+            id="cantidadInventario"
+            name="cantidadInventario"
+            placeholder="Ingresa la cantidad de productos a registar"
+            min="1"
+            [(ngModel)]="this.cantidadInventario"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+            required
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <button
+    type="submit"
+    class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-6"
+    (click)="this.creacionProductos()"
+  >
+    Guardar producto
+  </button>
+</div>

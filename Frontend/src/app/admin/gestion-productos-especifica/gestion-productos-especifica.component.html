@@ -1,0 +1,122 @@
+<app-adminheader></app-adminheader>
+
+<section class="text-gray-600 body-font overflow-hidden">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="lg:w-4/5 mx-auto flex flex-wrap">
+      <!-- Contenido del producto -->
+      <div class="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+        <p class="text-3xl title-font text-gray-100 tracking-widest text-center mb-2">
+          {{ this.producto.nombre }}
+        </p>
+        <div class="flex-grow text-gray-100 border-b-2 py-2 text-lg px-1">
+          <p>Categoria: {{ this.producto.categoria }}</p> 
+          <p>Marca: {{ this.producto.marca }}</p>
+        </div>
+
+        <label for="message" class="block mb-2 text-sm font-medium text-gray-100 dark:text-white mt-4">
+          Descripción
+        </label>
+        <textarea
+          id="message"
+          rows="4"
+          class="leading-relaxed mb-4 block p-2.5 w-full text-sm text-gray-100 bg-gray-800 rounded-lg border border-gray-700 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          [value]="this.producto.descripcion"
+          readonly
+        ></textarea>
+
+        <div class="flex border-t border-gray-700 py-2 mx-auto flex-wrap">
+          <span class="text-gray-100">Activo</span>
+          <input
+            type="text"
+            id="first_name"
+            class="bg-gray-800 border border-gray-700 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            [value]="this.producto.activo === true ? 'Activo' : 'Desactivado'"
+            readonly
+          />
+        </div>
+        <div class="flex border-t border-b border-gray-700 mb-6 py-2 mx-auto flex-wrap">
+          <span class="text-gray-100">Mínimo en inventario</span>
+          <input
+            type="text"
+            id="first_name"
+            class="bg-gray-800 border border-gray-700 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            [value]="this.producto.minimoInventario"
+            readonly
+          />
+        </div>
+        <div class="flex">
+          <span class="title-font font-medium text-2xl text-gray-100">
+            {{ this.producto.precio | currency : "Q" }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Carrusel -->
+      <div class="lg:w-1/2 w-full relative">
+        <div class="relative overflow-hidden rounded-lg">
+          <!-- Carousel items -->
+          <div
+            *ngFor="let imagen of this.producto.url_imagenes; let i = index"
+            class="duration-700 ease-in-out"
+            [ngClass]="{ hidden: activeIndex !== i, block: activeIndex === i }"
+          >
+            <img
+              [src]="imagen.url"
+              alt="ecommerce"
+              class="lg:w-full w-full lg:h-auto h-64 object-cover object-center rounded-lg"
+            />
+          </div>
+        </div>
+
+        <!-- Slider controls -->
+        <button
+          type="button"
+          class="absolute inset-y-1/2 left-2 transform -translate-y-1/2 z-30 flex items-center justify-center px-4 cursor-pointer group focus:outline-none"
+          (click)="previousSlide()"
+        >
+          <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+            <svg
+              class="w-4 h-4 text-gray-100 dark:text-gray-800"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 1 1 5l4 4"
+              />
+            </svg>
+            <span class="sr-only">Previous</span>
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="absolute inset-y-1/2 right-2 transform -translate-y-1/2 z-30 flex items-center justify-center px-4 cursor-pointer group focus:outline-none"
+          (click)="nextSlide()"
+        >
+          <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+            <svg
+              class="w-4 h-4 text-gray-100 dark:text-gray-800"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 9 4-4-4-4"
+              />
+            </svg>
+            <span class="sr-only">Next</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

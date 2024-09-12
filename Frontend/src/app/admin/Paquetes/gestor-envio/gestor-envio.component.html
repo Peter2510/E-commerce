@@ -1,0 +1,936 @@
+<app-adminheader />
+
+<section class="text-gray-600 body-font">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="flex flex-wrap -m-4">
+      <!-- Productos Activos -->
+      <h1 class="text-2xl font-semibold mb-8 text-gray-50 text-center">
+        Productos Pendiente de entregar
+      </h1>
+
+      <div class="container mx-auto">
+        <!-- Buscador -->
+        <div class="flex justify-between mb-4">
+          <input
+            type="text"
+            class="border border-white-300 px-4 py-2 rounded-lg w-1/3"
+            placeholder="Buscar por nombre..."
+            (keyup)="filtado($event)"
+          />
+        </div>
+        <div class="relative overflow-x-auto">
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            matSort
+            class="w-full text-sm text-left text-gray-800 bg-white"
+          >
+            <!-- Número de Orden -->
+            <ng-container matColumnDef="index">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="text-xs text-white-700 uppercase bg-white-50 dark:bg-white-700 dark:text-white-400"
+              >
+                No.
+              </th>
+              <td
+                mat-row
+                *matCellDef="let row; let i = index"
+                class="px-4 py-2 text-sm text-white-700"
+              >
+                {{ i + 1 }}
+              </td>
+            </ng-container>
+
+            <!-- Nombre -->
+            <ng-container matColumnDef="nombre">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+              >
+                Nombre
+              </th>
+              <td
+                mat-row
+                *matCellDef="let user"
+                class="px-4 py-2 text-sm text-white-700"
+              >
+                {{ user.usuario.persona.nombre }}
+              </td>
+            </ng-container>
+
+            <!-- NIT -->
+            <ng-container matColumnDef="nit">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+              >
+                NIT
+              </th>
+              <td
+                mat-row
+                *matCellDef="let user"
+                class="px-4 py-2 text-sm text-white-700"
+              >
+                {{ user.nit }}
+              </td>
+            </ng-container>
+
+            <!-- Dirección de Entrega -->
+            <ng-container matColumnDef="direccionEntrega">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+              >
+                Dirección de Entrega
+              </th>
+              <td
+                mat-row
+                *matCellDef="let user"
+                class="px-4 py-2 text-sm text-white-700"
+              >
+                {{ user.direccionEntrega }}
+              </td>
+            </ng-container>
+
+            <!-- Precio Total -->
+            <ng-container matColumnDef="precioTotal">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+              >
+                Precio Total
+              </th>
+              <td
+                mat-row
+                *matCellDef="let user"
+                class="px-4 py-2 text-sm text-white-700"
+              >
+                {{ user.precioTotal }}
+              </td>
+            </ng-container>
+
+            <!-- Recargo -->
+            <ng-container matColumnDef="recargo">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+              >
+                Recargo
+              </th>
+              <td
+                mat-row
+                *matCellDef="let user"
+                class="px-4 py-2 text-sm text-white-700"
+              >
+                {{ user.recargo }}
+              </td>
+            </ng-container>
+
+            <!-- Estado de Compra -->
+            <ng-container matColumnDef="estadoCompra">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+              >
+                Estado de Compra
+              </th>
+              <td
+                mat-row
+                *matCellDef="let user"
+                class="px-4 py-2 text-sm text-white-700"
+              >
+                {{ user.estadoCompra.estado }}
+              </td>
+            </ng-container>
+
+            <!-- Forma de Entrega -->
+            <ng-container matColumnDef="formaEntrega">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+              >
+                Forma de Entrega
+              </th>
+              <td
+                mat-row
+                *matCellDef="let user"
+                class="px-4 py-2 text-sm text-white-700"
+              >
+                {{ user.formaEntrega.tipo }}
+              </td>
+            </ng-container>
+
+            <!-- Fecha de Compra -->
+            <ng-container matColumnDef="fecha">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+              >
+                Fecha de Compra
+              </th>
+              <td
+                mat-row
+                *matCellDef="let user"
+                class="px-4 py-2 text-sm text-white-700"
+              >
+                {{ user.fecha | date : "short" }}
+              </td>
+            </ng-container>
+
+            <!-- Ver Compra -->
+            <ng-container matColumnDef="verCompra">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+              >
+                Ver Compra
+              </th>
+              <td mat-row *matCellDef="let user" class="px-4 py-2">
+                <button
+                  class="px-6 py-2 text-white font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 rounded-full shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                  (click)="openModal(true, user)"
+                >
+                  Ver Compra
+                </button>
+              </td>
+            </ng-container>
+
+            <!-- Header Row -->
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedColumns"
+              class="bg-white border-b border-gray-200"
+            ></tr>
+            <!-- Data Row -->
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns"
+              class="hover:bg-gray-800"
+            ></tr>
+          </table>
+
+          <!-- Paginación -->
+          <mat-paginator
+            [length]="dataSource.data.length"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="[5, 10, 20]"
+          >
+          </mat-paginator>
+        </div>
+
+        <!-- Tabla -->
+      </div>
+
+      <div class="w-full my-16">
+        <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+      </div>
+
+      <!-- Contenedor del título de Productos Desactivados -->
+      <div class="w-full">
+        <h1 class="text-2xl font-semibold mb-8 text-gray-50">Productos Empaquetados</h1>
+        <div class="container mx-auto">
+          <!-- Buscador -->
+          <div class="flex justify-between mb-4">
+            <input
+              type="text"
+              class="border border-white-300 px-4 py-2 rounded-lg w-1/3"
+              placeholder="Buscar por nombre..."
+              (keyup)="filtadoEmpacado($event)"
+            />
+          </div>
+          <div class="relative overflow-x-auto">
+            <table
+              mat-table
+              [dataSource]="dataSourceEmpacado"
+              matSort
+              class="w-full text-sm text-left text-gray-800 bg-white"
+            >
+              <!-- Número de Orden -->
+              <ng-container matColumnDef="index">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-xs text-white-700 uppercase bg-white-50 dark:bg-white-700 dark:text-white-400"
+                >
+                  No.
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let row; let i = index"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+
+              <!-- Nombre -->
+              <ng-container matColumnDef="nombre">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Nombre
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.usuario.persona.nombre }}
+                </td>
+              </ng-container>
+
+              <!-- NIT -->
+              <ng-container matColumnDef="nit">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  NIT
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.nit }}
+                </td>
+              </ng-container>
+
+              <!-- Dirección de Entrega -->
+              <ng-container matColumnDef="direccionEntrega">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Dirección de Entrega
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.direccionEntrega }}
+                </td>
+              </ng-container>
+
+              <!-- Precio Total -->
+              <ng-container matColumnDef="precioTotal">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Precio Total
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.precioTotal }}
+                </td>
+              </ng-container>
+
+              <!-- Recargo -->
+              <ng-container matColumnDef="recargo">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Recargo
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.recargo }}
+                </td>
+              </ng-container>
+
+              <!-- Estado de Compra -->
+              <ng-container matColumnDef="estadoCompra">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Estado de Compra
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.estadoCompra.estado }}
+                </td>
+              </ng-container>
+
+              <!-- Forma de Entrega -->
+              <ng-container matColumnDef="formaEntrega">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Forma de Entrega
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.formaEntrega.tipo }}
+                </td>
+              </ng-container>
+
+              <!-- Fecha de Compra -->
+              <ng-container matColumnDef="fecha">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Fecha de Compra
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.fecha | date : "short" }}
+                </td>
+              </ng-container>
+
+              <!-- Ver Compra -->
+              <ng-container matColumnDef="verCompra">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Ver Compra
+                </th>
+                <td mat-row *matCellDef="let user" class="px-4 py-2">
+                  <button
+                    class="px-6 py-2 text-white font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 rounded-full shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                    (click)="openModal(false, user)"
+                  >
+                    Ver Compra
+                  </button>
+                </td>
+              </ng-container>
+
+              <!-- Header Row -->
+              <tr
+                mat-header-row
+                *matHeaderRowDef="displayedColumns"
+                class="bg-white border-b border-gray-200"
+              ></tr>
+              <!-- Data Row -->
+              <tr
+                mat-row
+                *matRowDef="let row; columns: displayedColumns"
+                class="hover:bg-gray-800"
+              ></tr>
+            </table>
+
+            <!-- Paginación -->
+            <mat-paginator
+              [length]="dataSourceEmpacado.data.length"
+              [pageSize]="pageSizeEmpacado"
+              [pageSizeOptions]="[5, 10, 20]"
+            >
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+      <div class="w-full my-16">
+        <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+      </div>
+      <!-- Contenedor del título de Productos Desactivados -->
+      <div class="w-full">
+        <h1 class="text-2xl font-semibold mb-8 text-gray-50">Productos Entregados</h1>
+        <div class="container mx-auto">
+          <!-- Buscador -->
+          <div class="flex justify-between mb-4">
+            <input
+              type="text"
+              class="border border-white-300 px-4 py-2 rounded-lg w-1/3"
+              placeholder="Buscar por nombre..."
+              (keyup)="filtadoEntregado($event)"
+            />
+          </div>
+          <div class="relative overflow-x-auto">
+            <table
+              mat-table
+              [dataSource]="dataSourceEntregado"
+              matSort
+              class="w-full text-sm text-left text-gray-800 bg-white"
+            >
+              <!-- Número de Orden -->
+              <ng-container matColumnDef="index">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-xs text-white-700 uppercase bg-white-50 dark:bg-white-700 dark:text-white-400"
+                >
+                  No.
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let row; let i = index"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+
+              <!-- Nombre -->
+              <ng-container matColumnDef="nombre">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Nombre
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.usuario.persona.nombre }}
+                </td>
+              </ng-container>
+
+              <!-- NIT -->
+              <ng-container matColumnDef="nit">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  NIT
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.nit }}
+                </td>
+              </ng-container>
+
+              <!-- Dirección de Entrega -->
+              <ng-container matColumnDef="direccionEntrega">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Dirección de Entrega
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.direccionEntrega }}
+                </td>
+              </ng-container>
+
+              <!-- Precio Total -->
+              <ng-container matColumnDef="precioTotal">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Precio Total
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.precioTotal }}
+                </td>
+              </ng-container>
+
+              <!-- Recargo -->
+              <ng-container matColumnDef="recargo">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Recargo
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.recargo }}
+                </td>
+              </ng-container>
+
+              <!-- Estado de Compra -->
+              <ng-container matColumnDef="estadoCompra">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Estado de Compra
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.estadoCompra.estado }}
+                </td>
+              </ng-container>
+
+              <!-- Forma de Entrega -->
+              <ng-container matColumnDef="formaEntrega">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Forma de Entrega
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.formaEntrega.tipo }}
+                </td>
+              </ng-container>
+
+              <!-- Fecha de Compra -->
+              <ng-container matColumnDef="fecha">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Fecha de Compra
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.fecha | date : "short" }}
+                </td>
+              </ng-container>
+
+              <!-- Ver Compra -->
+              <ng-container matColumnDef="verCompra">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Ver Compra
+                </th>
+                <td mat-row *matCellDef="let user" class="px-4 py-2">
+                  <button
+                    class="px-6 py-2 text-white font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 rounded-full shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                    (click)="openModal(false, user)"
+                  >
+                    Ver Compra
+                  </button>
+                </td>
+              </ng-container>
+
+              <!-- Header Row -->
+              <tr
+                mat-header-row
+                *matHeaderRowDef="displayedColumns"
+                class="bg-white border-b border-gray-200"
+              ></tr>
+              <!-- Data Row -->
+              <tr
+                mat-row
+                *matRowDef="let row; columns: displayedColumns"
+                class="hover:bg-gray-800"
+              ></tr>
+            </table>
+
+            <!-- Paginación -->
+            <mat-paginator
+              [length]="dataSourceEntregado.data.length"
+              [pageSize]="pageSizeEntregado"
+              [pageSizeOptions]="[5, 10, 20]"
+            >
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+      <div class="w-full my-16">
+        <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+      </div>
+      <!-- Contenedor del título de Productos Desactivados -->
+      <div class="w-full">
+        <h1 class="text-2xl font-semibold mb-8 text-gray-50">Productos Cancelados</h1>
+        <div class="container mx-auto">
+          <!-- Buscador -->
+          <div class="flex justify-between mb-4">
+            <input
+              type="text"
+              class="border border-white-300 px-4 py-2 rounded-lg w-1/3"
+              placeholder="Buscar por nombre..."
+              (keyup)="filtadoCancelado($event)"
+            />
+          </div>
+          <div class="relative overflow-x-auto">
+            <table
+              mat-table
+              [dataSource]="dataSourceCancelado"
+              matSort
+              class="w-full text-sm text-left text-gray-800 bg-white"
+            >
+              <!-- Número de Orden -->
+              <ng-container matColumnDef="index">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="text-xs text-white-700 uppercase bg-white-50 dark:bg-white-700 dark:text-white-400"
+                >
+                  No.
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let row; let i = index"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+
+              <!-- Nombre -->
+              <ng-container matColumnDef="nombre">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Nombre
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.usuario.persona.nombre }}
+                </td>
+              </ng-container>
+
+              <!-- NIT -->
+              <ng-container matColumnDef="nit">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  NIT
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.nit }}
+                </td>
+              </ng-container>
+
+              <!-- Dirección de Entrega -->
+              <ng-container matColumnDef="direccionEntrega">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Dirección de Entrega
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.direccionEntrega }}
+                </td>
+              </ng-container>
+
+              <!-- Precio Total -->
+              <ng-container matColumnDef="precioTotal">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Precio Total
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.precioTotal }}
+                </td>
+              </ng-container>
+
+              <!-- Recargo -->
+              <ng-container matColumnDef="recargo">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Recargo
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.recargo }}
+                </td>
+              </ng-container>
+
+              <!-- Estado de Compra -->
+              <ng-container matColumnDef="estadoCompra">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Estado de Compra
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.estadoCompra.estado }}
+                </td>
+              </ng-container>
+
+              <!-- Forma de Entrega -->
+              <ng-container matColumnDef="formaEntrega">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Forma de Entrega
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.formaEntrega.tipo }}
+                </td>
+              </ng-container>
+
+              <!-- Fecha de Compra -->
+              <ng-container matColumnDef="fecha">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Fecha de Compra
+                </th>
+                <td
+                  mat-row
+                  *matCellDef="let user"
+                  class="px-4 py-2 text-sm text-white-700"
+                >
+                  {{ user.fecha | date : "short" }}
+                </td>
+              </ng-container>
+
+              <!-- Ver Compra -->
+              <ng-container matColumnDef="verCompra">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="px-4 py-2 text-left text-sm font-medium text-white-600 uppercase tracking-wider"
+                >
+                  Ver Compra
+                </th>
+                <td mat-row *matCellDef="let user" class="px-4 py-2">
+                  <button
+                    class="px-6 py-2 text-white font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 rounded-full shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                    (click)="openModal(false, user)"
+                  >
+                    Ver Compra
+                  </button>
+                </td>
+              </ng-container>
+
+              <!-- Header Row -->
+              <tr
+                mat-header-row
+                *matHeaderRowDef="displayedColumns"
+                class="bg-white border-b border-gray-200"
+              ></tr>
+              <!-- Data Row -->
+              <tr
+                mat-row
+                *matRowDef="let row; columns: displayedColumns"
+                class="hover:bg-gray-800"
+              ></tr>
+            </table>
+
+            <!-- Paginación -->
+            <mat-paginator
+              [length]="dataSourceCancelado.data.length"
+              [pageSize]="pageSizeCancelado"
+              [pageSizeOptions]="[5, 10, 20]"
+            >
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+      <!-- Productos Desactivados -->
+    </div>
+  </div>
+</section>
+
+<div *ngIf="this.isModalVisible">
+  <app-compra-especifica
+    [tipo]="elementoSeleccionado"
+    [isVisible]="isModalVisible"
+    [enProceso]="enProceso"
+    (closeModal)="closeModal()"
+  ></app-compra-especifica>
+</div>

@@ -1,0 +1,23 @@
+<div fxLayout="column" class="buscador-container">
+    <div fxLayout="column">
+        <h1 class="title" style="color:white">Buscador de productos</h1>
+    </div>
+    <div class="search-bar">
+        <mat-form-field class="search-field">
+            <input type="text" placeholder="Buscar producto" aria-label="Number" matInput [(ngModel)]="termino" [matAutocomplete]="auto" (input)="buscando()">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="opcionSelect($event)">
+                <mat-option *ngFor="let option of productosSug" [value]="option">
+                    {{ option.nombre }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+</div>
+    
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div *ngFor="let product of productosSug" class="bg-[#0F4368] text-gray-50 rounded-lg shadow-md overflow-hidden flex flex-col transition-transform transform hover:scale-105">
+      <app-producto-card [product]="product"></app-producto-card>
+      
+    </div>
+    
+  </div>

@@ -1,0 +1,214 @@
+<app-adminheader />
+
+<div class="max-w-7xl mx-auto p-4 md:p-5">
+  <h2 class="text-xl font-semibold text-gray-100 dark:text-white">
+    Edición de producto
+  </h2>
+
+  <!-- Campos de edición -->
+  <div class="flex flex-col space-y-6">
+    <div class="relative mb-4 flex flex-wrap gap-4">
+      <div class="w-full md:w-1/2 pr-4">
+        <label
+          for="nombre"
+          class="block mb-2 text-sm font-medium text-gray-100 dark:text-white"
+        >
+          Nombre
+        </label>
+        <input
+          type="text"
+          id="nombre"
+          name="nombre"
+          class="bg-gray-100 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+          required
+          [value]="this.producto.nombre"
+          [(ngModel)]="this.producto.nombre"
+        />
+      </div>
+
+      <div class="w-full md:w-1/2 pr-4">
+        <label
+          for="marcas"
+          class="block mb-2 text-sm font-medium text-gray-100 dark:text-white"
+        >
+          Selecciona una marca
+        </label>
+        <select
+        id="marcas"
+        name="marcas"
+        class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        [(ngModel)]="idMarca"
+      >
+        <option *ngFor="let item of marcasTotales()" [ngValue]="item.id" [attr.value]="item.id">
+          {{ item.nombreMarca }}
+        </option>
+      </select>      
+      </div>
+    </div>
+
+    <div class="relative mb-4 flex flex-wrap gap-4">
+      <div class="w-full md:w-1/3 pr-4">
+        <label
+          for="categorias"
+          class="block mb-2 text-sm font-medium text-gray-100 dark:text-white"
+        >
+          Selecciona una categoría
+        </label>
+        <select
+          id="categorias"
+          name="categorias"
+          class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          [(ngModel)]="idCategoria"
+        >
+          <option *ngFor="let item of this.categoriasTotales()" [ngValue]="item.id" [attr.value]="item.id">
+            {{ item.nombreCategoria }}
+          </option>
+        </select>
+      </div>
+
+      <div class="w-full md:w-1/3 pr-4">
+        <label
+          for="precio"
+          class="block mb-2 text-sm font-medium text-gray-100 dark:text-white"
+        >
+          Ingresa el precio
+        </label>
+        <input
+          type="number"
+          id="precio"
+          name="precio"
+          min="0"
+          class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+          required
+          [value]="this.producto.precio"
+          [(ngModel)]="this.producto.precio"
+        />
+      </div>
+
+      <div class="w-full md:w-1/3 pr-4">
+        <label
+          for="minimoInventario"
+          class="block mb-2 text-sm font-medium text-gray-100 dark:text-white"
+        >
+          Ingresa el mínimo que debe de tener de inventario
+        </label>
+        <input
+          type="number"
+          id="minimoInventario"
+          name="minimoInventario"
+          min="1"
+          class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+          required
+          [value]="this.producto.minimoInventario"
+          [(ngModel)]="this.producto.minimoInventario"
+        />
+      </div>
+    </div>
+
+    <div class="relative mb-4">
+      <label
+        for="descripcion"
+        class="block mb-2 text-sm font-medium text-gray-100 dark:text-white"
+      >
+        Descripción
+      </label>
+      <textarea
+        id="descripcion"
+        rows="4"
+        class="block p-2.5 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Escribe tu descripción aquí..."
+        [value]="this.producto.descripcion"
+        [(ngModel)]="this.producto.descripcion"
+      ></textarea>
+    </div>
+
+    <div class="relative mb-4">
+      <label
+        for="file_input"
+        class="block mb-2 text-sm font-medium text-gray-100 dark:text-white"
+      >
+        Agregar más imágenes, selecciona una imagen
+      </label>
+      <input
+        id="file_input"
+        type="file"
+        multiple
+        accept="image/*"
+        class="block w-full text-sm text-black border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+        (change)="onFileSelected($event)"
+      />
+    </div>
+    
+
+    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+
+    <div class="relative mb-4">
+      <label
+        for="imagenesEliminar"
+        class="block mb-2 text-sm font-medium text-gray-100 dark:text-white"
+      >
+        Imágenes registradas
+      </label>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div
+          class="relative"
+          *ngFor="let imagen of this.producto.url_imagenes; let i = index"
+        >
+          <img
+            class="h-auto max-w-full rounded-lg"
+            [src]="imagen.url"
+            alt="Imagen {{ i }}"
+          />
+          <button
+            class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-700"
+            (click)="eliminarImagenes(imagen)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-5 h-5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative mb-4">
+      <label
+        for="imagenesEliminar"
+        class="block mb-2 text-sm font-medium text-gray-100 dark:text-white"
+      >
+        Imágenes seleccionadas para eliminar
+      </label>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div
+          class="relative"
+          *ngFor="let imagen of this.imagenesEliminar; let i = index"
+        >
+          <img
+            class="h-auto max-w-full rounded-lg"
+            [src]="imagen.url"
+            alt="Imagen {{ i }}"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button
+    type="submit"
+    class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+    (click)="this.guardarEdicion()"
+  >
+    Guardar producto
+  </button>
+</div>
