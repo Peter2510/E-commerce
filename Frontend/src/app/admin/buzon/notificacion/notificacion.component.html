@@ -15,7 +15,7 @@
       </div>
       <div class="mb-4">
         <p class="text-gray-300 text-base">
-          <a [routerLink]="['/admin/gestionInventario']" class="text-blue-400 hover:underline dark:text-blue-300">
+            <a [routerLink]="['/admin/gestionProductosEspecifico', notificacion.producto.id]" class="text-blue-400 hover:underline dark:text-blue-300">
             Producto: {{ notificacion.producto.nombre }}
         </a>
         </p>

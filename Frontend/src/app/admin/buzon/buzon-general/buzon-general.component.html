@@ -27,7 +27,7 @@
                     {{ buzon.notificacion.mensaje}}
                 </td>
                 <td class="border border-gray-700 dark:border-gray-600 px-6 py-4">
-                    <a [routerLink]="['/admin/gestionInventario']" class="text-blue-400 hover:underline dark:text-blue-300">
+                    <a [routerLink]="['/admin/gestionProductosEspecifico', buzon.notificacion.producto.id]" class="text-blue-400 hover:underline dark:text-blue-300">
                         {{ buzon.notificacion.producto.nombre }}
                     </a>
                 </td>
