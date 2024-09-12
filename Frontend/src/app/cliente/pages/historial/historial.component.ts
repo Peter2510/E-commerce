@@ -154,8 +154,8 @@ export class HistorialComponent implements OnInit {
               ...this.detalleCompra.map(item => [
                 item.descripcion,
                 item.cantidadProducto,
-                `$${item.precioUnitario}`,
-                `$${item.precioTotal}`
+                `Q${item.precioUnitario}`,
+                `Q${item.precioTotal}`
               ])
             ]
           },
@@ -172,8 +172,8 @@ export class HistorialComponent implements OnInit {
                     widths: ['*', 'auto'],
                     body: [
                       ['Subtotal', `Q${opciones.precioTotal}`],
-                      ['Recargo (10%)', `$${opciones.recargo}`],
-                      ['Total', { text: `$${(parseFloat(opciones.precioTotal) + parseFloat(opciones.recargo)).toFixed(2)}`, bold: true }]
+                      ['Recargo (10%)', `Q${opciones.recargo}`],
+                      ['Total', { text: `Q${(parseFloat(opciones.precioTotal) + parseFloat(opciones.recargo)).toFixed(2)}`, bold: true }]
                     ]
                   },
                   layout: 'noBorders'
