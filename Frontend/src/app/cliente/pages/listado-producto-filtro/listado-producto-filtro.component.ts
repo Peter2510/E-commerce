@@ -160,7 +160,7 @@ export class ListadoProductoFiltroComponent {
     const select = event.target as HTMLSelectElement;
     const selectedValue = select.value;
     console.log('Marca seleccionada:', selectedValue);
-    this.idCategoria=parseInt(selectedValue);
+    this.idMarca=parseInt(selectedValue);
     if (this.idCategoria===undefined && this.idMarca!= undefined) {
       this.obtenerProductosMarca(this.idMarca);
     }else{
