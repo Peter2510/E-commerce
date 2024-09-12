@@ -10,12 +10,11 @@
             <img class="w-16 h-16 rounded object-cover" [src]="producto.producto!.url_imagenes[0].url" alt="{{ producto.producto?.nombre }}" />
             <div class="ml-4">
               <h3 class="text-base sm:text-lg font-semibold text-gray-700">{{ producto.producto?.nombre }}</h3>
-              <p class="text-sm text-gray-600">{{ producto.producto?.categoria }}</p>
             </div>
           </div>
 
           <div class="flex flex-col sm:flex-row items-center mt-4 sm:mt-0">
-            <p class="text-base sm:text-lg font-bold text-gray-800">{{ producto.producto?.precio | currency }}</p>
+            <p class="text-base sm:text-lg font-bold text-gray-800">{{ producto.producto?.precio | currency:'Q' }}</p>
             <input type="number" (input)="getTotal($event)" [(ngModel)]="producto.cantidad" class="ml-4 w-20 sm:w-16 text-center text-black border-gray-300 rounded p-1" />
             <button (click)="removeItem(producto.producto?.id!)" class="ml-4 text-red-600 hover:text-red-800">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
@@ -30,7 +29,7 @@
       <div class="mt-6 p-4 bg-gray-200 rounded-lg shadow-md">
         <div class="flex flex-col sm:flex-row justify-between items-center">
           <p class="text-base sm:text-lg font-semibold text-gray-700">Total:</p>
-          <p class="text-xl sm:text-2xl font-bold text-gray-800">{{ total | currency }}</p>
+          <p class="text-xl sm:text-2xl font-bold text-gray-800">{{ total | currency:'Q' }}</p>
         </div>
         <button 
         [disabled] = "cartItems.length <= 0"

@@ -34,6 +34,11 @@ export class ProductoCardComponent {
           Swal.showValidationMessage('Por favor ingrese una cantidad válida.');
           return false;
         }
+        if(cantidad> producto.inventario!.cantidadtotal){
+          Swal.showValidationMessage('Cantidad de producto insuficiente.');
+          return false;
+          
+        }
         
         return {
           producto: producto,
