@@ -132,8 +132,9 @@ export class ProcederPagoComponent implements OnInit {
   abrirConfirmacion() {
     // Aplicar recargo del 10% si el servicio es a domicilio
     if (this.metodoEntrega === 'domicilio') {
-      this.recargo = this.carritoService.getTotal() * 0.10; // Agregar 10% al total
-      this.total = this.carritoService.getTotal() * 1.10; // Agregar 10% al total
+      this.recargo = parseFloat((this.carritoService.getTotal() * 0.10).toFixed(2)); // Agregar 10% al total
+      this.total = parseFloat((this.carritoService.getTotal() * 1.10).toFixed(2));
+ // Agregar 10% al total
     }
     this.mostrarModal = true;
   }

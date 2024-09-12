@@ -5,43 +5,36 @@
       
   
       
-      <!-- Filtro por Categoría -->
-      <div>
-        <select
-          id="categoryFilter"
-          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
-        >
-          <option value="">Todas las categorías</option>
-          <!-- Las opciones se agregarán dinámicamente desde el backend -->
-        </select>
-      </div>
+      <!-- app.component.html -->
+<div>
+  <select
+    id="categoryFilter"
+    class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
+    (change)="onCategoryChange($event)"
+  >
+    <option value="">Todas las categorías</option>
+    <option *ngFor="let category of categorias" [value]="category.id">
+      {{ category.nombreCategoria }}
+    </option>
+  </select>
+</div>
+
+<!-- Filtro por Marca -->
+<div>
+  <select
+    id="brandFilter"
+    class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
+    (change)="onBrandChange($event)"
+  >
+    <option value="">Todas las marcas</option>
+    <option *ngFor="let brand of marcas" [value]="brand.id">
+      {{ brand.nombreMarca }}
+    </option>
+  </select>
+</div>
+
       
-      <!-- Filtro por Marca -->
-      <div>
-        <select
-          id="brandFilter"
-          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
-        >
-          <option value="">Todas las marcas</option>
-          <!-- Agrega más marcas según tu necesidad -->
-        </select>
-      </div>
       
-      <!-- Filtro por Precio -->
-      <div class="flex space-x-2">
-        <input
-          type="number"
-          id="minPrice"
-          placeholder="Min"
-          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-        <input
-          type="number"
-          id="maxPrice"
-          placeholder="Max"
-          class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-      </div>
   
     </div>
   </div>

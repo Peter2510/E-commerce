@@ -35,6 +35,7 @@ export class CarritoDeComprasComponent implements OnInit {
     this.total= this.cartItems.reduce((total, item) => 
       total + ((item.producto?.precio ?? 0) * item.cantidad), 
       0);
+      this.carritoCompras.guardarCambios(this.cartItems)
     return this.total;
   }
 

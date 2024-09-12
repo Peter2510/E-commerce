@@ -8,8 +8,8 @@
       <div class="mt-4 flex items-center justify-between">
         <span class="text-lg font-semibold text-gray-800">{{ product.precio | currency }}</span>
         <button
-        *ngIf="product.inventario !== null"
-        [disabled]="product.inventario === null "
+        *ngIf="product.inventario !== null && product.inventario!.cantidadtotal >= 1"
+        [disabled]="product.inventario === null || product.inventario?.cantidadtotal == 0 "
         (click)="agregarCarrito(product)" 
         class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-500 transition">
           Agregar al carrito
